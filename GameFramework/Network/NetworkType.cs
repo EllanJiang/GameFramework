@@ -1,0 +1,30 @@
+﻿//------------------------------------------------------------
+// Game Framework v3.x
+// Copyright © 2013-2017 Jiang Yin. All rights reserved.
+// Homepage: http://gameframework.cn/
+// Feedback: mailto:jiangyin@gameframework.cn
+//------------------------------------------------------------
+
+namespace GameFramework.Network
+{
+    /// <summary>
+    /// 网络类型。
+    /// </summary>
+    public enum NetworkType
+    {
+        /// <summary>
+        /// 未指定。
+        /// </summary>
+        Unspecified = 0,
+
+        /// <summary>
+        /// IP 版本 4。
+        /// </summary>
+        IPv4,
+
+        /// <summary>
+        /// IP 版本 6。
+        /// </summary>
+        IPv6,
+    }
+}

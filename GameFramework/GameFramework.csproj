@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{109D7F39-79AB-4862-9F73-0B8C638930C6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GameFramework</RootNamespace>
+    <AssemblyName>GameFramework</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PostBuildEvent>copy "$(TargetDir)GameFramework.dll" "$(SolutionDir)UnityGameFramework\Assets\GameFramework\Libraries\GameFramework.dll" /y
+copy "$(TargetDir)GameFramework.xml" "$(SolutionDir)UnityGameFramework\Assets\GameFramework\Libraries\GameFramework.xml" /y</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\GameFramework.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\GameFramework.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\EventPool\BaseEventArgs.cs" />
+    <Compile Include="Base\EventPool\EventPool.cs" />
+    <Compile Include="Base\EventPool\EventPool.Event.cs" />
+    <Compile Include="Base\EventPool\EventPoolMode.cs" />
+    <Compile Include="Base\GameFrameworkAction.cs" />
+    <Compile Include="Base\GameFrameworkEntry.cs" />
+    <Compile Include="Base\GameFrameworkEventArgs.cs" />
+    <Compile Include="Base\GameFrameworkException.cs" />
+    <Compile Include="Base\GameFrameworkFunc.cs" />
+    <Compile Include="Base\GameFrameworkModule.cs" />
+    <Compile Include="Base\Log\Log.cs" />
+    <Compile Include="Base\Log\LogCallback.cs" />
+    <Compile Include="Base\Log\LogLevel.cs" />
+    <Compile Include="Base\TaskPool\ITask.cs" />
+    <Compile Include="Base\TaskPool\ITaskAgent.cs" />
+    <Compile Include="Base\TaskPool\TaskPool.cs" />
+    <Compile Include="Base\Variable\GenericVariable.cs" />
+    <Compile Include="Base\Variable\Variable.cs" />
+    <Compile Include="DataNode\DataNodeManager.cs" />
+    <Compile Include="DataNode\DataNodeManager.DataNode.cs" />
+    <Compile Include="DataNode\IDataNode.cs" />
+    <Compile Include="DataNode\IDataNodeManager.cs" />
+    <Compile Include="DataTable\DataTableBase.cs" />
+    <Compile Include="DataTable\DataTableManager.cs" />
+    <Compile Include="DataTable\DataTableManager.DataTable.cs" />
+    <Compile Include="DataTable\IDataRow.cs" />
+    <Compile Include="DataTable\IDataTable.cs" />
+    <Compile Include="DataTable\IDataTableHelper.cs" />
+    <Compile Include="DataTable\IDataTableManager.cs" />
+    <Compile Include="DataTable\LoadDataTableDependencyAssetEventArgs.cs" />
+    <Compile Include="DataTable\LoadDataTableFailureEventArgs.cs" />
+    <Compile Include="DataTable\LoadDataTableSuccessEventArgs.cs" />
+    <Compile Include="DataTable\LoadDataTableUpdateEventArgs.cs" />
+    <Compile Include="Debugger\DebuggerManager.cs" />
+    <Compile Include="Debugger\DebuggerManager.DebuggerWindowGroup.cs" />
+    <Compile Include="Debugger\IDebuggerManager.cs" />
+    <Compile Include="Debugger\IDebuggerWindow.cs" />
+    <Compile Include="Debugger\IDebuggerWindowGroup.cs" />
+    <Compile Include="Download\DownloadAgentHelperCompleteEventArgs.cs" />
+    <Compile Include="Download\DownloadAgentHelperErrorEventArgs.cs" />
+    <Compile Include="Download\DownloadAgentHelperUpdateEventArgs.cs" />
+    <Compile Include="Download\DownloadFailureEventArgs.cs" />
+    <Compile Include="Download\DownloadManager.cs" />
+    <Compile Include="Download\DownloadManager.DownloadAgent.cs" />
+    <Compile Include="Download\DownloadManager.DownloadCounter.cs" />
+    <Compile Include="Download\DownloadManager.DownloadCounter.DownloadCounterNode.cs" />
+    <Compile Include="Download\DownloadManager.DownloadTask.cs" />
+    <Compile Include="Download\DownloadManager.DownloadTaskStatus.cs" />
+    <Compile Include="Download\DownloadStartEventArgs.cs" />
+    <Compile Include="Download\DownloadSuccessEventArgs.cs" />
+    <Compile Include="Download\DownloadUpdateEventArgs.cs" />
+    <Compile Include="Download\IDownloadAgentHelper.cs" />
+    <Compile Include="Download\IDownloadManager.cs" />
+    <Compile Include="Entity\EntityManager.cs" />
+    <Compile Include="Entity\EntityManager.EntityGroup.cs" />
+    <Compile Include="Entity\EntityManager.EntityInfo.cs" />
+    <Compile Include="Entity\EntityManager.EntityInstanceObject.cs" />
+    <Compile Include="Entity\EntityManager.EntityStatus.cs" />
+    <Compile Include="Entity\EntityManager.RecycleNode.cs" />
+    <Compile Include="Entity\EntityManager.ShowEntityInfo.cs" />
+    <Compile Include="Entity\HideEntityCompleteEventArgs.cs" />
+    <Compile Include="Entity\IEntity.cs" />
+    <Compile Include="Entity\IEntityGroup.cs" />
+    <Compile Include="Entity\IEntityGroupHelper.cs" />
+    <Compile Include="Entity\IEntityHelper.cs" />
+    <Compile Include="Entity\IEntityManager.cs" />
+    <Compile Include="Entity\ShowEntityDependencyAssetEventArgs.cs" />
+    <Compile Include="Entity\ShowEntityFailureEventArgs.cs" />
+    <Compile Include="Entity\ShowEntitySuccessEventArgs.cs" />
+    <Compile Include="Entity\ShowEntityUpdateEventArgs.cs" />
+    <Compile Include="Event\EventManager.cs" />
+    <Compile Include="Event\GameEventArgs.cs" />
+    <Compile Include="Event\IEventManager.cs" />
+    <Compile Include="Fsm\Fsm.cs" />
+    <Compile Include="Fsm\FsmBase.cs" />
+    <Compile Include="Fsm\FsmEventHandler.cs" />
+    <Compile Include="Fsm\FsmManager.cs" />
+    <Compile Include="Fsm\FsmState.cs" />
+    <Compile Include="Fsm\IFsm.cs" />
+    <Compile Include="Fsm\IFsmManager.cs" />
+    <Compile Include="Localization\ILocalizationHelper.cs" />
+    <Compile Include="Localization\ILocalizationManager.cs" />
+    <Compile Include="Localization\Language.cs" />
+    <Compile Include="Localization\LoadDictionaryDependencyAssetEventArgs.cs" />
+    <Compile Include="Localization\LoadDictionaryFailureEventArgs.cs" />
+    <Compile Include="Localization\LoadDictionarySuccessEventArgs.cs" />
+    <Compile Include="Localization\LoadDictionaryUpdateEventArgs.cs" />
+    <Compile Include="Localization\LocalizationManager.cs" />
+    <Compile Include="Network\INetworkChannel.cs" />
+    <Compile Include="Network\INetworkHelper.cs" />
+    <Compile Include="Network\INetworkManager.cs" />
+    <Compile Include="Network\IPacketHandler.cs" />
+    <Compile Include="Network\NetworkClosedEventArgs.cs" />
+    <Compile Include="Network\NetworkConnectedEventArgs.cs" />
+    <Compile Include="Network\NetworkCustomErrorEventArgs.cs" />
+    <Compile Include="Network\NetworkErrorCode.cs" />
+    <Compile Include="Network\NetworkErrorEventArgs.cs" />
+    <Compile Include="Network\NetworkManager.cs" />
+    <Compile Include="Network\NetworkManager.NetworkChannel.cs" />
+    <Compile Include="Network\NetworkManager.NetworkChannel.HeartBeatState.cs" />
+    <Compile Include="Network\NetworkManager.NetworkChannel.ReceiveState.cs" />
+    <Compile Include="Network\NetworkManager.NetworkChannel.SocketUserData.cs" />
+    <Compile Include="Network\NetworkMissHeartBeatEventArgs.cs" />
+    <Compile Include="Network\NetworkSendPacketEventArgs.cs" />
+    <Compile Include="Network\NetworkType.cs" />
+    <Compile Include="Network\Packet.cs" />
+    <Compile Include="ObjectPool\IObjectPool.cs" />
+    <Compile Include="ObjectPool\IObjectPoolManager.cs" />
+    <Compile Include="ObjectPool\ObjectBase.cs" />
+    <Compile Include="ObjectPool\ObjectInfo.cs" />
+    <Compile Include="ObjectPool\ObjectPoolBase.cs" />
+    <Compile Include="ObjectPool\ObjectPoolManager.cs" />
+    <Compile Include="ObjectPool\ObjectPoolManager.Object.cs" />
+    <Compile Include="ObjectPool\ObjectPoolManager.ObjectPool.cs" />
+    <Compile Include="ObjectPool\ReleaseObjectFilterCallback.cs" />
+    <Compile Include="Procedure\IProcedureManager.cs" />
+    <Compile Include="Procedure\ProcedureBase.cs" />
+    <Compile Include="Procedure\ProcedureManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource\CheckVersionListResult.cs" />
+    <Compile Include="Resource\DecryptResourceCallback.cs" />
+    <Compile Include="Resource\ILoadResourceAgentHelper.cs" />
+    <Compile Include="Resource\InstantiateAssetCallbacks.cs" />
+    <Compile Include="Resource\InstantiateAssetDependencyAssetCallback.cs" />
+    <Compile Include="Resource\InstantiateAssetFailureCallback.cs" />
+    <Compile Include="Resource\InstantiateAssetSuccessCallback.cs" />
+    <Compile Include="Resource\InstantiateAssetUpdateCallback.cs" />
+    <Compile Include="Resource\IResourceHelper.cs" />
+    <Compile Include="Resource\IResourceManager.cs" />
+    <Compile Include="Resource\LoadAssetCallbacks.cs" />
+    <Compile Include="Resource\LoadAssetDependencyAssetCallback.cs" />
+    <Compile Include="Resource\LoadAssetFailureCallback.cs" />
+    <Compile Include="Resource\LoadAssetSuccessCallback.cs" />
+    <Compile Include="Resource\LoadAssetUpdateCallback.cs" />
+    <Compile Include="Resource\LoadBytesCallback.cs" />
+    <Compile Include="Resource\LoadResourceAgentHelperErrorEventArgs.cs" />
+    <Compile Include="Resource\LoadResourceAgentHelperLoadCompleteEventArgs.cs" />
+    <Compile Include="Resource\LoadResourceAgentHelperParseBytesCompleteEventArgs.cs" />
+    <Compile Include="Resource\LoadResourceAgentHelperReadBytesCompleteEventArgs.cs" />
+    <Compile Include="Resource\LoadResourceAgentHelperReadFileCompleteEventArgs.cs" />
+    <Compile Include="Resource\LoadResourceAgentHelperUpdateEventArgs.cs" />
+    <Compile Include="Resource\LoadResourceProgress.cs" />
+    <Compile Include="Resource\LoadResourceStatus.cs" />
+    <Compile Include="Resource\LoadSceneCallbacks.cs" />
+    <Compile Include="Resource\LoadSceneDependencyAssetCallback.cs" />
+    <Compile Include="Resource\LoadSceneFailureCallback.cs" />
+    <Compile Include="Resource\LoadSceneSuccessCallback.cs" />
+    <Compile Include="Resource\LoadSceneUpdateCallback.cs" />
+    <Compile Include="Resource\ResourceCheckCompleteEventArgs.cs" />
+    <Compile Include="Resource\ResourceInitCompleteEventArgs.cs" />
+    <Compile Include="Resource\ResourceManager.AssetDependencyInfo.cs" />
+    <Compile Include="Resource\ResourceManager.AssetInfo.cs" />
+    <Compile Include="Resource\ResourceManager.cs" />
+    <Compile Include="Resource\ResourceManager.LoadType.cs" />
+    <Compile Include="Resource\ResourceManager.ReadWriteResourceInfo.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceChecker.CheckInfo.CheckStatus.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceChecker.CheckInfo.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceChecker.CheckInfo.LocalVersionInfo.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceChecker.CheckInfo.RemoteVersionInfo.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceChecker.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceGroup.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceInfo.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceIniter.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceLoader.AssetObject.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceLoader.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceLoader.InstantiateAssetTask.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceLoader.LoadAssetTask.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceLoader.LoadDependencyAssetTask.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceLoader.LoadResourceAgent.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceLoader.LoadResourceAgent.WaitingType.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceLoader.LoadResourceTaskBase.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceLoader.LoadSceneTask.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceLoader.ResourceObject.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceName.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceNameComparer.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceUpdater.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceUpdater.UpdateInfo.cs" />
+    <Compile Include="Resource\ResourceManager.VersionListProcessor.cs" />
+    <Compile Include="Resource\ResourceMode.cs" />
+    <Compile Include="Resource\ResourceUpdateAllCompleteEventArgs.cs" />
+    <Compile Include="Resource\ResourceUpdateChangedEventArgs.cs" />
+    <Compile Include="Resource\ResourceUpdateFailureEventArgs.cs" />
+    <Compile Include="Resource\ResourceUpdateStartEventArgs.cs" />
+    <Compile Include="Resource\ResourceUpdateSuccessEventArgs.cs" />
+    <Compile Include="Resource\UnloadSceneCallbacks.cs" />
+    <Compile Include="Resource\UnloadSceneFailureCallback.cs" />
+    <Compile Include="Resource\UnloadSceneSuccessCallback.cs" />
+    <Compile Include="Resource\VersionListUpdateFailureEventArgs.cs" />
+    <Compile Include="Resource\VersionListUpdateSuccessEventArgs.cs" />
+    <Compile Include="Scene\ISceneManager.cs" />
+    <Compile Include="Scene\LoadSceneDependencyAssetEventArgs.cs" />
+    <Compile Include="Scene\LoadSceneFailureEventArgs.cs" />
+    <Compile Include="Scene\LoadSceneSuccessEventArgs.cs" />
+    <Compile Include="Scene\LoadSceneUpdateEventArgs.cs" />
+    <Compile Include="Scene\SceneManager.cs" />
+    <Compile Include="Scene\UnloadSceneFailureEventArgs.cs" />
+    <Compile Include="Scene\UnloadSceneSuccessEventArgs.cs" />
+    <Compile Include="Setting\ISettingHelper.cs" />
+    <Compile Include="Setting\ISettingManager.cs" />
+    <Compile Include="Setting\SettingManager.cs" />
+    <Compile Include="Sound\Constant.cs" />
+    <Compile Include="Sound\ISoundAgent.cs" />
+    <Compile Include="Sound\ISoundAgentHelper.cs" />
+    <Compile Include="Sound\ISoundGroup.cs" />
+    <Compile Include="Sound\ISoundGroupHelper.cs" />
+    <Compile Include="Sound\ISoundHelper.cs" />
+    <Compile Include="Sound\ISoundManager.cs" />
+    <Compile Include="Sound\PlaySoundDependencyAssetEventArgs.cs" />
+    <Compile Include="Sound\PlaySoundErrorCode.cs" />
+    <Compile Include="Sound\PlaySoundFailureEventArgs.cs" />
+    <Compile Include="Sound\PlaySoundParams.cs" />
+    <Compile Include="Sound\PlaySoundSuccessEventArgs.cs" />
+    <Compile Include="Sound\PlaySoundUpdateEventArgs.cs" />
+    <Compile Include="Sound\ResetSoundAgentEventArgs.cs" />
+    <Compile Include="Sound\SoundManager.cs" />
+    <Compile Include="Sound\SoundManager.PlaySoundInfo.cs" />
+    <Compile Include="Sound\SoundManager.SoundAgent.cs" />
+    <Compile Include="Sound\SoundManager.SoundGroup.cs" />
+    <Compile Include="UI\CloseUIFormCompleteEventArgs.cs" />
+    <Compile Include="UI\IUIForm.cs" />
+    <Compile Include="UI\IUIFormHelper.cs" />
+    <Compile Include="UI\IUIGroup.cs" />
+    <Compile Include="UI\IUIGroupHelper.cs" />
+    <Compile Include="UI\IUIManager.cs" />
+    <Compile Include="UI\OpenUIFormDependencyAssetEventArgs.cs" />
+    <Compile Include="UI\OpenUIFormFailureEventArgs.cs" />
+    <Compile Include="UI\OpenUIFormSuccessEventArgs.cs" />
+    <Compile Include="UI\OpenUIFormUpdateEventArgs.cs" />
+    <Compile Include="UI\UIManager.cs" />
+    <Compile Include="UI\UIManager.OpenUIFormInfo.cs" />
+    <Compile Include="UI\UIManager.RecycleNode.cs" />
+    <Compile Include="UI\UIManager.UIFormInstanceObject.cs" />
+    <Compile Include="UI\UIManager.UIGroup.cs" />
+    <Compile Include="UI\UIManager.UIGroup.UIFormInfo.cs" />
+    <Compile Include="Utility\Assembly.cs" />
+    <Compile Include="Utility\Converter.cs" />
+    <Compile Include="Utility\Encryption.cs" />
+    <Compile Include="Utility\Json.cs" />
+    <Compile Include="Utility\Json.IJsonHelper.cs" />
+    <Compile Include="Utility\Nullable.cs" />
+    <Compile Include="Utility\Path.cs" />
+    <Compile Include="Utility\Random.cs" />
+    <Compile Include="Utility\Text.cs" />
+    <Compile Include="Utility\Verifier.Crc32.cs" />
+    <Compile Include="Utility\Verifier.cs" />
+    <Compile Include="Utility\Zip.cs" />
+    <Compile Include="Utility\Zip.IZipHelper.cs" />
+    <Compile Include="WebRequest\IWebRequestAgentHelper.cs" />
+    <Compile Include="WebRequest\IWebRequestManager.cs" />
+    <Compile Include="WebRequest\WebRequestAgentHelperCompleteEventArgs.cs" />
+    <Compile Include="WebRequest\WebRequestAgentHelperErrorEventArgs.cs" />
+    <Compile Include="WebRequest\WebRequestFailureEventArgs.cs" />
+    <Compile Include="WebRequest\WebRequestManager.cs" />
+    <Compile Include="WebRequest\WebRequestManager.WebRequestAgent.cs" />
+    <Compile Include="WebRequest\WebRequestManager.WebRequestTask.cs" />
+    <Compile Include="WebRequest\WebRequestManager.WebRequestTaskStatus.cs" />
+    <Compile Include="WebRequest\WebRequestStartEventArgs.cs" />
+    <Compile Include="WebRequest\WebRequestSuccessEventArgs.cs" />
+  </ItemGroup>
+</Project>
