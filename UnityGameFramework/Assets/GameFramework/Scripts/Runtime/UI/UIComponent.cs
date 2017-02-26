@@ -141,7 +141,7 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 游戏框架组件初始化。
         /// </summary>
-        protected internal override void Awake()
+        protected override void Awake()
         {
             base.Awake();
 
@@ -309,7 +309,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>要获取的界面。</returns>
         public UIForm GetUIForm(int uiFormTypeId, string uiGroupName)
         {
-            return m_UIManager.GetUIForm(uiFormTypeId, uiGroupName) as UIForm;
+            return (UIForm)m_UIManager.GetUIForm(uiFormTypeId, uiGroupName);
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace UnityGameFramework.Runtime
             UIForm[] uiFormImpls = new UIForm[uiForms.Length];
             for (int i = 0; i < uiForms.Length; i++)
             {
-                uiFormImpls[i] = uiForms[i] as UIForm;
+                uiFormImpls[i] = (UIForm)uiForms[i];
             }
 
             return uiFormImpls;

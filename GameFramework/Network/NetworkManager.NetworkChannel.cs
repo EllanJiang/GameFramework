@@ -121,7 +121,7 @@ namespace GameFramework.Network
                         throw new GameFrameworkException("You must initialize network channel first.");
                     }
 
-                    IPEndPoint ipEndPoint = m_Socket.LocalEndPoint as IPEndPoint;
+                    IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.LocalEndPoint;
                     if (ipEndPoint == null)
                     {
                         throw new GameFrameworkException("Local end point is invalid.");
@@ -143,7 +143,7 @@ namespace GameFramework.Network
                         throw new GameFrameworkException("You must initialize network channel first.");
                     }
 
-                    IPEndPoint ipEndPoint = m_Socket.LocalEndPoint as IPEndPoint;
+                    IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.LocalEndPoint;
                     if (ipEndPoint == null)
                     {
                         throw new GameFrameworkException("Local end point is invalid.");
@@ -165,7 +165,7 @@ namespace GameFramework.Network
                         throw new GameFrameworkException("You must initialize network channel first.");
                     }
 
-                    IPEndPoint ipEndPoint = m_Socket.RemoteEndPoint as IPEndPoint;
+                    IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.RemoteEndPoint;
                     if (ipEndPoint == null)
                     {
                         throw new GameFrameworkException("Remote end point is invalid.");
@@ -187,7 +187,7 @@ namespace GameFramework.Network
                         throw new GameFrameworkException("You must initialize network channel first.");
                     }
 
-                    IPEndPoint ipEndPoint = m_Socket.RemoteEndPoint as IPEndPoint;
+                    IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.RemoteEndPoint;
                     if (ipEndPoint == null)
                     {
                         throw new GameFrameworkException("Remote end point is invalid.");

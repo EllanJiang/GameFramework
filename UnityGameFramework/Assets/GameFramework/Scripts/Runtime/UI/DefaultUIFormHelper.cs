@@ -19,6 +19,16 @@ namespace UnityGameFramework.Runtime
         private ResourceComponent m_ResourceComponent = null;
 
         /// <summary>
+        /// 实例化界面。
+        /// </summary>
+        /// <param name="uiFormAsset">要实例化的界面资源。</param>
+        /// <returns>实例化后的界面。</returns>
+        public override object InstantiateUIForm(object uiFormAsset)
+        {
+            return Instantiate((Object)uiFormAsset);
+        }
+
+        /// <summary>
         /// 创建界面。
         /// </summary>
         /// <param name="uiFormInstance">界面实例。</param>
@@ -35,20 +45,21 @@ namespace UnityGameFramework.Runtime
             }
 
             Transform transform = gameObject.transform;
-            transform.SetParent((uiGroup.Helper as MonoBehaviour).transform);
+            transform.SetParent(((MonoBehaviour)uiGroup.Helper).transform);
             transform.localScale = Vector3.one;
 
             return gameObject.GetOrAddComponent<UIForm>();
         }
 
         /// <summary>
-        /// 释放界面实例。
+        /// 释放界面。
         /// </summary>
+        /// <param name="uiFormAsset">要释放的界面资源。</param>
         /// <param name="uiFormInstance">要释放的界面实例。</param>
-        public override void ReleaseUIFormInstance(object uiFormInstance)
+        public override void ReleaseUIForm(object uiFormAsset, object uiFormInstance)
         {
-            m_ResourceComponent.Recycle(uiFormInstance);
-            DestroyObject(uiFormInstance as GameObject);
+            m_ResourceComponent.UnloadAsset(uiFormAsset);
+            DestroyObject((Object)uiFormInstance);
         }
 
         private void Start()

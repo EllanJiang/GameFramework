@@ -5,21 +5,23 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using UnityEngine;
-
 namespace UnityGameFramework.Runtime
 {
-    /// <summary>
-    /// 游戏框架组件抽象类。
-    /// </summary>
-    public abstract class GameFrameworkComponent : MonoBehaviour
+    public enum ReadWritePathType
     {
         /// <summary>
-        /// 游戏框架组件初始化。
+        /// 未指定。
         /// </summary>
-        protected virtual void Awake()
-        {
-            GameEntry.RegisterComponent(this);
-        }
+        Unspecified = 0,
+
+        /// <summary>
+        /// 临时缓存。
+        /// </summary>
+        TemporaryCache,
+
+        /// <summary>
+        /// 持久化数据。
+        /// </summary>
+        PersistentData,
     }
 }

@@ -17,7 +17,7 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public static class GameEntry
     {
-        private const string UnityGameFrameworkVersion = "3.0.0";
+        private const string UnityGameFrameworkVersion = "3.0.1";
         private static readonly LinkedList<GameFrameworkComponent> s_GameFrameworkComponents = new LinkedList<GameFrameworkComponent>();
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>要获取的游戏框架组件。</returns>
         public static T GetComponent<T>() where T : GameFrameworkComponent
         {
-            return GetComponent(typeof(T)) as T;
+            return (T)GetComponent(typeof(T));
         }
 
         /// <summary>

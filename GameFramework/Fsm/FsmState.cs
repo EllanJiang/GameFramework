@@ -121,8 +121,8 @@ namespace GameFramework.Fsm
         /// <param name="fsm">有限状态机引用。</param>
         protected void ChangeState<TState>(IFsm<T> fsm) where TState : FsmState<T>
         {
-            Fsm<T> fsmImplement = fsm as Fsm<T>;
-            if (fsm == null)
+            Fsm<T> fsmImplement = (Fsm<T>)fsm;
+            if (fsmImplement == null)
             {
                 throw new GameFrameworkException("FSM is invalid.");
             }
@@ -137,8 +137,8 @@ namespace GameFramework.Fsm
         /// <param name="stateType">要切换到的有限状态机状态类型。</param>
         protected void ChangeState(IFsm<T> fsm, Type stateType)
         {
-            Fsm<T> fsmImplement = fsm as Fsm<T>;
-            if (fsm == null)
+            Fsm<T> fsmImplement = (Fsm<T>)fsm;
+            if (fsmImplement == null)
             {
                 throw new GameFrameworkException("FSM is invalid.");
             }

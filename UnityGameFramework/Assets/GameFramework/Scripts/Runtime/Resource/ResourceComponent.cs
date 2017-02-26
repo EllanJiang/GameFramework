@@ -34,6 +34,9 @@ namespace UnityGameFramework.Runtime
         private ResourceMode m_ResourceMode = ResourceMode.Package;
 
         [SerializeField]
+        private ReadWritePathType m_ReadWritePathType = ReadWritePathType.Unspecified;
+
+        [SerializeField]
         private float m_UnloadUnusedAssetsInterval = 60f;
 
         [SerializeField]
@@ -114,6 +117,17 @@ namespace UnityGameFramework.Runtime
             get
             {
                 return m_ResourceManager.ResourceMode;
+            }
+        }
+
+        /// <summary>
+        /// 获取资源读写路径类型。
+        /// </summary>
+        public ReadWritePathType ReadWritePathType
+        {
+            get
+            {
+                return m_ReadWritePathType;
             }
         }
 
@@ -417,7 +431,7 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 游戏框架组件初始化。
         /// </summary>
-        protected internal override void Awake()
+        protected override void Awake()
         {
             base.Awake();
         }
@@ -457,7 +471,19 @@ namespace UnityGameFramework.Runtime
             m_ResourceManager.ResourceUpdateAllComplete += OnResourceUpdateAllComplete;
 
             m_ResourceManager.SetReadOnlyPath(Application.streamingAssetsPath);
-            m_ResourceManager.SetReadWritePath(Application.temporaryCachePath);
+            if (m_ReadWritePathType == ReadWritePathType.TemporaryCache)
+            {
+                m_ResourceManager.SetReadWritePath(Application.temporaryCachePath);
+            }
+            else
+            {
+                if (m_ReadWritePathType == ReadWritePathType.Unspecified)
+                {
+                    m_ReadWritePathType = ReadWritePathType.PersistentData;
+                }
+
+                m_ResourceManager.SetReadWritePath(Application.persistentDataPath);
+            }
 
             if (m_EditorResourceMode)
             {
@@ -653,33 +679,12 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 异步实例化资源。
+        /// 卸载资源。
         /// </summary>
-        /// <param name="assetName">要实例化资源的名称。</param>
-        /// <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-        public void InstantiateAsset(string assetName, InstantiateAssetCallbacks instantiateAssetCallbacks)
+        /// <param name="asset">要卸载的资源。</param>
+        public void UnloadAsset(object asset)
         {
-            m_ResourceManager.InstantiateAsset(assetName, instantiateAssetCallbacks);
-        }
-
-        /// <summary>
-        /// 异步实例化资源。
-        /// </summary>
-        /// <param name="assetName">要实例化资源的名称。</param>
-        /// <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public void InstantiateAsset(string assetName, InstantiateAssetCallbacks instantiateAssetCallbacks, object userData)
-        {
-            m_ResourceManager.InstantiateAsset(assetName, instantiateAssetCallbacks, userData);
-        }
-
-        /// <summary>
-        /// 回收资源或资源实例。
-        /// </summary>
-        /// <param name="assetOrInstance">要回收的资源或资源实例。</param>
-        public void Recycle(object assetOrInstance)
-        {
-            m_ResourceManager.Recycle(assetOrInstance);
+            m_ResourceManager.UnloadAsset(asset);
         }
 
         /// <summary>

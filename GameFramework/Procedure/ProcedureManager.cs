@@ -15,6 +15,7 @@ namespace GameFramework.Procedure
     /// </summary>
     internal sealed class ProcedureManager : GameFrameworkModule, IProcedureManager
     {
+        private IFsmManager m_FsmManager;
         private IFsm<IProcedureManager> m_ProcedureFsm;
 
         /// <summary>
@@ -22,6 +23,7 @@ namespace GameFramework.Procedure
         /// </summary>
         public ProcedureManager()
         {
+            m_FsmManager = null;
             m_ProcedureFsm = null;
         }
 
@@ -37,7 +39,7 @@ namespace GameFramework.Procedure
                     throw new GameFrameworkException("You must initialize procedure first.");
                 }
 
-                return m_ProcedureFsm.CurrentState as ProcedureBase;
+                return (ProcedureBase)m_ProcedureFsm.CurrentState;
             }
         }
 
@@ -72,7 +74,16 @@ namespace GameFramework.Procedure
         /// </summary>
         internal override void Shutdown()
         {
-            m_ProcedureFsm = null;
+            if (m_FsmManager != null)
+            {
+                if (m_ProcedureFsm != null)
+                {
+                    m_FsmManager.DestroyFsm(m_ProcedureFsm);
+                    m_ProcedureFsm = null;
+                }
+
+                m_FsmManager = null;
+            }
         }
 
         /// <summary>
@@ -87,7 +98,8 @@ namespace GameFramework.Procedure
                 throw new GameFrameworkException("FSM manager is invalid.");
             }
 
-            m_ProcedureFsm = fsmManager.CreateFsm(this, procedures);
+            m_FsmManager = fsmManager;
+            m_ProcedureFsm = m_FsmManager.CreateFsm(this, procedures);
         }
 
         /// <summary>
@@ -160,7 +172,7 @@ namespace GameFramework.Procedure
                 throw new GameFrameworkException("You must initialize procedure first.");
             }
 
-            return m_ProcedureFsm.GetState<T>() as ProcedureBase;
+            return m_ProcedureFsm.GetState<T>();
         }
 
         /// <summary>
@@ -175,7 +187,7 @@ namespace GameFramework.Procedure
                 throw new GameFrameworkException("You must initialize procedure first.");
             }
 
-            return m_ProcedureFsm.GetState(procedureType) as ProcedureBase;
+            return (ProcedureBase)m_ProcedureFsm.GetState(procedureType);
         }
     }
 }

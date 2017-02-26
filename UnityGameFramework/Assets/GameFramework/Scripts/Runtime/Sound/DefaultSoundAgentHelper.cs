@@ -249,7 +249,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="bindingEntity">声音绑定的实体。</param>
         public override void SetBindingEntity(IEntity bindingEntity)
         {
-            m_BindingEntityLogic = (bindingEntity as Entity).Logic;
+            m_BindingEntityLogic = ((Entity)bindingEntity).Logic;
             if (m_BindingEntityLogic == null && m_ResetSoundAgentEventHandler != null)
             {
                 m_ResetSoundAgentEventHandler(this, new ResetSoundAgentEventArgs());

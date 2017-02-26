@@ -81,7 +81,7 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 游戏框架组件初始化。
         /// </summary>
-        protected internal override void Awake()
+        protected override void Awake()
         {
             base.Awake();
 
@@ -233,7 +233,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>实体。</returns>
         public Entity GetEntity(int entityId)
         {
-            return m_EntityManager.GetEntity(entityId) as Entity;
+            return (Entity)m_EntityManager.GetEntity(entityId);
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace UnityGameFramework.Runtime
             Entity[] entityImpls = new Entity[entities.Length];
             for (int i = 0; i < entities.Length; i++)
             {
-                entityImpls[i] = entities[i] as Entity;
+                entityImpls[i] = (Entity)entities[i];
             }
 
             return entityImpls;
@@ -395,7 +395,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>子实体的父实体。</returns>
         public Entity GetParentEntity(int childEntityId)
         {
-            return m_EntityManager.GetParentEntity(childEntityId) as Entity;
+            return (Entity)m_EntityManager.GetParentEntity(childEntityId);
         }
 
         /// <summary>
@@ -405,7 +405,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>子实体的父实体。</returns>
         public Entity GetParentEntity(Entity childEntity)
         {
-            return m_EntityManager.GetParentEntity(childEntity) as Entity;
+            return (Entity)m_EntityManager.GetParentEntity(childEntity);
         }
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace UnityGameFramework.Runtime
             Entity[] entityImpls = new Entity[entities.Length];
             for (int i = 0; i < entities.Length; i++)
             {
-                entityImpls[i] = entities[i] as Entity;
+                entityImpls[i] = (Entity)entities[i];
             }
 
             return entityImpls;
@@ -436,7 +436,7 @@ namespace UnityGameFramework.Runtime
             Entity[] entityImpls = new Entity[entities.Length];
             for (int i = 0; i < entities.Length; i++)
             {
-                entityImpls[i] = entities[i] as Entity;
+                entityImpls[i] = (Entity)entities[i];
             }
 
             return entityImpls;

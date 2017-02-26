@@ -240,7 +240,7 @@ namespace GameFramework.DataTable
         /// <returns>要获取的数据表。</returns>
         public IDataTable<T> GetDataTable<T>() where T : IDataRow
         {
-            return InternelGetDataTable(Utility.Text.GetFullName<T>(string.Empty)) as IDataTable<T>;
+            return (IDataTable<T>)InternelGetDataTable(Utility.Text.GetFullName<T>(string.Empty));
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace GameFramework.DataTable
         /// <returns>要获取的数据表。</returns>
         public IDataTable<T> GetDataTable<T>(string name) where T : IDataRow
         {
-            return InternelGetDataTable(Utility.Text.GetFullName<T>(name)) as IDataTable<T>;
+            return (IDataTable<T>)InternelGetDataTable(Utility.Text.GetFullName<T>(name));
         }
 
         /// <summary>

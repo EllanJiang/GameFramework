@@ -34,7 +34,7 @@ namespace UnityGameFramework.Editor
 
             serializedObject.Update();
 
-            UIComponent t = target as UIComponent;
+            UIComponent t = (UIComponent)target;
 
             EditorGUILayout.PropertyField(m_EnableOpenUIFormSuccessEvent);
             EditorGUILayout.PropertyField(m_EnableOpenUIFormFailureEvent);

@@ -43,7 +43,7 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 游戏框架组件初始化。
         /// </summary>
-        protected internal override void Awake()
+        protected override void Awake()
         {
             base.Awake();
 
@@ -69,7 +69,7 @@ namespace UnityGameFramework.Runtime
                     yield break;
                 }
 
-                procedures[i] = Activator.CreateInstance(procedureType) as ProcedureBase;
+                procedures[i] = (ProcedureBase)Activator.CreateInstance(procedureType);
                 if (procedures[i] == null)
                 {
                     Log.Error("Can not create procedure instance '{0}'.", m_AvailableProcedureTypeNames[i]);
@@ -112,7 +112,7 @@ namespace UnityGameFramework.Runtime
         /// <typeparam name="T">流程类型。</typeparam>
         public ProcedureBase GetProcedure<T>() where T : ProcedureBase
         {
-            return m_ProcedureManager.GetProcedure<T>() as ProcedureBase;
+            return m_ProcedureManager.GetProcedure<T>();
         }
     }
 }

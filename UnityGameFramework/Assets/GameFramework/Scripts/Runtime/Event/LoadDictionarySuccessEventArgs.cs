@@ -20,7 +20,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="e">内部事件。</param>
         public LoadDictionarySuccessEventArgs(GameFramework.Localization.LoadDictionarySuccessEventArgs e)
         {
-            LoadDictionaryInfo loadDictionaryInfo = e.UserData as LoadDictionaryInfo;
+            LoadDictionaryInfo loadDictionaryInfo = (LoadDictionaryInfo)e.UserData;
             DictionaryName = loadDictionaryInfo.DictionaryName;
             DictionaryAssetName = e.DictionaryAssetName;
             Duration = e.Duration;

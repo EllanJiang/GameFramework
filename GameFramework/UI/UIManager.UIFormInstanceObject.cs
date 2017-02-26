@@ -16,22 +16,29 @@ namespace GameFramework.UI
         /// </summary>
         private sealed class UIFormInstanceObject : ObjectBase
         {
+            private readonly object m_UIFormAsset;
             private readonly IUIFormHelper m_UIFormHelper;
 
-            public UIFormInstanceObject(string name, object target, IUIFormHelper uiFormHelper)
-                : base(name, target)
+            public UIFormInstanceObject(string name, object uiFormAsset, object uiFormInstance, IUIFormHelper uiFormHelper)
+                : base(name, uiFormInstance)
             {
+                if (uiFormAsset == null)
+                {
+                    throw new GameFrameworkException("UI form asset is invalid.");
+                }
+
                 if (uiFormHelper == null)
                 {
                     throw new GameFrameworkException("UI form helper is invalid.");
                 }
 
+                m_UIFormAsset = uiFormAsset;
                 m_UIFormHelper = uiFormHelper;
             }
 
             protected internal override void Release()
             {
-                m_UIFormHelper.ReleaseUIFormInstance(Target);
+                m_UIFormHelper.ReleaseUIForm(m_UIFormAsset, Target);
             }
         }
     }

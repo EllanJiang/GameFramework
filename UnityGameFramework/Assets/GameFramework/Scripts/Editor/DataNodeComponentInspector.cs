@@ -24,7 +24,7 @@ namespace UnityGameFramework.Editor
                 return;
             }
 
-            DataNodeComponent t = target as DataNodeComponent;
+            DataNodeComponent t = (DataNodeComponent)target;
 
             DrawDataNode(t.Root);
 

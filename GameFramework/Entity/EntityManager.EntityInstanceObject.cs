@@ -16,22 +16,29 @@ namespace GameFramework.Entity
         /// </summary>
         private sealed class EntityInstanceObject : ObjectBase
         {
+            private readonly object m_EntityAsset;
             private readonly IEntityHelper m_EntityHelper;
 
-            public EntityInstanceObject(string name, object target, IEntityHelper entityHelper)
-                : base(name, target)
+            public EntityInstanceObject(string name, object entityAsset, object entityInstance, IEntityHelper entityHelper)
+                : base(name, entityInstance)
             {
+                if (entityAsset == null)
+                {
+                    throw new GameFrameworkException("Entity asset is invalid.");
+                }
+
                 if (entityHelper == null)
                 {
                     throw new GameFrameworkException("Entity helper is invalid.");
                 }
 
+                m_EntityAsset = entityAsset;
                 m_EntityHelper = entityHelper;
             }
 
             protected internal override void Release()
             {
-                m_EntityHelper.ReleaseEntityInstance(Target);
+                m_EntityHelper.ReleaseEntity(m_EntityAsset, Target);
             }
         }
     }

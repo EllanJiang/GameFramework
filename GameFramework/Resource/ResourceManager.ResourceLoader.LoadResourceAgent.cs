@@ -313,19 +313,12 @@ namespace GameFramework.Resource
                     m_Helper.Reset();
 
                     object asset = assetObject.Target;
-                    object instance = null;
-                    if (m_Task.IsInstantiate)
-                    {
-                        instance = m_Helper.Instantiate(asset);
-                        m_ResourceLoader.m_InstanceToAssetMap.Add(instance, asset);
-                    }
-
                     if (m_Task.IsScene)
                     {
                         m_ResourceLoader.m_SceneToAssetMap.Add(m_Task.AssetName, asset);
                     }
 
-                    m_Task.OnLoadSuccess(this, asset, instance, (float)(DateTime.Now - m_Task.StartTime).TotalSeconds);
+                    m_Task.OnLoadAssetSuccess(this, asset, (float)(DateTime.Now - m_Task.StartTime).TotalSeconds);
                     m_Task.Done = true;
                 }
 
@@ -366,7 +359,7 @@ namespace GameFramework.Resource
                 private void OnError(LoadResourceStatus status, string errorMessage)
                 {
                     m_Helper.Reset();
-                    m_Task.OnLoadFailure(this, status, errorMessage);
+                    m_Task.OnLoadAssetFailure(this, status, errorMessage);
                     if (m_LoadingAsset)
                     {
                         m_LoadingAsset = false;
@@ -384,7 +377,7 @@ namespace GameFramework.Resource
 
                 private void OnLoadResourceAgentHelperUpdate(object sender, LoadResourceAgentHelperUpdateEventArgs e)
                 {
-                    m_Task.OnLoadUpdate(this, e.Type, e.Progress);
+                    m_Task.OnLoadAssetUpdate(this, e.Type, e.Progress);
                 }
 
                 private void OnLoadResourceAgentHelperReadFileComplete(object sender, LoadResourceAgentHelperReadFileCompleteEventArgs e)

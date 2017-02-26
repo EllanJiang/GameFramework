@@ -152,7 +152,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="dictionaryAsset">要释放的字典资源。</param>
         public override void ReleaseDictionaryAsset(object dictionaryAsset)
         {
-            m_ResourceComponent.Recycle(dictionaryAsset);
+            m_ResourceComponent.UnloadAsset(dictionaryAsset);
         }
 
         /// <summary>

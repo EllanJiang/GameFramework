@@ -216,16 +216,6 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 实例化资源。
-        /// </summary>
-        /// <param name="asset">要实例化的资源。</param>
-        /// <returns>实例化后的资源。</returns>
-        public override object Instantiate(object asset)
-        {
-            return UnityEngine.Object.Instantiate(asset as UnityEngine.Object);
-        }
-
-        /// <summary>
         /// 重置加载资源代理辅助器。
         /// </summary>
         public override void Reset()

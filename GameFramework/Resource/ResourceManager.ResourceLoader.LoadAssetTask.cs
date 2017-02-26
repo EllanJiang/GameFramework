@@ -21,14 +21,6 @@ namespace GameFramework.Resource
                     m_LoadAssetCallbacks = loadAssetCallbacks;
                 }
 
-                public override bool IsInstantiate
-                {
-                    get
-                    {
-                        return false;
-                    }
-                }
-
                 public override bool IsScene
                 {
                     get
@@ -37,21 +29,21 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public override void OnLoadSuccess(LoadResourceAgent agent, object asset, object instance, float duration)
+                public override void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)
                 {
-                    base.OnLoadSuccess(agent, asset, instance, duration);
+                    base.OnLoadAssetSuccess(agent, asset, duration);
                     m_LoadAssetCallbacks.LoadAssetSuccessCallback?.Invoke(AssetName, asset, duration, UserData);
                 }
 
-                public override void OnLoadFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)
+                public override void OnLoadAssetFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)
                 {
-                    base.OnLoadFailure(agent, status, errorMessage);
+                    base.OnLoadAssetFailure(agent, status, errorMessage);
                     m_LoadAssetCallbacks.LoadAssetFailureCallback?.Invoke(AssetName, status, errorMessage, UserData);
                 }
 
-                public override void OnLoadUpdate(LoadResourceAgent agent, LoadResourceProgress type, float progress)
+                public override void OnLoadAssetUpdate(LoadResourceAgent agent, LoadResourceProgress type, float progress)
                 {
-                    base.OnLoadUpdate(agent, type, progress);
+                    base.OnLoadAssetUpdate(agent, type, progress);
                     if (type == LoadResourceProgress.LoadAsset)
                     {
                         m_LoadAssetCallbacks.LoadAssetUpdateCallback?.Invoke(AssetName, progress, UserData);

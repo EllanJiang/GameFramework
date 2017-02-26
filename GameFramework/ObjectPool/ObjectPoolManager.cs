@@ -119,7 +119,7 @@ namespace GameFramework.ObjectPool
             ObjectPoolBase objectPool = null;
             if (m_ObjectPools.TryGetValue(Utility.Text.GetFullName<T>(name), out objectPool))
             {
-                return objectPool as IObjectPool<T>;
+                return (IObjectPool<T>)objectPool;
             }
 
             return null;

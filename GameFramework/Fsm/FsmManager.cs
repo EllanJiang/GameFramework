@@ -134,7 +134,7 @@ namespace GameFramework.Fsm
             FsmBase fsm = null;
             if (m_Fsms.TryGetValue(Utility.Text.GetFullName<T>(name), out fsm))
             {
-                return fsm as IFsm<T>;
+                return (IFsm<T>)fsm;
             }
 
             return null;

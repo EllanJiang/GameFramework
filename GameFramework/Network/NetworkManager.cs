@@ -177,6 +177,7 @@ namespace GameFramework.Network
             }
 
             m_NetworkChannels.Clear();
+            m_EventPool.Shutdown();
         }
 
         /// <summary>

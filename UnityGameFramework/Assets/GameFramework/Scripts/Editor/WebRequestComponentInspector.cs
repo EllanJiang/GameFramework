@@ -25,7 +25,7 @@ namespace UnityGameFramework.Editor
 
             serializedObject.Update();
 
-            WebRequestComponent t = target as WebRequestComponent;
+            WebRequestComponent t = (WebRequestComponent)target;
 
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
             {

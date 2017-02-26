@@ -21,7 +21,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="e">内部事件。</param>
         public PlaySoundFailureEventArgs(GameFramework.Sound.PlaySoundFailureEventArgs e)
         {
-            PlaySoundInfo playSoundInfo = e.UserData as PlaySoundInfo;
+            PlaySoundInfo playSoundInfo = (PlaySoundInfo)e.UserData;
             SerialId = e.SerialId;
             SoundAssetName = e.SoundAssetName;
             SoundGroupName = e.SoundGroupName;

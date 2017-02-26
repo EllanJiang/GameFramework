@@ -3977,6 +3977,13 @@
             实体辅助器接口。
             </summary>
         </member>
+        <member name="M:GameFramework.Entity.IEntityHelper.InstantiateEntity(System.Object)">
+            <summary>
+            实例化实体。
+            </summary>
+            <param name="entityAsset">要实例化的实体资源。</param>
+            <returns>实例化后的实体。</returns>
+        </member>
         <member name="M:GameFramework.Entity.IEntityHelper.CreateEntity(System.Object,GameFramework.Entity.IEntityGroup,System.Object)">
             <summary>
             创建实体。
@@ -3986,10 +3993,11 @@
             <param name="userData">用户自定义数据。</param>
             <returns>实体。</returns>
         </member>
-        <member name="M:GameFramework.Entity.IEntityHelper.ReleaseEntityInstance(System.Object)">
+        <member name="M:GameFramework.Entity.IEntityHelper.ReleaseEntity(System.Object,System.Object)">
             <summary>
-            释放实体实例。
+            释放实体。
             </summary>
+            <param name="entityAsset">要释放的实体资源。</param>
             <param name="entityInstance">要释放的实体实例。</param>
         </member>
         <member name="T:GameFramework.Entity.IEntityManager">
@@ -8319,130 +8327,10 @@
             <param name="resourceChildName">要加载的子资源名。</param>
             <param name="isScene">要加载的资源是否是场景。</param>
         </member>
-        <member name="M:GameFramework.Resource.ILoadResourceAgentHelper.Instantiate(System.Object)">
-            <summary>
-            实例化资源。
-            </summary>
-            <param name="asset">要实例化的资源。</param>
-            <returns>实例化后的资源。</returns>
-        </member>
         <member name="M:GameFramework.Resource.ILoadResourceAgentHelper.Reset">
             <summary>
             重置加载资源代理辅助器。
             </summary>
-        </member>
-        <member name="T:GameFramework.Resource.InstantiateAssetCallbacks">
-            <summary>
-            实例化资源回调函数集。
-            </summary>
-        </member>
-        <member name="M:GameFramework.Resource.InstantiateAssetCallbacks.#ctor(GameFramework.Resource.InstantiateAssetSuccessCallback)">
-            <summary>
-            初始化实例化资源回调函数集的新实例。
-            </summary>
-            <param name="instantiateAssetSuccessCallback">实例化资源成功回调函数。</param>
-        </member>
-        <member name="M:GameFramework.Resource.InstantiateAssetCallbacks.#ctor(GameFramework.Resource.InstantiateAssetSuccessCallback,GameFramework.Resource.InstantiateAssetFailureCallback)">
-            <summary>
-            初始化实例化资源回调函数集的新实例。
-            </summary>
-            <param name="instantiateAssetSuccessCallback">实例化资源成功回调函数。</param>
-            <param name="instantiateAssetFailureCallback">实例化资源失败回调函数。</param>
-        </member>
-        <member name="M:GameFramework.Resource.InstantiateAssetCallbacks.#ctor(GameFramework.Resource.InstantiateAssetSuccessCallback,GameFramework.Resource.InstantiateAssetUpdateCallback)">
-            <summary>
-            初始化实例化资源回调函数集的新实例。
-            </summary>
-            <param name="instantiateAssetSuccessCallback">实例化资源成功回调函数。</param>
-            <param name="instantiateAssetUpdateCallback">实例化资源更新回调函数。</param>
-        </member>
-        <member name="M:GameFramework.Resource.InstantiateAssetCallbacks.#ctor(GameFramework.Resource.InstantiateAssetSuccessCallback,GameFramework.Resource.InstantiateAssetDependencyAssetCallback)">
-            <summary>
-            初始化实例化资源回调函数集的新实例。
-            </summary>
-            <param name="instantiateAssetSuccessCallback">实例化资源成功回调函数。</param>
-            <param name="instantiateAssetDependencyAssetCallback">实例化资源时实例化依赖资源回调函数。</param>
-        </member>
-        <member name="M:GameFramework.Resource.InstantiateAssetCallbacks.#ctor(GameFramework.Resource.InstantiateAssetSuccessCallback,GameFramework.Resource.InstantiateAssetFailureCallback,GameFramework.Resource.InstantiateAssetUpdateCallback)">
-            <summary>
-            初始化实例化资源回调函数集的新实例。
-            </summary>
-            <param name="instantiateAssetSuccessCallback">实例化资源成功回调函数。</param>
-            <param name="instantiateAssetFailureCallback">实例化资源失败回调函数。</param>
-            <param name="instantiateAssetUpdateCallback">实例化资源更新回调函数。</param>
-        </member>
-        <member name="M:GameFramework.Resource.InstantiateAssetCallbacks.#ctor(GameFramework.Resource.InstantiateAssetSuccessCallback,GameFramework.Resource.InstantiateAssetFailureCallback,GameFramework.Resource.InstantiateAssetDependencyAssetCallback)">
-            <summary>
-            初始化实例化资源回调函数集的新实例。
-            </summary>
-            <param name="instantiateAssetSuccessCallback">实例化资源成功回调函数。</param>
-            <param name="instantiateAssetFailureCallback">实例化资源失败回调函数。</param>
-            <param name="instantiateAssetDependencyAssetCallback">实例化资源时实例化依赖资源回调函数。</param>
-        </member>
-        <member name="M:GameFramework.Resource.InstantiateAssetCallbacks.#ctor(GameFramework.Resource.InstantiateAssetSuccessCallback,GameFramework.Resource.InstantiateAssetFailureCallback,GameFramework.Resource.InstantiateAssetUpdateCallback,GameFramework.Resource.InstantiateAssetDependencyAssetCallback)">
-            <summary>
-            初始化实例化资源回调函数集的新实例。
-            </summary>
-            <param name="instantiateAssetSuccessCallback">实例化资源成功回调函数。</param>
-            <param name="instantiateAssetFailureCallback">实例化资源失败回调函数。</param>
-            <param name="instantiateAssetUpdateCallback">实例化资源更新回调函数。</param>
-            <param name="instantiateAssetDependencyAssetCallback">实例化资源时实例化依赖资源回调函数。</param>
-        </member>
-        <member name="P:GameFramework.Resource.InstantiateAssetCallbacks.InstantiateAssetSuccessCallback">
-            <summary>
-            获取实例化资源成功回调函数。
-            </summary>
-        </member>
-        <member name="P:GameFramework.Resource.InstantiateAssetCallbacks.InstantiateAssetFailureCallback">
-            <summary>
-            获取实例化资源失败回调函数。
-            </summary>
-        </member>
-        <member name="P:GameFramework.Resource.InstantiateAssetCallbacks.InstantiateAssetUpdateCallback">
-            <summary>
-            获取实例化资源更新回调函数。
-            </summary>
-        </member>
-        <member name="P:GameFramework.Resource.InstantiateAssetCallbacks.InstantiateAssetDependencyAssetCallback">
-            <summary>
-            获取实例化资源时实例化依赖资源回调函数。
-            </summary>
-        </member>
-        <member name="T:GameFramework.Resource.InstantiateAssetDependencyAssetCallback">
-            <summary>
-            实例化资源时加载依赖资源回调函数。
-            </summary>
-            <param name="assetName">要实例化的资源名称。</param>
-            <param name="dependencyAssetName">被加载的依赖资源名称。</param>
-            <param name="loadedCount">当前已加载依赖资源数量。</param>
-            <param name="totalCount">总共加载依赖资源数量。</param>
-            <param name="userData">用户自定义数据。</param>
-        </member>
-        <member name="T:GameFramework.Resource.InstantiateAssetFailureCallback">
-            <summary>
-            实例化资源失败回调函数。
-            </summary>
-            <param name="assetName">要实例化的资源名称。</param>
-            <param name="status">加载资源状态。</param>
-            <param name="errorMessage">错误信息。</param>
-            <param name="userData">用户自定义数据。</param>
-        </member>
-        <member name="T:GameFramework.Resource.InstantiateAssetSuccessCallback">
-            <summary>
-            实例化资源成功回调函数。
-            </summary>
-            <param name="assetName">要实例化的资源名称。</param>
-            <param name="instance">已实例化的资源。</param>
-            <param name="duration">实例化持续时间。</param>
-            <param name="userData">用户自定义数据。</param>
-        </member>
-        <member name="T:GameFramework.Resource.InstantiateAssetUpdateCallback">
-            <summary>
-            实例化资源更新回调函数。
-            </summary>
-            <param name="assetName">要实例化的资源名称。</param>
-            <param name="progress">加载资源进度。</param>
-            <param name="userData">用户自定义数据。</param>
         </member>
         <member name="T:GameFramework.Resource.IResourceHelper">
             <summary>
@@ -8746,20 +8634,11 @@
             <param name="loadAssetCallbacks">加载资源回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Resource.IResourceManager.InstantiateAsset(System.String,GameFramework.Resource.InstantiateAssetCallbacks)">
+        <member name="M:GameFramework.Resource.IResourceManager.UnloadAsset(System.Object)">
             <summary>
-            异步实例化资源。
+            卸载资源。
             </summary>
-            <param name="assetName">要实例化资源的名称。</param>
-            <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-        </member>
-        <member name="M:GameFramework.Resource.IResourceManager.InstantiateAsset(System.String,GameFramework.Resource.InstantiateAssetCallbacks,System.Object)">
-            <summary>
-            异步实例化资源。
-            </summary>
-            <param name="assetName">要实例化资源的名称。</param>
-            <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-            <param name="userData">用户自定义数据。</param>
+            <param name="asset">要卸载的资源。</param>
         </member>
         <member name="M:GameFramework.Resource.IResourceManager.LoadScene(System.String,GameFramework.Resource.LoadSceneCallbacks)">
             <summary>
@@ -8790,12 +8669,6 @@
             <param name="sceneAssetName">要卸载场景资源的名称。</param>
             <param name="unloadSceneCallbacks">卸载场景回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
-        </member>
-        <member name="M:GameFramework.Resource.IResourceManager.Recycle(System.Object)">
-            <summary>
-            回收资源或资源实例。
-            </summary>
-            <param name="assetOrInstance">要回收的资源或资源实例。</param>
         </member>
         <member name="M:GameFramework.Resource.IResourceManager.GetResourceGroupReady(System.String)">
             <summary>
@@ -9641,21 +9514,6 @@
             <param name="loadAssetCallbacks">加载资源回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.InstantiateAsset(System.String,GameFramework.Resource.InstantiateAssetCallbacks)">
-            <summary>
-            异步实例化资源。
-            </summary>
-            <param name="assetName">要实例化资源的名称。</param>
-            <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.InstantiateAsset(System.String,GameFramework.Resource.InstantiateAssetCallbacks,System.Object)">
-            <summary>
-            异步实例化资源。
-            </summary>
-            <param name="assetName">要实例化资源的名称。</param>
-            <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-            <param name="userData">用户自定义数据。</param>
-        </member>
         <member name="M:GameFramework.Resource.ResourceManager.LoadScene(System.String,GameFramework.Resource.LoadSceneCallbacks)">
             <summary>
             异步加载场景。
@@ -9686,11 +9544,11 @@
             <param name="unloadSceneCallbacks">卸载场景回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.Recycle(System.Object)">
+        <member name="M:GameFramework.Resource.ResourceManager.UnloadAsset(System.Object)">
             <summary>
-            回收资源或资源实例。
+            卸载资源。
             </summary>
-            <param name="assetOrInstance">要回收的资源或资源实例。</param>
+            <param name="asset">要卸载的资源。</param>
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.GetResourceGroupReady(System.String)">
             <summary>
@@ -10157,13 +10015,11 @@
             <param name="loadAssetCallbacks">加载资源回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.InstantiateAsset(System.String,GameFramework.Resource.InstantiateAssetCallbacks,System.Object)">
+        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.UnloadAsset(System.Object)">
             <summary>
-            异步实例化资源。
+            卸载资源。
             </summary>
-            <param name="assetName">要实例化资源的名称。</param>
-            <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-            <param name="userData">用户自定义数据。</param>
+            <param name="asset">要卸载的资源。</param>
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.LoadScene(System.String,GameFramework.Resource.LoadSceneCallbacks,System.Object)">
             <summary>
@@ -10180,12 +10036,6 @@
             <param name="sceneAssetName">要卸载场景资源的名称。</param>
             <param name="unloadSceneCallbacks">卸载场景回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceLoader.Recycle(System.Object)">
-            <summary>
-            回收资源或资源实例。
-            </summary>
-            <param name="assetOrInstance">要回收的资源或资源实例。</param>
         </member>
         <member name="T:GameFramework.Resource.ResourceManager.ResourceLoader.LoadResourceAgent">
             <summary>
@@ -10268,22 +10118,6 @@
         <member name="P:GameFramework.Resource.ResourceManager.ResourceName.IsVariant">
             <summary>
             获取是否变体。
-            </summary>
-        </member>
-        <member name="P:GameFramework.Resource.ResourceManager.ResourceName.FullName">
-            <summary>
-            获取资源完整名称。
-            </summary>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceName.ToString">
-            <summary>
-            获取资源完整名称。
-            </summary>
-            <returns>资源完整名称。</returns>
-        </member>
-        <member name="T:GameFramework.Resource.ResourceManager.ResourceNameComparer">
-            <summary>
-            资源名称比较器。
             </summary>
         </member>
         <member name="T:GameFramework.Resource.ResourceManager.ResourceUpdater">
@@ -10979,6 +10813,12 @@
             <summary>
             初始化场景管理器的新实例。
             </summary>
+        </member>
+        <member name="P:GameFramework.Scene.SceneManager.Priority">
+            <summary>
+            获取游戏框架模块优先级。
+            </summary>
+            <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
         </member>
         <member name="E:GameFramework.Scene.SceneManager.LoadSceneSuccess">
             <summary>
@@ -12755,6 +12595,13 @@
             界面辅助器接口。
             </summary>
         </member>
+        <member name="M:GameFramework.UI.IUIFormHelper.InstantiateUIForm(System.Object)">
+            <summary>
+            实例化界面。
+            </summary>
+            <param name="uiFormAsset">要实例化的界面资源。</param>
+            <returns>实例化后的界面。</returns>
+        </member>
         <member name="M:GameFramework.UI.IUIFormHelper.CreateUIForm(System.Object,GameFramework.UI.IUIGroup,System.Object)">
             <summary>
             创建界面。
@@ -12764,10 +12611,11 @@
             <param name="userData">用户自定义数据。</param>
             <returns>界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIFormHelper.ReleaseUIFormInstance(System.Object)">
+        <member name="M:GameFramework.UI.IUIFormHelper.ReleaseUIForm(System.Object,System.Object)">
             <summary>
-            释放界面实例。
+            释放界面。
             </summary>
+            <param name="uiFormAsset">要释放的界面资源。</param>
             <param name="uiFormInstance">要释放的界面实例。</param>
         </member>
         <member name="T:GameFramework.UI.IUIGroup">

@@ -21,7 +21,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="e">内部事件。</param>
         public LoadDataTableSuccessEventArgs(GameFramework.DataTable.LoadDataTableSuccessEventArgs e)
         {
-            LoadDataTableInfo loadDataTableInfo = e.UserData as LoadDataTableInfo;
+            LoadDataTableInfo loadDataTableInfo = (LoadDataTableInfo)e.UserData;
             DataTableName = loadDataTableInfo.DataTableName;
             DataTableType = loadDataTableInfo.DataTableType;
             DataTableAssetName = e.DataTableAssetName;

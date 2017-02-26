@@ -55,7 +55,7 @@ namespace UnityGameFramework.Runtime
             methodInfo = methodInfo.MakeGenericMethod(dataTableType);
             if (methodInfo == null)
             {
-                Log.Warning("Make 'CreateDataTable<{0}>' method failure.", dataTableType.Name);
+                Log.Warning("Make 'ReflectionCreateDataTable<{0}>' method failure.", dataTableType.Name);
                 return false;
             }
 
@@ -105,7 +105,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="dataTableAsset">要释放的数据表资源。</param>
         public override void ReleaseDataTableAsset(object dataTableAsset)
         {
-            m_ResourceComponent.Recycle(dataTableAsset);
+            m_ResourceComponent.UnloadAsset(dataTableAsset);
         }
 
         private void Start()

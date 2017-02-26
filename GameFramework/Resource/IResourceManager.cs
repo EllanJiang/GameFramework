@@ -373,19 +373,10 @@ namespace GameFramework.Resource
         void LoadAsset(string assetName, LoadAssetCallbacks loadAssetCallbacks, object userData);
 
         /// <summary>
-        /// 异步实例化资源。
+        /// 卸载资源。
         /// </summary>
-        /// <param name="assetName">要实例化资源的名称。</param>
-        /// <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-        void InstantiateAsset(string assetName, InstantiateAssetCallbacks instantiateAssetCallbacks);
-
-        /// <summary>
-        /// 异步实例化资源。
-        /// </summary>
-        /// <param name="assetName">要实例化资源的名称。</param>
-        /// <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        void InstantiateAsset(string assetName, InstantiateAssetCallbacks instantiateAssetCallbacks, object userData);
+        /// <param name="asset">要卸载的资源。</param>
+        void UnloadAsset(object asset);
 
         /// <summary>
         /// 异步加载场景。
@@ -416,12 +407,6 @@ namespace GameFramework.Resource
         /// <param name="unloadSceneCallbacks">卸载场景回调函数集。</param>
         /// <param name="userData">用户自定义数据。</param>
         void UnloadScene(string sceneAssetName, UnloadSceneCallbacks unloadSceneCallbacks, object userData);
-
-        /// <summary>
-        /// 回收资源或资源实例。
-        /// </summary>
-        /// <param name="assetOrInstance">要回收的资源或资源实例。</param>
-        void Recycle(object assetOrInstance);
 
         /// <summary>
         /// 获取资源组是否准备完毕。

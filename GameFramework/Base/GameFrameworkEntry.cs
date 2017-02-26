@@ -16,7 +16,7 @@ namespace GameFramework
     /// </summary>
     public static class GameFrameworkEntry
     {
-        private const string GameFrameworkVersion = "3.0.0";
+        private const string GameFrameworkVersion = "3.0.1";
         private static readonly IDictionary<string, Type> s_AssemblyGameFrameworkModules = new Dictionary<string, Type>();
         private static readonly LinkedList<GameFrameworkModule> s_GameFrameworkModules = new LinkedList<GameFrameworkModule>();
 
@@ -128,7 +128,7 @@ namespace GameFramework
         /// <returns>要创建的游戏框架模块。</returns>
         private static GameFrameworkModule CreateModule(Type moduleType)
         {
-            GameFrameworkModule module = Activator.CreateInstance(moduleType) as GameFrameworkModule;
+            GameFrameworkModule module = (GameFrameworkModule)Activator.CreateInstance(moduleType);
             if (module == null)
             {
                 throw new GameFrameworkException(string.Format("Can not create module '{0}'.", module.GetType().FullName));

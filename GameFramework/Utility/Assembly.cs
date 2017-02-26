@@ -34,7 +34,7 @@ namespace Utility
         /// <returns>已加载的程序集名称。</returns>
         public static string[] GetLoadedAssemblyNames()
         {
-            return (s_LoadedAssemblyNames as List<string>).ToArray();
+            return ((List<string>)s_LoadedAssemblyNames).ToArray();
         }
 
         /// <summary>

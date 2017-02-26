@@ -27,7 +27,7 @@ namespace UnityGameFramework.Editor
 
             serializedObject.Update();
 
-            SceneComponent t = target as SceneComponent;
+            SceneComponent t = (SceneComponent)target;
 
             EditorGUILayout.PropertyField(m_EnableLoadSceneSuccessEvent);
             EditorGUILayout.PropertyField(m_EnableLoadSceneFailureEvent);
