@@ -211,7 +211,10 @@ namespace GameFramework.Resource
 
                 File.WriteAllBytes(e.DownloadPath, bytes);
 
-                VersionListUpdateSuccess?.Invoke(e.DownloadPath, e.DownloadUri);
+                if (VersionListUpdateSuccess != null)
+                {
+                    VersionListUpdateSuccess(e.DownloadPath, e.DownloadUri);
+                }
             }
 
             private void OnDownloadFailure(object sender, DownloadFailureEventArgs e)
@@ -227,7 +230,10 @@ namespace GameFramework.Resource
                     File.Delete(e.DownloadPath);
                 }
 
-                VersionListUpdateFailure?.Invoke(e.DownloadUri, e.ErrorMessage);
+                if (VersionListUpdateFailure != null)
+                {
+                    VersionListUpdateFailure(e.DownloadUri, e.ErrorMessage);
+                }
             }
         }
     }

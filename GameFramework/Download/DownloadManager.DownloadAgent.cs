@@ -201,7 +201,10 @@ namespace GameFramework.Download
                         m_StartLength = m_SavedLength = m_DownloadedLength = 0;
                     }
 
-                    DownloadAgentStart?.Invoke(this);
+                    if (DownloadAgentStart != null)
+                    {
+                        DownloadAgentStart(this);
+                    }
 
                     if (m_StartLength > 0)
                     {
@@ -306,7 +309,10 @@ namespace GameFramework.Download
 
                 m_DownloadedLength = e.Length;
 
-                DownloadAgentUpdate?.Invoke(this, bytes != null ? bytes.Length : 0);
+                if (DownloadAgentUpdate != null)
+                {
+                    DownloadAgentUpdate(this, bytes != null ? bytes.Length : 0);
+                }
             }
 
             private void OnDownloadAgentHelperComplete(object sender, DownloadAgentHelperCompleteEventArgs e)
@@ -336,7 +342,10 @@ namespace GameFramework.Download
 
                 m_Task.Status = DownloadTaskStatus.Done;
 
-                DownloadAgentSuccess?.Invoke(this, bytes != null ? bytes.Length : 0);
+                if (DownloadAgentSuccess != null)
+                {
+                    DownloadAgentSuccess(this, bytes != null ? bytes.Length : 0);
+                }
 
                 m_Task.Done = true;
             }
@@ -352,7 +361,10 @@ namespace GameFramework.Download
 
                 m_Task.Status = DownloadTaskStatus.Error;
 
-                DownloadAgentFailure?.Invoke(this, e.ErrorMessage);
+                if (DownloadAgentFailure != null)
+                {
+                    DownloadAgentFailure(this, e.ErrorMessage);
+                }
 
                 m_Task.Done = true;
             }

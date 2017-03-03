@@ -90,7 +90,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 count = xmlNodeList.Count;
                 for (int i = 0; i < count; i++)
                 {
-                    OnLoadingAssetBundle?.Invoke(i, count);
+                    if (OnLoadingAssetBundle != null)
+                    {
+                        OnLoadingAssetBundle(i, count);
+                    }
+
                     xmlNode = xmlNodeList.Item(i);
                     if (xmlNode.Name != "AssetBundle")
                     {
@@ -122,7 +126,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 count = xmlNodeList.Count;
                 for (int i = 0; i < count; i++)
                 {
-                    OnLoadingAsset?.Invoke(i, count);
+                    if (OnLoadingAsset != null)
+                    {
+                        OnLoadingAsset(i, count);
+                    }
+
                     xmlNode = xmlNodeList.Item(i);
                     if (xmlNode.Name != "Asset")
                     {
@@ -140,13 +148,21 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                     }
                 }
 
-                OnLoadCompleted?.Invoke();
+                if (OnLoadCompleted != null)
+                {
+                    OnLoadCompleted();
+                }
+
                 return true;
             }
             catch
             {
                 File.Delete(configurationName);
-                OnLoadCompleted?.Invoke();
+                if (OnLoadCompleted != null)
+                {
+                    OnLoadCompleted();
+                }
+
                 return false;
             }
         }

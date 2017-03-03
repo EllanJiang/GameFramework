@@ -116,7 +116,10 @@ namespace GameFramework.Resource
                     {
                         m_UpdateComplete = true;
                         Utility.Path.RemoveEmptyDirectory(m_ResourceManager.m_ReadWritePath);
-                        ResourceUpdateAllComplete?.Invoke();
+                        if (ResourceUpdateAllComplete != null)
+                        {
+                            ResourceUpdateAllComplete();
+                        }
                     }
                 }
             }
@@ -312,7 +315,10 @@ namespace GameFramework.Resource
                     return;
                 }
 
-                ResourceUpdateStart?.Invoke(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, e.CurrentLength, updateInfo.ZipLength, updateInfo.RetryCount);
+                if (ResourceUpdateStart != null)
+                {
+                    ResourceUpdateStart(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, e.CurrentLength, updateInfo.ZipLength, updateInfo.RetryCount);
+                }
             }
 
             private void OnDownloadUpdate(object sender, DownloadUpdateEventArgs e)
@@ -342,7 +348,10 @@ namespace GameFramework.Resource
                     return;
                 }
 
-                ResourceUpdateChanged?.Invoke(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, e.CurrentLength, updateInfo.ZipLength);
+                if (ResourceUpdateChanged != null)
+                {
+                    ResourceUpdateChanged(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, e.CurrentLength, updateInfo.ZipLength);
+                }
             }
 
             private void OnDownloadSuccess(object sender, DownloadSuccessEventArgs e)
@@ -425,7 +434,10 @@ namespace GameFramework.Resource
 
                 GenerateReadWriteList();
 
-                ResourceUpdateSuccess?.Invoke(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, updateInfo.Length, updateInfo.ZipLength);
+                if (ResourceUpdateSuccess != null)
+                {
+                    ResourceUpdateSuccess(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, updateInfo.Length, updateInfo.ZipLength);
+                }
             }
 
             private void OnDownloadFailure(object sender, DownloadFailureEventArgs e)
@@ -441,7 +453,10 @@ namespace GameFramework.Resource
                     File.Delete(e.DownloadPath);
                 }
 
-                ResourceUpdateFailure?.Invoke(updateInfo.ResourceName, e.DownloadUri, updateInfo.RetryCount, m_RetryCount, e.ErrorMessage);
+                if (ResourceUpdateFailure != null)
+                {
+                    ResourceUpdateFailure(updateInfo.ResourceName, e.DownloadUri, updateInfo.RetryCount, m_RetryCount, e.ErrorMessage);
+                }
 
                 if (updateInfo.RetryCount < m_RetryCount)
                 {

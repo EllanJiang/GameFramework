@@ -291,24 +291,36 @@ namespace GameFramework.Download
 
         private void OnDownloadAgentStart(DownloadAgent sender)
         {
-            m_DownloadStartEventHandler?.Invoke(this, new DownloadStartEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData));
+            if (m_DownloadStartEventHandler != null)
+            {
+                m_DownloadStartEventHandler(this, new DownloadStartEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData));
+            }
         }
 
         private void OnDownloadAgentUpdate(DownloadAgent sender, int lastDownloadedLength)
         {
             m_DownloadCounter.RecordDownloadedLength(lastDownloadedLength);
-            m_DownloadUpdateEventHandler?.Invoke(this, new DownloadUpdateEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData));
+            if (m_DownloadUpdateEventHandler != null)
+            {
+                m_DownloadUpdateEventHandler(this, new DownloadUpdateEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData));
+            }
         }
 
         private void OnDownloadAgentSuccess(DownloadAgent sender, int lastDownloadedLength)
         {
             m_DownloadCounter.RecordDownloadedLength(lastDownloadedLength);
-            m_DownloadSuccessEventHandler?.Invoke(this, new DownloadSuccessEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData));
+            if (m_DownloadSuccessEventHandler != null)
+            {
+                m_DownloadSuccessEventHandler(this, new DownloadSuccessEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData));
+            }
         }
 
         private void OnDownloadAgentFailure(DownloadAgent sender, string errorMessage)
         {
-            m_DownloadFailureEventHandler?.Invoke(this, new DownloadFailureEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, errorMessage, sender.Task.UserData));
+            if (m_DownloadFailureEventHandler != null)
+            {
+                m_DownloadFailureEventHandler(this, new DownloadFailureEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, errorMessage, sender.Task.UserData));
+            }
         }
     }
 }

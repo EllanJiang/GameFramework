@@ -30,9 +30,30 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         public AssetBundleAnalyzerController(AssetBundleCollection assetBundleCollection)
         {
             m_AssetBundleCollection = (assetBundleCollection != null ? assetBundleCollection : new AssetBundleCollection());
-            m_AssetBundleCollection.OnLoadingAssetBundle += delegate (int index, int count) { OnLoadingAssetBundle?.Invoke(index, count); };
-            m_AssetBundleCollection.OnLoadingAsset += delegate (int index, int count) { OnLoadingAsset?.Invoke(index, count); };
-            m_AssetBundleCollection.OnLoadCompleted += delegate () { OnLoadCompleted?.Invoke(); };
+
+            m_AssetBundleCollection.OnLoadingAssetBundle += delegate (int index, int count)
+            {
+                if (OnLoadingAssetBundle != null)
+                {
+                    OnLoadingAssetBundle(index, count);
+                }
+            };
+
+            m_AssetBundleCollection.OnLoadingAsset += delegate (int index, int count)
+            {
+                if (OnLoadingAsset != null)
+                {
+                    OnLoadingAsset(index, count);
+                }
+            };
+
+            m_AssetBundleCollection.OnLoadCompleted += delegate ()
+            {
+                if (OnLoadCompleted != null)
+                {
+                    OnLoadCompleted();
+                }
+            };
 
             m_DependencyDatas = new Dictionary<string, DependencyData>();
             m_ScatteredAssets = new Dictionary<string, List<Asset>>();
@@ -74,7 +95,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             int count = assets.Length;
             for (int i = 0; i < count; i++)
             {
-                OnAnalyzingAsset?.Invoke(i, count);
+                if (OnAnalyzingAsset != null)
+                {
+                    OnAnalyzingAsset(i, count);
+                }
+
                 string assetName = assets[i].Name;
                 if (string.IsNullOrEmpty(assetName))
                 {
@@ -93,7 +118,10 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 scatteredAsset.Sort((a, b) => a.Name.CompareTo(b.Name));
             }
 
-            OnAnalyzeCompleted?.Invoke();
+            if (OnAnalyzeCompleted != null)
+            {
+                OnAnalyzeCompleted();
+            }
         }
 
         private void AnalyzeAsset(string assetName, Asset hostAsset, DependencyData dependencyData, HashSet<string> scriptAssetNames)

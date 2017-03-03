@@ -507,7 +507,10 @@ namespace GameFramework.Network
                     m_Socket = null;
                     m_ReceiveState = null;
 
-                    NetworkChannelClosed?.Invoke(this);
+                    if (NetworkChannelClosed != null)
+                    {
+                        NetworkChannelClosed(this);
+                    }
                 }
             }
 
@@ -761,11 +764,17 @@ namespace GameFramework.Network
                     m_ReceiveState.Reset();
                     if (packet == null)
                     {
-                        NetworkChannelCustomError?.Invoke(this, customErrorData);
+                        if (NetworkChannelCustomError != null)
+                        {
+                            NetworkChannelCustomError(this, customErrorData);
+                        }
                     }
                     else
                     {
-                        NetworkChannelReceived?.Invoke(this, packet);
+                        if (NetworkChannelReceived != null)
+                        {
+                            NetworkChannelReceived(this, packet);
+                        }
                     }
                 }
                 catch (Exception exception)
@@ -812,7 +821,10 @@ namespace GameFramework.Network
                     m_HeartBeatState.Reset(true);
                 }
 
-                NetworkChannelConnected?.Invoke(this, socketUserData.UserData);
+                if (NetworkChannelConnected != null)
+                {
+                    NetworkChannelConnected(this, socketUserData.UserData);
+                }
 
                 Receive();
             }
@@ -841,7 +853,10 @@ namespace GameFramework.Network
                     throw;
                 }
 
-                NetworkChannelSended?.Invoke(this, bytesSent, socketUserData.UserData);
+                if (NetworkChannelSended != null)
+                {
+                    NetworkChannelSended(this, bytesSent, socketUserData.UserData);
+                }
             }
 
             private void ReceiveCallback(IAsyncResult ar)

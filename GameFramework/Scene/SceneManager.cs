@@ -338,7 +338,10 @@ namespace GameFramework.Scene
         {
             m_LoadingSceneAssetNames.Remove(sceneAssetName);
             m_LoadedSceneAssetNames.Add(sceneAssetName);
-            m_LoadSceneSuccessEventHandler?.Invoke(this, new LoadSceneSuccessEventArgs(sceneAssetName, duration, userData));
+            if (m_LoadSceneSuccessEventHandler != null)
+            {
+                m_LoadSceneSuccessEventHandler(this, new LoadSceneSuccessEventArgs(sceneAssetName, duration, userData));
+            }
         }
 
         private void LoadSceneFailureCallback(string sceneAssetName, LoadResourceStatus status, string errorMessage, object userData)
@@ -356,19 +359,28 @@ namespace GameFramework.Scene
 
         private void LoadSceneUpdateCallback(string sceneAssetName, float progress, object userData)
         {
-            m_LoadSceneUpdateEventHandler?.Invoke(this, new LoadSceneUpdateEventArgs(sceneAssetName, progress, userData));
+            if (m_LoadSceneUpdateEventHandler != null)
+            {
+                m_LoadSceneUpdateEventHandler(this, new LoadSceneUpdateEventArgs(sceneAssetName, progress, userData));
+            }
         }
 
         private void LoadSceneDependencyAssetCallback(string sceneAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
-            m_LoadSceneDependencyAssetEventHandler?.Invoke(this, new LoadSceneDependencyAssetEventArgs(sceneAssetName, dependencyAssetName, loadedCount, totalCount, userData));
+            if (m_LoadSceneDependencyAssetEventHandler != null)
+            {
+                m_LoadSceneDependencyAssetEventHandler(this, new LoadSceneDependencyAssetEventArgs(sceneAssetName, dependencyAssetName, loadedCount, totalCount, userData));
+            }
         }
 
         private void UnloadSceneSuccessCallback(string sceneAssetName, object userData)
         {
             m_UnloadingSceneAssetNames.Remove(sceneAssetName);
             m_LoadedSceneAssetNames.Remove(sceneAssetName);
-            m_UnloadSceneSuccessEventHandler?.Invoke(this, new UnloadSceneSuccessEventArgs(sceneAssetName, userData));
+            if (m_UnloadSceneSuccessEventHandler != null)
+            {
+                m_UnloadSceneSuccessEventHandler(this, new UnloadSceneSuccessEventArgs(sceneAssetName, userData));
+            }
         }
 
         private void UnloadSceneFailureCallback(string sceneAssetName, object userData)

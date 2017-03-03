@@ -242,17 +242,26 @@ namespace GameFramework.WebRequest
 
         private void OnWebRequestAgentStart(WebRequestAgent sender)
         {
-            m_WebRequestStartEventHandler?.Invoke(this, new WebRequestStartEventArgs(sender.Task.SerialId, sender.Task.WebRequestUri, sender.Task.UserData));
+            if (m_WebRequestStartEventHandler != null)
+            {
+                m_WebRequestStartEventHandler(this, new WebRequestStartEventArgs(sender.Task.SerialId, sender.Task.WebRequestUri, sender.Task.UserData));
+            }
         }
 
         private void OnWebRequestAgentSuccess(WebRequestAgent sender, byte[] webResponseBytes)
         {
-            m_WebRequestSuccessEventHandler?.Invoke(this, new WebRequestSuccessEventArgs(sender.Task.SerialId, sender.Task.WebRequestUri, webResponseBytes, sender.Task.UserData));
+            if (m_WebRequestSuccessEventHandler != null)
+            {
+                m_WebRequestSuccessEventHandler(this, new WebRequestSuccessEventArgs(sender.Task.SerialId, sender.Task.WebRequestUri, webResponseBytes, sender.Task.UserData));
+            }
         }
 
         private void OnWebRequestAgentFailure(WebRequestAgent sender, string errorMessage)
         {
-            m_WebRequestFailureEventHandler?.Invoke(this, new WebRequestFailureEventArgs(sender.Task.SerialId, sender.Task.WebRequestUri, errorMessage, sender.Task.UserData));
+            if (m_WebRequestFailureEventHandler != null)
+            {
+                m_WebRequestFailureEventHandler(this, new WebRequestFailureEventArgs(sender.Task.SerialId, sender.Task.WebRequestUri, errorMessage, sender.Task.UserData));
+            }
         }
     }
 }

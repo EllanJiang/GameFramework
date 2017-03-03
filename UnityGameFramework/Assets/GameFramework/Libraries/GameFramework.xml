@@ -478,11 +478,6 @@
             游戏框架入口。
             </summary>
         </member>
-        <member name="M:GameFramework.GameFrameworkEntry.#cctor">
-            <summary>
-            初始化游戏框架入口的新实例。
-            </summary>
-        </member>
         <member name="P:GameFramework.GameFrameworkEntry.Version">
             <summary>
             获取游戏框架版本号。
