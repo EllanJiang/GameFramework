@@ -419,7 +419,10 @@ namespace GameFramework.DataTable
                 m_DataTableHelper.ReleaseDataTableAsset(dataTableAsset);
             }
 
-            m_LoadDataTableSuccessEventHandler?.Invoke(this, new LoadDataTableSuccessEventArgs(dataTableAssetName, duration, userData));
+            if (m_LoadDataTableSuccessEventHandler != null)
+            {
+                m_LoadDataTableSuccessEventHandler(this, new LoadDataTableSuccessEventArgs(dataTableAssetName, duration, userData));
+            }
         }
 
         private void LoadDataTableFailureCallback(string dataTableAssetName, LoadResourceStatus status, string errorMessage, object userData)
@@ -436,12 +439,18 @@ namespace GameFramework.DataTable
 
         private void LoadDataTableUpdateCallback(string dataTableAssetName, float progress, object userData)
         {
-            m_LoadDataTableUpdateEventHandler?.Invoke(this, new LoadDataTableUpdateEventArgs(dataTableAssetName, progress, userData));
+            if (m_LoadDataTableUpdateEventHandler != null)
+            {
+                m_LoadDataTableUpdateEventHandler(this, new LoadDataTableUpdateEventArgs(dataTableAssetName, progress, userData));
+            }
         }
 
         private void LoadDataTableDependencyAssetCallback(string dataTableAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
-            m_LoadDataTableDependencyAssetEventHandler?.Invoke(this, new LoadDataTableDependencyAssetEventArgs(dataTableAssetName, dependencyAssetName, loadedCount, totalCount, userData));
+            if (m_LoadDataTableDependencyAssetEventHandler != null)
+            {
+                m_LoadDataTableDependencyAssetEventHandler(this, new LoadDataTableDependencyAssetEventArgs(dataTableAssetName, dependencyAssetName, loadedCount, totalCount, userData));
+            }
         }
     }
 }

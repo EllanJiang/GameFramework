@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace GameFramework
 {
@@ -17,30 +16,7 @@ namespace GameFramework
     public static class GameFrameworkEntry
     {
         private const string GameFrameworkVersion = "3.0.1";
-        private static readonly IDictionary<string, Type> s_AssemblyGameFrameworkModules = new Dictionary<string, Type>();
         private static readonly LinkedList<GameFrameworkModule> s_GameFrameworkModules = new LinkedList<GameFrameworkModule>();
-
-        /// <summary>
-        /// 初始化游戏框架入口的新实例。
-        /// </summary>
-        static GameFrameworkEntry()
-        {
-            Type gameFrameworkModule = typeof(GameFrameworkModule);
-            Type[] types = Assembly.GetExecutingAssembly().GetTypes();
-            foreach (Type i in types)
-            {
-                if (i.BaseType != gameFrameworkModule)
-                {
-                    continue;
-                }
-
-                Type[] interfaces = i.GetInterfaces();
-                foreach (Type j in interfaces)
-                {
-                    s_AssemblyGameFrameworkModules.Add(j.FullName, i);
-                }
-            }
-        }
 
         /// <summary>
         /// 获取游戏框架版本号。
@@ -93,10 +69,16 @@ namespace GameFramework
                 throw new GameFrameworkException(string.Format("You must get module by interface, but '{0}' is not.", interfaceType.FullName));
             }
 
-            Type moduleType = null;
-            if (!s_AssemblyGameFrameworkModules.TryGetValue(interfaceType.FullName, out moduleType))
+            if (!interfaceType.FullName.StartsWith("GameFramework."))
             {
-                throw new GameFrameworkException(string.Format("Can not find module '{0}'.", interfaceType.FullName));
+                throw new GameFrameworkException(string.Format("You must get a Game Framework module, but '{0}' is not.", interfaceType.FullName));
+            }
+
+            string moduleName = string.Format("{0}.{1}", interfaceType.Namespace, interfaceType.Name.Substring(1));
+            Type moduleType = Type.GetType(moduleName);
+            if (moduleType == null)
+            {
+                throw new GameFrameworkException(string.Format("Can not find Game Framework module type '{0}'.", moduleName));
             }
 
             return GetModule(moduleType) as T;

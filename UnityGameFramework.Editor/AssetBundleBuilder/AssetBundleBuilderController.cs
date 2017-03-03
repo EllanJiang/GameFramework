@@ -40,13 +40,48 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         public AssetBundleBuilderController()
         {
             m_AssetBundleCollection = new AssetBundleCollection();
-            m_AssetBundleCollection.OnLoadingAssetBundle += delegate (int index, int count) { OnLoadingAssetBundle?.Invoke(index, count); };
-            m_AssetBundleCollection.OnLoadingAsset += delegate (int index, int count) { OnLoadingAsset?.Invoke(index, count); };
-            m_AssetBundleCollection.OnLoadCompleted += delegate () { OnLoadCompleted?.Invoke(); };
+
+            m_AssetBundleCollection.OnLoadingAssetBundle += delegate (int index, int count)
+            {
+                if (OnLoadingAssetBundle != null)
+                {
+                    OnLoadingAssetBundle(index, count);
+                }
+            };
+
+            m_AssetBundleCollection.OnLoadingAsset += delegate (int index, int count)
+            {
+                if (OnLoadingAsset != null)
+                {
+                    OnLoadingAsset(index, count);
+                }
+            };
+
+            m_AssetBundleCollection.OnLoadCompleted += delegate ()
+            {
+                if (OnLoadCompleted != null)
+                {
+                    OnLoadCompleted();
+                }
+            };
 
             m_AssetBundleAnalyzerController = new AssetBundleAnalyzerController(m_AssetBundleCollection);
-            m_AssetBundleAnalyzerController.OnAnalyzingAsset += delegate (int index, int count) { OnAnalyzingAsset?.Invoke(index, count); };
-            m_AssetBundleAnalyzerController.OnAnalyzeCompleted += delegate () { OnAnalyzeCompleted?.Invoke(); };
+
+            m_AssetBundleAnalyzerController.OnAnalyzingAsset += delegate (int index, int count)
+            {
+                if (OnAnalyzingAsset != null)
+                {
+                    OnAnalyzingAsset(index, count);
+                }
+            };
+
+            m_AssetBundleAnalyzerController.OnAnalyzeCompleted += delegate ()
+            {
+                if (OnAnalyzeCompleted != null)
+                {
+                    OnAnalyzeCompleted();
+                }
+            };
 
             m_AssetBundleDatas = new SortedDictionary<string, AssetBundleData>();
             m_VersionListDatas = new Dictionary<BuildTarget, VersionListData>();
@@ -616,7 +651,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             {
                 m_BuildReport.LogError(exception.Message);
                 m_BuildReport.SaveReport();
-                BuildAssetBundlesError?.Invoke(exception.Message);
+                if (BuildAssetBundlesError != null)
+                {
+                    BuildAssetBundlesError(exception.Message);
+                }
+
                 return false;
             }
         }
@@ -727,7 +766,10 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
             m_VersionListDatas.Add(buildTarget, versionListData);
 
-            ProcessAssetBundleComplete?.Invoke(buildTarget, versionListData.Path, versionListData.Length, versionListData.HashCode, versionListData.ZipLength, versionListData.ZipHashCode);
+            if (ProcessAssetBundleComplete != null)
+            {
+                ProcessAssetBundleComplete(buildTarget, versionListData.Path, versionListData.Length, versionListData.HashCode, versionListData.ZipLength, versionListData.ZipHashCode);
+            }
 
             m_BuildReport.LogInfo("Build AssetBundles for '{0}' success.", buildTarget.ToString());
         }

@@ -158,7 +158,10 @@ namespace GameFramework.Fsm
             FsmEventHandler<T> eventHandlers = null;
             if (m_EventHandlers.TryGetValue(eventId, out eventHandlers))
             {
-                eventHandlers?.Invoke(fsm, sender, userData);
+                if (eventHandlers != null)
+                {
+                    eventHandlers(fsm, sender, userData);
+                }
             }
         }
     }

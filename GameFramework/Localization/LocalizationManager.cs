@@ -381,7 +381,10 @@ namespace GameFramework.Localization
                 m_LocalizationHelper.ReleaseDictionaryAsset(dictionaryAsset);
             }
 
-            m_LoadDictionarySuccessEventHandler?.Invoke(this, new LoadDictionarySuccessEventArgs(dictionaryAssetName, duration, userData));
+            if (m_LoadDictionarySuccessEventHandler != null)
+            {
+                m_LoadDictionarySuccessEventHandler(this, new LoadDictionarySuccessEventArgs(dictionaryAssetName, duration, userData));
+            }
         }
 
         private void LoadDictionaryFailureCallback(string dictionaryAssetName, LoadResourceStatus status, string errorMessage, object userData)
@@ -398,12 +401,18 @@ namespace GameFramework.Localization
 
         private void LoadDictionaryUpdateCallback(string dictionaryAssetName, float progress, object userData)
         {
-            m_LoadDictionaryUpdateEventHandler?.Invoke(this, new LoadDictionaryUpdateEventArgs(dictionaryAssetName, progress, userData));
+            if (m_LoadDictionaryUpdateEventHandler != null)
+            {
+                m_LoadDictionaryUpdateEventHandler(this, new LoadDictionaryUpdateEventArgs(dictionaryAssetName, progress, userData));
+            }
         }
 
         private void LoadDictionaryDependencyAssetCallback(string dictionaryAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
-            m_LoadDictionaryDependencyAssetEventHandler?.Invoke(this, new LoadDictionaryDependencyAssetEventArgs(dictionaryAssetName, dependencyAssetName, loadedCount, totalCount, userData));
+            if (m_LoadDictionaryDependencyAssetEventHandler != null)
+            {
+                m_LoadDictionaryDependencyAssetEventHandler(this, new LoadDictionaryDependencyAssetEventArgs(dictionaryAssetName, dependencyAssetName, loadedCount, totalCount, userData));
+            }
         }
     }
 }

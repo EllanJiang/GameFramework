@@ -112,9 +112,12 @@ namespace GameFramework.WebRequest
                 }
 
                 m_Task = task;
-
                 m_Task.Status = WebRequestTaskStatus.Doing;
-                WebRequestAgentStart?.Invoke(this);
+
+                if (WebRequestAgentStart != null)
+                {
+                    WebRequestAgentStart(this);
+                }
 
                 if (m_Task.PostData == null)
                 {
@@ -141,10 +144,12 @@ namespace GameFramework.WebRequest
             private void OnWebRequestAgentHelperComplete(object sender, WebRequestAgentHelperCompleteEventArgs e)
             {
                 m_Helper.Reset();
-
                 m_Task.Status = WebRequestTaskStatus.Done;
 
-                WebRequestAgentSuccess?.Invoke(this, e.GetWebResponseBytes());
+                if (WebRequestAgentSuccess != null)
+                {
+                    WebRequestAgentSuccess(this, e.GetWebResponseBytes());
+                }
 
                 m_Task.Done = true;
             }
@@ -152,10 +157,12 @@ namespace GameFramework.WebRequest
             private void OnWebRequestAgentHelperError(object sender, WebRequestAgentHelperErrorEventArgs e)
             {
                 m_Helper.Reset();
-
                 m_Task.Status = WebRequestTaskStatus.Error;
 
-                WebRequestAgentFailure?.Invoke(this, e.ErrorMessage);
+                if (WebRequestAgentFailure != null)
+                {
+                    WebRequestAgentFailure(this, e.ErrorMessage);
+                }
 
                 m_Task.Done = true;
             }

@@ -933,7 +933,11 @@ namespace GameFramework.Entity
                 entityInfo.Status = EntityStatus.WillShow;
                 entity.OnShow(userData);
                 entityInfo.Status = EntityStatus.Showed;
-                m_ShowEntitySuccessEventHandler?.Invoke(this, new ShowEntitySuccessEventArgs(entityAssetName, entity, duration, userData));
+
+                if (m_ShowEntitySuccessEventHandler != null)
+                {
+                    m_ShowEntitySuccessEventHandler(this, new ShowEntitySuccessEventArgs(entityAssetName, entity, duration, userData));
+                }
             }
             catch (Exception exception)
             {
@@ -974,7 +978,10 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException("Entity info is unmanaged.");
             }
 
-            m_HideEntityCompleteEventHandler?.Invoke(this, new HideEntityCompleteEventArgs(entity.Id, userData));
+            if (m_HideEntityCompleteEventHandler != null)
+            {
+                m_HideEntityCompleteEventHandler(this, new HideEntityCompleteEventArgs(entity.Id, userData));
+            }
 
             m_RecycleQueue.AddLast(new RecycleNode(entityInfo));
         }
@@ -1035,7 +1042,10 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException("Show entity info is invalid.");
             }
 
-            m_ShowEntityUpdateEventHandler?.Invoke(this, new ShowEntityUpdateEventArgs(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroupName, progress, showEntityInfo.UserData));
+            if (m_ShowEntityUpdateEventHandler != null)
+            {
+                m_ShowEntityUpdateEventHandler(this, new ShowEntityUpdateEventArgs(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroupName, progress, showEntityInfo.UserData));
+            }
         }
 
         private void LoadEntityDependencyAssetCallback(string entityAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
@@ -1046,7 +1056,10 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException("Show entity info is invalid.");
             }
 
-            m_ShowEntityDependencyAssetEventHandler?.Invoke(this, new ShowEntityDependencyAssetEventArgs(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroupName, dependencyAssetName, loadedCount, totalCount, showEntityInfo.UserData));
+            if (m_ShowEntityDependencyAssetEventHandler != null)
+            {
+                m_ShowEntityDependencyAssetEventHandler(this, new ShowEntityDependencyAssetEventArgs(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroupName, dependencyAssetName, loadedCount, totalCount, showEntityInfo.UserData));
+            }
         }
     }
 }
