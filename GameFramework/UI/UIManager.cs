@@ -520,7 +520,10 @@ namespace GameFramework.UI
             uiForm.OnClose(userData);
             uiGroup.Refresh();
 
-            m_CloseUIFormCompleteEventHandler?.Invoke(this, new CloseUIFormCompleteEventArgs(uiForm.TypeId, userData));
+            if (m_CloseUIFormCompleteEventHandler != null)
+            {
+                m_CloseUIFormCompleteEventHandler(this, new CloseUIFormCompleteEventArgs(uiForm.TypeId, userData));
+            }
 
             m_RecycleQueue.AddLast(new RecycleNode(uiForm));
         }
@@ -601,7 +604,11 @@ namespace GameFramework.UI
                 uiGroup.AddUIForm(uiForm);
                 uiForm.OnOpen(userData);
                 uiGroup.Refresh();
-                m_OpenUIFormSuccessEventHandler?.Invoke(this, new OpenUIFormSuccessEventArgs(uiFormAssetName, uiForm, duration, userData));
+
+                if (m_OpenUIFormSuccessEventHandler != null)
+                {
+                    m_OpenUIFormSuccessEventHandler(this, new OpenUIFormSuccessEventArgs(uiFormAssetName, uiForm, duration, userData));
+                }
             }
             catch (Exception exception)
             {
@@ -655,7 +662,10 @@ namespace GameFramework.UI
                 throw new GameFrameworkException("Open UI form info is invalid.");
             }
 
-            m_OpenUIFormUpdateEventHandler?.Invoke(this, new OpenUIFormUpdateEventArgs(openUIFormInfo.UIFormTypeId, uiFormAssetName, openUIFormInfo.UIGroup.Name, openUIFormInfo.PauseCoveredUIForm, progress, openUIFormInfo.UserData));
+            if (m_OpenUIFormUpdateEventHandler != null)
+            {
+                m_OpenUIFormUpdateEventHandler(this, new OpenUIFormUpdateEventArgs(openUIFormInfo.UIFormTypeId, uiFormAssetName, openUIFormInfo.UIGroup.Name, openUIFormInfo.PauseCoveredUIForm, progress, openUIFormInfo.UserData));
+            }
         }
 
         private void InstantiateUIFormDependencyAssetCallback(string uiFormAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
@@ -666,7 +676,10 @@ namespace GameFramework.UI
                 throw new GameFrameworkException("Open UI form info is invalid.");
             }
 
-            m_OpenUIFormDependencyAssetEventHandler?.Invoke(this, new OpenUIFormDependencyAssetEventArgs(openUIFormInfo.UIFormTypeId, uiFormAssetName, openUIFormInfo.UIGroup.Name, openUIFormInfo.PauseCoveredUIForm, dependencyAssetName, loadedCount, totalCount, openUIFormInfo.UserData));
+            if (m_OpenUIFormDependencyAssetEventHandler != null)
+            {
+                m_OpenUIFormDependencyAssetEventHandler(this, new OpenUIFormDependencyAssetEventArgs(openUIFormInfo.UIFormTypeId, uiFormAssetName, openUIFormInfo.UIGroup.Name, openUIFormInfo.PauseCoveredUIForm, dependencyAssetName, loadedCount, totalCount, openUIFormInfo.UserData));
+            }
         }
     }
 }

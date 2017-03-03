@@ -1273,17 +1273,26 @@ namespace GameFramework.Resource
             m_ResourceIniter.Shutdown();
             m_ResourceIniter = null;
 
-            m_ResourceInitCompleteEventHandler?.Invoke(this, new ResourceInitCompleteEventArgs());
+            if (m_ResourceInitCompleteEventHandler != null)
+            {
+                m_ResourceInitCompleteEventHandler(this, new ResourceInitCompleteEventArgs());
+            }
         }
 
         private void OnVersionListProcessorUpdateSuccess(string downloadPath, string downloadUri)
         {
-            m_VersionListUpdateSuccessEventHandler?.Invoke(this, new VersionListUpdateSuccessEventArgs(downloadPath, downloadUri));
+            if (m_VersionListUpdateSuccessEventHandler != null)
+            {
+                m_VersionListUpdateSuccessEventHandler(this, new VersionListUpdateSuccessEventArgs(downloadPath, downloadUri));
+            }
         }
 
         private void OnVersionListProcessorUpdateFailure(string downloadUri, string errorMessage)
         {
-            m_VersionListUpdateFailureEventHandler?.Invoke(this, new VersionListUpdateFailureEventArgs(downloadUri, errorMessage));
+            if (m_VersionListUpdateFailureEventHandler != null)
+            {
+                m_VersionListUpdateFailureEventHandler(this, new VersionListUpdateFailureEventArgs(downloadUri, errorMessage));
+            }
         }
 
         private void OnCheckerResourceNeedUpdate(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode)
@@ -1316,27 +1325,42 @@ namespace GameFramework.Resource
                 m_ResourceUpdater = null;
             }
 
-            m_ResourceCheckCompleteEventHandler?.Invoke(this, new ResourceCheckCompleteEventArgs(removedCount, updateCount, updateTotalLength, updateTotalZipLength));
+            if (m_ResourceCheckCompleteEventHandler != null)
+            {
+                m_ResourceCheckCompleteEventHandler(this, new ResourceCheckCompleteEventArgs(removedCount, updateCount, updateTotalLength, updateTotalZipLength));
+            }
         }
 
         private void OnUpdaterResourceUpdateStart(ResourceName resourceName, string downloadPath, string downloadUri, int currentLength, int zipLength, int retryCount)
         {
-            m_ResourceUpdateStartEventHandler?.Invoke(this, new ResourceUpdateStartEventArgs(resourceName.FullName, downloadPath, downloadUri, currentLength, zipLength, retryCount));
+            if (m_ResourceUpdateStartEventHandler != null)
+            {
+                m_ResourceUpdateStartEventHandler(this, new ResourceUpdateStartEventArgs(resourceName.FullName, downloadPath, downloadUri, currentLength, zipLength, retryCount));
+            }
         }
 
         private void OnUpdaterResourceUpdateChanged(ResourceName resourceName, string downloadPath, string downloadUri, int currentLength, int zipLength)
         {
-            m_ResourceUpdateChangedEventHandler?.Invoke(this, new ResourceUpdateChangedEventArgs(resourceName.FullName, downloadPath, downloadUri, currentLength, zipLength));
+            if (m_ResourceUpdateChangedEventHandler != null)
+            {
+                m_ResourceUpdateChangedEventHandler(this, new ResourceUpdateChangedEventArgs(resourceName.FullName, downloadPath, downloadUri, currentLength, zipLength));
+            }
         }
 
         private void OnUpdaterResourceUpdateSuccess(ResourceName resourceName, string downloadPath, string downloadUri, int length, int zipLength)
         {
-            m_ResourceUpdateSuccessEventHandler?.Invoke(this, new ResourceUpdateSuccessEventArgs(resourceName.FullName, downloadPath, downloadUri, length, zipLength));
+            if (m_ResourceUpdateSuccessEventHandler != null)
+            {
+                m_ResourceUpdateSuccessEventHandler(this, new ResourceUpdateSuccessEventArgs(resourceName.FullName, downloadPath, downloadUri, length, zipLength));
+            }
         }
 
         private void OnUpdaterResourceUpdateFailure(ResourceName resourceName, string downloadUri, int retryCount, int totalRetryCount, string errorMessage)
         {
-            m_ResourceUpdateFailureEventHandler?.Invoke(this, new ResourceUpdateFailureEventArgs(resourceName.FullName, downloadUri, retryCount, totalRetryCount, errorMessage));
+            if (m_ResourceUpdateFailureEventHandler != null)
+            {
+                m_ResourceUpdateFailureEventHandler(this, new ResourceUpdateFailureEventArgs(resourceName.FullName, downloadUri, retryCount, totalRetryCount, errorMessage));
+            }
         }
 
         private void OnUpdaterResourceUpdateAllComplete()
@@ -1349,7 +1373,10 @@ namespace GameFramework.Resource
             m_ResourceUpdater.Shutdown();
             m_ResourceUpdater = null;
 
-            m_ResourceUpdateAllCompleteEventHandler?.Invoke(this, new ResourceUpdateAllCompleteEventArgs());
+            if (m_ResourceUpdateAllCompleteEventHandler != null)
+            {
+                m_ResourceUpdateAllCompleteEventHandler(this, new ResourceUpdateAllCompleteEventArgs());
+            }
         }
     }
 }

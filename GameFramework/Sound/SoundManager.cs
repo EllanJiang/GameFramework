@@ -425,7 +425,10 @@ namespace GameFramework.Sound
             ISoundAgent soundAgent = playSoundInfo.SoundGroup.PlaySound(playSoundInfo.SerialId, soundAsset, playSoundInfo.PlaySoundParams, out errorCode);
             if (soundAgent != null)
             {
-                m_PlaySoundSuccessEventHandler?.Invoke(this, new PlaySoundSuccessEventArgs(playSoundInfo.SerialId, soundAssetName, soundAgent, duration, playSoundInfo.UserData));
+                if (m_PlaySoundSuccessEventHandler != null)
+                {
+                    m_PlaySoundSuccessEventHandler(this, new PlaySoundSuccessEventArgs(playSoundInfo.SerialId, soundAssetName, soundAgent, duration, playSoundInfo.UserData));
+                }
             }
             else
             {
@@ -467,7 +470,10 @@ namespace GameFramework.Sound
                 throw new GameFrameworkException("Play sound info is invalid.");
             }
 
-            m_PlaySoundUpdateEventHandler?.Invoke(this, new PlaySoundUpdateEventArgs(playSoundInfo.SerialId, soundAssetName, playSoundInfo.SoundGroup.Name, playSoundInfo.PlaySoundParams, progress, playSoundInfo.UserData));
+            if (m_PlaySoundUpdateEventHandler != null)
+            {
+                m_PlaySoundUpdateEventHandler(this, new PlaySoundUpdateEventArgs(playSoundInfo.SerialId, soundAssetName, playSoundInfo.SoundGroup.Name, playSoundInfo.PlaySoundParams, progress, playSoundInfo.UserData));
+            }
         }
 
         private void LoadSoundDependencyAssetCallback(string soundAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
@@ -478,7 +484,10 @@ namespace GameFramework.Sound
                 throw new GameFrameworkException("Play sound info is invalid.");
             }
 
-            m_PlaySoundDependencyAssetEventHandler?.Invoke(this, new PlaySoundDependencyAssetEventArgs(playSoundInfo.SerialId, soundAssetName, playSoundInfo.SoundGroup.Name, playSoundInfo.PlaySoundParams, dependencyAssetName, loadedCount, totalCount, playSoundInfo.UserData));
+            if (m_PlaySoundDependencyAssetEventHandler != null)
+            {
+                m_PlaySoundDependencyAssetEventHandler(this, new PlaySoundDependencyAssetEventArgs(playSoundInfo.SerialId, soundAssetName, playSoundInfo.SoundGroup.Name, playSoundInfo.PlaySoundParams, dependencyAssetName, loadedCount, totalCount, playSoundInfo.UserData));
+            }
         }
     }
 }

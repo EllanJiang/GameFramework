@@ -34,9 +34,30 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         public AssetBundleEditorController()
         {
             m_AssetBundleCollection = new AssetBundleCollection();
-            m_AssetBundleCollection.OnLoadingAssetBundle += delegate (int index, int count) { OnLoadingAssetBundle?.Invoke(index, count); };
-            m_AssetBundleCollection.OnLoadingAsset += delegate (int index, int count) { OnLoadingAsset?.Invoke(index, count); };
-            m_AssetBundleCollection.OnLoadCompleted += delegate () { OnLoadCompleted?.Invoke(); };
+
+            m_AssetBundleCollection.OnLoadingAssetBundle += delegate (int index, int count)
+            {
+                if (OnLoadingAssetBundle != null)
+                {
+                    OnLoadingAssetBundle(index, count);
+                }
+            };
+
+            m_AssetBundleCollection.OnLoadingAsset += delegate (int index, int count)
+            {
+                if (OnLoadingAsset != null)
+                {
+                    OnLoadingAsset(index, count);
+                }
+            };
+
+            m_AssetBundleCollection.OnLoadCompleted += delegate ()
+            {
+                if (OnLoadCompleted != null)
+                {
+                    OnLoadCompleted();
+                }
+            };
 
             m_SourceAssetSearchPaths = new List<string>();
             m_SourceAssetSearchRelativePaths = new List<string>();
@@ -369,7 +390,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                     }
                 }
 
-                OnAssetUnassigned?.Invoke(unassignedSourceAssets.ToArray());
+                if (OnAssetUnassigned != null)
+                {
+                    OnAssetUnassigned(unassignedSourceAssets.ToArray());
+                }
+
                 return true;
             }
 
@@ -426,7 +451,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         {
             if (m_AssetBundleCollection.AssignAsset(assetGuid, assetBundleName, assetBundleVariant))
             {
-                OnAssetAssigned?.Invoke(new SourceAsset[] { GetSourceAsset(assetGuid) });
+                if (OnAssetAssigned != null)
+                {
+                    OnAssetAssigned(new SourceAsset[] { GetSourceAsset(assetGuid) });
+                }
+
                 return true;
             }
 
@@ -440,7 +469,10 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 SourceAsset sourceAsset = GetSourceAsset(assetGuid);
                 if (sourceAsset != null)
                 {
-                    OnAssetUnassigned?.Invoke(new SourceAsset[] { sourceAsset });
+                    if (OnAssetUnassigned != null)
+                    {
+                        OnAssetUnassigned(new SourceAsset[] { sourceAsset });
+                    }
                 }
 
                 return true;

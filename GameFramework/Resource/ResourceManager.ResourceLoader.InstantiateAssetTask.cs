@@ -40,13 +40,19 @@ namespace GameFramework.Resource
                 public override void OnLoadSuccess(LoadResourceAgent agent, object asset, object instance, float duration)
                 {
                     base.OnLoadSuccess(agent, asset, instance, duration);
-                    m_InstantiateAssetCallbacks.InstantiateAssetSuccessCallback?.Invoke(AssetName, instance, duration, UserData);
+                    if (m_InstantiateAssetCallbacks.InstantiateAssetSuccessCallback != null)
+                    {
+                        m_InstantiateAssetCallbacks.InstantiateAssetSuccessCallback(AssetName, instance, duration, UserData);
+                    }
                 }
 
                 public override void OnLoadFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)
                 {
                     base.OnLoadFailure(agent, status, errorMessage);
-                    m_InstantiateAssetCallbacks.InstantiateAssetFailureCallback?.Invoke(AssetName, status, errorMessage, UserData);
+                    if (m_InstantiateAssetCallbacks.InstantiateAssetFailureCallback != null)
+                    {
+                        m_InstantiateAssetCallbacks.InstantiateAssetFailureCallback(AssetName, status, errorMessage, UserData);
+                    }
                 }
 
                 public override void OnLoadUpdate(LoadResourceAgent agent, LoadResourceProgress type, float progress)
@@ -54,14 +60,20 @@ namespace GameFramework.Resource
                     base.OnLoadUpdate(agent, type, progress);
                     if (type == LoadResourceProgress.LoadAsset)
                     {
-                        m_InstantiateAssetCallbacks.InstantiateAssetUpdateCallback?.Invoke(AssetName, progress, UserData);
+                        if (m_InstantiateAssetCallbacks.InstantiateAssetUpdateCallback != null)
+                        {
+                            m_InstantiateAssetCallbacks.InstantiateAssetUpdateCallback(AssetName, progress, UserData);
+                        }
                     }
                 }
 
                 public override void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset)
                 {
                     base.OnLoadDependencyAsset(agent, dependencyAssetName, dependencyAsset);
-                    m_InstantiateAssetCallbacks.InstantiateAssetDependencyAssetCallback?.Invoke(AssetName, dependencyAssetName, LoadedDependencyAssetCount, TotalDependencyAssetCount, UserData);
+                    if (m_InstantiateAssetCallbacks.InstantiateAssetDependencyAssetCallback != null)
+                    {
+                        m_InstantiateAssetCallbacks.InstantiateAssetDependencyAssetCallback(AssetName, dependencyAssetName, LoadedDependencyAssetCount, TotalDependencyAssetCount, UserData);
+                    }
                 }
             }
         }
