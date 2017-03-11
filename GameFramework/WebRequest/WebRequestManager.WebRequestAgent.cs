@@ -119,13 +119,14 @@ namespace GameFramework.WebRequest
                     WebRequestAgentStart(this);
                 }
 
-                if (m_Task.PostData == null)
+                byte[] postData = m_Task.GetPostData();
+                if (postData == null)
                 {
                     m_Helper.Request(m_Task.WebRequestUri, m_Task.UserData);
                 }
                 else
                 {
-                    m_Helper.Request(m_Task.WebRequestUri, m_Task.PostData, m_Task.UserData);
+                    m_Helper.Request(m_Task.WebRequestUri, postData, m_Task.UserData);
                 }
 
                 m_WaitTime = 0f;

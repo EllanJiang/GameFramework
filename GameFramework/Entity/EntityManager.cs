@@ -943,7 +943,7 @@ namespace GameFramework.Entity
             {
                 if (m_ShowEntityFailureEventHandler != null)
                 {
-                    m_ShowEntityFailureEventHandler(this, new ShowEntityFailureEventArgs(entityId, entityAssetName, entityGroupName, string.Format("{0}\n{1}", exception.Message, exception.StackTrace), userData));
+                    m_ShowEntityFailureEventHandler(this, new ShowEntityFailureEventArgs(entityId, entityAssetName, entityGroupName, exception.ToString(), userData));
                     return;
                 }
 

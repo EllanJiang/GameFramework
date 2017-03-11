@@ -423,7 +423,7 @@ namespace GameFramework.Network
 
                 try
                 {
-                    m_Socket.BeginConnect(ipAddress, port, new AsyncCallback(ConnectCallback), new SocketUserData(m_Socket, userData));
+                    m_Socket.BeginConnect(ipAddress, port, ConnectCallback, new SocketUserData(m_Socket, userData));
                 }
                 catch (Exception exception)
                 {
@@ -469,7 +469,7 @@ namespace GameFramework.Network
 
                 try
                 {
-                    m_Socket.BeginConnect(host, port, new AsyncCallback(ConnectCallback), new SocketUserData(m_Socket, userData));
+                    m_Socket.BeginConnect(host, port, ConnectCallback, new SocketUserData(m_Socket, userData));
                 }
                 catch (Exception exception)
                 {
@@ -567,7 +567,7 @@ namespace GameFramework.Network
 
                 try
                 {
-                    m_Socket.BeginSend(buffer, offset, size, SocketFlags.None, new AsyncCallback(SendCallback), new SocketUserData(m_Socket, userData));
+                    m_Socket.BeginSend(buffer, offset, size, SocketFlags.None, SendCallback, new SocketUserData(m_Socket, userData));
                 }
                 catch (Exception exception)
                 {
@@ -645,7 +645,7 @@ namespace GameFramework.Network
                     m_Active = false;
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.SerializeError, string.Format("{0}\n{1}", exception.Message, exception.StackTrace));
+                        NetworkChannelError(this, NetworkErrorCode.SerializeError, exception.ToString());
                         return;
                     }
 
@@ -685,7 +685,7 @@ namespace GameFramework.Network
             {
                 try
                 {
-                    m_Socket.BeginReceive(m_ReceiveState.Buffer, m_ReceiveState.ReceivedLength, m_ReceiveState.Length - m_ReceiveState.ReceivedLength, SocketFlags.None, new AsyncCallback(ReceiveCallback), m_Socket);
+                    m_Socket.BeginReceive(m_ReceiveState.GetBuffer(), m_ReceiveState.ReceivedLength, m_ReceiveState.Length - m_ReceiveState.ReceivedLength, SocketFlags.None, ReceiveCallback, m_Socket);
                 }
                 catch (Exception exception)
                 {
@@ -714,7 +714,7 @@ namespace GameFramework.Network
 
                 if (m_ReceiveState.Length == ReceiveState.HeaderLength)
                 {
-                    int packetLength = Utility.Converter.GetIntFromBytes(m_ReceiveState.Buffer);
+                    int packetLength = Utility.Converter.GetIntFromBytes(m_ReceiveState.GetBuffer());
                     if (packetLength <= 0)
                     {
                         string errorMessage = string.Format("Packet length '{0}' is invalid.", packetLength.ToString());
@@ -753,7 +753,7 @@ namespace GameFramework.Network
                 {
                     int packetLength = m_ReceiveState.Length - ReceiveState.HeaderLength;
                     object customErrorData = null;
-                    using (MemoryStream memoryStream = new MemoryStream(m_ReceiveState.Buffer, ReceiveState.HeaderLength, packetLength, false))
+                    using (MemoryStream memoryStream = new MemoryStream(m_ReceiveState.GetBuffer(), ReceiveState.HeaderLength, packetLength, false))
                     {
                         lock (m_NetworkHelper)
                         {
@@ -782,7 +782,7 @@ namespace GameFramework.Network
                     m_Active = false;
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.DeserializeError, string.Format("{0}\n{1}", exception.Message, exception.StackTrace));
+                        NetworkChannelError(this, NetworkErrorCode.DeserializeError, exception.ToString());
                         return false;
                     }
 

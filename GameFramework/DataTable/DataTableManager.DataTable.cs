@@ -191,7 +191,7 @@ namespace GameFramework.DataTable
                         throw;
                     }
 
-                    throw new GameFrameworkException(string.Format("Can not parse data table '{0}' at '{1}' with exception '{2}'.", Utility.Text.GetFullName<T>(Name), dataRowText, string.Format("{0}\n{1}", exception.Message, exception.StackTrace)), exception);
+                    throw new GameFrameworkException(string.Format("Can not parse data table '{0}' at '{1}' with exception '{2}'.", Utility.Text.GetFullName<T>(Name), dataRowText, exception.ToString()), exception);
                 }
 
                 if (HasDataRow(dataRow.Id))

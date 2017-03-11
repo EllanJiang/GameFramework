@@ -614,7 +614,7 @@ namespace GameFramework.UI
             {
                 if (m_OpenUIFormFailureEventHandler != null)
                 {
-                    m_OpenUIFormFailureEventHandler(this, new OpenUIFormFailureEventArgs(uiFormTypeId, uiFormAssetName, uiGroup.Name, pauseCoveredUIForm, string.Format("{0}\n{1}", exception.Message, exception.StackTrace), userData));
+                    m_OpenUIFormFailureEventHandler(this, new OpenUIFormFailureEventArgs(uiFormTypeId, uiFormAssetName, uiGroup.Name, pauseCoveredUIForm, exception.ToString(), userData));
                     return;
                 }
 

@@ -408,7 +408,7 @@ namespace GameFramework.DataTable
             {
                 if (m_LoadDataTableFailureEventHandler != null)
                 {
-                    m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, string.Format("{0}\n{1}", exception.Message, exception.StackTrace), userData));
+                    m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, exception.ToString(), userData));
                     return;
                 }
 
