@@ -144,6 +144,7 @@ namespace UnityGameFramework.Runtime
             {
                 m_InstanceRoot = (new GameObject("Entity Instances")).transform;
                 m_InstanceRoot.SetParent(gameObject.transform);
+                m_InstanceRoot.localScale = Vector3.one;
             }
 
             for (int i = 0; i < m_EntityGroups.Length; i++)

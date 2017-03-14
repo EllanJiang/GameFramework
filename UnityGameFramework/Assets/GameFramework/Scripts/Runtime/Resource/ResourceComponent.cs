@@ -525,6 +525,7 @@ namespace UnityGameFramework.Runtime
             {
                 m_InstanceRoot = (new GameObject("Load Resource Agent Instances")).transform;
                 m_InstanceRoot.SetParent(gameObject.transform);
+                m_InstanceRoot.localScale = Vector3.one;
             }
 
             for (int i = 0; i < m_LoadResourceAgentHelperCount; i++)

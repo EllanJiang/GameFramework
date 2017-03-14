@@ -208,6 +208,7 @@ namespace UnityGameFramework.Runtime
             {
                 m_InstanceRoot = (new GameObject("UI Form Instances")).transform;
                 m_InstanceRoot.SetParent(gameObject.transform);
+                m_InstanceRoot.localScale = Vector3.one;
             }
 
             m_InstanceRoot.gameObject.layer = LayerMask.NameToLayer("UI");
