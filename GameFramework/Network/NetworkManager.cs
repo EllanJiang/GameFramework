@@ -151,7 +151,7 @@ namespace GameFramework.Network
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
-            foreach (KeyValuePair<string, NetworkChannel> networkChannel in m_NetworkChannels)
+            foreach (KeyValuePair<string, NetworkChannel> networkChannel in (Dictionary<string, NetworkChannel>)m_NetworkChannels)
             {
                 networkChannel.Value.Update(elapseSeconds, realElapseSeconds);
             }

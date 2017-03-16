@@ -58,7 +58,7 @@ namespace GameFramework.ObjectPool
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
-            foreach (KeyValuePair<string, ObjectPoolBase> objectPool in m_ObjectPools)
+            foreach (KeyValuePair<string, ObjectPoolBase> objectPool in (Dictionary<string, ObjectPoolBase>)m_ObjectPools)
             {
                 objectPool.Value.Update(elapseSeconds, realElapseSeconds);
             }

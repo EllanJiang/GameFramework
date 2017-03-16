@@ -181,7 +181,7 @@ namespace GameFramework.Entity
                 entityGroup.UnspawnEntity(entity);
             }
 
-            foreach (KeyValuePair<string, EntityGroup> entityGroup in m_EntityGroups)
+            foreach (KeyValuePair<string, EntityGroup> entityGroup in (Dictionary<string, EntityGroup>)m_EntityGroups)
             {
                 entityGroup.Value.Update(elapseSeconds, realElapseSeconds);
             }

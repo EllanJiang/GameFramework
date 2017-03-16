@@ -217,7 +217,7 @@ namespace GameFramework.UI
                 m_InstancePool.Unspawn(uiForm.Handle);
             }
 
-            foreach (KeyValuePair<string, UIGroup> uiGroup in m_UIGroups)
+            foreach (KeyValuePair<string, UIGroup> uiGroup in (Dictionary<string, UIGroup>)m_UIGroups)
             {
                 uiGroup.Value.Update(elapseSeconds, realElapseSeconds);
             }

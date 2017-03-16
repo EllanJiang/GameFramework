@@ -62,12 +62,12 @@ namespace GameFramework.Fsm
                 return;
             }
 
-            foreach (KeyValuePair<string, FsmBase> fsm in m_Fsms)
+            foreach (KeyValuePair<string, FsmBase> fsm in (Dictionary<string, FsmBase>)m_Fsms)
             {
                 m_TempFsms.Add(fsm.Value);
             }
 
-            foreach (FsmBase fsm in m_TempFsms)
+            foreach (FsmBase fsm in (List<FsmBase>)m_TempFsms)
             {
                 if (fsm.IsDestroyed)
                 {
