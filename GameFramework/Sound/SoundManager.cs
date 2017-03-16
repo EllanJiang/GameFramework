@@ -392,11 +392,10 @@ namespace GameFramework.Sound
         /// <param name="soundGroupName">声音组名称。</param>
         public void StopAllSounds(string soundGroupName)
         {
-            string errorMessage = null;
             SoundGroup soundGroup = (SoundGroup)GetSoundGroup(soundGroupName);
             if (soundGroup == null)
             {
-                errorMessage = string.Format("Sound group '{0}' is not exist.", soundGroupName);
+                throw new GameFrameworkException(string.Format("Sound group '{0}' is not exist.", soundGroupName));
             }
 
             soundGroup.StopAllSounds();
