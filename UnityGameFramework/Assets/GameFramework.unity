@@ -248,6 +248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ResourceMode: 1
+  m_ReadWritePathType: 0
   m_UnloadUnusedAssetsInterval: 60
   m_AssetAutoReleaseInterval: 60
   m_AssetCapacity: 64
@@ -305,6 +306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Skin: {fileID: 11400000, guid: a4c1cc1e6676f0e48a527bad48941f98, type: 2}
+  m_ActiveWindow: 0
   m_ShowFullWindow: 0
   m_ConsoleWindow:
     m_LockScroll: 1

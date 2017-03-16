@@ -8,23 +8,23 @@
 namespace UnityGameFramework.Runtime
 {
     /// <summary>
-    /// 读写区路径类型。
+    /// 调试器激活窗口类型。
     /// </summary>
-    public enum ReadWritePathType
+    public enum DebuggerActiveWindowType
     {
         /// <summary>
-        /// 未指定。
+        /// 自动（发布版本状态关闭，开发版本状态打开）。
         /// </summary>
-        Unspecified = 0,
+        Auto = 0,
 
         /// <summary>
-        /// 临时缓存。
+        /// 关闭。
         /// </summary>
-        TemporaryCache,
+        Close,
 
         /// <summary>
-        /// 持久化数据。
+        /// 打开。
         /// </summary>
-        PersistentData,
+        Open,
     }
 }
