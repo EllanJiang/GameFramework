@@ -19,7 +19,7 @@ namespace GameFramework.UI
     {
         private readonly IDictionary<string, UIGroup> m_UIGroups;
         private readonly LinkedList<RecycleNode> m_RecycleQueue;
-        private readonly InstantiateAssetCallbacks m_InstantiateAssetCallbacks;
+        private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
         private IObjectPoolManager m_ObjectPoolManager;
         private IResourceManager m_ResourceManager;
         private IObjectPool<UIFormInstanceObject> m_InstancePool;
@@ -37,7 +37,7 @@ namespace GameFramework.UI
         {
             m_UIGroups = new Dictionary<string, UIGroup>();
             m_RecycleQueue = new LinkedList<RecycleNode>();
-            m_InstantiateAssetCallbacks = new InstantiateAssetCallbacks(InstantiateUIFormSuccessCallback, InstantiateUIFormFailureCallback, InstantiateUIFormUpdateCallback, InstantiateUIFormDependencyAssetCallback);
+            m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadUIFormSuccessCallback, LoadUIFormFailureCallback, LoadUIFormUpdateCallback, LoadUIFormDependencyAssetCallback);
             m_ObjectPoolManager = null;
             m_ResourceManager = null;
             m_InstancePool = null;
@@ -217,9 +217,9 @@ namespace GameFramework.UI
                 m_InstancePool.Unspawn(uiForm.Handle);
             }
 
-            foreach (UIGroup uiGroup in m_UIGroups.Values)
+            foreach (KeyValuePair<string, UIGroup> uiGroup in (Dictionary<string, UIGroup>)m_UIGroups)
             {
-                uiGroup.Update(elapseSeconds, realElapseSeconds);
+                uiGroup.Value.Update(elapseSeconds, realElapseSeconds);
             }
         }
 
@@ -319,9 +319,9 @@ namespace GameFramework.UI
         {
             int index = 0;
             IUIGroup[] uiGroups = new IUIGroup[m_UIGroups.Count];
-            foreach (UIGroup uiGroup in m_UIGroups.Values)
+            foreach (KeyValuePair<string, UIGroup> uiGroup in m_UIGroups)
             {
-                uiGroups[index++] = uiGroup;
+                uiGroups[index++] = uiGroup.Value;
             }
 
             return uiGroups;
@@ -473,7 +473,7 @@ namespace GameFramework.UI
                 throw new GameFrameworkException("You must set UI form helper first.");
             }
 
-            UIGroup uiGroup = GetUIGroup(uiGroupName) as UIGroup;
+            UIGroup uiGroup = (UIGroup)GetUIGroup(uiGroupName);
             if (uiGroup == null)
             {
                 throw new GameFrameworkException(string.Format("UI group '{0}' is not exist.", uiGroupName));
@@ -482,7 +482,7 @@ namespace GameFramework.UI
             UIFormInstanceObject uiFormInstanceObject = m_InstancePool.Spawn(uiFormAssetName);
             if (uiFormInstanceObject == null)
             {
-                m_ResourceManager.InstantiateAsset(uiFormAssetName, m_InstantiateAssetCallbacks, new OpenUIFormInfo(uiFormTypeId, uiGroup, pauseCoveredUIForm, userData));
+                m_ResourceManager.LoadAsset(uiFormAssetName, m_LoadAssetCallbacks, new OpenUIFormInfo(uiFormTypeId, uiGroup, pauseCoveredUIForm, userData));
                 return;
             }
 
@@ -510,7 +510,7 @@ namespace GameFramework.UI
                 throw new GameFrameworkException("UI form is invalid.");
             }
 
-            UIGroup uiGroup = uiForm.UIGroup as UIGroup;
+            UIGroup uiGroup = (UIGroup)uiForm.UIGroup;
             if (uiGroup == null)
             {
                 throw new GameFrameworkException("UI group is invalid.");
@@ -549,7 +549,7 @@ namespace GameFramework.UI
                 throw new GameFrameworkException("UI form is invalid.");
             }
 
-            UIGroup uiGroup = uiForm.UIGroup as UIGroup;
+            UIGroup uiGroup = (UIGroup)uiForm.UIGroup;
             if (uiGroup == null)
             {
                 throw new GameFrameworkException("UI group is invalid.");
@@ -614,7 +614,7 @@ namespace GameFramework.UI
             {
                 if (m_OpenUIFormFailureEventHandler != null)
                 {
-                    m_OpenUIFormFailureEventHandler(this, new OpenUIFormFailureEventArgs(uiFormTypeId, uiFormAssetName, uiGroup.Name, pauseCoveredUIForm, string.Format("{0}\n{1}", exception.Message, exception.StackTrace), userData));
+                    m_OpenUIFormFailureEventHandler(this, new OpenUIFormFailureEventArgs(uiFormTypeId, uiFormAssetName, uiGroup.Name, pauseCoveredUIForm, exception.ToString(), userData));
                     return;
                 }
 
@@ -622,12 +622,12 @@ namespace GameFramework.UI
             }
         }
 
-        private void InstantiateUIFormSuccessCallback(string uiFormAssetName, object uiFormInstance, float duration, object userData)
+        private void LoadUIFormSuccessCallback(string uiFormAssetName, object uiFormAsset, float duration, object userData)
         {
-            UIFormInstanceObject uiFormInstanceObject = new UIFormInstanceObject(uiFormAssetName, uiFormInstance, m_UIFormHelper);
+            UIFormInstanceObject uiFormInstanceObject = new UIFormInstanceObject(uiFormAssetName, uiFormAsset, m_UIFormHelper.InstantiateUIForm(uiFormAsset), m_UIFormHelper);
             m_InstancePool.Register(uiFormInstanceObject, true);
 
-            OpenUIFormInfo openUIFormInfo = userData as OpenUIFormInfo;
+            OpenUIFormInfo openUIFormInfo = (OpenUIFormInfo)userData;
             if (openUIFormInfo == null)
             {
                 throw new GameFrameworkException("Open UI form info is invalid.");
@@ -636,9 +636,9 @@ namespace GameFramework.UI
             InternalOpenUIForm(openUIFormInfo.UIFormTypeId, uiFormAssetName, openUIFormInfo.UIGroup, uiFormInstanceObject.Target, openUIFormInfo.PauseCoveredUIForm, true, duration, openUIFormInfo.UserData);
         }
 
-        private void InstantiateUIFormFailureCallback(string uiFormAssetName, LoadResourceStatus status, string errorMessage, object userData)
+        private void LoadUIFormFailureCallback(string uiFormAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
-            OpenUIFormInfo openUIFormInfo = userData as OpenUIFormInfo;
+            OpenUIFormInfo openUIFormInfo = (OpenUIFormInfo)userData;
             if (openUIFormInfo == null)
             {
                 throw new GameFrameworkException("Open UI form info is invalid.");
@@ -654,9 +654,9 @@ namespace GameFramework.UI
             throw new GameFrameworkException(appendErrorMessage);
         }
 
-        private void InstantiateUIFormUpdateCallback(string uiFormAssetName, float progress, object userData)
+        private void LoadUIFormUpdateCallback(string uiFormAssetName, float progress, object userData)
         {
-            OpenUIFormInfo openUIFormInfo = userData as OpenUIFormInfo;
+            OpenUIFormInfo openUIFormInfo = (OpenUIFormInfo)userData;
             if (openUIFormInfo == null)
             {
                 throw new GameFrameworkException("Open UI form info is invalid.");
@@ -668,9 +668,9 @@ namespace GameFramework.UI
             }
         }
 
-        private void InstantiateUIFormDependencyAssetCallback(string uiFormAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
+        private void LoadUIFormDependencyAssetCallback(string uiFormAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
-            OpenUIFormInfo openUIFormInfo = userData as OpenUIFormInfo;
+            OpenUIFormInfo openUIFormInfo = (OpenUIFormInfo)userData;
             if (openUIFormInfo == null)
             {
                 throw new GameFrameworkException("Open UI form info is invalid.");

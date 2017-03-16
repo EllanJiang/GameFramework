@@ -370,7 +370,7 @@ namespace GameFramework.Localization
             {
                 if (m_LoadDictionaryFailureEventHandler != null)
                 {
-                    m_LoadDictionaryFailureEventHandler(this, new LoadDictionaryFailureEventArgs(dictionaryAssetName, string.Format("{0}\n{1}", exception.Message, exception.StackTrace), userData));
+                    m_LoadDictionaryFailureEventHandler(this, new LoadDictionaryFailureEventArgs(dictionaryAssetName, exception.ToString(), userData));
                     return;
                 }
 

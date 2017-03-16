@@ -99,11 +99,6 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public abstract bool IsInstantiate
-                {
-                    get;
-                }
-
                 public abstract bool IsScene
                 {
                     get;
@@ -170,17 +165,17 @@ namespace GameFramework.Resource
                     agent.Helper.LoadAsset(resource, ResourceChildName, IsScene);
                 }
 
-                public virtual void OnLoadSuccess(LoadResourceAgent agent, object asset, object instance, float duration)
+                public virtual void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)
                 {
 
                 }
 
-                public virtual void OnLoadFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)
+                public virtual void OnLoadAssetFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)
                 {
 
                 }
 
-                public virtual void OnLoadUpdate(LoadResourceAgent agent, LoadResourceProgress type, float progress)
+                public virtual void OnLoadAssetUpdate(LoadResourceAgent agent, LoadResourceProgress type, float progress)
                 {
 
                 }

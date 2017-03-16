@@ -24,7 +24,7 @@ namespace UnityGameFramework.Editor
 
             serializedObject.Update();
 
-            NetworkComponent t = target as NetworkComponent;
+            NetworkComponent t = (NetworkComponent)target;
 
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
             {

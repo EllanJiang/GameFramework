@@ -691,7 +691,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
             if (Directory.Exists(workingPath))
             {
-                Uri workingUri = new Uri(workingPath);
+                Uri workingUri = new Uri(workingPath, UriKind.RelativeOrAbsolute);
                 string[] fileNames = Directory.GetFiles(workingPath, "*", SearchOption.AllDirectories);
                 foreach (string fileName in fileNames)
                 {

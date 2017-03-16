@@ -19,6 +19,16 @@ namespace UnityGameFramework.Runtime
         private ResourceComponent m_ResourceComponent = null;
 
         /// <summary>
+        /// 实例化实体。
+        /// </summary>
+        /// <param name="entityAsset">要实例化的实体资源。</param>
+        /// <returns>实例化后的实体。</returns>
+        public override object InstantiateEntity(object entityAsset)
+        {
+            return Instantiate((Object)entityAsset);
+        }
+
+        /// <summary>
         /// 创建实体。
         /// </summary>
         /// <param name="entityInstance">实体实例。</param>
@@ -35,19 +45,20 @@ namespace UnityGameFramework.Runtime
             }
 
             Transform transform = gameObject.transform;
-            transform.SetParent((entityGroup.Helper as MonoBehaviour).transform);
+            transform.SetParent(((MonoBehaviour)entityGroup.Helper).transform);
 
             return gameObject.GetOrAddComponent<Entity>();
         }
 
         /// <summary>
-        /// 释放实体实例。
+        /// 释放实体。
         /// </summary>
+        /// <param name="entityAsset">要释放的实体资源。</param>
         /// <param name="entityInstance">要释放的实体实例。</param>
-        public override void ReleaseEntityInstance(object entityInstance)
+        public override void ReleaseEntity(object entityAsset, object entityInstance)
         {
-            m_ResourceComponent.Recycle(entityInstance);
-            DestroyObject(entityInstance as GameObject);
+            m_ResourceComponent.UnloadAsset(entityAsset);
+            DestroyObject((Object)entityInstance);
         }
 
         private void Start()

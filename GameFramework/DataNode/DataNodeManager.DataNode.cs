@@ -99,7 +99,7 @@ namespace GameFramework.DataNode
             /// <returns>指定类型的数据。</returns>
             public T GetData<T>() where T : Variable
             {
-                return m_Data as T;
+                return (T)m_Data;
             }
 
             /// <summary>
@@ -157,7 +157,7 @@ namespace GameFramework.DataNode
             /// <returns>指定名称的子数据结点，如果对应名称的子数据结点已存在，则返回已存在的子数据结点，否则增加子数据结点。</returns>
             public IDataNode GetOrAddChild(string name)
             {
-                DataNode node = GetChild(name) as DataNode;
+                DataNode node = (DataNode)GetChild(name);
                 if (node != null)
                 {
                     return node;
@@ -186,7 +186,7 @@ namespace GameFramework.DataNode
                     return new IDataNode[0];
                 }
 
-                return (m_Childs as List<DataNode>).ToArray();
+                return ((List<DataNode>)m_Childs).ToArray();
             }
 
             /// <summary>
@@ -195,7 +195,7 @@ namespace GameFramework.DataNode
             /// <param name="index">子数据结点的索引位置。</param>
             public void RemoveChild(int index)
             {
-                DataNode node = GetChild(index) as DataNode;
+                DataNode node = (DataNode)GetChild(index);
                 if (node == null)
                 {
                     return;
@@ -211,7 +211,7 @@ namespace GameFramework.DataNode
             /// <param name="name">子数据结点名称。</param>
             public void RemoveChild(string name)
             {
-                DataNode node = GetChild(name) as DataNode;
+                DataNode node = (DataNode)GetChild(name);
                 if (node == null)
                 {
                     return;

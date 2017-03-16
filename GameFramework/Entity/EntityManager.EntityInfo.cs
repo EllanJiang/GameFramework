@@ -73,7 +73,7 @@ namespace GameFramework.Entity
                     return new IEntity[0];
                 }
 
-                return (m_ChildEntities as List<IEntity>).ToArray();
+                return ((List<IEntity>)m_ChildEntities).ToArray();
             }
 
             public void AddChildEntity(IEntity childEntity)

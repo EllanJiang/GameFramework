@@ -24,7 +24,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>加载是否成功。</returns>
         public bool LoadDataTable(object dataTableAsset, object userData)
         {
-            LoadDataTableInfo loadDataTableInfo = userData as LoadDataTableInfo;
+            LoadDataTableInfo loadDataTableInfo = (LoadDataTableInfo)userData;
             return LoadDataTable(loadDataTableInfo.DataTableName, loadDataTableInfo.DataTableType, loadDataTableInfo.DataTableNameInType, dataTableAsset, loadDataTableInfo.UserData);
         }
 

@@ -27,7 +27,7 @@ namespace UnityGameFramework.Editor
 
             serializedObject.Update();
 
-            DataTableComponent t = target as DataTableComponent;
+            DataTableComponent t = (DataTableComponent)target;
 
             EditorGUILayout.PropertyField(m_EnableLoadDataTableSuccessEvent);
             EditorGUILayout.PropertyField(m_EnableLoadDataTableFailureEvent);

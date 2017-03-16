@@ -20,7 +20,7 @@ namespace UnityGameFramework.Editor
         {
             base.OnInspectorGUI();
 
-            SettingComponent t = target as SettingComponent;
+            SettingComponent t = (SettingComponent)target;
 
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
             {

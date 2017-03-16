@@ -689,57 +689,12 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 异步实例化资源。
+        /// 卸载资源。
         /// </summary>
-        /// <param name="assetName">要实例化资源的名称。</param>
-        /// <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-        public void InstantiateAsset(string assetName, InstantiateAssetCallbacks instantiateAssetCallbacks)
+        /// <param name="asset">要卸载的资源。</param>
+        public void UnloadAsset(object asset)
         {
-            InstantiateAsset(assetName, instantiateAssetCallbacks, null);
-        }
-
-        /// <summary>
-        /// 异步实例化资源。
-        /// </summary>
-        /// <param name="assetName">要实例化资源的名称。</param>
-        /// <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public void InstantiateAsset(string assetName, InstantiateAssetCallbacks instantiateAssetCallbacks, object userData)
-        {
-            if (string.IsNullOrEmpty(assetName))
-            {
-                Log.Error("Asset name is invalid.");
-                return;
-            }
-
-            if (instantiateAssetCallbacks == null)
-            {
-                Log.Error("Instantiate asset callbacks is invalid.");
-                return;
-            }
-
-#if UNITY_EDITOR
-            DateTime startTime = DateTime.Now;
-            UnityEngine.Object asset = AssetDatabase.LoadMainAssetAtPath(assetName);
-            if (asset != null)
-            {
-                UnityEngine.Object instance = Instantiate(asset);
-                if (instance != null)
-                {
-                    if (instantiateAssetCallbacks.InstantiateAssetSuccessCallback != null)
-                    {
-                        instantiateAssetCallbacks.InstantiateAssetSuccessCallback(assetName, instance, (float)(DateTime.Now - startTime).TotalSeconds, userData);
-                    }
-
-                    return;
-                }
-            }
-
-            if (instantiateAssetCallbacks.InstantiateAssetFailureCallback != null)
-            {
-                instantiateAssetCallbacks.InstantiateAssetFailureCallback(assetName, LoadResourceStatus.NotExist, "Can not instantiate this asset from asset database.", userData);
-            }
-#endif
+            // Do nothing in editor resource mode.
         }
 
         /// <summary>
@@ -840,15 +795,6 @@ namespace UnityGameFramework.Runtime
 
             m_UnloadSceneInfos.AddLast(new UnloadSceneInfo(asyncOperation, sceneAssetName, unloadSceneCallbacks, userData));
 #endif
-        }
-
-        /// <summary>
-        /// 回收资源或资源实例。
-        /// </summary>
-        /// <param name="assetOrInstance">要回收的资源或资源实例。</param>
-        public void Recycle(object assetOrInstance)
-        {
-            // Do nothing in editor resource mode.
         }
 
         /// <summary>

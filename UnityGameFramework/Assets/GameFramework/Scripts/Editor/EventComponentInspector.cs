@@ -23,7 +23,7 @@ namespace UnityGameFramework.Editor
                 return;
             }
 
-            EventComponent t = target as EventComponent;
+            EventComponent t = (EventComponent)target;
 
             EditorGUILayout.LabelField("Event Count", t.Count.ToString());
 

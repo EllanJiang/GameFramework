@@ -53,7 +53,7 @@ namespace Utility
                     return null;
                 }
 
-                helper = (new GameObject()).AddComponent(helperType) as T;
+                helper = (T)(new GameObject()).AddComponent(helperType);
             }
             else if (customHelper == null)
             {

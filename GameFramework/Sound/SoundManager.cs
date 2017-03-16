@@ -203,9 +203,9 @@ namespace GameFramework.Sound
         {
             int index = 0;
             ISoundGroup[] soundGroups = new ISoundGroup[m_SoundGroups.Count];
-            foreach (SoundGroup soundGroup in m_SoundGroups.Values)
+            foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
-                soundGroups[index++] = soundGroup;
+                soundGroups[index++] = soundGroup.Value;
             }
 
             return soundGroups;
@@ -269,7 +269,7 @@ namespace GameFramework.Sound
                 throw new GameFrameworkException("You must set sound helper first.");
             }
 
-            SoundGroup soundGroup = GetSoundGroup(soundGroupName) as SoundGroup;
+            SoundGroup soundGroup = (SoundGroup)GetSoundGroup(soundGroupName);
             if (soundGroup == null)
             {
                 throw new GameFrameworkException(string.Format("Sound group '{0}' is not exist.", soundGroupName));
@@ -341,7 +341,7 @@ namespace GameFramework.Sound
             int serialId = m_Serial++;
             PlaySoundErrorCode? errorCode = null;
             string errorMessage = null;
-            SoundGroup soundGroup = GetSoundGroup(soundGroupName) as SoundGroup;
+            SoundGroup soundGroup = (SoundGroup)GetSoundGroup(soundGroupName);
             if (soundGroup == null)
             {
                 errorCode = PlaySoundErrorCode.SoundGroupNotExist;
@@ -375,9 +375,9 @@ namespace GameFramework.Sound
         /// <returns>是否停止播放声音成功。</returns>
         public bool StopSound(int serialId)
         {
-            foreach (SoundGroup soundGroup in m_SoundGroups.Values)
+            foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
-                if (soundGroup.StopSound(serialId))
+                if (soundGroup.Value.StopSound(serialId))
                 {
                     return true;
                 }
@@ -392,11 +392,10 @@ namespace GameFramework.Sound
         /// <param name="soundGroupName">声音组名称。</param>
         public void StopAllSounds(string soundGroupName)
         {
-            string errorMessage = null;
-            SoundGroup soundGroup = GetSoundGroup(soundGroupName) as SoundGroup;
+            SoundGroup soundGroup = (SoundGroup)GetSoundGroup(soundGroupName);
             if (soundGroup == null)
             {
-                errorMessage = string.Format("Sound group '{0}' is not exist.", soundGroupName);
+                throw new GameFrameworkException(string.Format("Sound group '{0}' is not exist.", soundGroupName));
             }
 
             soundGroup.StopAllSounds();
@@ -407,15 +406,15 @@ namespace GameFramework.Sound
         /// </summary>
         public void StopAllSounds()
         {
-            foreach (SoundGroup soundGroup in m_SoundGroups.Values)
+            foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
-                soundGroup.StopAllSounds();
+                soundGroup.Value.StopAllSounds();
             }
         }
 
         private void LoadSoundSuccessCallback(string soundAssetName, object soundAsset, float duration, object userData)
         {
-            PlaySoundInfo playSoundInfo = userData as PlaySoundInfo;
+            PlaySoundInfo playSoundInfo = (PlaySoundInfo)userData;
             if (playSoundInfo == null)
             {
                 throw new GameFrameworkException("Play sound info is invalid.");
@@ -446,7 +445,7 @@ namespace GameFramework.Sound
 
         private void LoadSoundFailureCallback(string soundAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
-            PlaySoundInfo playSoundInfo = userData as PlaySoundInfo;
+            PlaySoundInfo playSoundInfo = (PlaySoundInfo)userData;
             if (playSoundInfo == null)
             {
                 throw new GameFrameworkException("Play sound info is invalid.");
@@ -464,7 +463,7 @@ namespace GameFramework.Sound
 
         private void LoadSoundUpdateCallback(string soundAssetName, float progress, object userData)
         {
-            PlaySoundInfo playSoundInfo = userData as PlaySoundInfo;
+            PlaySoundInfo playSoundInfo = (PlaySoundInfo)userData;
             if (playSoundInfo == null)
             {
                 throw new GameFrameworkException("Play sound info is invalid.");
@@ -478,7 +477,7 @@ namespace GameFramework.Sound
 
         private void LoadSoundDependencyAssetCallback(string soundAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
-            PlaySoundInfo playSoundInfo = userData as PlaySoundInfo;
+            PlaySoundInfo playSoundInfo = (PlaySoundInfo)userData;
             if (playSoundInfo == null)
             {
                 throw new GameFrameworkException("Play sound info is invalid.");

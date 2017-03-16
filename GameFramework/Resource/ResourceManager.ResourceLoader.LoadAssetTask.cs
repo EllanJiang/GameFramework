@@ -21,14 +21,6 @@ namespace GameFramework.Resource
                     m_LoadAssetCallbacks = loadAssetCallbacks;
                 }
 
-                public override bool IsInstantiate
-                {
-                    get
-                    {
-                        return false;
-                    }
-                }
-
                 public override bool IsScene
                 {
                     get
@@ -37,27 +29,27 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public override void OnLoadSuccess(LoadResourceAgent agent, object asset, object instance, float duration)
+                public override void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)
                 {
-                    base.OnLoadSuccess(agent, asset, instance, duration);
+                    base.OnLoadAssetSuccess(agent, asset, duration);
                     if (m_LoadAssetCallbacks.LoadAssetSuccessCallback != null)
                     {
                         m_LoadAssetCallbacks.LoadAssetSuccessCallback(AssetName, asset, duration, UserData);
                     }
                 }
 
-                public override void OnLoadFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)
+                public override void OnLoadAssetFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)
                 {
-                    base.OnLoadFailure(agent, status, errorMessage);
+                    base.OnLoadAssetFailure(agent, status, errorMessage);
                     if (m_LoadAssetCallbacks.LoadAssetFailureCallback != null)
                     {
                         m_LoadAssetCallbacks.LoadAssetFailureCallback(AssetName, status, errorMessage, UserData);
                     }
                 }
 
-                public override void OnLoadUpdate(LoadResourceAgent agent, LoadResourceProgress type, float progress)
+                public override void OnLoadAssetUpdate(LoadResourceAgent agent, LoadResourceProgress type, float progress)
                 {
-                    base.OnLoadUpdate(agent, type, progress);
+                    base.OnLoadAssetUpdate(agent, type, progress);
                     if (type == LoadResourceProgress.LoadAsset)
                     {
                         if (m_LoadAssetCallbacks.LoadAssetUpdateCallback != null)

@@ -31,7 +31,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>加载是否成功。</returns>
         public bool LoadDictionary(object dictionaryAsset, object userData)
         {
-            LoadDictionaryInfo loadDictionaryInfo = userData as LoadDictionaryInfo;
+            LoadDictionaryInfo loadDictionaryInfo = (LoadDictionaryInfo)userData;
             return LoadDictionary(loadDictionaryInfo.DictionaryName, dictionaryAsset, loadDictionaryInfo.UserData);
         }
 

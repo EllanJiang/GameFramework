@@ -43,7 +43,7 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 游戏框架组件初始化。
         /// </summary>
-        protected internal override void Awake()
+        protected override void Awake()
         {
             base.Awake();
 
@@ -376,7 +376,7 @@ namespace UnityGameFramework.Runtime
             return m_DataTableManager.DestroyDataTable(type, name);
         }
 
-        internal void ReflectionCreateDataTable<T>(string name, string text) where T : class, IDataRow, new()
+        private void ReflectionCreateDataTable<T>(string name, string text) where T : class, IDataRow, new()
         {
             if (CreateDataTable<T>(name, text) == null)
             {

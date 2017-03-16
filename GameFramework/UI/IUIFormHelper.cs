@@ -13,6 +13,13 @@ namespace GameFramework.UI
     public interface IUIFormHelper
     {
         /// <summary>
+        /// 实例化界面。
+        /// </summary>
+        /// <param name="uiFormAsset">要实例化的界面资源。</param>
+        /// <returns>实例化后的界面。</returns>
+        object InstantiateUIForm(object uiFormAsset);
+
+        /// <summary>
         /// 创建界面。
         /// </summary>
         /// <param name="uiFormInstance">界面实例。</param>
@@ -22,9 +29,10 @@ namespace GameFramework.UI
         IUIForm CreateUIForm(object uiFormInstance, IUIGroup uiGroup, object userData);
 
         /// <summary>
-        /// 释放界面实例。
+        /// 释放界面。
         /// </summary>
+        /// <param name="uiFormAsset">要释放的界面资源。</param>
         /// <param name="uiFormInstance">要释放的界面实例。</param>
-        void ReleaseUIFormInstance(object uiFormInstance);
+        void ReleaseUIForm(object uiFormAsset, object uiFormInstance);
     }
 }

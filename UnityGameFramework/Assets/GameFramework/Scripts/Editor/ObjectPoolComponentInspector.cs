@@ -28,7 +28,7 @@ namespace UnityGameFramework.Editor
                 return;
             }
 
-            ObjectPoolComponent t = target as ObjectPoolComponent;
+            ObjectPoolComponent t = (ObjectPoolComponent)target;
 
             EditorGUILayout.LabelField("Object Pool Count", t.Count.ToString());
 

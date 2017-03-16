@@ -30,7 +30,7 @@ namespace UnityGameFramework.Editor
 
             serializedObject.Update();
 
-            EntityComponent t = target as EntityComponent;
+            EntityComponent t = (EntityComponent)target;
 
             EditorGUILayout.PropertyField(m_EnableShowEntitySuccessEvent);
             EditorGUILayout.PropertyField(m_EnableShowEntityFailureEvent);

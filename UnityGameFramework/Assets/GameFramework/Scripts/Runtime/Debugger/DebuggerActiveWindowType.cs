@@ -5,21 +5,26 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using UnityEngine;
-
 namespace UnityGameFramework.Runtime
 {
     /// <summary>
-    /// 游戏框架组件抽象类。
+    /// 调试器激活窗口类型。
     /// </summary>
-    public abstract class GameFrameworkComponent : MonoBehaviour
+    public enum DebuggerActiveWindowType
     {
         /// <summary>
-        /// 游戏框架组件初始化。
+        /// 自动（发布版本状态关闭，开发版本状态打开）。
         /// </summary>
-        protected virtual void Awake()
-        {
-            GameEntry.RegisterComponent(this);
-        }
+        Auto = 0,
+
+        /// <summary>
+        /// 关闭。
+        /// </summary>
+        Close,
+
+        /// <summary>
+        /// 打开。
+        /// </summary>
+        Open,
     }
 }

@@ -20,7 +20,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="e">内部事件。</param>
         public WebRequestStartEventArgs(GameFramework.WebRequest.WebRequestStartEventArgs e)
         {
-            WWWFormInfo wwwFormInfo = e.UserData as WWWFormInfo;
+            WWWFormInfo wwwFormInfo = (WWWFormInfo)e.UserData;
             SerialId = e.SerialId;
             WebRequestUri = e.WebRequestUri;
             UserData = wwwFormInfo.UserData;

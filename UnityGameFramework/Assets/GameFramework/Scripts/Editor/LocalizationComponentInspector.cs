@@ -26,7 +26,7 @@ namespace UnityGameFramework.Editor
 
             serializedObject.Update();
 
-            LocalizationComponent t = target as LocalizationComponent;
+            LocalizationComponent t = (LocalizationComponent)target;
 
             EditorGUILayout.PropertyField(m_EnableLoadDictionarySuccessEvent);
             EditorGUILayout.PropertyField(m_EnableLoadDictionaryFailureEvent);

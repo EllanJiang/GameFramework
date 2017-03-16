@@ -15,6 +15,7 @@ namespace UnityGameFramework.Editor
     internal sealed class ResourceComponentInspector : GameFrameworkInspector
     {
         private SerializedProperty m_ResourceMode = null;
+        private SerializedProperty m_ReadWritePathType = null;
         private SerializedProperty m_UnloadUnusedAssetsInterval = null;
         private SerializedProperty m_AssetAutoReleaseInterval = null;
         private SerializedProperty m_AssetCapacity = null;
@@ -42,7 +43,7 @@ namespace UnityGameFramework.Editor
 
             serializedObject.Update();
 
-            ResourceComponent t = target as ResourceComponent;
+            ResourceComponent t = (ResourceComponent)target;
 
             bool isEditorResourceMode = (bool)m_EditorResourceModeFieldInfo.GetValue(target);
 
@@ -66,6 +67,8 @@ namespace UnityGameFramework.Editor
                         m_ResourceMode.enumValueIndex = selectedIndex + 1;
                     }
                 }
+
+                m_ReadWritePathType.enumValueIndex = (int)(ReadWritePathType)EditorGUILayout.EnumPopup("Read Write Path Type", t.ReadWritePathType);
             }
             EditorGUI.EndDisabledGroup();
 
@@ -264,6 +267,7 @@ namespace UnityGameFramework.Editor
         private void OnEnable()
         {
             m_ResourceMode = serializedObject.FindProperty("m_ResourceMode");
+            m_ReadWritePathType = serializedObject.FindProperty("m_ReadWritePathType");
             m_UnloadUnusedAssetsInterval = serializedObject.FindProperty("m_UnloadUnusedAssetsInterval");
             m_AssetAutoReleaseInterval = serializedObject.FindProperty("m_AssetAutoReleaseInterval");
             m_AssetCapacity = serializedObject.FindProperty("m_AssetCapacity");

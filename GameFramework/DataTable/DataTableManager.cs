@@ -126,9 +126,9 @@ namespace GameFramework.DataTable
         /// </summary>
         internal override void Shutdown()
         {
-            foreach (DataTableBase dataTable in m_DataTables.Values)
+            foreach (KeyValuePair<string, DataTableBase> dataTable in m_DataTables)
             {
-                dataTable.Shutdown();
+                dataTable.Value.Shutdown();
             }
 
             m_DataTables.Clear();
@@ -240,7 +240,7 @@ namespace GameFramework.DataTable
         /// <returns>要获取的数据表。</returns>
         public IDataTable<T> GetDataTable<T>() where T : IDataRow
         {
-            return InternelGetDataTable(Utility.Text.GetFullName<T>(string.Empty)) as IDataTable<T>;
+            return (IDataTable<T>)InternelGetDataTable(Utility.Text.GetFullName<T>(string.Empty));
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace GameFramework.DataTable
         /// <returns>要获取的数据表。</returns>
         public IDataTable<T> GetDataTable<T>(string name) where T : IDataRow
         {
-            return InternelGetDataTable(Utility.Text.GetFullName<T>(name)) as IDataTable<T>;
+            return (IDataTable<T>)InternelGetDataTable(Utility.Text.GetFullName<T>(name));
         }
 
         /// <summary>
@@ -283,9 +283,9 @@ namespace GameFramework.DataTable
         {
             int index = 0;
             DataTableBase[] dataTables = new DataTableBase[m_DataTables.Count];
-            foreach (DataTableBase dataTable in m_DataTables.Values)
+            foreach (KeyValuePair<string, DataTableBase> dataTable in m_DataTables)
             {
-                dataTables[index++] = dataTable;
+                dataTables[index++] = dataTable.Value;
             }
 
             return dataTables;
@@ -408,7 +408,7 @@ namespace GameFramework.DataTable
             {
                 if (m_LoadDataTableFailureEventHandler != null)
                 {
-                    m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, string.Format("{0}\n{1}", exception.Message, exception.StackTrace), userData));
+                    m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, exception.ToString(), userData));
                     return;
                 }
 

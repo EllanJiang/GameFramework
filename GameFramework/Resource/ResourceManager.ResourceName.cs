@@ -5,6 +5,8 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
+
 namespace GameFramework.Resource
 {
     internal partial class ResourceManager
@@ -12,7 +14,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 资源名称。
         /// </summary>
-        private struct ResourceName
+        private struct ResourceName : IComparable, IComparable<ResourceName>, IEquatable<ResourceName>
         {
             private readonly string m_Name;
             private readonly string m_Variant;
@@ -66,9 +68,6 @@ namespace GameFramework.Resource
                 }
             }
 
-            /// <summary>
-            /// 获取资源完整名称。
-            /// </summary>
             public string FullName
             {
                 get
@@ -77,13 +76,65 @@ namespace GameFramework.Resource
                 }
             }
 
-            /// <summary>
-            /// 获取资源完整名称。
-            /// </summary>
-            /// <returns>资源完整名称。</returns>
             public override string ToString()
             {
                 return FullName;
+            }
+
+            public override int GetHashCode()
+            {
+                if (m_Variant == null)
+                {
+                    return m_Name.GetHashCode();
+                }
+
+                return (m_Name.GetHashCode() ^ m_Variant.GetHashCode());
+            }
+
+            public override bool Equals(object value)
+            {
+                return (value is ResourceName) && (this == (ResourceName)value);
+            }
+
+            public bool Equals(ResourceName resourceName)
+            {
+                return (this == resourceName);
+            }
+
+            public static bool operator ==(ResourceName resourceName1, ResourceName resourceName2)
+            {
+                return resourceName1.CompareTo(resourceName2) == 0;
+            }
+
+            public static bool operator !=(ResourceName resourceName1, ResourceName resourceName2)
+            {
+                return resourceName1.CompareTo(resourceName2) != 0;
+            }
+
+            public int CompareTo(object value)
+            {
+                if (value == null)
+                {
+                    return 1;
+                }
+
+                if (!(value is ResourceName))
+                {
+                    throw new GameFrameworkException("Type of value is invalid.");
+                }
+
+                return CompareTo((ResourceName)value);
+            }
+
+            public int CompareTo(ResourceName resourceName)
+            {
+                int result = string.Compare(m_Name, resourceName.m_Name);
+                if (result != 0)
+                {
+                    return result;
+                }
+
+                return string.Compare(m_Variant, resourceName.m_Variant);
             }
         }
     }

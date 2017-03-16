@@ -134,11 +134,11 @@ namespace GameFramework.Resource
 
                 if (internalResourceVersion != latestInternalResourceVersion)
                 {
-                    Log.Debug("Latest internal resource version is '{0}', local resource version is '{1}'.", latestInternalResourceVersion.ToString(), internalResourceVersion.ToString());
+                    Log.Debug("Applicable game version is '{0}', latest internal resource version is '{1}', local resource version is '{2}'.", applicableGameVersion, latestInternalResourceVersion.ToString(), internalResourceVersion.ToString());
                     return CheckVersionListResult.NeedUpdate;
                 }
 
-                Log.Debug("Latest internal resource version is '{0}', local resource version is up-to-date.", latestInternalResourceVersion.ToString());
+                Log.Debug("Applicable game version is '{0}', latest internal resource version is '{1}', local resource version is up-to-date.", applicableGameVersion, latestInternalResourceVersion.ToString());
                 return CheckVersionListResult.Updated;
             }
 
@@ -161,7 +161,7 @@ namespace GameFramework.Resource
                 m_VersionListZipLength = versionListZipLength;
                 m_VersionListZipHashCode = versionListZipHashCode;
                 string versionListFileName = Utility.Path.GetResourceNameWithSuffix(VersionListFileName);
-                string latestVersionListFileName = Utility.Path.GetResourceNameWithCrc32AndSuffix(VersionListFileName, versionListHashCode);
+                string latestVersionListFileName = Utility.Path.GetResourceNameWithCrc32AndSuffix(VersionListFileName, m_VersionListHashCode);
                 string localVersionListFilePath = Utility.Path.GetCombinePath(m_ResourceManager.m_ReadWritePath, versionListFileName);
                 string latestVersionListFileUri = Utility.Path.GetRemotePath(m_ResourceManager.m_UpdatePrefixUri, latestVersionListFileName);
                 m_DownloadManager.AddDownload(localVersionListFilePath, latestVersionListFileUri, this);
@@ -169,7 +169,7 @@ namespace GameFramework.Resource
 
             private void OnDownloadSuccess(object sender, DownloadSuccessEventArgs e)
             {
-                VersionListProcessor versionListProcessor = e.UserData as VersionListProcessor;
+                VersionListProcessor versionListProcessor = (VersionListProcessor)e.UserData;
                 if (versionListProcessor == null || versionListProcessor != this)
                 {
                     return;
@@ -219,7 +219,7 @@ namespace GameFramework.Resource
 
             private void OnDownloadFailure(object sender, DownloadFailureEventArgs e)
             {
-                VersionListProcessor versionListProcessor = e.UserData as VersionListProcessor;
+                VersionListProcessor versionListProcessor = (VersionListProcessor)e.UserData;
                 if (versionListProcessor == null || versionListProcessor != this)
                 {
                     return;

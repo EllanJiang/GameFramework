@@ -290,7 +290,7 @@ namespace GameFramework.Resource
 
             private void OnDownloadStart(object sender, DownloadStartEventArgs e)
             {
-                UpdateInfo updateInfo = e.UserData as UpdateInfo;
+                UpdateInfo updateInfo = (UpdateInfo)e.UserData;
                 if (updateInfo == null)
                 {
                     return;
@@ -323,7 +323,7 @@ namespace GameFramework.Resource
 
             private void OnDownloadUpdate(object sender, DownloadUpdateEventArgs e)
             {
-                UpdateInfo updateInfo = e.UserData as UpdateInfo;
+                UpdateInfo updateInfo = (UpdateInfo)e.UserData;
                 if (updateInfo == null)
                 {
                     return;
@@ -356,7 +356,7 @@ namespace GameFramework.Resource
 
             private void OnDownloadSuccess(object sender, DownloadSuccessEventArgs e)
             {
-                UpdateInfo updateInfo = e.UserData as UpdateInfo;
+                UpdateInfo updateInfo = (UpdateInfo)e.UserData;
                 if (updateInfo == null)
                 {
                     return;
@@ -442,7 +442,7 @@ namespace GameFramework.Resource
 
             private void OnDownloadFailure(object sender, DownloadFailureEventArgs e)
             {
-                UpdateInfo updateInfo = e.UserData as UpdateInfo;
+                UpdateInfo updateInfo = (UpdateInfo)e.UserData;
                 if (updateInfo == null)
                 {
                     return;

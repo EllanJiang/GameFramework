@@ -109,48 +109,49 @@ namespace GameFramework.Resource
                 int updateCount = 0;
                 int updateTotalLength = 0;
                 int updateTotalZipLength = 0;
-                foreach (CheckInfo checkInfo in m_CheckInfos.Values)
+                foreach (KeyValuePair<ResourceName, CheckInfo> checkInfo in m_CheckInfos)
                 {
-                    checkInfo.RefreshStatus(m_CurrentVariant);
+                    CheckInfo ci = checkInfo.Value;
+                    ci.RefreshStatus(m_CurrentVariant);
 
-                    if (checkInfo.Status == CheckInfo.CheckStatus.StorageInReadOnly)
+                    if (ci.Status == CheckInfo.CheckStatus.StorageInReadOnly)
                     {
-                        ProcessResourceInfo(checkInfo.ResourceName, checkInfo.LoadType, checkInfo.Length, checkInfo.HashCode, true);
+                        ProcessResourceInfo(ci.ResourceName, ci.LoadType, ci.Length, ci.HashCode, true);
                     }
-                    else if (checkInfo.Status == CheckInfo.CheckStatus.StorageInReadWrite)
+                    else if (ci.Status == CheckInfo.CheckStatus.StorageInReadWrite)
                     {
-                        ProcessResourceInfo(checkInfo.ResourceName, checkInfo.LoadType, checkInfo.Length, checkInfo.HashCode, false);
+                        ProcessResourceInfo(ci.ResourceName, ci.LoadType, ci.Length, ci.HashCode, false);
                     }
-                    else if (checkInfo.Status == CheckInfo.CheckStatus.NeedUpdate)
+                    else if (ci.Status == CheckInfo.CheckStatus.NeedUpdate)
                     {
                         updateCount++;
-                        updateTotalLength += checkInfo.Length;
-                        updateTotalZipLength += checkInfo.ZipLength;
+                        updateTotalLength += ci.Length;
+                        updateTotalZipLength += ci.ZipLength;
 
-                        ResourceNeedUpdate(checkInfo.ResourceName, checkInfo.LoadType, checkInfo.Length, checkInfo.HashCode, checkInfo.ZipLength, checkInfo.ZipHashCode);
+                        ResourceNeedUpdate(ci.ResourceName, ci.LoadType, ci.Length, ci.HashCode, ci.ZipLength, ci.ZipHashCode);
                     }
-                    else if (checkInfo.Status == CheckInfo.CheckStatus.Disuse || checkInfo.Status == CheckInfo.CheckStatus.Unavailable)
+                    else if (ci.Status == CheckInfo.CheckStatus.Disuse || ci.Status == CheckInfo.CheckStatus.Unavailable)
                     {
                         // Do nothing.
                     }
                     else
                     {
-                        throw new GameFrameworkException(string.Format("Check resources '{0}' error with unknown status.", checkInfo.ResourceName.FullName));
+                        throw new GameFrameworkException(string.Format("Check resources '{0}' error with unknown status.", ci.ResourceName.FullName));
                     }
 
-                    if (checkInfo.NeedRemove)
+                    if (ci.NeedRemove)
                     {
                         removedCount++;
 
-                        string path = Utility.Path.GetCombinePath(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(checkInfo.ResourceName.FullName));
+                        string path = Utility.Path.GetCombinePath(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ci.ResourceName.FullName));
                         File.Delete(path);
 
-                        if (!m_ResourceManager.m_ReadWriteResourceInfos.ContainsKey(checkInfo.ResourceName))
+                        if (!m_ResourceManager.m_ReadWriteResourceInfos.ContainsKey(ci.ResourceName))
                         {
-                            throw new GameFrameworkException(string.Format("Resource '{0}' is not exist in read-write list.", checkInfo.ResourceName.FullName));
+                            throw new GameFrameworkException(string.Format("Resource '{0}' is not exist in read-write list.", ci.ResourceName.FullName));
                         }
 
-                        m_ResourceManager.m_ReadWriteResourceInfos.Remove(checkInfo.ResourceName);
+                        m_ResourceManager.m_ReadWriteResourceInfos.Remove(ci.ResourceName);
                     }
                 }
 

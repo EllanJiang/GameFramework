@@ -35,14 +35,6 @@ namespace GameFramework.Network
                     }
                 }
 
-                public byte[] Buffer
-                {
-                    get
-                    {
-                        return m_Buffer;
-                    }
-                }
-
                 public int Length
                 {
                     get
@@ -71,6 +63,11 @@ namespace GameFramework.Network
                 {
                     Length = HeaderLength;
                     ReceivedLength = 0;
+                }
+
+                public byte[] GetBuffer()
+                {
+                    return m_Buffer;
                 }
             }
         }
