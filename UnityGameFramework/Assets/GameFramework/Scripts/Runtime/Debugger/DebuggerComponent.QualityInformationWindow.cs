@@ -33,10 +33,10 @@ namespace UnityGameFramework.Runtime
                 GUILayout.Label("<b>Shadows Information</b>");
                 GUILayout.BeginVertical("box");
                 {
-#if UNITY_5_4 || UNITY_5_5
+#if UNITY_5_4_OR_NEWER
                     DrawItem("Shadow Resolution:", QualitySettings.shadowResolution.ToString());
 #endif
-#if UNITY_5_5
+#if UNITY_5_5_OR_NEWER
                     DrawItem("Shadow Quality:", QualitySettings.shadows.ToString());
 #endif
                     DrawItem("Shadow Projection:", QualitySettings.shadowProjection.ToString());
@@ -58,7 +58,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Particle Raycast Budget:", QualitySettings.particleRaycastBudget.ToString());
                     DrawItem("Async Upload Time Slice:", string.Format("{0} ms", QualitySettings.asyncUploadTimeSlice.ToString()));
                     DrawItem("Async Upload Buffer Size:", string.Format("{0} MB", QualitySettings.asyncUploadBufferSize.ToString()));
-#if UNITY_5_5
+#if UNITY_5_5_OR_NEWER
                     DrawItem("Soft Particles:", QualitySettings.softParticles.ToString());
 #endif
                     DrawItem("Soft Vegetation:", QualitySettings.softVegetation.ToString());

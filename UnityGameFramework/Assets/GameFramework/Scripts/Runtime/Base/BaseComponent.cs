@@ -19,7 +19,6 @@ namespace UnityGameFramework.Runtime
     [AddComponentMenu("Game Framework/Base")]
     public sealed class BaseComponent : GameFrameworkComponent
     {
-        private const string MinUnityVersion = "5.3";
         private const int DefaultDpi = 96;  // default windows dpi
 
         /// <summary>
@@ -210,6 +209,12 @@ namespace UnityGameFramework.Runtime
 
             Log.SetLogCallback(LogCallback);
 
+            Log.Info("Game Framework version is {0}. Unity Game Framework version is {1}.", GameFrameworkEntry.Version, GameEntry.Version);
+
+#if !UNITY_5_3 && !UNITY_5_3_OR_NEWER
+            Log.Error("Game Framework only applies with Unity 5.3 and above, but current Unity version is {0}.", Application.unityVersion);
+            GameEntry.Shutdown(ShutdownType.Quit);
+#else
             Utility.Zip.SetZipHelper(new Utility.ZipHelper());
             Utility.Json.SetJsonHelper(new Utility.JsonHelper());
 
@@ -217,15 +222,6 @@ namespace UnityGameFramework.Runtime
             if (Utility.Converter.ScreenDpi <= 0)
             {
                 Utility.Converter.ScreenDpi = DefaultDpi;
-            }
-
-            Log.Info("Game Framework version is {0}. Unity Game Framework version is {1}.", GameFrameworkEntry.Version, GameEntry.Version);
-
-            string unityVersion = Application.unityVersion;
-            if (unityVersion.CompareTo(MinUnityVersion) < 0)
-            {
-                Log.Error("Game Framework only applies with Unity {0} and above, but current Unity version is {1}.", MinUnityVersion, unityVersion);
-                return;
             }
 
             m_EditorResourceMode &= Application.isEditor;
@@ -238,6 +234,7 @@ namespace UnityGameFramework.Runtime
             Time.timeScale = m_GameSpeed;
             Application.runInBackground = m_RunInBackground;
             Screen.sleepTimeout = m_NeverSleep ? SleepTimeout.NeverSleep : SleepTimeout.SystemSetting;
+#endif
         }
 
         private void Start()

@@ -26,11 +26,11 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Processor Count:", SystemInfo.processorCount.ToString());
                     DrawItem("Processor Frequency:", string.Format("{0} MHz", SystemInfo.processorFrequency.ToString()));
                     DrawItem("Memory Size:", string.Format("{0} MB", SystemInfo.systemMemorySize.ToString()));
-#if UNITY_5_5
+#if UNITY_5_5_OR_NEWER
                     DrawItem("Operating System Family:", SystemInfo.operatingSystemFamily.ToString());
 #endif
                     DrawItem("Operating System:", SystemInfo.operatingSystem);
-#if UNITY_5_4 || UNITY_5_5
+#if UNITY_5_4_OR_NEWER
                     DrawItem("Supports Audio:", SystemInfo.supportsAudio.ToString());
 #endif
                     DrawItem("Supports Location Service:", SystemInfo.supportsLocationService.ToString());

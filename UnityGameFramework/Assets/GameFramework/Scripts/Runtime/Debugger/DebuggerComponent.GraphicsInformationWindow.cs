@@ -29,17 +29,17 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Shader Level:", GetShaderLevelString(SystemInfo.graphicsShaderLevel));
                     DrawItem("NPOT Support:", SystemInfo.npotSupport.ToString());
                     DrawItem("Max Texture Size:", SystemInfo.maxTextureSize.ToString());
-#if UNITY_5_4 || UNITY_5_5
+#if UNITY_5_4_OR_NEWER
                     DrawItem("Copy Texture Support:", SystemInfo.copyTextureSupport.ToString());
 #endif
                     DrawItem("Supported Render Target Count:", SystemInfo.supportedRenderTargetCount.ToString());
-#if UNITY_5_3 || UNITY_5_4
+#if !UNITY_5_5_OR_NEWER
                     DrawItem("Supports Stencil:", SystemInfo.supportsStencil.ToString());
                     DrawItem("Supports Render Textures:", SystemInfo.supportsRenderTextures.ToString());
 #endif
                     DrawItem("Supports Sparse Textures:", SystemInfo.supportsSparseTextures.ToString());
                     DrawItem("Supports 3D Textures:", SystemInfo.supports3DTextures.ToString());
-#if UNITY_5_4 || UNITY_5_5
+#if UNITY_5_4_OR_NEWER
                     DrawItem("Supports 2D Array Textures:", SystemInfo.supports2DArrayTextures.ToString());
 #endif
                     DrawItem("Supports Shadows:", SystemInfo.supportsShadows.ToString());
@@ -48,13 +48,13 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Supports Compute Shader:", SystemInfo.supportsComputeShaders.ToString());
                     DrawItem("Supports Instancing:", SystemInfo.supportsInstancing.ToString());
                     DrawItem("Supports Image Effects:", SystemInfo.supportsImageEffects.ToString());
-#if UNITY_5_5
+#if UNITY_5_5_OR_NEWER
                     DrawItem("Supports Cubemap Array Textures:", SystemInfo.supportsCubemapArrayTextures.ToString());
 #endif
-#if UNITY_5_4 || UNITY_5_5
+#if UNITY_5_4_OR_NEWER
                     DrawItem("Supports Motion Vectors:", SystemInfo.supportsMotionVectors.ToString());
 #endif
-#if UNITY_5_5
+#if UNITY_5_5_OR_NEWER
                     DrawItem("Uses Reversed ZBuffer:", SystemInfo.usesReversedZBuffer.ToString());
 #endif
 

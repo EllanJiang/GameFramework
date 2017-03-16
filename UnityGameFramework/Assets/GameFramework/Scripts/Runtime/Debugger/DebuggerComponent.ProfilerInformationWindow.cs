@@ -7,7 +7,7 @@
 
 using UnityEngine;
 
-#if UNITY_5_5
+#if UNITY_5_5_OR_NEWER
 
 using UnityEngine.Profiling;
 
@@ -29,7 +29,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Supported:", Profiler.supported.ToString());
                     DrawItem("Enabled:", Profiler.enabled.ToString());
                     DrawItem("Enable Binary Log:", Profiler.enableBinaryLog ? string.Format("True, {0}", Profiler.logFile) : "False");
-#if UNITY_5_3 || UNITY_5_4
+#if !UNITY_5_5_OR_NEWER
                     DrawItem("Max Samples Number Per Frame:", Profiler.maxNumberOfSamplesPerFrame.ToString());
 #endif
                     DrawItem("Mono Used Size:", string.Format("{0} MB", (Profiler.GetMonoUsedSize() / (float)MBSize).ToString("F3")));
@@ -38,7 +38,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Total Allocated Memory:", string.Format("{0} MB", (Profiler.GetTotalAllocatedMemory() / (float)MBSize).ToString("F3")));
                     DrawItem("Total Reserved Memory:", string.Format("{0} MB", (Profiler.GetTotalReservedMemory() / (float)MBSize).ToString("F3")));
                     DrawItem("Total Unused Reserved Memory:", string.Format("{0} MB", (Profiler.GetTotalUnusedReservedMemory() / (float)MBSize).ToString("F3")));
-#if UNITY_5_5
+#if UNITY_5_5_OR_NEWER
                     DrawItem("Temp Allocator Size:", string.Format("{0} MB", (Profiler.GetTempAllocatorSize() / (float)MBSize).ToString("F3")));
 #endif
                 }

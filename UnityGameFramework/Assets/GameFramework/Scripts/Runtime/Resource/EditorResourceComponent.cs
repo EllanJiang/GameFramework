@@ -728,10 +728,10 @@ namespace UnityGameFramework.Runtime
             }
 
             DateTime startTime = DateTime.Now;
-#if UNITY_5_3 || UNITY_5_4
-            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(SceneComponent.GetSceneName(sceneAssetName), LoadSceneMode.Additive);
-#else
+#if UNITY_5_5_OR_NEWER
             AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneAssetName, LoadSceneMode.Additive);
+#else
+            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(SceneComponent.GetSceneName(sceneAssetName), LoadSceneMode.Additive);
 #endif
             if (asyncOperation == null)
             {
@@ -771,7 +771,15 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-#if UNITY_5_3 || UNITY_5_4
+#if UNITY_5_5_OR_NEWER
+            AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(sceneAssetName);
+            if (asyncOperation == null)
+            {
+                return;
+            }
+
+            m_UnloadSceneInfos.AddLast(new UnloadSceneInfo(asyncOperation, sceneAssetName, unloadSceneCallbacks, userData));
+#else
             if (SceneManager.UnloadScene(SceneComponent.GetSceneName(sceneAssetName)))
             {
                 if (unloadSceneCallbacks.UnloadSceneSuccessCallback != null)
@@ -786,14 +794,6 @@ namespace UnityGameFramework.Runtime
                     unloadSceneCallbacks.UnloadSceneFailureCallback(sceneAssetName, userData);
                 }
             }
-#else
-            AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(sceneAssetName);
-            if (asyncOperation == null)
-            {
-                return;
-            }
-
-            m_UnloadSceneInfos.AddLast(new UnloadSceneInfo(asyncOperation, sceneAssetName, unloadSceneCallbacks, userData));
 #endif
         }
 

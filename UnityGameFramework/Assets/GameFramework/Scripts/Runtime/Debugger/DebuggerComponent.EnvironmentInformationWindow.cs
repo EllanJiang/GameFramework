@@ -55,9 +55,11 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Internet Reachability:", Application.internetReachability.ToString());
                     DrawItem("Background Loading Priority:", Application.backgroundLoadingPriority.ToString());
                     DrawItem("Is Playing:", Application.isPlaying.ToString());
+#if !UNITY_5_5_OR_NEWER
                     DrawItem("Is Showing Splash Screen:", Application.isShowingSplashScreen.ToString());
+#endif
                     DrawItem("Run In Background:", Application.runInBackground.ToString());
-#if UNITY_5_5
+#if UNITY_5_5_OR_NEWER
                     DrawItem("Install Name:", Application.installerName);
 #endif
                     DrawItem("Install Mode:", Application.installMode.ToString());
@@ -65,7 +67,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Is Mobile Platform:", Application.isMobilePlatform.ToString());
                     DrawItem("Is Console Platform:", Application.isConsolePlatform.ToString());
                     DrawItem("Is Editor:", Application.isEditor.ToString());
-#if UNITY_5_3
+#if !UNITY_5_4_OR_NEWER
                     DrawItem("Stack Trace Log Type:", Application.stackTraceLogType.ToString());
 #endif
                 }

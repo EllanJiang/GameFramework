@@ -35,7 +35,9 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public override void UnloadScene(string sceneAssetName, UnloadSceneCallbacks unloadSceneCallbacks, object userData)
         {
-#if UNITY_5_3 || UNITY_5_4
+#if UNITY_5_5_OR_NEWER
+            StartCoroutine(UnloadSceneCo(sceneAssetName, unloadSceneCallbacks, userData));
+#else
             if (SceneManager.UnloadScene(SceneComponent.GetSceneName(sceneAssetName)))
             {
                 if (unloadSceneCallbacks.UnloadSceneSuccessCallback != null)
@@ -50,8 +52,6 @@ namespace UnityGameFramework.Runtime
                     unloadSceneCallbacks.UnloadSceneFailureCallback(sceneAssetName, userData);
                 }
             }
-#else
-            StartCoroutine(UnloadSceneCo(sceneAssetName, unloadSceneCallbacks, userData));
 #endif
         }
 
@@ -112,7 +112,7 @@ namespace UnityGameFramework.Runtime
             }
         }
 
-#if !UNITY_5_3 && !UNITY_5_4
+#if UNITY_5_5_OR_NEWER
 
         private IEnumerator UnloadSceneCo(string sceneAssetName, UnloadSceneCallbacks unloadSceneCallbacks, object userData)
         {

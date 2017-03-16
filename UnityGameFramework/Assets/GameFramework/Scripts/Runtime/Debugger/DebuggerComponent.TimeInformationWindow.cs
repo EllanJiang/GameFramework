@@ -29,7 +29,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Fixed Delta Time", Time.fixedDeltaTime.ToString());
                     DrawItem("Smooth Delta Time", Time.smoothDeltaTime.ToString());
                     DrawItem("Maximum Delta Time", Time.maximumDeltaTime.ToString());
-#if UNITY_5_5
+#if UNITY_5_5_OR_NEWER
                     DrawItem("Maximum Particle Delta Time", Time.maximumParticleDeltaTime.ToString());
 #endif
                     DrawItem("Frame Count", Time.frameCount.ToString());
