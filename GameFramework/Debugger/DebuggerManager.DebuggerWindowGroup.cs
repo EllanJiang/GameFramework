@@ -164,7 +164,7 @@ namespace GameFramework.Debugger
                 {
                     string debuggerWindowGroupName = path.Substring(0, pos);
                     string leftPath = path.Substring(pos + 1);
-                    DebuggerWindowGroup debuggerWindowGroup = InternalGetDebuggerWindow(debuggerWindowGroupName) as DebuggerWindowGroup;
+                    DebuggerWindowGroup debuggerWindowGroup = (DebuggerWindowGroup)InternalGetDebuggerWindow(debuggerWindowGroupName);
                     if (debuggerWindowGroup == null)
                     {
                         return null;
@@ -201,7 +201,7 @@ namespace GameFramework.Debugger
                 {
                     string debuggerWindowGroupName = path.Substring(0, pos);
                     string leftPath = path.Substring(pos + 1);
-                    DebuggerWindowGroup debuggerWindowGroup = InternalGetDebuggerWindow(debuggerWindowGroupName) as DebuggerWindowGroup;
+                    DebuggerWindowGroup debuggerWindowGroup = (DebuggerWindowGroup)InternalGetDebuggerWindow(debuggerWindowGroupName);
                     if (debuggerWindowGroup == null)
                     {
                         if (InternalGetDebuggerWindow(debuggerWindowGroupName) != null)

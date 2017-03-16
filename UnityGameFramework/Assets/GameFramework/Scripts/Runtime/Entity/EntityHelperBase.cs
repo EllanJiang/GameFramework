@@ -16,6 +16,13 @@ namespace UnityGameFramework.Runtime
     public abstract class EntityHelperBase : MonoBehaviour, IEntityHelper
     {
         /// <summary>
+        /// 实例化实体。
+        /// </summary>
+        /// <param name="entityAsset">要实例化的实体资源。</param>
+        /// <returns>实例化后的实体。</returns>
+        public abstract object InstantiateEntity(object entityAsset);
+
+        /// <summary>
         /// 创建实体。
         /// </summary>
         /// <param name="entityInstance">实体实例。</param>
@@ -25,9 +32,10 @@ namespace UnityGameFramework.Runtime
         public abstract IEntity CreateEntity(object entityInstance, IEntityGroup entityGroup, object userData);
 
         /// <summary>
-        /// 释放实体实例。
+        /// 释放实体。
         /// </summary>
+        /// <param name="entityAsset">要释放的实体资源。</param>
         /// <param name="entityInstance">要释放的实体实例。</param>
-        public abstract void ReleaseEntityInstance(object entityInstance);
+        public abstract void ReleaseEntity(object entityAsset, object entityInstance);
     }
 }

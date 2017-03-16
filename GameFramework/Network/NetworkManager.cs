@@ -151,9 +151,9 @@ namespace GameFramework.Network
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
-            foreach (NetworkChannel networkChannel in m_NetworkChannels.Values)
+            foreach (KeyValuePair<string, NetworkChannel> networkChannel in (Dictionary<string, NetworkChannel>)m_NetworkChannels)
             {
-                networkChannel.Update(elapseSeconds, realElapseSeconds);
+                networkChannel.Value.Update(elapseSeconds, realElapseSeconds);
             }
 
             m_EventPool.Update(elapseSeconds, realElapseSeconds);
@@ -164,19 +164,21 @@ namespace GameFramework.Network
         /// </summary>
         internal override void Shutdown()
         {
-            foreach (NetworkChannel networkChannel in m_NetworkChannels.Values)
+            foreach (KeyValuePair<string, NetworkChannel> networkChannel in m_NetworkChannels)
             {
-                networkChannel.Close();
-                networkChannel.NetworkChannelConnected -= OnNetworkChannelConnected;
-                networkChannel.NetworkChannelClosed -= OnNetworkChannelClosed;
-                networkChannel.NetworkChannelSended -= OnNetworkChannelSended;
-                networkChannel.NetworkChannelReceived -= OnNetworkChannelReceived;
-                networkChannel.NetworkChannelMissHeartBeat -= OnNetworkChannelMissHeartBeat;
-                networkChannel.NetworkChannelError -= OnNetworkChannelError;
-                networkChannel.NetworkChannelCustomError -= OnNetworkChannelCustomError;
+                NetworkChannel nc = networkChannel.Value;
+                nc.Close();
+                nc.NetworkChannelConnected -= OnNetworkChannelConnected;
+                nc.NetworkChannelClosed -= OnNetworkChannelClosed;
+                nc.NetworkChannelSended -= OnNetworkChannelSended;
+                nc.NetworkChannelReceived -= OnNetworkChannelReceived;
+                nc.NetworkChannelMissHeartBeat -= OnNetworkChannelMissHeartBeat;
+                nc.NetworkChannelError -= OnNetworkChannelError;
+                nc.NetworkChannelCustomError -= OnNetworkChannelCustomError;
             }
 
             m_NetworkChannels.Clear();
+            m_EventPool.Shutdown();
         }
 
         /// <summary>
@@ -227,9 +229,9 @@ namespace GameFramework.Network
         {
             int index = 0;
             INetworkChannel[] networkChannels = new INetworkChannel[m_NetworkChannels.Count];
-            foreach (NetworkChannel networkChannel in m_NetworkChannels.Values)
+            foreach (KeyValuePair<string, NetworkChannel> networkChannel in m_NetworkChannels)
             {
-                networkChannels[index++] = networkChannel;
+                networkChannels[index++] = networkChannel.Value;
             }
 
             return networkChannels;

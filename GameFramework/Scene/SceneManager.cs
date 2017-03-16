@@ -49,6 +49,18 @@ namespace GameFramework.Scene
         }
 
         /// <summary>
+        /// 获取游戏框架模块优先级。
+        /// </summary>
+        /// <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
+        internal override int Priority
+        {
+            get
+            {
+                return 60;
+            }
+        }
+
+        /// <summary>
         /// 加载场景成功事件。
         /// </summary>
         public event EventHandler<LoadSceneSuccessEventArgs> LoadSceneSuccess
@@ -153,6 +165,16 @@ namespace GameFramework.Scene
         /// </summary>
         internal override void Shutdown()
         {
+            foreach (string loadedSceneAssetName in m_LoadedSceneAssetNames)
+            {
+                if (SceneIsUnloading(loadedSceneAssetName))
+                {
+                    continue;
+                }
+
+                UnloadScene(loadedSceneAssetName);
+            }
+
             m_LoadedSceneAssetNames.Clear();
             m_LoadingSceneAssetNames.Clear();
             m_UnloadingSceneAssetNames.Clear();
@@ -193,7 +215,7 @@ namespace GameFramework.Scene
         /// <returns>已加载场景的资源名称。</returns>
         public string[] GetLoadedSceneAssetNames()
         {
-            return (m_LoadedSceneAssetNames as List<string>).ToArray();
+            return ((List<string>)m_LoadedSceneAssetNames).ToArray();
         }
 
         /// <summary>
@@ -217,7 +239,7 @@ namespace GameFramework.Scene
         /// <returns>正在加载场景的资源名称。</returns>
         public string[] GetLoadingSceneAssetNames()
         {
-            return (m_LoadingSceneAssetNames as List<string>).ToArray();
+            return ((List<string>)m_LoadingSceneAssetNames).ToArray();
         }
 
         /// <summary>
@@ -241,7 +263,7 @@ namespace GameFramework.Scene
         /// <returns>正在卸载场景的资源名称。</returns>
         public string[] GetUnloadingSceneAssetNames()
         {
-            return (m_UnloadingSceneAssetNames as List<string>).ToArray();
+            return ((List<string>)m_UnloadingSceneAssetNames).ToArray();
         }
 
         /// <summary>

@@ -30,7 +30,7 @@ namespace UnityGameFramework.Editor
 
             serializedObject.Update();
 
-            ProcedureComponent t = target as ProcedureComponent;
+            ProcedureComponent t = (ProcedureComponent)target;
 
             if (string.IsNullOrEmpty(m_EntranceProcedureTypeName.stringValue))
             {

@@ -21,7 +21,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="e">内部事件。</param>
         public ShowEntityUpdateEventArgs(GameFramework.Entity.ShowEntityUpdateEventArgs e)
         {
-            ShowEntityInfo showEntityInfo = e.UserData as ShowEntityInfo;
+            ShowEntityInfo showEntityInfo = (ShowEntityInfo)e.UserData;
             EntityId = e.EntityId;
             EntityLogicType = showEntityInfo.EntityLogicType;
             EntityAssetName = e.EntityAssetName;

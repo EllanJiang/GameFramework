@@ -65,7 +65,7 @@ namespace GameFramework.Resource
             m_AssetDependencyInfos = new Dictionary<string, AssetDependencyInfo>();
             m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>();
             m_ResourceGroups = new Dictionary<string, ResourceGroup>();
-            m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>(new ResourceNameComparer());
+            m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>();
 
             m_ResourceIniter = null;
             m_VersionListProcessor = null;
@@ -968,47 +968,6 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 异步实例化资源。
-        /// </summary>
-        /// <param name="assetName">要实例化资源的名称。</param>
-        /// <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-        public void InstantiateAsset(string assetName, InstantiateAssetCallbacks instantiateAssetCallbacks)
-        {
-            if (string.IsNullOrEmpty(assetName))
-            {
-                throw new GameFrameworkException("Asset name is invalid.");
-            }
-
-            if (instantiateAssetCallbacks == null)
-            {
-                throw new GameFrameworkException("Instantiate asset callbacks is invalid.");
-            }
-
-            m_ResourceLoader.InstantiateAsset(assetName, instantiateAssetCallbacks, null);
-        }
-
-        /// <summary>
-        /// 异步实例化资源。
-        /// </summary>
-        /// <param name="assetName">要实例化资源的名称。</param>
-        /// <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public void InstantiateAsset(string assetName, InstantiateAssetCallbacks instantiateAssetCallbacks, object userData)
-        {
-            if (string.IsNullOrEmpty(assetName))
-            {
-                throw new GameFrameworkException("Asset name is invalid.");
-            }
-
-            if (instantiateAssetCallbacks == null)
-            {
-                throw new GameFrameworkException("Instantiate asset callbacks is invalid.");
-            }
-
-            m_ResourceLoader.InstantiateAsset(assetName, instantiateAssetCallbacks, userData);
-        }
-
-        /// <summary>
         /// 异步加载场景。
         /// </summary>
         /// <param name="sceneAssetName">要加载场景资源的名称。</param>
@@ -1091,14 +1050,14 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 回收资源或资源实例。
+        /// 卸载资源。
         /// </summary>
-        /// <param name="assetOrInstance">要回收的资源或资源实例。</param>
-        public void Recycle(object assetOrInstance)
+        /// <param name="asset">要卸载的资源。</param>
+        public void UnloadAsset(object asset)
         {
-            if (assetOrInstance == null)
+            if (asset == null)
             {
-                throw new GameFrameworkException("Asset or instance is invalid.");
+                throw new GameFrameworkException("Asset is invalid.");
             }
 
             if (m_ResourceLoader == null)
@@ -1106,7 +1065,7 @@ namespace GameFramework.Resource
                 return;
             }
 
-            m_ResourceLoader.Recycle(assetOrInstance);
+            m_ResourceLoader.UnloadAsset(asset);
         }
 
         /// <summary>

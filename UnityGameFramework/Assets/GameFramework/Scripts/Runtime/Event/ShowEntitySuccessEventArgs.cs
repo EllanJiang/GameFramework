@@ -21,10 +21,10 @@ namespace UnityGameFramework.Runtime
         /// <param name="e">内部事件。</param>
         public ShowEntitySuccessEventArgs(GameFramework.Entity.ShowEntitySuccessEventArgs e)
         {
-            ShowEntityInfo showEntityInfo = e.UserData as ShowEntityInfo;
+            ShowEntityInfo showEntityInfo = (ShowEntityInfo)e.UserData;
             EntityLogicType = showEntityInfo.EntityLogicType;
             EntityAssetName = e.EntityAssetName;
-            Entity = e.Entity as Entity;
+            Entity = (Entity)e.Entity;
             Duration = e.Duration;
             UserData = showEntityInfo.UserData;
         }

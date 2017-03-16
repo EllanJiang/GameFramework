@@ -97,7 +97,7 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 游戏框架组件初始化。
         /// </summary>
-        protected internal override void Awake()
+        protected override void Awake()
         {
             base.Awake();
 
@@ -127,6 +127,7 @@ namespace UnityGameFramework.Runtime
             {
                 m_InstanceRoot = (new GameObject("Web Request Agent Instances")).transform;
                 m_InstanceRoot.SetParent(gameObject.transform);
+                m_InstanceRoot.localScale = Vector3.one;
             }
 
             for (int i = 0; i < m_WebRequestAgentHelperCount; i++)

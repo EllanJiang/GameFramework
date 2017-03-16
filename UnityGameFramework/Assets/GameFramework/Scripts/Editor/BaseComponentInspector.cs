@@ -30,7 +30,7 @@ namespace UnityGameFramework.Editor
 
             serializedObject.Update();
 
-            BaseComponent t = target as BaseComponent;
+            BaseComponent t = (BaseComponent)target;
 
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
             {

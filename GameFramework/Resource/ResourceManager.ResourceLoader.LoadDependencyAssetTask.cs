@@ -22,14 +22,6 @@ namespace GameFramework.Resource
                     m_MainTask.TotalDependencyAssetCount++;
                 }
 
-                public override bool IsInstantiate
-                {
-                    get
-                    {
-                        return false;
-                    }
-                }
-
                 public override bool IsScene
                 {
                     get
@@ -38,16 +30,16 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public override void OnLoadSuccess(LoadResourceAgent agent, object asset, object instance, float duration)
+                public override void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)
                 {
-                    base.OnLoadSuccess(agent, asset, instance, duration);
+                    base.OnLoadAssetSuccess(agent, asset, duration);
                     m_MainTask.OnLoadDependencyAsset(agent, AssetName, asset);
                 }
 
-                public override void OnLoadFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)
+                public override void OnLoadAssetFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)
                 {
-                    base.OnLoadFailure(agent, status, errorMessage);
-                    m_MainTask.OnLoadFailure(agent, LoadResourceStatus.DependencyError, string.Format("Can not load dependency asset '{0}', internal status '{1}', internal error message '{2}'.", AssetName, status.ToString(), errorMessage));
+                    base.OnLoadAssetFailure(agent, status, errorMessage);
+                    m_MainTask.OnLoadAssetFailure(agent, LoadResourceStatus.DependencyError, string.Format("Can not load dependency asset '{0}', internal status '{1}', internal error message '{2}'.", AssetName, status.ToString(), errorMessage));
                 }
             }
         }

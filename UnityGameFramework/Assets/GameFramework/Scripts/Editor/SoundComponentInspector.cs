@@ -30,7 +30,7 @@ namespace UnityGameFramework.Editor
 
             serializedObject.Update();
 
-            SoundComponent t = target as SoundComponent;
+            SoundComponent t = (SoundComponent)target;
 
             EditorGUILayout.PropertyField(m_EnablePlaySoundSuccessEvent);
             EditorGUILayout.PropertyField(m_EnablePlaySoundFailureEvent);

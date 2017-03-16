@@ -184,9 +184,9 @@ namespace GameFramework.Fsm
                 m_CurrentStateTime = 0f;
             }
 
-            foreach (FsmState<T> state in m_States.Values)
+            foreach (KeyValuePair<string, FsmState<T>> state in m_States)
             {
-                state.OnDestroy(this);
+                state.Value.OnDestroy(this);
             }
 
             m_States.Clear();
@@ -253,7 +253,7 @@ namespace GameFramework.Fsm
         /// <returns>要获取的有限状态机状态。</returns>
         public TState GetState<TState>() where TState : FsmState<T>
         {
-            return GetState(typeof(TState)) as TState;
+            return (TState)GetState(typeof(TState));
         }
 
         /// <summary>
@@ -347,7 +347,7 @@ namespace GameFramework.Fsm
         /// <returns>要获取的有限状态机数据。</returns>
         public TData GetData<TData>(string name) where TData : Variable
         {
-            return GetData(name) as TData;
+            return (TData)GetData(name);
         }
 
         /// <summary>

@@ -22,7 +22,7 @@ namespace GameFramework.Entity
         private readonly HashSet<int> m_EntitiesBeingLoaded;
         private readonly HashSet<int> m_EntitiesToReleaseOnLoad;
         private readonly LinkedList<RecycleNode> m_RecycleQueue;
-        private readonly InstantiateAssetCallbacks m_InstantiateAssetCallbacks;
+        private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
         private IObjectPoolManager m_ObjectPoolManager;
         private IResourceManager m_ResourceManager;
         private IEntityHelper m_EntityHelper;
@@ -42,7 +42,7 @@ namespace GameFramework.Entity
             m_EntitiesBeingLoaded = new HashSet<int>();
             m_EntitiesToReleaseOnLoad = new HashSet<int>();
             m_RecycleQueue = new LinkedList<RecycleNode>();
-            m_InstantiateAssetCallbacks = new InstantiateAssetCallbacks(InstantiateEntitySuccessCallback, InstantiateEntityFailureCallback, InstantiateEntityUpdateCallback, InstantiateEntityDependencyAssetCallback);
+            m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadEntitySuccessCallback, LoadEntityFailureCallback, LoadEntityUpdateCallback, LoadEntityDependencyAssetCallback);
             m_ObjectPoolManager = null;
             m_ResourceManager = null;
             m_EntityHelper = null;
@@ -169,7 +169,7 @@ namespace GameFramework.Entity
                 m_RecycleQueue.RemoveFirst();
                 EntityInfo entityInfo = recycleNode.EntityInfo;
                 IEntity entity = entityInfo.Entity;
-                EntityGroup entityGroup = entity.EntityGroup as EntityGroup;
+                EntityGroup entityGroup = (EntityGroup)entity.EntityGroup;
                 if (entityGroup == null)
                 {
                     throw new GameFrameworkException("Entity group is invalid.");
@@ -181,9 +181,9 @@ namespace GameFramework.Entity
                 entityGroup.UnspawnEntity(entity);
             }
 
-            foreach (EntityGroup entityGroup in m_EntityGroups.Values)
+            foreach (KeyValuePair<string, EntityGroup> entityGroup in (Dictionary<string, EntityGroup>)m_EntityGroups)
             {
-                entityGroup.Update(elapseSeconds, realElapseSeconds);
+                entityGroup.Value.Update(elapseSeconds, realElapseSeconds);
             }
         }
 
@@ -285,9 +285,9 @@ namespace GameFramework.Entity
         {
             int index = 0;
             IEntityGroup[] entityGroups = new IEntityGroup[m_EntityGroups.Count];
-            foreach (EntityGroup entityGroup in m_EntityGroups.Values)
+            foreach (KeyValuePair<string, EntityGroup> entityGroup in m_EntityGroups)
             {
-                entityGroups[index++] = entityGroup;
+                entityGroups[index++] = entityGroup.Value;
             }
 
             return entityGroups;
@@ -364,9 +364,9 @@ namespace GameFramework.Entity
         {
             int index = 0;
             IEntity[] entities = new IEntity[m_EntityInfos.Count];
-            foreach (EntityInfo entityInfo in m_EntityInfos.Values)
+            foreach (KeyValuePair<int, EntityInfo> entityInfo in m_EntityInfos)
             {
-                entities[index++] = entityInfo.Entity;
+                entities[index++] = entityInfo.Value.Entity;
             }
 
             return entities;
@@ -432,7 +432,7 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException(string.Format("Entity id '{0}' is already exist.", entityId.ToString()));
             }
 
-            EntityGroup entityGroup = GetEntityGroup(entityGroupName) as EntityGroup;
+            EntityGroup entityGroup = (EntityGroup)GetEntityGroup(entityGroupName);
             if (entityGroup == null)
             {
                 throw new GameFrameworkException(string.Format("Entity group '{0}' is not exist.", entityGroupName));
@@ -447,7 +447,7 @@ namespace GameFramework.Entity
                 }
 
                 m_EntitiesBeingLoaded.Add(entityId);
-                m_ResourceManager.InstantiateAsset(entityAssetName, m_InstantiateAssetCallbacks, new ShowEntityInfo(entityId, entityGroupName, userData));
+                m_ResourceManager.LoadAsset(entityAssetName, m_LoadAssetCallbacks, new ShowEntityInfo(entityId, entityGroupName, userData));
                 return;
             }
 
@@ -862,7 +862,7 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException("Entity is invalid.");
             }
 
-            EntityGroup entityGroup = entity.EntityGroup as EntityGroup;
+            EntityGroup entityGroup = (EntityGroup)entity.EntityGroup;
             if (entityGroup == null)
             {
                 throw new GameFrameworkException("Entity group is invalid.");
@@ -883,7 +883,7 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException("Entity is invalid.");
             }
 
-            EntityGroup entityGroup = entity.EntityGroup as EntityGroup;
+            EntityGroup entityGroup = (EntityGroup)entity.EntityGroup;
             if (entityGroup == null)
             {
                 throw new GameFrameworkException("Entity group is invalid.");
@@ -912,7 +912,7 @@ namespace GameFramework.Entity
         {
             try
             {
-                EntityGroup entityGroup = GetEntityGroup(entityGroupName) as EntityGroup;
+                EntityGroup entityGroup = (EntityGroup)GetEntityGroup(entityGroupName);
                 if (entityGroup == null)
                 {
                     throw new GameFrameworkException(string.Format("Entity group '{0}' is invalid.", entityGroupName));
@@ -943,7 +943,7 @@ namespace GameFramework.Entity
             {
                 if (m_ShowEntityFailureEventHandler != null)
                 {
-                    m_ShowEntityFailureEventHandler(this, new ShowEntityFailureEventArgs(entityId, entityAssetName, entityGroupName, string.Format("{0}\n{1}", exception.Message, exception.StackTrace), userData));
+                    m_ShowEntityFailureEventHandler(this, new ShowEntityFailureEventArgs(entityId, entityAssetName, entityGroupName, exception.ToString(), userData));
                     return;
                 }
 
@@ -965,7 +965,7 @@ namespace GameFramework.Entity
             entity.OnHide(userData);
             entityInfo.Status = EntityStatus.Hidden;
 
-            EntityGroup entityGroup = entity.EntityGroup as EntityGroup;
+            EntityGroup entityGroup = (EntityGroup)entity.EntityGroup;
             if (entityGroup == null)
             {
                 throw new GameFrameworkException("Entity group is invalid.");
@@ -986,9 +986,9 @@ namespace GameFramework.Entity
             m_RecycleQueue.AddLast(new RecycleNode(entityInfo));
         }
 
-        private void InstantiateEntitySuccessCallback(string entityAssetName, object entityInstance, float duration, object userData)
+        private void LoadEntitySuccessCallback(string entityAssetName, object entityAsset, float duration, object userData)
         {
-            ShowEntityInfo showEntityInfo = userData as ShowEntityInfo;
+            ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
             if (showEntityInfo == null)
             {
                 throw new GameFrameworkException("Show entity info is invalid.");
@@ -999,25 +999,25 @@ namespace GameFramework.Entity
             {
                 Log.Debug("Release entity '{0}' on loading success.", showEntityInfo.EntityId.ToString());
                 m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.EntityId);
-                m_EntityHelper.ReleaseEntityInstance(entityInstance);
+                m_EntityHelper.ReleaseEntity(entityAsset, null);
                 return;
             }
 
-            EntityGroup entityGroup = GetEntityGroup(showEntityInfo.EntityGroupName) as EntityGroup;
+            EntityGroup entityGroup = (EntityGroup)GetEntityGroup(showEntityInfo.EntityGroupName);
             if (entityGroup == null)
             {
                 throw new GameFrameworkException(string.Format("Entity group '{0}' is not exist.", showEntityInfo.EntityGroupName));
             }
 
-            EntityInstanceObject entityInstanceObject = new EntityInstanceObject(entityAssetName, entityInstance, m_EntityHelper);
+            EntityInstanceObject entityInstanceObject = new EntityInstanceObject(entityAssetName, entityAsset, m_EntityHelper.InstantiateEntity(entityAsset), m_EntityHelper);
             entityGroup.RegisterEntityInstanceObject(entityInstanceObject, true);
 
             InternalShowEntity(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroupName, entityInstanceObject.Target, true, duration, showEntityInfo.UserData);
         }
 
-        private void InstantiateEntityFailureCallback(string entityAssetName, LoadResourceStatus status, string errorMessage, object userData)
+        private void LoadEntityFailureCallback(string entityAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
-            ShowEntityInfo showEntityInfo = userData as ShowEntityInfo;
+            ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
             if (showEntityInfo == null)
             {
                 throw new GameFrameworkException("Show entity info is invalid.");
@@ -1034,9 +1034,9 @@ namespace GameFramework.Entity
             throw new GameFrameworkException(appendErrorMessage);
         }
 
-        private void InstantiateEntityUpdateCallback(string entityAssetName, float progress, object userData)
+        private void LoadEntityUpdateCallback(string entityAssetName, float progress, object userData)
         {
-            ShowEntityInfo showEntityInfo = userData as ShowEntityInfo;
+            ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
             if (showEntityInfo == null)
             {
                 throw new GameFrameworkException("Show entity info is invalid.");
@@ -1048,9 +1048,9 @@ namespace GameFramework.Entity
             }
         }
 
-        private void InstantiateEntityDependencyAssetCallback(string entityAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
+        private void LoadEntityDependencyAssetCallback(string entityAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
-            ShowEntityInfo showEntityInfo = userData as ShowEntityInfo;
+            ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
             if (showEntityInfo == null)
             {
                 throw new GameFrameworkException("Show entity info is invalid.");

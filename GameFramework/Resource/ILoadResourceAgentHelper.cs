@@ -72,13 +72,6 @@ namespace GameFramework.Resource
         void LoadAsset(object resource, string resourceChildName, bool isScene);
 
         /// <summary>
-        /// 实例化资源。
-        /// </summary>
-        /// <param name="asset">要实例化的资源。</param>
-        /// <returns>实例化后的资源。</returns>
-        object Instantiate(object asset);
-
-        /// <summary>
         /// 重置加载资源代理辅助器。
         /// </summary>
         void Reset();

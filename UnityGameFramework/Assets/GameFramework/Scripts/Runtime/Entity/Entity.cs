@@ -85,7 +85,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            ShowEntityInfo showEntityInfo = userData as ShowEntityInfo;
+            ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
             Type entityLogicType = showEntityInfo.EntityLogicType;
             if (entityLogicType == null)
             {
@@ -117,7 +117,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void OnShow(object userData)
         {
-            ShowEntityInfo showEntityInfo = userData as ShowEntityInfo;
+            ShowEntityInfo showEntityInfo = (ShowEntityInfo)userData;
             m_EntityLogic.OnShow(showEntityInfo.UserData);
         }
 
@@ -138,8 +138,8 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void OnAttached(IEntity childEntity, object userData)
         {
-            AttachEntityInfo attachEntityInfo = userData as AttachEntityInfo;
-            m_EntityLogic.OnAttached((childEntity as Entity).Logic, attachEntityInfo.ParentTransform, attachEntityInfo.UserData);
+            AttachEntityInfo attachEntityInfo = (AttachEntityInfo)userData;
+            m_EntityLogic.OnAttached(((Entity)childEntity).Logic, attachEntityInfo.ParentTransform, attachEntityInfo.UserData);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void OnDetached(IEntity childEntity, object userData)
         {
-            m_EntityLogic.OnDetached((childEntity as Entity).Logic, userData);
+            m_EntityLogic.OnDetached(((Entity)childEntity).Logic, userData);
         }
 
         /// <summary>
@@ -159,8 +159,8 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void OnAttachTo(IEntity parentEntity, object userData)
         {
-            AttachEntityInfo attachEntityInfo = userData as AttachEntityInfo;
-            m_EntityLogic.OnAttachTo((parentEntity as Entity).Logic, attachEntityInfo.ParentTransform, attachEntityInfo.UserData);
+            AttachEntityInfo attachEntityInfo = (AttachEntityInfo)userData;
+            m_EntityLogic.OnAttachTo(((Entity)parentEntity).Logic, attachEntityInfo.ParentTransform, attachEntityInfo.UserData);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void OnDetachFrom(IEntity parentEntity, object userData)
         {
-            m_EntityLogic.OnDetachFrom((parentEntity as Entity).Logic, userData);
+            m_EntityLogic.OnDetachFrom(((Entity)parentEntity).Logic, userData);
         }
 
         /// <summary>

@@ -22,7 +22,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="e">内部事件。</param>
         public WebRequestSuccessEventArgs(GameFramework.WebRequest.WebRequestSuccessEventArgs e)
         {
-            WWWFormInfo wwwFormInfo = e.UserData as WWWFormInfo;
+            WWWFormInfo wwwFormInfo = (WWWFormInfo)e.UserData;
             SerialId = e.SerialId;
             WebRequestUri = e.WebRequestUri;
             m_WebResponseBytes = e.GetWebResponseBytes();

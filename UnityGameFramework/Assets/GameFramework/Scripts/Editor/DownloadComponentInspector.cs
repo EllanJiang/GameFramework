@@ -26,7 +26,7 @@ namespace UnityGameFramework.Editor
 
             serializedObject.Update();
 
-            DownloadComponent t = target as DownloadComponent;
+            DownloadComponent t = (DownloadComponent)target;
 
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
             {

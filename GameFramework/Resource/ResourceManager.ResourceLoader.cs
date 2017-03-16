@@ -19,7 +19,6 @@ namespace GameFramework.Resource
         {
             private readonly ResourceManager m_ResourceManager;
             private readonly TaskPool<LoadResourceTaskBase> m_TaskPool;
-            private readonly IDictionary<object, object> m_InstanceToAssetMap;
             private readonly IDictionary<string, object> m_SceneToAssetMap;
             private IObjectPool<AssetObject> m_AssetPool;
             private IObjectPool<ResourceObject> m_ResourcePool;
@@ -32,7 +31,6 @@ namespace GameFramework.Resource
             {
                 m_ResourceManager = resourceManager;
                 m_TaskPool = new TaskPool<LoadResourceTaskBase>();
-                m_InstanceToAssetMap = new Dictionary<object, object>();
                 m_SceneToAssetMap = new Dictionary<string, object>();
                 m_AssetPool = null;
                 m_ResourcePool = null;
@@ -218,7 +216,6 @@ namespace GameFramework.Resource
             public void Shutdown()
             {
                 m_TaskPool.Shutdown();
-                m_InstanceToAssetMap.Clear();
                 m_SceneToAssetMap.Clear();
             }
 
@@ -296,47 +293,12 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 异步实例化资源。
+            /// 卸载资源。
             /// </summary>
-            /// <param name="assetName">要实例化资源的名称。</param>
-            /// <param name="instantiateAssetCallbacks">实例化资源回调函数集。</param>
-            /// <param name="userData">用户自定义数据。</param>
-            public void InstantiateAsset(string assetName, InstantiateAssetCallbacks instantiateAssetCallbacks, object userData)
+            /// <param name="asset">要卸载的资源。</param>
+            public void UnloadAsset(object asset)
             {
-                ResourceInfo? resourceInfo = null;
-                string[] dependencyAssetNames = null;
-                string[] scatteredDependencyAssetNames = null;
-                string resourceChildName = null;
-
-                if (!CheckAsset(assetName, out resourceInfo, out dependencyAssetNames, out scatteredDependencyAssetNames, out resourceChildName))
-                {
-                    string errorMessage = string.Format("Can not instantiate asset '{0}'.", assetName);
-                    if (instantiateAssetCallbacks.InstantiateAssetFailureCallback != null)
-                    {
-                        instantiateAssetCallbacks.InstantiateAssetFailureCallback(assetName, LoadResourceStatus.NotReady, errorMessage, userData);
-                        return;
-                    }
-
-                    throw new GameFrameworkException(errorMessage);
-                }
-
-                InstantiateAssetTask mainTask = new InstantiateAssetTask(assetName, resourceInfo.Value, dependencyAssetNames, scatteredDependencyAssetNames, resourceChildName, instantiateAssetCallbacks, userData);
-                foreach (string dependencyAssetName in dependencyAssetNames)
-                {
-                    if (!LoadDependencyAsset(dependencyAssetName, mainTask, userData))
-                    {
-                        string errorMessage = string.Format("Can not load dependency asset '{0}' when instantiate asset '{1}'.", dependencyAssetName, assetName);
-                        if (instantiateAssetCallbacks.InstantiateAssetFailureCallback != null)
-                        {
-                            instantiateAssetCallbacks.InstantiateAssetFailureCallback(assetName, LoadResourceStatus.DependencyError, errorMessage, userData);
-                            return;
-                        }
-
-                        throw new GameFrameworkException(errorMessage);
-                    }
-                }
-
-                m_TaskPool.AddTask(mainTask);
+                m_AssetPool.Unspawn(asset);
             }
 
             /// <summary>
@@ -408,24 +370,6 @@ namespace GameFramework.Resource
                 }
 
                 m_ResourceManager.m_ResourceHelper.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
-            }
-
-            /// <summary>
-            /// 回收资源或资源实例。
-            /// </summary>
-            /// <param name="assetOrInstance">要回收的资源或资源实例。</param>
-            public void Recycle(object assetOrInstance)
-            {
-                object asset = null;
-                if (m_InstanceToAssetMap.TryGetValue(assetOrInstance, out asset))
-                {
-                    m_InstanceToAssetMap.Remove(assetOrInstance);
-                    m_AssetPool.Unspawn(asset);
-                }
-                else
-                {
-                    m_AssetPool.Unspawn(assetOrInstance);
-                }
             }
 
             private bool LoadDependencyAsset(string assetName, LoadResourceTaskBase mainTask, object userData)

@@ -66,7 +66,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            WWWFormInfo wwwFormInfo = userData as WWWFormInfo;
+            WWWFormInfo wwwFormInfo = (WWWFormInfo)userData;
             if (wwwFormInfo.WWWForm == null)
             {
                 m_WWW = new WWW(webRequestUri);

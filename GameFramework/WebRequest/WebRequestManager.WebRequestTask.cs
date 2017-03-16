@@ -95,17 +95,6 @@ namespace GameFramework.WebRequest
             }
 
             /// <summary>
-            /// 获取要发送的数据流。
-            /// </summary>
-            public byte[] PostData
-            {
-                get
-                {
-                    return m_PostData;
-                }
-            }
-
-            /// <summary>
             /// 获取 Web 请求超时时长，以秒为单位。
             /// </summary>
             public float Timeout
@@ -125,6 +114,14 @@ namespace GameFramework.WebRequest
                 {
                     return m_UserData;
                 }
+            }
+
+            /// <summary>
+            /// 获取要发送的数据流。
+            /// </summary>
+            public byte[] GetPostData()
+            {
+                return m_PostData;
             }
         }
     }

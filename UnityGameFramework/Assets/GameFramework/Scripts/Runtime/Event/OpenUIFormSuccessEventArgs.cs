@@ -21,7 +21,7 @@ namespace UnityGameFramework.Runtime
         public OpenUIFormSuccessEventArgs(GameFramework.UI.OpenUIFormSuccessEventArgs e)
         {
             UIFormAssetName = e.UIFormAssetName;
-            UIForm = e.UIForm as UIForm;
+            UIForm = (UIForm)e.UIForm;
             Duration = e.Duration;
             UserData = e.UserData;
         }

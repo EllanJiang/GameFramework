@@ -43,6 +43,9 @@ namespace UnityGameFramework.Runtime
         private GUISkin m_Skin = null;
 
         [SerializeField]
+        private DebuggerActiveWindowType m_ActiveWindow = DebuggerActiveWindowType.Auto;
+
+        [SerializeField]
         private bool m_ShowFullWindow = false;
 
         [SerializeField]
@@ -93,6 +96,7 @@ namespace UnityGameFramework.Runtime
             set
             {
                 m_DebuggerManager.ActiveWindow = value;
+                enabled = value;
             }
         }
 
@@ -159,7 +163,7 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 游戏框架组件初始化。
         /// </summary>
-        protected internal override void Awake()
+        protected override void Awake()
         {
             base.Awake();
 
@@ -170,7 +174,15 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            ActiveWindow = Debug.isDebugBuild;
+            if (m_ActiveWindow == DebuggerActiveWindowType.Auto)
+            {
+                ActiveWindow = Debug.isDebugBuild;
+            }
+            else
+            {
+                ActiveWindow = (m_ActiveWindow == DebuggerActiveWindowType.Open);
+            }
+
             m_FpsCounter = new FpsCounter(0.5f);
         }
 

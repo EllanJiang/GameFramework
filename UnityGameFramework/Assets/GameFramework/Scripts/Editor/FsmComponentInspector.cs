@@ -24,7 +24,7 @@ namespace UnityGameFramework.Editor
                 return;
             }
 
-            FsmComponent t = target as FsmComponent;
+            FsmComponent t = (FsmComponent)target;
 
             EditorGUILayout.LabelField("FSM Count", t.Count.ToString());
 

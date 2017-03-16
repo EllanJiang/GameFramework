@@ -58,9 +58,9 @@ namespace GameFramework.ObjectPool
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
-            foreach (ObjectPoolBase objectPool in m_ObjectPools.Values)
+            foreach (KeyValuePair<string, ObjectPoolBase> objectPool in (Dictionary<string, ObjectPoolBase>)m_ObjectPools)
             {
-                objectPool.Update(elapseSeconds, realElapseSeconds);
+                objectPool.Value.Update(elapseSeconds, realElapseSeconds);
             }
         }
 
@@ -69,9 +69,9 @@ namespace GameFramework.ObjectPool
         /// </summary>
         internal override void Shutdown()
         {
-            foreach (ObjectPoolBase objectPool in m_ObjectPools.Values)
+            foreach (KeyValuePair<string, ObjectPoolBase> objectPool in m_ObjectPools)
             {
-                objectPool.Shutdown();
+                objectPool.Value.Shutdown();
             }
 
             m_ObjectPools.Clear();
@@ -119,7 +119,7 @@ namespace GameFramework.ObjectPool
             ObjectPoolBase objectPool = null;
             if (m_ObjectPools.TryGetValue(Utility.Text.GetFullName<T>(name), out objectPool))
             {
-                return objectPool as IObjectPool<T>;
+                return (IObjectPool<T>)objectPool;
             }
 
             return null;
@@ -151,9 +151,9 @@ namespace GameFramework.ObjectPool
             {
                 int index = 0;
                 ObjectPoolBase[] objectPools = new ObjectPoolBase[m_ObjectPools.Count];
-                foreach (ObjectPoolBase objectPool in m_ObjectPools.Values)
+                foreach (KeyValuePair<string, ObjectPoolBase> objectPool in m_ObjectPools)
                 {
-                    objectPools[index++] = objectPool;
+                    objectPools[index++] = objectPool.Value;
                 }
 
                 return objectPools;
