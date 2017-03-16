@@ -62,9 +62,9 @@ namespace GameFramework.Fsm
                 return;
             }
 
-            foreach (FsmBase fsm in m_Fsms.Values)
+            foreach (KeyValuePair<string, FsmBase> fsm in m_Fsms)
             {
-                m_TempFsms.Add(fsm);
+                m_TempFsms.Add(fsm.Value);
             }
 
             foreach (FsmBase fsm in m_TempFsms)
@@ -83,9 +83,9 @@ namespace GameFramework.Fsm
         /// </summary>
         internal override void Shutdown()
         {
-            foreach (FsmBase fsm in m_Fsms.Values)
+            foreach (KeyValuePair<string, FsmBase> fsm in m_Fsms)
             {
-                fsm.Shutdown();
+                fsm.Value.Shutdown();
             }
 
             m_Fsms.Clear();
@@ -148,9 +148,9 @@ namespace GameFramework.Fsm
         {
             int index = 0;
             FsmBase[] fsms = new FsmBase[m_Fsms.Count];
-            foreach (FsmBase fsm in m_Fsms.Values)
+            foreach (KeyValuePair<string, FsmBase> fsm in m_Fsms)
             {
-                fsms[index++] = fsm;
+                fsms[index++] = fsm.Value;
             }
 
             return fsms;

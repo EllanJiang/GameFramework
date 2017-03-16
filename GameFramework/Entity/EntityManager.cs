@@ -181,9 +181,9 @@ namespace GameFramework.Entity
                 entityGroup.UnspawnEntity(entity);
             }
 
-            foreach (EntityGroup entityGroup in m_EntityGroups.Values)
+            foreach (KeyValuePair<string, EntityGroup> entityGroup in m_EntityGroups)
             {
-                entityGroup.Update(elapseSeconds, realElapseSeconds);
+                entityGroup.Value.Update(elapseSeconds, realElapseSeconds);
             }
         }
 
@@ -285,9 +285,9 @@ namespace GameFramework.Entity
         {
             int index = 0;
             IEntityGroup[] entityGroups = new IEntityGroup[m_EntityGroups.Count];
-            foreach (EntityGroup entityGroup in m_EntityGroups.Values)
+            foreach (KeyValuePair<string, EntityGroup> entityGroup in m_EntityGroups)
             {
-                entityGroups[index++] = entityGroup;
+                entityGroups[index++] = entityGroup.Value;
             }
 
             return entityGroups;
@@ -364,9 +364,9 @@ namespace GameFramework.Entity
         {
             int index = 0;
             IEntity[] entities = new IEntity[m_EntityInfos.Count];
-            foreach (EntityInfo entityInfo in m_EntityInfos.Values)
+            foreach (KeyValuePair<int, EntityInfo> entityInfo in m_EntityInfos)
             {
-                entities[index++] = entityInfo.Entity;
+                entities[index++] = entityInfo.Value.Entity;
             }
 
             return entities;

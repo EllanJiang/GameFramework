@@ -122,9 +122,9 @@ namespace GameFramework.DataTable
                     throw new GameFrameworkException("Condition is invalid.");
                 }
 
-                foreach (T dataRow in m_DataSet.Values)
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
                 {
-                    if (condition(dataRow))
+                    if (condition(dataRow.Value))
                     {
                         return true;
                     }
@@ -162,11 +162,12 @@ namespace GameFramework.DataTable
                     throw new GameFrameworkException("Condition is invalid.");
                 }
 
-                foreach (T dataRow in m_DataSet.Values)
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
                 {
-                    if (condition(dataRow))
+                    T dr = dataRow.Value;
+                    if (condition(dr))
                     {
-                        return dataRow;
+                        return dr;
                     }
                 }
 
@@ -220,9 +221,9 @@ namespace GameFramework.DataTable
             {
                 int index = 0;
                 T[] allDataRows = new T[m_DataSet.Count];
-                foreach (T dataRow in m_DataSet.Values)
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
                 {
-                    allDataRows[index++] = dataRow;
+                    allDataRows[index++] = dataRow.Value;
                 }
 
                 return allDataRows;
@@ -241,11 +242,12 @@ namespace GameFramework.DataTable
                 }
 
                 List<T> results = new List<T>();
-                foreach (T dataRow in m_DataSet.Values)
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
                 {
-                    if (condition(dataRow))
+                    T dr = dataRow.Value;
+                    if (condition(dr))
                     {
-                        results.Add(dataRow);
+                        results.Add(dr);
                     }
                 }
 
@@ -265,9 +267,9 @@ namespace GameFramework.DataTable
                 }
 
                 List<T> allDataRows = new List<T>();
-                foreach (T dataRow in m_DataSet.Values)
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
                 {
-                    allDataRows.Add(dataRow);
+                    allDataRows.Add(dataRow.Value);
                 }
 
                 allDataRows.Sort(comparison);
@@ -293,11 +295,12 @@ namespace GameFramework.DataTable
                 }
 
                 List<T> results = new List<T>();
-                foreach (T dataRow in m_DataSet.Values)
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
                 {
-                    if (condition(dataRow))
+                    T dr = dataRow.Value;
+                    if (condition(dr))
                     {
-                        results.Add(dataRow);
+                        results.Add(dr);
                     }
                 }
 

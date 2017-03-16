@@ -184,9 +184,9 @@ namespace GameFramework.Fsm
                 m_CurrentStateTime = 0f;
             }
 
-            foreach (FsmState<T> state in m_States.Values)
+            foreach (KeyValuePair<string, FsmState<T>> state in m_States)
             {
-                state.OnDestroy(this);
+                state.Value.OnDestroy(this);
             }
 
             m_States.Clear();

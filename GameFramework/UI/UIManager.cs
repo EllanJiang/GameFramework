@@ -217,9 +217,9 @@ namespace GameFramework.UI
                 m_InstancePool.Unspawn(uiForm.Handle);
             }
 
-            foreach (UIGroup uiGroup in m_UIGroups.Values)
+            foreach (KeyValuePair<string, UIGroup> uiGroup in m_UIGroups)
             {
-                uiGroup.Update(elapseSeconds, realElapseSeconds);
+                uiGroup.Value.Update(elapseSeconds, realElapseSeconds);
             }
         }
 
@@ -319,9 +319,9 @@ namespace GameFramework.UI
         {
             int index = 0;
             IUIGroup[] uiGroups = new IUIGroup[m_UIGroups.Count];
-            foreach (UIGroup uiGroup in m_UIGroups.Values)
+            foreach (KeyValuePair<string, UIGroup> uiGroup in m_UIGroups)
             {
-                uiGroups[index++] = uiGroup;
+                uiGroups[index++] = uiGroup.Value;
             }
 
             return uiGroups;

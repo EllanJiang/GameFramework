@@ -203,9 +203,9 @@ namespace GameFramework.Sound
         {
             int index = 0;
             ISoundGroup[] soundGroups = new ISoundGroup[m_SoundGroups.Count];
-            foreach (SoundGroup soundGroup in m_SoundGroups.Values)
+            foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
-                soundGroups[index++] = soundGroup;
+                soundGroups[index++] = soundGroup.Value;
             }
 
             return soundGroups;
@@ -375,9 +375,9 @@ namespace GameFramework.Sound
         /// <returns>是否停止播放声音成功。</returns>
         public bool StopSound(int serialId)
         {
-            foreach (SoundGroup soundGroup in m_SoundGroups.Values)
+            foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
-                if (soundGroup.StopSound(serialId))
+                if (soundGroup.Value.StopSound(serialId))
                 {
                     return true;
                 }
@@ -406,9 +406,9 @@ namespace GameFramework.Sound
         /// </summary>
         public void StopAllSounds()
         {
-            foreach (SoundGroup soundGroup in m_SoundGroups.Values)
+            foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
-                soundGroup.StopAllSounds();
+                soundGroup.Value.StopAllSounds();
             }
         }
 

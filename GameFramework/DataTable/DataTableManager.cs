@@ -126,9 +126,9 @@ namespace GameFramework.DataTable
         /// </summary>
         internal override void Shutdown()
         {
-            foreach (DataTableBase dataTable in m_DataTables.Values)
+            foreach (KeyValuePair<string, DataTableBase> dataTable in m_DataTables)
             {
-                dataTable.Shutdown();
+                dataTable.Value.Shutdown();
             }
 
             m_DataTables.Clear();
@@ -283,9 +283,9 @@ namespace GameFramework.DataTable
         {
             int index = 0;
             DataTableBase[] dataTables = new DataTableBase[m_DataTables.Count];
-            foreach (DataTableBase dataTable in m_DataTables.Values)
+            foreach (KeyValuePair<string, DataTableBase> dataTable in m_DataTables)
             {
-                dataTables[index++] = dataTable;
+                dataTables[index++] = dataTable.Value;
             }
 
             return dataTables;
