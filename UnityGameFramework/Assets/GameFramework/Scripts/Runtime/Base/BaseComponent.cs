@@ -8,6 +8,7 @@
 using GameFramework;
 using GameFramework.Localization;
 using GameFramework.Resource;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,6 +36,12 @@ namespace UnityGameFramework.Runtime
 
         [SerializeField]
         private Language m_EditorLanguage = Language.Unspecified;
+
+        [SerializeField]
+        private string m_ZipHelperTypeName = "Utility.ZipHelper";
+
+        [SerializeField]
+        private string m_JsonHelperTypeName = "Utility.JsonHelper";
 
         [SerializeField]
         private int m_FrameRate = 30;
@@ -215,8 +222,9 @@ namespace UnityGameFramework.Runtime
             Log.Error("Game Framework only applies with Unity 5.3 and above, but current Unity version is {0}.", Application.unityVersion);
             GameEntry.Shutdown(ShutdownType.Quit);
 #else
-            Utility.Zip.SetZipHelper(new Utility.ZipHelper());
-            Utility.Json.SetJsonHelper(new Utility.JsonHelper());
+
+            InitZipHelper();
+            InitJsonHelper();
 
             Utility.Converter.ScreenDpi = Screen.dpi;
             if (Utility.Converter.ScreenDpi <= 0)
@@ -285,6 +293,44 @@ namespace UnityGameFramework.Runtime
             }
 
             GameSpeed = 1f;
+        }
+
+        private void InitZipHelper()
+        {
+            Type zipHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_ZipHelperTypeName);
+            if (zipHelperType == null)
+            {
+                Log.Error("Can not find Zip helper type '{0}'.", m_ZipHelperTypeName);
+                return;
+            }
+
+            Utility.Zip.IZipHelper zipHelper = (Utility.Zip.IZipHelper)Activator.CreateInstance(zipHelperType);
+            if (zipHelper == null)
+            {
+                Log.Error("Can not create Zip helper instance '{0}'.", m_ZipHelperTypeName);
+                return;
+            }
+
+            Utility.Zip.SetZipHelper(zipHelper);
+        }
+
+        private void InitJsonHelper()
+        {
+            Type jsonHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_JsonHelperTypeName);
+            if (jsonHelperType == null)
+            {
+                Log.Error("Can not find Json helper type '{0}'.", m_JsonHelperTypeName);
+                return;
+            }
+
+            Utility.Json.IJsonHelper jsonHelper = (Utility.Json.IJsonHelper)Activator.CreateInstance(jsonHelperType);
+            if (jsonHelper == null)
+            {
+                Log.Error("Can not create Json helper instance '{0}'.", m_JsonHelperTypeName);
+                return;
+            }
+
+            Utility.Json.SetJsonHelper(jsonHelper);
         }
 
         internal void Reload()
