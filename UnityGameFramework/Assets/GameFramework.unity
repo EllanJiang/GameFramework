@@ -971,6 +971,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EditorResourceMode: 1
   m_EditorLanguage: 0
+  m_ZipHelperTypeName: Utility.ZipHelper
+  m_JsonHelperTypeName: Utility.JsonHelper
   m_FrameRate: 30
   m_GameSpeed: 1
   m_RunInBackground: 0
