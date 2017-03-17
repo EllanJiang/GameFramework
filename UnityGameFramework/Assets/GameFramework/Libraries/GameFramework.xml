@@ -14051,22 +14051,6 @@
             <param name="obj">要序列化的对象。</param>
             <returns>序列化后的 JSON 流。</returns>
         </member>
-        <member name="M:Utility.Json.ToObject(System.String,System.Type)">
-            <summary>
-            将 JSON 字符串反序列化为对象。
-            </summary>
-            <param name="json">要反序列化的 JSON 字符串。</param>
-            <param name="type">对象类型。</param>
-            <returns>反序列化后的对象。</returns>
-        </member>
-        <member name="M:Utility.Json.ToObject(System.Byte[],System.Type)">
-            <summary>
-            将 JSON 流反序列化为对象。
-            </summary>
-            <param name="jsonData">要反序列化的 JSON 流。</param>
-            <param name="type">对象类型。</param>
-            <returns>反序列化后的对象。</returns>
-        </member>
         <member name="M:Utility.Json.ToObject``1(System.String)">
             <summary>
             将 JSON 字符串反序列化为对象。
@@ -14094,14 +14078,6 @@
             </summary>
             <param name="obj">要序列化的对象。</param>
             <returns>序列化后的 JSON 字符串。</returns>
-        </member>
-        <member name="M:Utility.Json.IJsonHelper.ToObject(System.String,System.Type)">
-            <summary>
-            将 JSON 字符串反序列化为对象。
-            </summary>
-            <param name="json">要反序列化的 JSON 字符串。</param>
-            <param name="type">对象类型。</param>
-            <returns>反序列化后的对象。</returns>
         </member>
         <member name="M:Utility.Json.IJsonHelper.ToObject``1(System.String)">
             <summary>
