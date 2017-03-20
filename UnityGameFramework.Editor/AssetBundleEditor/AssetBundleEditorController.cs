@@ -17,7 +17,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 {
     internal sealed partial class AssetBundleEditorController
     {
-        private const string ConfigurationName = "GameFramework/Config/AssetBundleEditor.xml";
+        private const string ConfigurationName = "GameFramework/Configs/AssetBundleEditor.xml";
         private const string DefaultSourceAssetRootPath = "Assets";
         private readonly AssetBundleCollection m_AssetBundleCollection;
         private readonly List<string> m_SourceAssetSearchPaths;
@@ -225,12 +225,12 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 xmlDocument.Load(configurationName);
                 XmlNode xmlRoot = xmlDocument.SelectSingleNode("UnityGameFramework");
                 XmlNode xmlEditor = xmlRoot.SelectSingleNode("AssetBundleEditor");
-                XmlNode xmlSetting = xmlEditor.SelectSingleNode("Setting");
+                XmlNode xmlSettings = xmlEditor.SelectSingleNode("Settings");
 
                 XmlNodeList xmlNodeList = null;
                 XmlNode xmlNode = null;
 
-                xmlNodeList = xmlSetting.ChildNodes;
+                xmlNodeList = xmlSettings.ChildNodes;
                 for (int i = 0; i < xmlNodeList.Count; i++)
                 {
                     xmlNode = xmlNodeList.Item(i);
@@ -301,18 +301,18 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 XmlElement xmlEditor = xmlDocument.CreateElement("AssetBundleEditor");
                 xmlRoot.AppendChild(xmlEditor);
 
-                XmlElement xmlSetting = xmlDocument.CreateElement("Setting");
-                xmlEditor.AppendChild(xmlSetting);
+                XmlElement xmlSettings = xmlDocument.CreateElement("Settings");
+                xmlEditor.AppendChild(xmlSettings);
 
                 XmlElement xmlElement = null;
                 XmlAttribute xmlAttribute = null;
 
                 xmlElement = xmlDocument.CreateElement("SourceAssetRootPath");
                 xmlElement.InnerText = SourceAssetRootPath.ToString();
-                xmlSetting.AppendChild(xmlElement);
+                xmlSettings.AppendChild(xmlElement);
 
                 xmlElement = xmlDocument.CreateElement("SourceAssetSearchPaths");
-                xmlSetting.AppendChild(xmlElement);
+                xmlSettings.AppendChild(xmlElement);
 
                 foreach (string sourceAssetSearchRelativePath in m_SourceAssetSearchRelativePaths)
                 {
@@ -325,19 +325,19 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
                 xmlElement = xmlDocument.CreateElement("SourceAssetUnionTypeFilter");
                 xmlElement.InnerText = SourceAssetUnionTypeFilter ?? string.Empty;
-                xmlSetting.AppendChild(xmlElement);
+                xmlSettings.AppendChild(xmlElement);
                 xmlElement = xmlDocument.CreateElement("SourceAssetUnionLabelFilter");
                 xmlElement.InnerText = SourceAssetUnionLabelFilter ?? string.Empty;
-                xmlSetting.AppendChild(xmlElement);
+                xmlSettings.AppendChild(xmlElement);
                 xmlElement = xmlDocument.CreateElement("SourceAssetExceptTypeFilter");
                 xmlElement.InnerText = SourceAssetExceptTypeFilter ?? string.Empty;
-                xmlSetting.AppendChild(xmlElement);
+                xmlSettings.AppendChild(xmlElement);
                 xmlElement = xmlDocument.CreateElement("SourceAssetExceptLabelFilter");
                 xmlElement.InnerText = SourceAssetExceptLabelFilter ?? string.Empty;
-                xmlSetting.AppendChild(xmlElement);
+                xmlSettings.AppendChild(xmlElement);
                 xmlElement = xmlDocument.CreateElement("AssetSorter");
                 xmlElement.InnerText = AssetSorter.ToString();
-                xmlSetting.AppendChild(xmlElement);
+                xmlSettings.AppendChild(xmlElement);
 
                 xmlDocument.Save(configurationName);
             }

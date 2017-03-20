@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <UnityGameFramework>
   <AssetBundleEditor>
-    <Setting>
+    <Settings>
       <SourceAssetRootPath>Assets</SourceAssetRootPath>
       <SourceAssetSearchPaths>
         <SourceAssetSearchPath RelativePath="" />
@@ -11,6 +11,6 @@
       <SourceAssetExceptTypeFilter>t:Script</SourceAssetExceptTypeFilter>
       <SourceAssetExceptLabelFilter>l:AssetBundleExclusive</SourceAssetExceptLabelFilter>
       <AssetSorter>Name</AssetSorter>
-    </Setting>
+    </Settings>
   </AssetBundleEditor>
 </UnityGameFramework>
