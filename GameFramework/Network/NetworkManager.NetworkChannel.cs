@@ -19,7 +19,6 @@ namespace GameFramework.Network
         /// </summary>
         private sealed partial class NetworkChannel : INetworkChannel, IDisposable
         {
-            private const NetworkType DefaultNetworkType = NetworkType.IPv4;
             private const int DefaultMaxPacketLength = 1024 * 32;
             private const float DefaultHeartBeatInterval = 30f;
 
@@ -52,7 +51,7 @@ namespace GameFramework.Network
             {
                 m_Name = name ?? string.Empty;
                 m_NetworkHelper = networkHelper;
-                m_NetworkType = NetworkType.Unspecified;
+                m_NetworkType = NetworkType.Unknown;
                 m_MaxPacketLength = DefaultMaxPacketLength;
                 m_ResetHeartBeatElapseSecondsWhenReceivePacket = false;
                 m_HeartBeatInterval = DefaultHeartBeatInterval;
@@ -289,69 +288,6 @@ namespace GameFramework.Network
             }
 
             /// <summary>
-            /// 初始化网络频道。
-            /// </summary>
-            public void Initialize()
-            {
-                Initialize(DefaultNetworkType, DefaultMaxPacketLength);
-            }
-
-            /// <summary>
-            /// 初始化网络频道。
-            /// </summary>
-            /// <param name="networkType">网络类型。</param>
-            public void Initialize(NetworkType networkType)
-            {
-                Initialize(networkType, DefaultMaxPacketLength);
-            }
-
-            /// <summary>
-            /// 初始化网络频道。
-            /// </summary>
-            /// <param name="maxPacketLength">数据包最大字节数。</param>
-            public void Initialize(int maxPacketLength)
-            {
-                Initialize(DefaultNetworkType, maxPacketLength);
-            }
-
-            /// <summary>
-            /// 初始化网络频道。
-            /// </summary>
-            /// <param name="networkType">网络类型。</param>
-            /// <param name="maxPacketLength">数据包最大字节数。</param>
-            public void Initialize(NetworkType networkType, int maxPacketLength)
-            {
-                if (m_Socket != null)
-                {
-                    Close();
-                }
-
-                if (maxPacketLength <= 0)
-                {
-                    throw new GameFrameworkException("Max packet length is invalid.");
-                }
-
-                m_NetworkType = networkType;
-                m_MaxPacketLength = maxPacketLength;
-
-                AddressFamily addressFamily = AddressFamily.Unspecified;
-                switch (networkType)
-                {
-                    case NetworkType.IPv4:
-                        addressFamily = AddressFamily.InterNetwork;
-                        break;
-                    case NetworkType.IPv6:
-                        addressFamily = AddressFamily.InterNetworkV6;
-                        break;
-                    default:
-                        throw new GameFrameworkException("Not supported network type.");
-                }
-
-                m_Socket = new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
-                m_ReceiveState = new ReceiveState(maxPacketLength);
-            }
-
-            /// <summary>
             /// 网络频道轮询。
             /// </summary>
             /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
@@ -398,7 +334,18 @@ namespace GameFramework.Network
             /// <param name="port">远程主机的端口号。</param>
             public void Connect(IPAddress ipAddress, int port)
             {
-                Connect(ipAddress, port, null);
+                Connect(ipAddress, port, DefaultMaxPacketLength, null);
+            }
+
+            /// <summary>
+            /// 连接到远程主机。
+            /// </summary>
+            /// <param name="ipAddress">远程主机的 IP 地址。</param>
+            /// <param name="port">远程主机的端口号。</param>
+            /// <param name="maxPacketLength">数据包最大字节数。</param>
+            public void Connect(IPAddress ipAddress, int port, int maxPacketLength)
+            {
+                Connect(ipAddress, port, maxPacketLength, null);
             }
 
             /// <summary>
@@ -409,9 +356,23 @@ namespace GameFramework.Network
             /// <param name="userData">用户自定义数据。</param>
             public void Connect(IPAddress ipAddress, int port, object userData)
             {
+                Connect(ipAddress, port, DefaultMaxPacketLength, userData);
+            }
+
+            /// <summary>
+            /// 连接到远程主机。
+            /// </summary>
+            /// <param name="ipAddress">远程主机的 IP 地址。</param>
+            /// <param name="port">远程主机的端口号。</param>
+            /// <param name="maxPacketLength">数据包最大字节数。</param>
+            /// <param name="userData">用户自定义数据。</param>
+            public void Connect(IPAddress ipAddress, int port, int maxPacketLength, object userData)
+            {
+                Initialize(ipAddress.AddressFamily, maxPacketLength);
+
                 if (m_Socket == null)
                 {
-                    string errorMessage = "You must initialize network channel first.";
+                    string errorMessage = "Initialize network channel failure.";
                     if (NetworkChannelError != null)
                     {
                         NetworkChannelError(this, NetworkErrorCode.StatusError, errorMessage);
@@ -424,52 +385,6 @@ namespace GameFramework.Network
                 try
                 {
                     m_Socket.BeginConnect(ipAddress, port, ConnectCallback, new SocketUserData(m_Socket, userData));
-                }
-                catch (Exception exception)
-                {
-                    if (NetworkChannelError != null)
-                    {
-                        NetworkChannelError(this, NetworkErrorCode.ConnectError, exception.Message);
-                        return;
-                    }
-
-                    throw;
-                }
-            }
-
-            /// <summary>
-            /// 连接到远程主机。
-            /// </summary>
-            /// <param name="host">远程主机的名称。</param>
-            /// <param name="port">远程主机的端口号。</param>
-            public void Connect(string host, int port)
-            {
-                Connect(host, port, null);
-            }
-
-            /// <summary>
-            /// 连接到远程主机。
-            /// </summary>
-            /// <param name="host">远程主机的名称。</param>
-            /// <param name="port">远程主机的端口号。</param>
-            /// <param name="userData">用户自定义数据。</param>
-            public void Connect(string host, int port, object userData)
-            {
-                if (m_Socket == null)
-                {
-                    string errorMessage = "You must initialize network channel first.";
-                    if (NetworkChannelError != null)
-                    {
-                        NetworkChannelError(this, NetworkErrorCode.StatusError, errorMessage);
-                        return;
-                    }
-
-                    throw new GameFrameworkException(errorMessage);
-                }
-
-                try
-                {
-                    m_Socket.BeginConnect(host, port, ConnectCallback, new SocketUserData(m_Socket, userData));
                 }
                 catch (Exception exception)
                 {
@@ -679,6 +594,37 @@ namespace GameFramework.Network
                 }
 
                 m_Disposed = true;
+            }
+
+            private void Initialize(AddressFamily addressFamily, int maxPacketLength)
+            {
+                if (m_Socket != null)
+                {
+                    Close();
+                    m_Socket = null;
+                }
+
+                if (maxPacketLength <= 0)
+                {
+                    throw new GameFrameworkException("Max packet length is invalid.");
+                }
+
+                m_MaxPacketLength = maxPacketLength;
+
+                switch (addressFamily)
+                {
+                    case AddressFamily.InterNetwork:
+                        m_NetworkType = NetworkType.IPv4;
+                        break;
+                    case AddressFamily.InterNetworkV6:
+                        m_NetworkType = NetworkType.IPv6;
+                        break;
+                    default:
+                        throw new GameFrameworkException(string.Format("Not supported address family '{0}'.", addressFamily.ToString()));
+                }
+
+                m_Socket = new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
+                m_ReceiveState = new ReceiveState(maxPacketLength);
             }
 
             private void Receive()

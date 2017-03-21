@@ -6000,36 +6000,20 @@
             获取或设置发送缓冲区字节数。
             </summary>
         </member>
-        <member name="M:GameFramework.Network.INetworkChannel.Initialize">
-            <summary>
-            初始化网络频道。
-            </summary>
-        </member>
-        <member name="M:GameFramework.Network.INetworkChannel.Initialize(GameFramework.Network.NetworkType)">
-            <summary>
-            初始化网络频道。
-            </summary>
-            <param name="networkType">网络类型。</param>
-        </member>
-        <member name="M:GameFramework.Network.INetworkChannel.Initialize(System.Int32)">
-            <summary>
-            初始化网络频道。
-            </summary>
-            <param name="maxPacketLength">数据包最大字节数。</param>
-        </member>
-        <member name="M:GameFramework.Network.INetworkChannel.Initialize(GameFramework.Network.NetworkType,System.Int32)">
-            <summary>
-            初始化网络频道。
-            </summary>
-            <param name="networkType">网络类型。</param>
-            <param name="maxPacketLength">数据包最大字节数。</param>
-        </member>
         <member name="M:GameFramework.Network.INetworkChannel.Connect(System.Net.IPAddress,System.Int32)">
             <summary>
             连接到远程主机。
             </summary>
             <param name="ipAddress">远程主机的 IP 地址。</param>
             <param name="port">远程主机的端口号。</param>
+        </member>
+        <member name="M:GameFramework.Network.INetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32)">
+            <summary>
+            连接到远程主机。
+            </summary>
+            <param name="ipAddress">远程主机的 IP 地址。</param>
+            <param name="port">远程主机的端口号。</param>
+            <param name="maxPacketLength">数据包最大字节数。</param>
         </member>
         <member name="M:GameFramework.Network.INetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Object)">
             <summary>
@@ -6039,19 +6023,13 @@
             <param name="port">远程主机的端口号。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Network.INetworkChannel.Connect(System.String,System.Int32)">
+        <member name="M:GameFramework.Network.INetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Object)">
             <summary>
             连接到远程主机。
             </summary>
-            <param name="host">远程主机的名称。</param>
+            <param name="ipAddress">远程主机的 IP 地址。</param>
             <param name="port">远程主机的端口号。</param>
-        </member>
-        <member name="M:GameFramework.Network.INetworkChannel.Connect(System.String,System.Int32,System.Object)">
-            <summary>
-            连接到远程主机。
-            </summary>
-            <param name="host">远程主机的名称。</param>
-            <param name="port">远程主机的端口号。</param>
+            <param name="maxPacketLength">数据包最大字节数。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
         <member name="M:GameFramework.Network.INetworkChannel.Close">
@@ -6550,30 +6528,6 @@
             获取或设置发送缓冲区字节数。
             </summary>
         </member>
-        <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Initialize">
-            <summary>
-            初始化网络频道。
-            </summary>
-        </member>
-        <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Initialize(GameFramework.Network.NetworkType)">
-            <summary>
-            初始化网络频道。
-            </summary>
-            <param name="networkType">网络类型。</param>
-        </member>
-        <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Initialize(System.Int32)">
-            <summary>
-            初始化网络频道。
-            </summary>
-            <param name="maxPacketLength">数据包最大字节数。</param>
-        </member>
-        <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Initialize(GameFramework.Network.NetworkType,System.Int32)">
-            <summary>
-            初始化网络频道。
-            </summary>
-            <param name="networkType">网络类型。</param>
-            <param name="maxPacketLength">数据包最大字节数。</param>
-        </member>
         <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Update(System.Single,System.Single)">
             <summary>
             网络频道轮询。
@@ -6588,6 +6542,14 @@
             <param name="ipAddress">远程主机的 IP 地址。</param>
             <param name="port">远程主机的端口号。</param>
         </member>
+        <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32)">
+            <summary>
+            连接到远程主机。
+            </summary>
+            <param name="ipAddress">远程主机的 IP 地址。</param>
+            <param name="port">远程主机的端口号。</param>
+            <param name="maxPacketLength">数据包最大字节数。</param>
+        </member>
         <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Object)">
             <summary>
             连接到远程主机。
@@ -6596,19 +6558,13 @@
             <param name="port">远程主机的端口号。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Connect(System.String,System.Int32)">
+        <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Object)">
             <summary>
             连接到远程主机。
             </summary>
-            <param name="host">远程主机的名称。</param>
+            <param name="ipAddress">远程主机的 IP 地址。</param>
             <param name="port">远程主机的端口号。</param>
-        </member>
-        <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Connect(System.String,System.Int32,System.Object)">
-            <summary>
-            连接到远程主机。
-            </summary>
-            <param name="host">远程主机的名称。</param>
-            <param name="port">远程主机的端口号。</param>
+            <param name="maxPacketLength">数据包最大字节数。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
         <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Close">
@@ -6727,9 +6683,9 @@
             网络类型。
             </summary>
         </member>
-        <member name="F:GameFramework.Network.NetworkType.Unspecified">
+        <member name="F:GameFramework.Network.NetworkType.Unknown">
             <summary>
-            未指定。
+            未知。
             </summary>
         </member>
         <member name="F:GameFramework.Network.NetworkType.IPv4">
