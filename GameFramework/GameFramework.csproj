@@ -98,7 +98,6 @@ copy "$(TargetDir)GameFramework.xml" "$(SolutionDir)UnityGameFramework\Assets\Ga
     <Compile Include="Entity\EntityManager.EntityInfo.cs" />
     <Compile Include="Entity\EntityManager.EntityInstanceObject.cs" />
     <Compile Include="Entity\EntityManager.EntityStatus.cs" />
-    <Compile Include="Entity\EntityManager.RecycleNode.cs" />
     <Compile Include="Entity\EntityManager.ShowEntityInfo.cs" />
     <Compile Include="Entity\HideEntityCompleteEventArgs.cs" />
     <Compile Include="Entity\IEntity.cs" />
@@ -263,7 +262,6 @@ copy "$(TargetDir)GameFramework.xml" "$(SolutionDir)UnityGameFramework\Assets\Ga
     <Compile Include="UI\OpenUIFormUpdateEventArgs.cs" />
     <Compile Include="UI\UIManager.cs" />
     <Compile Include="UI\UIManager.OpenUIFormInfo.cs" />
-    <Compile Include="UI\UIManager.RecycleNode.cs" />
     <Compile Include="UI\UIManager.UIFormInstanceObject.cs" />
     <Compile Include="UI\UIManager.UIGroup.cs" />
     <Compile Include="UI\UIManager.UIGroup.UIFormInfo.cs" />

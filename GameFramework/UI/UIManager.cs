@@ -18,7 +18,7 @@ namespace GameFramework.UI
     internal sealed partial class UIManager : GameFrameworkModule, IUIManager
     {
         private readonly IDictionary<string, UIGroup> m_UIGroups;
-        private readonly LinkedList<RecycleNode> m_RecycleQueue;
+        private readonly LinkedList<IUIForm> m_RecycleQueue;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
         private IObjectPoolManager m_ObjectPoolManager;
         private IResourceManager m_ResourceManager;
@@ -36,7 +36,7 @@ namespace GameFramework.UI
         public UIManager()
         {
             m_UIGroups = new Dictionary<string, UIGroup>();
-            m_RecycleQueue = new LinkedList<RecycleNode>();
+            m_RecycleQueue = new LinkedList<IUIForm>();
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadUIFormSuccessCallback, LoadUIFormFailureCallback, LoadUIFormUpdateCallback, LoadUIFormDependencyAssetCallback);
             m_ObjectPoolManager = null;
             m_ResourceManager = null;
@@ -204,15 +204,8 @@ namespace GameFramework.UI
         {
             while (m_RecycleQueue.Count > 0)
             {
-                RecycleNode recycleNode = m_RecycleQueue.First.Value;
-                recycleNode.TickCount++;
-                if (recycleNode.TickCount <= 1)
-                {
-                    break;
-                }
-
+                IUIForm uiForm = m_RecycleQueue.First.Value;
                 m_RecycleQueue.RemoveFirst();
-                IUIForm uiForm = recycleNode.UIForm;
                 uiForm.OnRecycle();
                 m_InstancePool.Unspawn(uiForm.Handle);
             }
@@ -525,7 +518,7 @@ namespace GameFramework.UI
                 m_CloseUIFormCompleteEventHandler(this, new CloseUIFormCompleteEventArgs(uiForm.TypeId, userData));
             }
 
-            m_RecycleQueue.AddLast(new RecycleNode(uiForm));
+            m_RecycleQueue.AddLast(uiForm);
         }
 
         /// <summary>

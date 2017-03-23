@@ -93,6 +93,18 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
+            if (m_EntityLogic != null)
+            {
+                if (m_EntityLogic.GetType() == entityLogicType)
+                {
+                    m_EntityLogic.enabled = true;
+                    return;
+                }
+
+                Destroy(m_EntityLogic);
+                m_EntityLogic = null;
+            }
+
             m_EntityLogic = gameObject.AddComponent(entityLogicType) as EntityLogic;
             if (m_EntityLogic == null)
             {
@@ -109,6 +121,7 @@ namespace UnityGameFramework.Runtime
         public void OnRecycle()
         {
             m_Id = 0;
+            m_EntityLogic.enabled = false;
         }
 
         /// <summary>
@@ -127,8 +140,6 @@ namespace UnityGameFramework.Runtime
         public void OnHide(object userData)
         {
             m_EntityLogic.OnHide(userData);
-            Destroy(m_EntityLogic);
-            m_EntityLogic = null;
         }
 
         /// <summary>

@@ -21,7 +21,7 @@ namespace GameFramework.Entity
         private readonly IDictionary<string, EntityGroup> m_EntityGroups;
         private readonly HashSet<int> m_EntitiesBeingLoaded;
         private readonly HashSet<int> m_EntitiesToReleaseOnLoad;
-        private readonly LinkedList<RecycleNode> m_RecycleQueue;
+        private readonly LinkedList<EntityInfo> m_RecycleQueue;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
         private IObjectPoolManager m_ObjectPoolManager;
         private IResourceManager m_ResourceManager;
@@ -41,7 +41,7 @@ namespace GameFramework.Entity
             m_EntityGroups = new Dictionary<string, EntityGroup>();
             m_EntitiesBeingLoaded = new HashSet<int>();
             m_EntitiesToReleaseOnLoad = new HashSet<int>();
-            m_RecycleQueue = new LinkedList<RecycleNode>();
+            m_RecycleQueue = new LinkedList<EntityInfo>();
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadEntitySuccessCallback, LoadEntityFailureCallback, LoadEntityUpdateCallback, LoadEntityDependencyAssetCallback);
             m_ObjectPoolManager = null;
             m_ResourceManager = null;
@@ -159,15 +159,8 @@ namespace GameFramework.Entity
         {
             while (m_RecycleQueue.Count > 0)
             {
-                RecycleNode recycleNode = m_RecycleQueue.First.Value;
-                recycleNode.TickCount++;
-                if (recycleNode.TickCount <= 1)
-                {
-                    break;
-                }
-
+                EntityInfo entityInfo = m_RecycleQueue.First.Value;
                 m_RecycleQueue.RemoveFirst();
-                EntityInfo entityInfo = recycleNode.EntityInfo;
                 IEntity entity = entityInfo.Entity;
                 EntityGroup entityGroup = (EntityGroup)entity.EntityGroup;
                 if (entityGroup == null)
@@ -983,7 +976,7 @@ namespace GameFramework.Entity
                 m_HideEntityCompleteEventHandler(this, new HideEntityCompleteEventArgs(entity.Id, userData));
             }
 
-            m_RecycleQueue.AddLast(new RecycleNode(entityInfo));
+            m_RecycleQueue.AddLast(entityInfo);
         }
 
         private void LoadEntitySuccessCallback(string entityAssetName, object entityAsset, float duration, object userData)
