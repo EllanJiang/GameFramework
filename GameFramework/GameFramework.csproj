@@ -11,8 +11,6 @@
     <AssemblyName>GameFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <PostBuildEvent>copy "$(TargetDir)GameFramework.dll" "$(SolutionDir)UnityGameFramework\Assets\GameFramework\Libraries\GameFramework.dll" /y
-copy "$(TargetDir)GameFramework.xml" "$(SolutionDir)UnityGameFramework\Assets\GameFramework\Libraries\GameFramework.xml" /y</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
