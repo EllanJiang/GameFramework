@@ -117,7 +117,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         {
             get
             {
-                return PlayerSettings.bundleIdentifier;
+                return PlayerSettings.applicationIdentifier;
             }
         }
 
