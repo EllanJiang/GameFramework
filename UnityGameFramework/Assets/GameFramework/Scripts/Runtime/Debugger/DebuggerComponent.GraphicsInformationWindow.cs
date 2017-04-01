@@ -29,6 +29,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Shader Level:", GetShaderLevelString(SystemInfo.graphicsShaderLevel));
                     DrawItem("NPOT Support:", SystemInfo.npotSupport.ToString());
                     DrawItem("Max Texture Size:", SystemInfo.maxTextureSize.ToString());
+                    DrawItem("Max Cubemap Size:", SystemInfo.maxCubemapSize.ToString());
 #if UNITY_5_4_OR_NEWER
                     DrawItem("Copy Texture Support:", SystemInfo.copyTextureSupport.ToString());
 #endif
@@ -39,6 +40,7 @@ namespace UnityGameFramework.Runtime
 #endif
                     DrawItem("Supports Sparse Textures:", SystemInfo.supportsSparseTextures.ToString());
                     DrawItem("Supports 3D Textures:", SystemInfo.supports3DTextures.ToString());
+                    DrawItem("Supports 3D Render Textures:", SystemInfo.supports3DRenderTextures.ToString());
 #if UNITY_5_4_OR_NEWER
                     DrawItem("Supports 2D Array Textures:", SystemInfo.supports2DArrayTextures.ToString());
 #endif
@@ -54,10 +56,10 @@ namespace UnityGameFramework.Runtime
 #if UNITY_5_4_OR_NEWER
                     DrawItem("Supports Motion Vectors:", SystemInfo.supportsMotionVectors.ToString());
 #endif
+                    DrawItem("Graphics UV Starts At Top:", SystemInfo.graphicsUVStartsAtTop.ToString());
 #if UNITY_5_5_OR_NEWER
                     DrawItem("Uses Reversed ZBuffer:", SystemInfo.usesReversedZBuffer.ToString());
 #endif
-
                 }
                 GUILayout.EndVertical();
             }

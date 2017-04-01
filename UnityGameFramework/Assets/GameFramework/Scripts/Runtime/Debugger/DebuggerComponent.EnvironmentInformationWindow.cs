@@ -55,6 +55,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Platform:", Application.platform.ToString());
                     DrawItem("System Language:", Application.systemLanguage.ToString());
                     DrawItem("Cloud Project Id:", Application.cloudProjectId);
+                    DrawItem("Build Guid:", Application.buildGUID);
                     DrawItem("Target Frame Rate:", Application.targetFrameRate.ToString());
                     DrawItem("Internet Reachability:", Application.internetReachability.ToString());
                     DrawItem("Background Loading Priority:", Application.backgroundLoadingPriority.ToString());
@@ -71,6 +72,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Is Mobile Platform:", Application.isMobilePlatform.ToString());
                     DrawItem("Is Console Platform:", Application.isConsolePlatform.ToString());
                     DrawItem("Is Editor:", Application.isEditor.ToString());
+                    DrawItem("Is Focused:", Application.isFocused.ToString());
 #if !UNITY_5_4_OR_NEWER
                     DrawItem("Stack Trace Log Type:", Application.stackTraceLogType.ToString());
 #endif
