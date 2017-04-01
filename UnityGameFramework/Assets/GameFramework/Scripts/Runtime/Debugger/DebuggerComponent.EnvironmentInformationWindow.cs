@@ -41,7 +41,11 @@ namespace UnityGameFramework.Runtime
                 {
                     DrawItem("Product Name:", Application.productName);
                     DrawItem("Company Name:", Application.companyName);
-                    DrawItem("Bundle Identifier:", Application.bundleIdentifier);
+#if UNITY_5_6_OR_NEWER
+                    DrawItem("Game Identifier:", Application.identifier);
+#else
+                    DrawItem("Game Identifier:", Application.bundleIdentifier);
+#endif
                     DrawItem("Game Framework Version:", GameFrameworkEntry.Version);
                     DrawItem("Unity Game Framework Version:", GameEntry.Version);
                     DrawItem("Game Version:", string.Format("{0} ({1})", m_BaseComponent.GameVersion, m_BaseComponent.InternalApplicationVersion.ToString()));
