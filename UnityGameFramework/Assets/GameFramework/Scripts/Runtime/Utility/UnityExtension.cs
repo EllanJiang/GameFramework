@@ -5,6 +5,7 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -24,6 +25,23 @@ public static class UnityExtension
         if (component == null)
         {
             component = gameObject.AddComponent<T>();
+        }
+
+        return component;
+    }
+
+    /// <summary>
+    /// 获取或增加组件。
+    /// </summary>
+    /// <param name="gameObject">目标对象。</param>
+    /// <param name="type">要获取或增加的组件类型。</param>
+    /// <returns>获取或增加的组件。</returns>
+    public static Component GetOrAddComponent(this GameObject gameObject, Type type)
+    {
+        Component component = gameObject.GetComponent(type);
+        if (component == null)
+        {
+            component = gameObject.AddComponent(type);
         }
 
         return component;
