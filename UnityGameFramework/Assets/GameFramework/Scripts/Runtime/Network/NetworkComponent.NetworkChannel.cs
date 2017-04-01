@@ -30,10 +30,7 @@ namespace UnityGameFramework.Runtime
             private string m_Name = string.Empty;
 
             [SerializeField]
-            private bool m_UseIPv6 = false;
-
-            [SerializeField]
-            private string m_HostOrIPString = string.Empty;
+            private string m_IPString = string.Empty;
 
             [SerializeField]
             private int m_Port = 0;
@@ -67,32 +64,17 @@ namespace UnityGameFramework.Runtime
             }
 
             /// <summary>
-            /// 获取或设置是否使用 IP 版本 6。
+            /// 获取或设置远程主机的 IP 地址字符串。
             /// </summary>
-            public bool UseIPv6
+            public string IPString
             {
                 get
                 {
-                    return m_UseIPv6;
+                    return m_IPString;
                 }
                 set
                 {
-                    m_UseIPv6 = value;
-                }
-            }
-
-            /// <summary>
-            /// 获取或设置远程主机的名称或 IP 地址字符串。
-            /// </summary>
-            public string HostOrIPString
-            {
-                get
-                {
-                    return m_HostOrIPString;
-                }
-                set
-                {
-                    m_HostOrIPString = value;
+                    m_IPString = value;
                 }
             }
 
@@ -157,28 +139,22 @@ namespace UnityGameFramework.Runtime
                 m_NetworkChannel.HeartBeatInterval = m_HeartBeatInterval;
             }
 
-            public void Initialize()
-            {
-                m_NetworkChannel.Initialize(m_UseIPv6 ? NetworkType.IPv6 : NetworkType.IPv4, m_MaxPacketLength);
-            }
-
             public void Connect(object userData)
             {
-                if (string.IsNullOrEmpty(m_HostOrIPString))
+                if (string.IsNullOrEmpty(m_IPString))
                 {
-                    Log.Warning("Host or IP string is invalid.");
+                    Log.Warning("IP string is invalid.");
                     return;
                 }
 
                 IPAddress ipAddress = null;
-                if (IPAddress.TryParse(m_HostOrIPString, out ipAddress))
+                if (!IPAddress.TryParse(m_IPString, out ipAddress))
                 {
-                    m_NetworkChannel.Connect(ipAddress, m_Port, userData);
+                    Log.Warning("IP string '{0}' is invalid.", m_IPString);
+                    return;
                 }
-                else
-                {
-                    m_NetworkChannel.Connect(m_HostOrIPString, m_Port, userData);
-                }
+
+                m_NetworkChannel.Connect(ipAddress, m_Port, m_MaxPacketLength, userData);
             }
         }
     }

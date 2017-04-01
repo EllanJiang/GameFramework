@@ -18,7 +18,7 @@ namespace UnityGameFramework.Editor
     /// </summary>
     internal static class BuildSettings
     {
-        private const string ConfigurationName = "GameFramework/Config/BuildSettings.xml";
+        private const string ConfigurationName = "GameFramework/Configs/BuildSettings.xml";
 
         private static readonly List<string> s_DefaultSceneNames = new List<string>();
         private static readonly List<string> s_SearchScenePaths = new List<string>();

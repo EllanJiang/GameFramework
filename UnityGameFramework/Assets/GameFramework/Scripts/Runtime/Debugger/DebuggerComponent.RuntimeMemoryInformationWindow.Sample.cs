@@ -15,10 +15,10 @@ namespace UnityGameFramework.Runtime
             {
                 private readonly string m_Name;
                 private readonly string m_Type;
-                private readonly int m_Size;
+                private readonly long m_Size;
                 private bool m_Highlight;
 
-                public Sample(string name, string type, int size)
+                public Sample(string name, string type, long size)
                 {
                     m_Name = name;
                     m_Type = type;
@@ -42,7 +42,7 @@ namespace UnityGameFramework.Runtime
                     }
                 }
 
-                public int Size
+                public long Size
                 {
                     get
                     {

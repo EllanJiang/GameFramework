@@ -19,6 +19,8 @@ namespace UnityGameFramework.Editor
 
         private SerializedProperty m_EditorResourceMode = null;
         private SerializedProperty m_EditorLanguage = null;
+        private SerializedProperty m_ZipHelperTypeName = null;
+        private SerializedProperty m_JsonHelperTypeName = null;
         private SerializedProperty m_FrameRate = null;
         private SerializedProperty m_GameSpeed = null;
         private SerializedProperty m_RunInBackground = null;
@@ -41,10 +43,13 @@ namespace UnityGameFramework.Editor
                     EditorGUILayout.HelpBox("Editor language option is only use for localization test in editor mode.", MessageType.Info);
                 }
                 EditorGUILayout.EndToggleGroup();
+
+                EditorGUILayout.Separator();
+
+                EditorGUILayout.PropertyField(m_ZipHelperTypeName);
+                EditorGUILayout.PropertyField(m_JsonHelperTypeName);
             }
             EditorGUI.EndDisabledGroup();
-
-            EditorGUILayout.Separator();
 
             int frameRate = EditorGUILayout.IntSlider("Frame Rate", m_FrameRate.intValue, 1, 120);
             if (frameRate != m_FrameRate.intValue)
@@ -115,6 +120,8 @@ namespace UnityGameFramework.Editor
         {
             m_EditorResourceMode = serializedObject.FindProperty("m_EditorResourceMode");
             m_EditorLanguage = serializedObject.FindProperty("m_EditorLanguage");
+            m_ZipHelperTypeName = serializedObject.FindProperty("m_ZipHelperTypeName");
+            m_JsonHelperTypeName = serializedObject.FindProperty("m_JsonHelperTypeName");
             m_FrameRate = serializedObject.FindProperty("m_FrameRate");
             m_GameSpeed = serializedObject.FindProperty("m_GameSpeed");
             m_RunInBackground = serializedObject.FindProperty("m_RunInBackground");

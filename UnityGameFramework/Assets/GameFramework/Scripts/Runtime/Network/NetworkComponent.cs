@@ -145,10 +145,9 @@ namespace UnityGameFramework.Runtime
         /// 设置网络频道的连接参数。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
-        /// <param name="useIPv6">是否使用 IP 版本 6。</param>
-        /// <param name="hostOrIPString">远程主机的名称或 IP 地址字符串。</param>
+        /// <param name="ipString">远程主机的 IP 地址字符串。</param>
         /// <param name="port">远程主机的端口号。</param>
-        public void SetNetworkChannelConnection(string name, bool useIPv6, string hostOrIPString, int port)
+        public void SetNetworkChannelConnection(string name, string ipString, int port)
         {
             if (name == null)
             {
@@ -159,89 +158,13 @@ namespace UnityGameFramework.Runtime
             {
                 if (m_NetworkChannels[i].Name == name)
                 {
-                    m_NetworkChannels[i].UseIPv6 = useIPv6;
-                    m_NetworkChannels[i].HostOrIPString = hostOrIPString;
+                    m_NetworkChannels[i].IPString = ipString;
                     m_NetworkChannels[i].Port = port;
                     return;
                 }
             }
 
             Log.Warning("Can not find network channel named '{0}'.", name);
-        }
-
-        /// <summary>
-        /// 使用预先设置的数据初始化网络频道。
-        /// </summary>
-        /// <param name="name">网络频道名称。</param>
-        public void InitNetworkChannel(string name)
-        {
-            if (name == null)
-            {
-                name = string.Empty;
-            }
-
-            for (int i = 0; i < m_NetworkChannels.Length; i++)
-            {
-                if (m_NetworkChannels[i].Name == name)
-                {
-                    m_NetworkChannels[i].Initialize();
-                    return;
-                }
-            }
-
-            Log.Warning("Can not find network channel named '{0}'.", name);
-        }
-
-        /// <summary>
-        /// 初始化网络频道。
-        /// </summary>
-        /// <param name="name">网络频道名称。</param>
-        /// <param name="networkType">网络类型。</param>
-        public void InitNetworkChannel(string name, NetworkType networkType)
-        {
-            INetworkChannel networkChannel = m_NetworkManager.GetNetworkChannel(name);
-            if (networkChannel == null)
-            {
-                Log.Warning("Can not find network channel named '{0}'.", name);
-                return;
-            }
-
-            networkChannel.Initialize(networkType);
-        }
-
-        /// <summary>
-        /// 初始化网络频道。
-        /// </summary>
-        /// <param name="name">网络频道名称。</param>
-        /// <param name="maxPacketLength">数据包最大字节数。</param>
-        public void InitNetworkChannel(string name, int maxPacketLength)
-        {
-            INetworkChannel networkChannel = m_NetworkManager.GetNetworkChannel(name);
-            if (networkChannel == null)
-            {
-                Log.Warning("Can not find network channel named '{0}'.", name);
-                return;
-            }
-
-            networkChannel.Initialize(maxPacketLength);
-        }
-
-        /// <summary>
-        /// 初始化网络频道。
-        /// </summary>
-        /// <param name="name">网络频道名称。</param>
-        /// <param name="networkType">网络类型。</param>
-        /// <param name="maxPacketLength">数据包最大字节数。</param>
-        public void InitNetworkChannel(string name, NetworkType networkType, int maxPacketLength)
-        {
-            INetworkChannel networkChannel = m_NetworkManager.GetNetworkChannel(name);
-            if (networkChannel == null)
-            {
-                Log.Warning("Can not find network channel named '{0}'.", name);
-                return;
-            }
-
-            networkChannel.Initialize(networkType, maxPacketLength);
         }
 
         /// <summary>
@@ -278,47 +201,28 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 使用预先设置的数据连接网络频道。
+        /// 设置数据并连接网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
-        /// <param name="hostOrIPString">远程主机的名称或 IP 地址字符串。</param>
+        /// <param name="ipString">远程主机的 IP 地址字符串。</param>
         /// <param name="port">远程主机的端口号。</param>
-        public void ConnectNetworkChannel(string name, string hostOrIPString, int port)
+        public void ConnectNetworkChannel(string name, string ipString, int port)
         {
-            ConnectNetworkChannel(name, hostOrIPString, port, null);
+            SetNetworkChannelConnection(name, ipString, port);
+            ConnectNetworkChannel(name, null);
         }
 
         /// <summary>
-        /// 使用预先设置的数据连接网络频道。
+        /// 设置数据并连接网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
-        /// <param name="hostOrIPString">远程主机的名称或 IP 地址字符串。</param>
+        /// <param name="ipString">远程主机的 IP 地址字符串。</param>
         /// <param name="port">远程主机的端口号。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void ConnectNetworkChannel(string name, string hostOrIPString, int port, object userData)
+        public void ConnectNetworkChannel(string name, string ipString, int port, object userData)
         {
-            if (string.IsNullOrEmpty(hostOrIPString))
-            {
-                Log.Warning("Host or IP string is invalid.");
-                return;
-            }
-
-            INetworkChannel networkChannel = m_NetworkManager.GetNetworkChannel(name);
-            if (networkChannel == null)
-            {
-                Log.Warning("Can not find network channel named '{0}'.", name);
-                return;
-            }
-
-            IPAddress ipAddress = null;
-            if (IPAddress.TryParse(hostOrIPString, out ipAddress))
-            {
-                networkChannel.Connect(ipAddress, port, userData);
-            }
-            else
-            {
-                networkChannel.Connect(hostOrIPString, port, userData);
-            }
+            SetNetworkChannelConnection(name, ipString, port);
+            ConnectNetworkChannel(name, userData);
         }
 
         /// <summary>

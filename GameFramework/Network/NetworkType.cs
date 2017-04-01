@@ -13,9 +13,9 @@ namespace GameFramework.Network
     public enum NetworkType
     {
         /// <summary>
-        /// 未指定。
+        /// 未知。
         /// </summary>
-        Unspecified = 0,
+        Unknown = 0,
 
         /// <summary>
         /// IP 版本 4。

@@ -18,7 +18,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 {
     internal sealed partial class AssetBundleBuilderController : Utility.Zip.IZipHelper
     {
-        private const string ConfigurationName = "GameFramework/Config/AssetBundleBuilder.xml";
+        private const string ConfigurationName = "GameFramework/Configs/AssetBundleBuilder.xml";
         private const string VersionListFileName = "version";
         private const string ResourceListFileName = "list";
         private const string RecordName = "GameResourceVersion";
@@ -117,7 +117,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         {
             get
             {
+#if UNITY_5_6_OR_NEWER
+                return PlayerSettings.applicationIdentifier;
+#else
                 return PlayerSettings.bundleIdentifier;
+#endif
             }
         }
 

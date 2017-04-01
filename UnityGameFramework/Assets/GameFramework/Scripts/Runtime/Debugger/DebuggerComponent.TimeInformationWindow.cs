@@ -22,11 +22,17 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Realtime Since Startup", Time.realtimeSinceStartup.ToString());
                     DrawItem("Time Since Level Load", Time.timeSinceLevelLoad.ToString());
                     DrawItem("Time", Time.time.ToString());
-                    DrawItem("Unscaled Time", Time.unscaledTime.ToString());
                     DrawItem("Fixed Time", Time.fixedTime.ToString());
+                    DrawItem("Unscaled Time", Time.unscaledTime.ToString());
+#if UNITY_5_6_OR_NEWER
+                    DrawItem("Fixed Unscaled Time", Time.fixedUnscaledTime.ToString());
+#endif
                     DrawItem("Delta Time", Time.deltaTime.ToString());
-                    DrawItem("Unscaled Delta Time", Time.unscaledDeltaTime.ToString());
                     DrawItem("Fixed Delta Time", Time.fixedDeltaTime.ToString());
+                    DrawItem("Unscaled Delta Time", Time.unscaledDeltaTime.ToString());
+#if UNITY_5_6_OR_NEWER
+                    DrawItem("Fixed Unscaled Delta Time", Time.fixedUnscaledDeltaTime.ToString());
+#endif
                     DrawItem("Smooth Delta Time", Time.smoothDeltaTime.ToString());
                     DrawItem("Maximum Delta Time", Time.maximumDeltaTime.ToString());
 #if UNITY_5_5_OR_NEWER
@@ -35,6 +41,9 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Frame Count", Time.frameCount.ToString());
                     DrawItem("Rendered Frame Count", Time.renderedFrameCount.ToString());
                     DrawItem("Capture Frame Rate", Time.captureFramerate.ToString());
+#if UNITY_5_6_OR_NEWER
+                    DrawItem("In Fixed Time Step", Time.inFixedTimeStep.ToString());
+#endif
                 }
                 GUILayout.EndVertical();
             }

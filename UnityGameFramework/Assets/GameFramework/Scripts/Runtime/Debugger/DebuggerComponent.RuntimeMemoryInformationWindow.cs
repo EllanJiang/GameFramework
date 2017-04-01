@@ -24,9 +24,9 @@ namespace UnityGameFramework.Runtime
             private const int ShowSampleCount = 300;
 
             private DateTime m_SampleTime = DateTime.MinValue;
-            private int m_SampleSize = 0;
+            private long m_SampleSize = 0;
+            private long m_DuplicateSampleSize = 0;
             private int m_DuplicateSimpleCount = 0;
-            private int m_DuplicateSampleSize = 0;
             private List<Sample> m_Samples = new List<Sample>();
 
             protected override void OnDrawScrollableWindow()
@@ -91,15 +91,20 @@ namespace UnityGameFramework.Runtime
             private void TakeSample()
             {
                 m_SampleTime = DateTime.Now;
-                m_SampleSize = 0;
+                m_SampleSize = 0L;
+                m_DuplicateSampleSize = 0L;
                 m_DuplicateSimpleCount = 0;
-                m_DuplicateSampleSize = 0;
                 m_Samples.Clear();
 
                 T[] samples = Resources.FindObjectsOfTypeAll<T>();
                 for (int i = 0; i < samples.Length; i++)
                 {
-                    int sampleSize = Profiler.GetRuntimeMemorySize(samples[i]);
+                    long sampleSize = 0L;
+#if UNITY_5_6_OR_NEWER
+                    Profiler.GetRuntimeMemorySizeLong(samples[i]);
+#else
+                    Profiler.GetRuntimeMemorySize(samples[i]);
+#endif
                     m_SampleSize += sampleSize;
                     m_Samples.Add(new Sample(samples[i].name, samples[i].GetType().Name, sampleSize));
                 }
@@ -111,30 +116,35 @@ namespace UnityGameFramework.Runtime
                     if (m_Samples[i].Name == m_Samples[i - 1].Name && m_Samples[i].Type == m_Samples[i - 1].Type && m_Samples[i].Size == m_Samples[i - 1].Size)
                     {
                         m_Samples[i].Highlight = true;
-                        m_DuplicateSimpleCount++;
                         m_DuplicateSampleSize += m_Samples[i].Size;
+                        m_DuplicateSimpleCount++;
                     }
                 }
             }
 
-            private string GetSizeString(int size)
+            private string GetSizeString(long size)
             {
-                if (size < 1024)
+                if (size < 1024L)
                 {
                     return string.Format("{0} Bytes", size.ToString());
                 }
 
-                if (size < 1024 * 1024)
+                if (size < 1024L * 1024L)
                 {
                     return string.Format("{0} KB", (size / 1024f).ToString("F2"));
                 }
 
-                if (size < 1024 * 1024 * 1024)
+                if (size < 1024L * 1024L * 1024L)
                 {
                     return string.Format("{0} MB", (size / 1024f / 1024f).ToString("F2"));
                 }
 
-                return string.Format("{0} GB", (size / 1024f / 1024f / 1024f).ToString("F2"));
+                if (size < 1024L * 1024L * 1024L * 1024L)
+                {
+                    return string.Format("{0} GB", (size / 1024f / 1024f / 1024f).ToString("F2"));
+                }
+
+                return string.Format("{0} TB", (size / 1024f / 1024f / 1024f / 1024f).ToString("F2"));
             }
 
             private int SampleComparer(Sample a, Sample b)

@@ -41,7 +41,11 @@ namespace UnityGameFramework.Runtime
                 {
                     DrawItem("Product Name:", Application.productName);
                     DrawItem("Company Name:", Application.companyName);
-                    DrawItem("Bundle Identifier:", Application.bundleIdentifier);
+#if UNITY_5_6_OR_NEWER
+                    DrawItem("Game Identifier:", Application.identifier);
+#else
+                    DrawItem("Game Identifier:", Application.bundleIdentifier);
+#endif
                     DrawItem("Game Framework Version:", GameFrameworkEntry.Version);
                     DrawItem("Unity Game Framework Version:", GameEntry.Version);
                     DrawItem("Game Version:", string.Format("{0} ({1})", m_BaseComponent.GameVersion, m_BaseComponent.InternalApplicationVersion.ToString()));
@@ -51,6 +55,9 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Platform:", Application.platform.ToString());
                     DrawItem("System Language:", Application.systemLanguage.ToString());
                     DrawItem("Cloud Project Id:", Application.cloudProjectId);
+#if UNITY_5_6_OR_NEWER
+                    DrawItem("Build Guid:", Application.buildGUID);
+#endif
                     DrawItem("Target Frame Rate:", Application.targetFrameRate.ToString());
                     DrawItem("Internet Reachability:", Application.internetReachability.ToString());
                     DrawItem("Background Loading Priority:", Application.backgroundLoadingPriority.ToString());
@@ -67,6 +74,9 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Is Mobile Platform:", Application.isMobilePlatform.ToString());
                     DrawItem("Is Console Platform:", Application.isConsolePlatform.ToString());
                     DrawItem("Is Editor:", Application.isEditor.ToString());
+#if UNITY_5_6_OR_NEWER
+                    DrawItem("Is Focused:", Application.isFocused.ToString());
+#endif
 #if !UNITY_5_4_OR_NEWER
                     DrawItem("Stack Trace Log Type:", Application.stackTraceLogType.ToString());
 #endif

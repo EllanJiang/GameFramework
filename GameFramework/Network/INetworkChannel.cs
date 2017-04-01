@@ -115,35 +115,19 @@ namespace GameFramework.Network
         }
 
         /// <summary>
-        /// 初始化网络频道。
+        /// 连接到远程主机。
         /// </summary>
-        void Initialize();
-
-        /// <summary>
-        /// 初始化网络频道。
-        /// </summary>
-        /// <param name="networkType">网络类型。</param>
-        void Initialize(NetworkType networkType);
-
-        /// <summary>
-        /// 初始化网络频道。
-        /// </summary>
-        /// <param name="maxPacketLength">数据包最大字节数。</param>
-        void Initialize(int maxPacketLength);
-
-        /// <summary>
-        /// 初始化网络频道。
-        /// </summary>
-        /// <param name="networkType">网络类型。</param>
-        /// <param name="maxPacketLength">数据包最大字节数。</param>
-        void Initialize(NetworkType networkType, int maxPacketLength);
+        /// <param name="ipAddress">远程主机的 IP 地址。</param>
+        /// <param name="port">远程主机的端口号。</param>
+        void Connect(IPAddress ipAddress, int port);
 
         /// <summary>
         /// 连接到远程主机。
         /// </summary>
         /// <param name="ipAddress">远程主机的 IP 地址。</param>
         /// <param name="port">远程主机的端口号。</param>
-        void Connect(IPAddress ipAddress, int port);
+        /// <param name="maxPacketLength">数据包最大字节数。</param>
+        void Connect(IPAddress ipAddress, int port, int maxPacketLength);
 
         /// <summary>
         /// 连接到远程主机。
@@ -156,17 +140,11 @@ namespace GameFramework.Network
         /// <summary>
         /// 连接到远程主机。
         /// </summary>
-        /// <param name="host">远程主机的名称。</param>
+        /// <param name="ipAddress">远程主机的 IP 地址。</param>
         /// <param name="port">远程主机的端口号。</param>
-        void Connect(string host, int port);
-
-        /// <summary>
-        /// 连接到远程主机。
-        /// </summary>
-        /// <param name="host">远程主机的名称。</param>
-        /// <param name="port">远程主机的端口号。</param>
+        /// <param name="maxPacketLength">数据包最大字节数。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void Connect(string host, int port, object userData);
+        void Connect(IPAddress ipAddress, int port, int maxPacketLength, object userData);
 
         /// <summary>
         /// 关闭网络频道。

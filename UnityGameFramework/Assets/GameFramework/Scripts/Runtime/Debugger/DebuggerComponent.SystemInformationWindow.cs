@@ -30,6 +30,10 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Operating System Family:", SystemInfo.operatingSystemFamily.ToString());
 #endif
                     DrawItem("Operating System:", SystemInfo.operatingSystem);
+#if UNITY_5_6_OR_NEWER
+                    DrawItem("Battery Status:", SystemInfo.batteryStatus.ToString());
+                    DrawItem("Battery Level:", SystemInfo.batteryLevel.ToString());
+#endif
 #if UNITY_5_4_OR_NEWER
                     DrawItem("Supports Audio:", SystemInfo.supportsAudio.ToString());
 #endif
