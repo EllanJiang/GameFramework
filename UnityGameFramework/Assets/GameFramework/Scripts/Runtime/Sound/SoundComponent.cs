@@ -8,7 +8,7 @@
 using GameFramework;
 using GameFramework.Resource;
 
-#if !UNITY_5_4_OR_NEWER
+#if UNITY_5_3
 
 using GameFramework.Scene;
 

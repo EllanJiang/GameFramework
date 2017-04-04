@@ -218,11 +218,7 @@ namespace UnityGameFramework.Runtime
 
             Log.Info("Game Framework version is {0}. Unity Game Framework version is {1}.", GameFrameworkEntry.Version, GameEntry.Version);
 
-#if !UNITY_5_3 && !UNITY_5_3_OR_NEWER
-            Log.Error("Game Framework only applies with Unity 5.3 and above, but current Unity version is {0}.", Application.unityVersion);
-            GameEntry.Shutdown(ShutdownType.Quit);
-#else
-
+#if UNITY_5_3_OR_NEWER || UNITY_5_3
             InitZipHelper();
             InitJsonHelper();
 
@@ -242,6 +238,9 @@ namespace UnityGameFramework.Runtime
             Time.timeScale = m_GameSpeed;
             Application.runInBackground = m_RunInBackground;
             Screen.sleepTimeout = m_NeverSleep ? SleepTimeout.NeverSleep : SleepTimeout.SystemSetting;
+#else
+            Log.Error("Game Framework only applies with Unity 5.3 and above, but current Unity version is {0}.", Application.unityVersion);
+            GameEntry.Shutdown(ShutdownType.Quit);
 #endif
         }
 

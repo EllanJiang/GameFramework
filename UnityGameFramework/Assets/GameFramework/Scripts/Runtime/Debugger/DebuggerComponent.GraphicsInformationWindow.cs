@@ -36,7 +36,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Copy Texture Support:", SystemInfo.copyTextureSupport.ToString());
 #endif
                     DrawItem("Supported Render Target Count:", SystemInfo.supportedRenderTargetCount.ToString());
-#if !UNITY_5_5_OR_NEWER
+#if UNITY_5_3 || UNITY_5_4
                     DrawItem("Supports Stencil:", SystemInfo.supportsStencil.ToString());
                     DrawItem("Supports Render Textures:", SystemInfo.supportsRenderTextures.ToString());
 #endif
