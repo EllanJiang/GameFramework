@@ -113,7 +113,6 @@ namespace UnityGameFramework.Runtime
         }
 
 #if UNITY_5_5_OR_NEWER
-
         private IEnumerator UnloadSceneCo(string sceneAssetName, UnloadSceneCallbacks unloadSceneCallbacks, object userData)
         {
             AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(sceneAssetName);
@@ -139,7 +138,6 @@ namespace UnityGameFramework.Runtime
                 }
             }
         }
-
 #endif
     }
 }
