@@ -219,7 +219,7 @@ namespace UnityGameFramework.Runtime
             }
 
             string sceneName = sceneAssetName.Substring(sceneNamePosition + 1);
-            sceneNamePosition = sceneName.IndexOf('.');
+            sceneNamePosition = sceneName.LastIndexOf(".unity");
             if (sceneNamePosition > 0)
             {
                 sceneName = sceneName.Substring(0, sceneNamePosition);
