@@ -331,7 +331,7 @@ namespace GameFramework.Resource
                 {
                     if (!LoadDependencyAsset(dependencyAssetName, mainTask, userData))
                     {
-                        string errorMessage = string.Format("Can not load dependency asset '{0}' when load scene asset '{1}'.", dependencyAssetName, sceneAssetName);
+                        string errorMessage = string.Format("Can not load dependency asset '{0}' when load scene '{1}'.", dependencyAssetName, sceneAssetName);
                         if (loadSceneCallbacks.LoadSceneFailureCallback != null)
                         {
                             loadSceneCallbacks.LoadSceneFailureCallback(sceneAssetName, LoadResourceStatus.DependencyError, errorMessage, userData);
@@ -395,7 +395,7 @@ namespace GameFramework.Resource
                 {
                     if (!LoadDependencyAsset(dependencyAssetName, dependencyTask, userData))
                     {
-                        Log.Debug("Can not load dependency asset '{0}' when load asset '{1}'.", dependencyAssetName, assetName);
+                        Log.Debug("Can not load dependency asset '{0}' when load dependency asset '{1}'.", dependencyAssetName, assetName);
                         return false;
                     }
                 }

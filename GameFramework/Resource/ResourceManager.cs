@@ -968,6 +968,25 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 卸载资源。
+        /// </summary>
+        /// <param name="asset">要卸载的资源。</param>
+        public void UnloadAsset(object asset)
+        {
+            if (asset == null)
+            {
+                throw new GameFrameworkException("Asset is invalid.");
+            }
+
+            if (m_ResourceLoader == null)
+            {
+                return;
+            }
+
+            m_ResourceLoader.UnloadAsset(asset);
+        }
+
+        /// <summary>
         /// 异步加载场景。
         /// </summary>
         /// <param name="sceneAssetName">要加载场景资源的名称。</param>
@@ -1047,25 +1066,6 @@ namespace GameFramework.Resource
             }
 
             m_ResourceLoader.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
-        }
-
-        /// <summary>
-        /// 卸载资源。
-        /// </summary>
-        /// <param name="asset">要卸载的资源。</param>
-        public void UnloadAsset(object asset)
-        {
-            if (asset == null)
-            {
-                throw new GameFrameworkException("Asset is invalid.");
-            }
-
-            if (m_ResourceLoader == null)
-            {
-                return;
-            }
-
-            m_ResourceLoader.UnloadAsset(asset);
         }
 
         /// <summary>
