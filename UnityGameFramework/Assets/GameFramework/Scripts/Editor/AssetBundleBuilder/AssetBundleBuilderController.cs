@@ -129,7 +129,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         {
             get
             {
-                return PlayerSettings.bundleVersion;
+                return Application.version;
             }
         }
 
