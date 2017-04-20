@@ -22,6 +22,17 @@ namespace UnityGameFramework.Runtime
         private AudioMixerGroup m_AudioMixerGroup = null;
 
         /// <summary>
+        /// 获取声音代理辅助器所在的混音组。
+        /// </summary>
+        public AudioMixerGroup AudioMixerGroup
+        {
+            get
+            {
+                return m_AudioMixerGroup;
+            }
+        }
+
+        /// <summary>
         /// 获取当前是否正在播放。
         /// </summary>
         public abstract bool IsPlaying
