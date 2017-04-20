@@ -7,6 +7,7 @@
 
 using GameFramework.Sound;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace UnityGameFramework.Runtime
 {
@@ -15,6 +16,27 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public abstract class SoundGroupHelperBase : MonoBehaviour, ISoundGroupHelper
     {
+        [SerializeField]
+        private AudioMixerGroup m_AudioMixerGroup = null;
 
+        /// <summary>
+        /// 获取声音组辅助器所在的混音组。
+        /// </summary>
+        public AudioMixerGroup AudioMixerGroup
+        {
+            get
+            {
+                return m_AudioMixerGroup;
+            }
+        }
+
+        /// <summary>
+        /// 设置声音组辅助器所在的混音组。
+        /// </summary>
+        /// <param name="audioMixerGroup">混音组。</param>
+        protected internal virtual void SetAudioMixerGroup(AudioMixerGroup audioMixerGroup)
+        {
+            m_AudioMixerGroup = audioMixerGroup;
+        }
     }
 }

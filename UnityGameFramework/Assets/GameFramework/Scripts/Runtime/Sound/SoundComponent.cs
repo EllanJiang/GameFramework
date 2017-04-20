@@ -9,11 +9,14 @@ using GameFramework;
 using GameFramework.Resource;
 
 #if UNITY_5_3
+
 using GameFramework.Scene;
+
 #endif
 
 using GameFramework.Sound;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 namespace UnityGameFramework.Runtime
@@ -44,6 +47,9 @@ namespace UnityGameFramework.Runtime
         private Transform m_InstanceRoot = null;
 
         [SerializeField]
+        private AudioMixer m_AudioMixer = null;
+
+        [SerializeField]
         private string m_SoundHelperTypeName = "UnityGameFramework.Runtime.DefaultSoundHelper";
 
         [SerializeField]
@@ -72,6 +78,17 @@ namespace UnityGameFramework.Runtime
             get
             {
                 return m_SoundManager.SoundGroupCount;
+            }
+        }
+
+        /// <summary>
+        /// 获取声音混响器。
+        /// </summary>
+        public AudioMixer AudioMixer
+        {
+            get
+            {
+                return m_AudioMixer;
             }
         }
 
@@ -246,6 +263,19 @@ namespace UnityGameFramework.Runtime
             transform.SetParent(m_InstanceRoot);
             transform.localScale = Vector3.one;
 
+            if (m_AudioMixer != null)
+            {
+                AudioMixerGroup[] audioMixerGroups = m_AudioMixer.FindMatchingGroups(string.Format("Master/{0}", soundGroupName));
+                if (audioMixerGroups.Length > 0)
+                {
+                    soundGroupHelper.SetAudioMixerGroup(audioMixerGroups[0]);
+                }
+                else
+                {
+                    soundGroupHelper.SetAudioMixerGroup(m_AudioMixer.FindMatchingGroups("Master")[0]);
+                }
+            }
+
             if (!m_SoundManager.AddSoundGroup(soundGroupName, soundGroupAvoidBeingReplacedBySamePriority, soundGroupMute, soundGroupVolume, soundGroupHelper))
             {
                 return false;
@@ -253,7 +283,7 @@ namespace UnityGameFramework.Runtime
 
             for (int i = 0; i < soundAgentHelperCount; i++)
             {
-                if (!AddSoundAgentHelper(soundGroupName, transform, i))
+                if (!AddSoundAgentHelper(soundGroupName, soundGroupHelper, i))
                 {
                     return false;
                 }
@@ -393,10 +423,10 @@ namespace UnityGameFramework.Runtime
         /// 增加声音代理辅助器。
         /// </summary>
         /// <param name="soundGroupName">声音组名称。</param>
-        /// <param name="parentTransform">父节点位置。</param>
+        /// <param name="soundGroupHelper">声音组辅助器。</param>
         /// <param name="index">声音代理辅助器索引。</param>
         /// <returns>是否增加声音代理辅助器成功。</returns>
-        private bool AddSoundAgentHelper(string soundGroupName, Transform parentTransform, int index)
+        private bool AddSoundAgentHelper(string soundGroupName, SoundGroupHelperBase soundGroupHelper, int index)
         {
             SoundAgentHelperBase soundAgentHelper = Utility.Helper.CreateHelper(m_SoundAgentHelperTypeName, m_CustomSoundAgentHelper, index);
             if (soundAgentHelper == null)
@@ -407,8 +437,21 @@ namespace UnityGameFramework.Runtime
 
             soundAgentHelper.name = string.Format("Sound Agent Helper - {0} - {1}", soundGroupName, index.ToString());
             Transform transform = soundAgentHelper.transform;
-            transform.SetParent(parentTransform);
+            transform.SetParent(soundGroupHelper.transform);
             transform.localScale = Vector3.one;
+
+            if (m_AudioMixer != null)
+            {
+                AudioMixerGroup[] audioMixerGroups = m_AudioMixer.FindMatchingGroups(string.Format("Master/{0}/{1}", soundGroupName, index.ToString()));
+                if (audioMixerGroups.Length > 0)
+                {
+                    soundAgentHelper.SetAudioMixerGroup(audioMixerGroups[0]);
+                }
+                else
+                {
+                    soundAgentHelper.SetAudioMixerGroup(soundGroupHelper.AudioMixerGroup);
+                }
+            }
 
             m_SoundManager.AddSoundAgentHelper(soundGroupName, soundAgentHelper);
 

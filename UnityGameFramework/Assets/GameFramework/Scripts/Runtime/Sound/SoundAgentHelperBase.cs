@@ -9,6 +9,7 @@ using GameFramework.Entity;
 using GameFramework.Sound;
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace UnityGameFramework.Runtime
 {
@@ -17,6 +18,9 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public abstract class SoundAgentHelperBase : MonoBehaviour, ISoundAgentHelper
     {
+        [SerializeField]
+        private AudioMixerGroup m_AudioMixerGroup = null;
+
         /// <summary>
         /// 获取当前是否正在播放。
         /// </summary>
@@ -148,5 +152,14 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="bindingEntity">声音绑定的实体。</param>
         public abstract void SetBindingEntity(IEntity bindingEntity);
+
+        /// <summary>
+        /// 设置声音代理辅助器所在的混音组。
+        /// </summary>
+        /// <param name="audioMixerGroup">混音组。</param>
+        protected internal virtual void SetAudioMixerGroup(AudioMixerGroup audioMixerGroup)
+        {
+            m_AudioMixerGroup = audioMixerGroup;
+        }
     }
 }

@@ -9,6 +9,7 @@ using GameFramework.Entity;
 using GameFramework.Sound;
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace UnityGameFramework.Runtime
 {
@@ -257,6 +258,13 @@ namespace UnityGameFramework.Runtime
             }
 
             UpdateAgentPosition();
+        }
+
+        protected internal override void SetAudioMixerGroup(AudioMixerGroup audioMixerGroup)
+        {
+            base.SetAudioMixerGroup(audioMixerGroup);
+
+            m_AudioSource.outputAudioMixerGroup = audioMixerGroup;
         }
 
         private void Awake()
