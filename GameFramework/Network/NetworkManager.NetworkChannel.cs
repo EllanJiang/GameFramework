@@ -19,12 +19,14 @@ namespace GameFramework.Network
         /// </summary>
         private sealed partial class NetworkChannel : INetworkChannel, IDisposable
         {
+            private const int DefaultPacketHeaderLength = 4;
             private const int DefaultMaxPacketLength = 1024 * 32;
             private const float DefaultHeartBeatInterval = 30f;
 
             private readonly string m_Name;
             private readonly INetworkHelper m_NetworkHelper;
             private NetworkType m_NetworkType;
+            private int m_PacketHeaderLength;
             private int m_MaxPacketLength;
             private bool m_ResetHeartBeatElapseSecondsWhenReceivePacket;
             private float m_HeartBeatInterval;
@@ -52,6 +54,7 @@ namespace GameFramework.Network
                 m_Name = name ?? string.Empty;
                 m_NetworkHelper = networkHelper;
                 m_NetworkType = NetworkType.Unknown;
+                m_PacketHeaderLength = DefaultPacketHeaderLength;
                 m_MaxPacketLength = DefaultMaxPacketLength;
                 m_ResetHeartBeatElapseSecondsWhenReceivePacket = false;
                 m_HeartBeatInterval = DefaultHeartBeatInterval;
@@ -197,6 +200,17 @@ namespace GameFramework.Network
             }
 
             /// <summary>
+            /// 获取数据包头长度。
+            /// </summary>
+            public int PacketHeaderLength
+            {
+                get
+                {
+                    return m_PacketHeaderLength;
+                }
+            }
+
+            /// <summary>
             /// 获取数据包最大字节数。
             /// </summary>
             public int MaxPacketLength
@@ -334,7 +348,7 @@ namespace GameFramework.Network
             /// <param name="port">远程主机的端口号。</param>
             public void Connect(IPAddress ipAddress, int port)
             {
-                Connect(ipAddress, port, DefaultMaxPacketLength, null);
+                Connect(ipAddress, port, DefaultPacketHeaderLength, DefaultMaxPacketLength, null);
             }
 
             /// <summary>
@@ -345,7 +359,7 @@ namespace GameFramework.Network
             /// <param name="maxPacketLength">数据包最大字节数。</param>
             public void Connect(IPAddress ipAddress, int port, int maxPacketLength)
             {
-                Connect(ipAddress, port, maxPacketLength, null);
+                Connect(ipAddress, port, DefaultPacketHeaderLength, maxPacketLength, null);
             }
 
             /// <summary>
@@ -356,7 +370,19 @@ namespace GameFramework.Network
             /// <param name="userData">用户自定义数据。</param>
             public void Connect(IPAddress ipAddress, int port, object userData)
             {
-                Connect(ipAddress, port, DefaultMaxPacketLength, userData);
+                Connect(ipAddress, port, DefaultPacketHeaderLength, DefaultMaxPacketLength, userData);
+            }
+
+            /// <summary>
+            /// 连接到远程主机。
+            /// </summary>
+            /// <param name="ipAddress">远程主机的 IP 地址。</param>
+            /// <param name="port">远程主机的端口号。</param>
+            /// <param name="packetHeaderLength">数据包头长度。</param>
+            /// <param name="maxPacketLength">数据包最大字节数。</param>
+            public void Connect(IPAddress ipAddress, int port, int packetHeaderLength, int maxPacketLength)
+            {
+                Connect(ipAddress, port, DefaultPacketHeaderLength, DefaultMaxPacketLength, null);
             }
 
             /// <summary>
@@ -368,7 +394,20 @@ namespace GameFramework.Network
             /// <param name="userData">用户自定义数据。</param>
             public void Connect(IPAddress ipAddress, int port, int maxPacketLength, object userData)
             {
-                Initialize(ipAddress.AddressFamily, maxPacketLength);
+                Connect(ipAddress, port, DefaultPacketHeaderLength, maxPacketLength, userData);
+            }
+
+            /// <summary>
+            /// 连接到远程主机。
+            /// </summary>
+            /// <param name="ipAddress">远程主机的 IP 地址。</param>
+            /// <param name="port">远程主机的端口号。</param>
+            /// <param name="packetHeaderLength">数据包头长度。</param>
+            /// <param name="maxPacketLength">数据包最大字节数。</param>
+            /// <param name="userData">用户自定义数据。</param>
+            public void Connect(IPAddress ipAddress, int port, int packetHeaderLength, int maxPacketLength, object userData)
+            {
+                Initialize(ipAddress.AddressFamily, packetHeaderLength, maxPacketLength);
 
                 if (m_Socket == null)
                 {
@@ -546,12 +585,12 @@ namespace GameFramework.Network
                     byte[] packetBuffer = new byte[m_MaxPacketLength];
                     using (MemoryStream memoryStream = new MemoryStream(packetBuffer, true))
                     {
-                        memoryStream.Seek(ReceiveState.HeaderLength, SeekOrigin.Begin);
+                        memoryStream.Seek(m_PacketHeaderLength, SeekOrigin.Begin);
                         m_NetworkHelper.Serialize(this, memoryStream, packet);
                         length = (int)memoryStream.Position;
                     }
 
-                    packetLength = length - ReceiveState.HeaderLength;
+                    packetLength = length - m_PacketHeaderLength;
                     Utility.Converter.GetBytesFromInt(packetLength).CopyTo(packetBuffer, 0);
                     Send(packetBuffer, 0, length, userData);
                 }
@@ -596,7 +635,7 @@ namespace GameFramework.Network
                 m_Disposed = true;
             }
 
-            private void Initialize(AddressFamily addressFamily, int maxPacketLength)
+            private void Initialize(AddressFamily addressFamily, int packetHeaderLength, int maxPacketLength)
             {
                 if (m_Socket != null)
                 {
@@ -604,11 +643,17 @@ namespace GameFramework.Network
                     m_Socket = null;
                 }
 
+                if (packetHeaderLength <= 0)
+                {
+                    throw new GameFrameworkException("Packet header length is invalid.");
+                }
+
                 if (maxPacketLength <= 0)
                 {
                     throw new GameFrameworkException("Max packet length is invalid.");
                 }
 
+                m_PacketHeaderLength = packetHeaderLength;
                 m_MaxPacketLength = maxPacketLength;
 
                 switch (addressFamily)
@@ -625,6 +670,7 @@ namespace GameFramework.Network
 
                 m_Socket = new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
                 m_ReceiveState = new ReceiveState(maxPacketLength);
+                m_ReceiveState.Reset(m_PacketHeaderLength);
             }
 
             private void Receive()
@@ -653,12 +699,12 @@ namespace GameFramework.Network
                     throw new GameFrameworkException(string.Format("Receive length '{0}' is not equal to length '{1}'.", m_ReceiveState.ReceivedLength.ToString(), m_ReceiveState.Length.ToString()));
                 }
 
-                if (m_ReceiveState.Length < ReceiveState.HeaderLength)
+                if (m_ReceiveState.Length < m_PacketHeaderLength)
                 {
                     throw new GameFrameworkException(string.Format("Length '{0}' is smaller than length header.", m_ReceiveState.Length.ToString()));
                 }
 
-                if (m_ReceiveState.Length == ReceiveState.HeaderLength)
+                if (m_ReceiveState.Length == m_PacketHeaderLength)
                 {
                     int packetLength = Utility.Converter.GetIntFromBytes(m_ReceiveState.GetBuffer());
                     if (packetLength <= 0)
@@ -697,9 +743,9 @@ namespace GameFramework.Network
                 Packet packet = null;
                 try
                 {
-                    int packetLength = m_ReceiveState.Length - ReceiveState.HeaderLength;
+                    int packetLength = m_ReceiveState.Length - m_PacketHeaderLength;
                     object customErrorData = null;
-                    using (MemoryStream memoryStream = new MemoryStream(m_ReceiveState.GetBuffer(), ReceiveState.HeaderLength, packetLength, false))
+                    using (MemoryStream memoryStream = new MemoryStream(m_ReceiveState.GetBuffer(), m_PacketHeaderLength, packetLength, false))
                     {
                         lock (m_NetworkHelper)
                         {
@@ -707,7 +753,7 @@ namespace GameFramework.Network
                         }
                     }
 
-                    m_ReceiveState.Reset();
+                    m_ReceiveState.Reset(m_PacketHeaderLength);
                     if (packet == null)
                     {
                         if (NetworkChannelCustomError != null)

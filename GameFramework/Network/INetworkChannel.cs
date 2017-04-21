@@ -71,6 +71,14 @@ namespace GameFramework.Network
         }
 
         /// <summary>
+        /// 获取数据包头长度。
+        /// </summary>
+        int PacketHeaderLength
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取数据包最大字节数。
         /// </summary>
         int MaxPacketLength
@@ -142,9 +150,28 @@ namespace GameFramework.Network
         /// </summary>
         /// <param name="ipAddress">远程主机的 IP 地址。</param>
         /// <param name="port">远程主机的端口号。</param>
+        /// <param name="packetHeaderLength">数据包头长度。</param>
+        /// <param name="maxPacketLength">数据包最大字节数。</param>
+        void Connect(IPAddress ipAddress, int port, int packetHeaderLength, int maxPacketLength);
+
+        /// <summary>
+        /// 连接到远程主机。
+        /// </summary>
+        /// <param name="ipAddress">远程主机的 IP 地址。</param>
+        /// <param name="port">远程主机的端口号。</param>
         /// <param name="maxPacketLength">数据包最大字节数。</param>
         /// <param name="userData">用户自定义数据。</param>
         void Connect(IPAddress ipAddress, int port, int maxPacketLength, object userData);
+
+        /// <summary>
+        /// 连接到远程主机。
+        /// </summary>
+        /// <param name="ipAddress">远程主机的 IP 地址。</param>
+        /// <param name="port">远程主机的端口号。</param>
+        /// <param name="packetHeaderLength">数据包头长度。</param>
+        /// <param name="maxPacketLength">数据包最大字节数。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        void Connect(IPAddress ipAddress, int port, int packetHeaderLength, int maxPacketLength, object userData);
 
         /// <summary>
         /// 关闭网络频道。

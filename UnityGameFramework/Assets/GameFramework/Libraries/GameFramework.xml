@@ -5975,6 +5975,11 @@
             获取远程终结点的端口号。
             </summary>
         </member>
+        <member name="P:GameFramework.Network.INetworkChannel.PacketHeaderLength">
+            <summary>
+            获取数据包头长度。
+            </summary>
+        </member>
         <member name="P:GameFramework.Network.INetworkChannel.MaxPacketLength">
             <summary>
             获取数据包最大字节数。
@@ -6023,12 +6028,31 @@
             <param name="port">远程主机的端口号。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
+        <member name="M:GameFramework.Network.INetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            连接到远程主机。
+            </summary>
+            <param name="ipAddress">远程主机的 IP 地址。</param>
+            <param name="port">远程主机的端口号。</param>
+            <param name="packetHeaderLength">数据包头长度。</param>
+            <param name="maxPacketLength">数据包最大字节数。</param>
+        </member>
         <member name="M:GameFramework.Network.INetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Object)">
             <summary>
             连接到远程主机。
             </summary>
             <param name="ipAddress">远程主机的 IP 地址。</param>
             <param name="port">远程主机的端口号。</param>
+            <param name="maxPacketLength">数据包最大字节数。</param>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Network.INetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Int32,System.Object)">
+            <summary>
+            连接到远程主机。
+            </summary>
+            <param name="ipAddress">远程主机的 IP 地址。</param>
+            <param name="port">远程主机的端口号。</param>
+            <param name="packetHeaderLength">数据包头长度。</param>
             <param name="maxPacketLength">数据包最大字节数。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
@@ -6503,6 +6527,11 @@
             获取远程终结点的端口号。
             </summary>
         </member>
+        <member name="P:GameFramework.Network.NetworkManager.NetworkChannel.PacketHeaderLength">
+            <summary>
+            获取数据包头长度。
+            </summary>
+        </member>
         <member name="P:GameFramework.Network.NetworkManager.NetworkChannel.MaxPacketLength">
             <summary>
             获取数据包最大字节数。
@@ -6558,12 +6587,31 @@
             <param name="port">远程主机的端口号。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
+        <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            连接到远程主机。
+            </summary>
+            <param name="ipAddress">远程主机的 IP 地址。</param>
+            <param name="port">远程主机的端口号。</param>
+            <param name="packetHeaderLength">数据包头长度。</param>
+            <param name="maxPacketLength">数据包最大字节数。</param>
+        </member>
         <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Object)">
             <summary>
             连接到远程主机。
             </summary>
             <param name="ipAddress">远程主机的 IP 地址。</param>
             <param name="port">远程主机的端口号。</param>
+            <param name="maxPacketLength">数据包最大字节数。</param>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Int32,System.Object)">
+            <summary>
+            连接到远程主机。
+            </summary>
+            <param name="ipAddress">远程主机的 IP 地址。</param>
+            <param name="port">远程主机的端口号。</param>
+            <param name="packetHeaderLength">数据包头长度。</param>
             <param name="maxPacketLength">数据包最大字节数。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
@@ -9465,6 +9513,12 @@
             <param name="loadAssetCallbacks">加载资源回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
+        <member name="M:GameFramework.Resource.ResourceManager.UnloadAsset(System.Object)">
+            <summary>
+            卸载资源。
+            </summary>
+            <param name="asset">要卸载的资源。</param>
+        </member>
         <member name="M:GameFramework.Resource.ResourceManager.LoadScene(System.String,GameFramework.Resource.LoadSceneCallbacks)">
             <summary>
             异步加载场景。
@@ -9494,12 +9548,6 @@
             <param name="sceneAssetName">要卸载场景资源的名称。</param>
             <param name="unloadSceneCallbacks">卸载场景回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.UnloadAsset(System.Object)">
-            <summary>
-            卸载资源。
-            </summary>
-            <param name="asset">要卸载的资源。</param>
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.GetResourceGroupReady(System.String)">
             <summary>

@@ -13,25 +13,25 @@ namespace GameFramework.Network
         {
             private sealed class ReceiveState
             {
-                public const int HeaderLength = 4;
-
-                private readonly int m_BufferSize;
                 private readonly byte[] m_Buffer;
                 private int m_Length;
                 private int m_ReceivedLength;
 
                 public ReceiveState(int bufferSize)
                 {
-                    m_BufferSize = bufferSize;
+                    if (bufferSize <= 0)
+                    {
+                        throw new GameFrameworkException("Buffer size is invalid.");
+                    }
+
                     m_Buffer = new byte[bufferSize];
-                    Reset();
                 }
 
                 public int BufferSize
                 {
                     get
                     {
-                        return m_BufferSize;
+                        return m_Buffer.Length;
                     }
                 }
 
@@ -59,9 +59,9 @@ namespace GameFramework.Network
                     }
                 }
 
-                public void Reset()
+                public void Reset(int packetHeaderLength)
                 {
-                    Length = HeaderLength;
+                    Length = packetHeaderLength;
                     ReceivedLength = 0;
                 }
 

@@ -21,6 +21,7 @@ namespace UnityGameFramework.Runtime
         [Serializable]
         private class NetworkChannel
         {
+            private const int DefaultPacketHeaderLength = 4;
             private const int DefaultMaxPacketLength = 1024 * 32;
             private const float DefaultHeartBeatInterval = 30f;
 
@@ -34,6 +35,9 @@ namespace UnityGameFramework.Runtime
 
             [SerializeField]
             private int m_Port = 0;
+
+            [SerializeField]
+            private int m_PacketHeaderLength = DefaultPacketHeaderLength;
 
             [SerializeField]
             private int m_MaxPacketLength = DefaultMaxPacketLength;
@@ -90,6 +94,17 @@ namespace UnityGameFramework.Runtime
                 set
                 {
                     m_Port = value;
+                }
+            }
+
+            /// <summary>
+            /// 获取数据包头长度。
+            /// </summary>
+            public int PacketHeaderLength
+            {
+                get
+                {
+                    return m_PacketHeaderLength;
                 }
             }
 
@@ -154,7 +169,7 @@ namespace UnityGameFramework.Runtime
                     return;
                 }
 
-                m_NetworkChannel.Connect(ipAddress, m_Port, m_MaxPacketLength, userData);
+                m_NetworkChannel.Connect(ipAddress, m_Port, m_PacketHeaderLength, m_MaxPacketLength, userData);
             }
         }
     }
