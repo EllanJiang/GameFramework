@@ -242,6 +242,9 @@ namespace UnityGameFramework.Runtime
             Log.Error("Game Framework only applies with Unity 5.3 and above, but current Unity version is {0}.", Application.unityVersion);
             GameEntry.Shutdown(ShutdownType.Quit);
 #endif
+#if UNITY_5_6_OR_NEWER
+            Application.lowMemory += OnLowMemory;
+#endif
         }
 
         private void Start()
@@ -339,6 +342,9 @@ namespace UnityGameFramework.Runtime
 
         internal void Shutdown()
         {
+#if UNITY_5_6_OR_NEWER
+            Application.lowMemory -= OnLowMemory;
+#endif
             GameFrameworkEntry.Shutdown();
             Destroy(gameObject);
         }
@@ -361,6 +367,23 @@ namespace UnityGameFramework.Runtime
                     break;
                 default:
                     throw new GameFrameworkException(message.ToString());
+            }
+        }
+
+        private void OnLowMemory()
+        {
+            Log.Info("Low memory received...");
+
+            ObjectPoolComponent objectPoolComponent = GameEntry.GetComponent<ObjectPoolComponent>();
+            if (objectPoolComponent != null)
+            {
+                objectPoolComponent.ReleaseAllUnused();
+            }
+
+            ResourceComponent resourceCompoent = GameEntry.GetComponent<ResourceComponent>();
+            if (resourceCompoent != null)
+            {
+                resourceCompoent.ForceUnloadUnusedAssets(true);
             }
         }
     }
