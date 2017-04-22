@@ -372,7 +372,7 @@ namespace UnityGameFramework.Runtime
 
         private void OnLowMemory()
         {
-            Log.Info("Low memory received...");
+            Log.Info("Low memory reported...");
 
             ObjectPoolComponent objectPoolComponent = GameEntry.GetComponent<ObjectPoolComponent>();
             if (objectPoolComponent != null)
