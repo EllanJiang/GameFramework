@@ -18,7 +18,7 @@ namespace GameFramework.Sound
         {
             private readonly string m_Name;
             private readonly ISoundGroupHelper m_SoundGroupHelper;
-            private readonly IList<SoundAgent> m_SoundAgents;
+            private readonly List<SoundAgent> m_SoundAgents;
             private bool m_AvoidBeingReplacedBySamePriority;
             private bool m_Mute;
             private float m_Volume;

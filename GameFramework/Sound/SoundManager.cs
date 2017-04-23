@@ -16,7 +16,7 @@ namespace GameFramework.Sound
     /// </summary>
     internal sealed partial class SoundManager : GameFrameworkModule, ISoundManager
     {
-        private readonly IDictionary<string, SoundGroup> m_SoundGroups;
+        private readonly Dictionary<string, SoundGroup> m_SoundGroups;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
         private IResourceManager m_ResourceManager;
         private ISoundHelper m_SoundHelper;

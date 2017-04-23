@@ -26,11 +26,11 @@ namespace GameFramework.Resource
         private const string BackupFileSuffixName = ".bak";
         private const byte ReadWriteListVersionHeader = 0;
 
-        private readonly IDictionary<string, AssetInfo> m_AssetInfos;
-        private readonly IDictionary<string, AssetDependencyInfo> m_AssetDependencyInfos;
-        private readonly IDictionary<ResourceName, ResourceInfo> m_ResourceInfos;
-        private readonly IDictionary<string, ResourceGroup> m_ResourceGroups;
-        private readonly IDictionary<ResourceName, ReadWriteResourceInfo> m_ReadWriteResourceInfos;
+        private readonly Dictionary<string, AssetInfo> m_AssetInfos;
+        private readonly Dictionary<string, AssetDependencyInfo> m_AssetDependencyInfos;
+        private readonly Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
+        private readonly Dictionary<string, ResourceGroup> m_ResourceGroups;
+        private readonly SortedDictionary<ResourceName, ReadWriteResourceInfo> m_ReadWriteResourceInfos;
         private ResourceIniter m_ResourceIniter;
         private VersionListProcessor m_VersionListProcessor;
         private ResourceChecker m_ResourceChecker;

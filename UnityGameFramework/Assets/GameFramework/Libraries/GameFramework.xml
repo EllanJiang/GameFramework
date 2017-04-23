@@ -9789,7 +9789,7 @@
             资源组。
             </summary>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceGroup.#ctor(System.Collections.Generic.IDictionary{GameFramework.Resource.ResourceManager.ResourceName,GameFramework.Resource.ResourceManager.ResourceInfo})">
+        <member name="M:GameFramework.Resource.ResourceManager.ResourceGroup.#ctor(System.Collections.Generic.Dictionary{GameFramework.Resource.ResourceManager.ResourceName,GameFramework.Resource.ResourceManager.ResourceInfo})">
             <summary>
             初始化资源组的新实例。
             </summary>

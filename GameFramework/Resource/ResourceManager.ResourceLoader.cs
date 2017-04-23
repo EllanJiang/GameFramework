@@ -19,7 +19,7 @@ namespace GameFramework.Resource
         {
             private readonly ResourceManager m_ResourceManager;
             private readonly TaskPool<LoadResourceTaskBase> m_TaskPool;
-            private readonly IDictionary<string, object> m_SceneToAssetMap;
+            private readonly Dictionary<string, object> m_SceneToAssetMap;
             private IObjectPool<AssetObject> m_AssetPool;
             private IObjectPool<ResourceObject> m_ResourcePool;
 

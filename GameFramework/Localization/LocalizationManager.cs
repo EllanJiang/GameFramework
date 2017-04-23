@@ -16,7 +16,7 @@ namespace GameFramework.Localization
     /// </summary>
     internal sealed class LocalizationManager : GameFrameworkModule, ILocalizationManager
     {
-        private readonly IDictionary<string, string> m_Dictionary;
+        private readonly Dictionary<string, string> m_Dictionary;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
         private IResourceManager m_ResourceManager;
         private ILocalizationHelper m_LocalizationHelper;

@@ -17,8 +17,8 @@ namespace GameFramework.Entity
     /// </summary>
     internal sealed partial class EntityManager : GameFrameworkModule, IEntityManager
     {
-        private readonly IDictionary<int, EntityInfo> m_EntityInfos;
-        private readonly IDictionary<string, EntityGroup> m_EntityGroups;
+        private readonly Dictionary<int, EntityInfo> m_EntityInfos;
+        private readonly Dictionary<string, EntityGroup> m_EntityGroups;
         private readonly HashSet<int> m_EntitiesBeingLoaded;
         private readonly HashSet<int> m_EntitiesToReleaseOnLoad;
         private readonly LinkedList<EntityInfo> m_RecycleQueue;
@@ -174,7 +174,7 @@ namespace GameFramework.Entity
                 entityGroup.UnspawnEntity(entity);
             }
 
-            foreach (KeyValuePair<string, EntityGroup> entityGroup in (Dictionary<string, EntityGroup>)m_EntityGroups)
+            foreach (KeyValuePair<string, EntityGroup> entityGroup in m_EntityGroups)
             {
                 entityGroup.Value.Update(elapseSeconds, realElapseSeconds);
             }

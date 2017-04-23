@@ -33,8 +33,8 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
         private readonly AssetBundleCollection m_AssetBundleCollection;
         private readonly AssetBundleAnalyzerController m_AssetBundleAnalyzerController;
-        private readonly IDictionary<string, AssetBundleData> m_AssetBundleDatas;
-        private readonly IDictionary<BuildTarget, VersionListData> m_VersionListDatas;
+        private readonly SortedDictionary<string, AssetBundleData> m_AssetBundleDatas;
+        private readonly Dictionary<BuildTarget, VersionListData> m_VersionListDatas;
         private readonly BuildReport m_BuildReport;
 
         public AssetBundleBuilderController()

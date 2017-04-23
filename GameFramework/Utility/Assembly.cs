@@ -16,8 +16,8 @@ namespace Utility
     /// </summary>
     public static class Assembly
     {
-        private static readonly IDictionary<string, Type> s_CachedTypes = new Dictionary<string, Type>();
-        private static readonly IList<string> s_LoadedAssemblyNames = new List<string>();
+        private static readonly Dictionary<string, Type> s_CachedTypes = new Dictionary<string, Type>();
+        private static readonly List<string> s_LoadedAssemblyNames = new List<string>();
 
         static Assembly()
         {
@@ -34,7 +34,7 @@ namespace Utility
         /// <returns>已加载的程序集名称。</returns>
         public static string[] GetLoadedAssemblyNames()
         {
-            return ((List<string>)s_LoadedAssemblyNames).ToArray();
+            return s_LoadedAssemblyNames.ToArray();
         }
 
         /// <summary>

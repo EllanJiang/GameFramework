@@ -17,8 +17,8 @@ namespace GameFramework.Fsm
     internal sealed class Fsm<T> : FsmBase, IFsm<T> where T : class
     {
         private readonly T m_Owner;
-        private readonly IDictionary<string, FsmState<T>> m_States;
-        private readonly IDictionary<string, Variable> m_Datas;
+        private readonly Dictionary<string, FsmState<T>> m_States;
+        private readonly Dictionary<string, Variable> m_Datas;
         private FsmState<T> m_CurrentState;
         private float m_CurrentStateTime;
         private bool m_IsDestroyed;

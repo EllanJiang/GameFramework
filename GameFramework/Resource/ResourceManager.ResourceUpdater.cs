@@ -20,7 +20,7 @@ namespace GameFramework.Resource
         private sealed partial class ResourceUpdater
         {
             private readonly ResourceManager m_ResourceManager;
-            private readonly IList<UpdateInfo> m_UpdateWaitingInfo;
+            private readonly List<UpdateInfo> m_UpdateWaitingInfo;
             private IDownloadManager m_DownloadManager;
             private bool m_CheckResourcesComplete;
             private bool m_UpdateAllowed;

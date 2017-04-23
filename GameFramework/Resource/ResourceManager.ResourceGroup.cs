@@ -16,15 +16,15 @@ namespace GameFramework.Resource
         /// </summary>
         private sealed class ResourceGroup
         {
-            private readonly IDictionary<ResourceName, ResourceInfo> m_ResourceInfos;
-            private readonly IList<ResourceName> m_ResourceNames;
+            private readonly Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
+            private readonly List<ResourceName> m_ResourceNames;
             private int m_TotalLength;
 
             /// <summary>
             /// 初始化资源组的新实例。
             /// </summary>
             /// <param name="resourceInfos">资源信息引用。</param>
-            public ResourceGroup(IDictionary<ResourceName, ResourceInfo> resourceInfos)
+            public ResourceGroup(Dictionary<ResourceName, ResourceInfo> resourceInfos)
             {
                 if (resourceInfos == null)
                 {

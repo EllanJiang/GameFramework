@@ -18,7 +18,7 @@ namespace GameFramework.ObjectPool
         private const float DefaultExpireTime = float.MaxValue;
         private const int DefaultPriority = 0;
 
-        private readonly IDictionary<string, ObjectPoolBase> m_ObjectPools;
+        private readonly Dictionary<string, ObjectPoolBase> m_ObjectPools;
 
         /// <summary>
         /// 初始化对象池管理器的新实例。
@@ -58,7 +58,7 @@ namespace GameFramework.ObjectPool
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
-            foreach (KeyValuePair<string, ObjectPoolBase> objectPool in (Dictionary<string, ObjectPoolBase>)m_ObjectPools)
+            foreach (KeyValuePair<string, ObjectPoolBase> objectPool in m_ObjectPools)
             {
                 objectPool.Value.Update(elapseSeconds, realElapseSeconds);
             }

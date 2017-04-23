@@ -16,7 +16,7 @@ namespace GameFramework.DataTable
     /// </summary>
     internal sealed partial class DataTableManager : GameFrameworkModule, IDataTableManager
     {
-        private readonly IDictionary<string, DataTableBase> m_DataTables;
+        private readonly Dictionary<string, DataTableBase> m_DataTables;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
         private IResourceManager m_ResourceManager;
         private IDataTableHelper m_DataTableHelper;
