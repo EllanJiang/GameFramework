@@ -165,7 +165,8 @@ namespace GameFramework.Scene
         /// </summary>
         internal override void Shutdown()
         {
-            foreach (string loadedSceneAssetName in m_LoadedSceneAssetNames)
+            string[] loadedSceneAssetNames = m_LoadedSceneAssetNames.ToArray();
+            foreach (string loadedSceneAssetName in loadedSceneAssetNames)
             {
                 if (SceneIsUnloading(loadedSceneAssetName))
                 {
