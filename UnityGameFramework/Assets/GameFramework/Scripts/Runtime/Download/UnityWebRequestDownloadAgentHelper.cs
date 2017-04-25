@@ -9,7 +9,6 @@ using GameFramework;
 using GameFramework.Download;
 using System;
 using System.Collections.Generic;
-
 #if UNITY_5_4_OR_NEWER
 using UnityEngine.Networking;
 #else
