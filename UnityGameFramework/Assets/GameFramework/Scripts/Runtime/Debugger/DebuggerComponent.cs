@@ -283,6 +283,11 @@ namespace UnityGameFramework.Runtime
 
         private void DrawDebuggerWindowGroup(IDebuggerWindowGroup debuggerWindowGroup)
         {
+            if (debuggerWindowGroup == null)
+            {
+                return;
+            }
+
             List<string> names = new List<string>();
             string[] debuggerWindowNames = debuggerWindowGroup.GetDebuggerWindowNames();
             for (int i = 0; i < debuggerWindowNames.Length; i++)
