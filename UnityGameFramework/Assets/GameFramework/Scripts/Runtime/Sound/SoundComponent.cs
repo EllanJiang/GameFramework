@@ -264,11 +264,11 @@ namespace UnityGameFramework.Runtime
                 AudioMixerGroup[] audioMixerGroups = m_AudioMixer.FindMatchingGroups(string.Format("Master/{0}", soundGroupName));
                 if (audioMixerGroups.Length > 0)
                 {
-                    soundGroupHelper.SetAudioMixerGroup(audioMixerGroups[0]);
+                    soundGroupHelper.AudioMixerGroup = audioMixerGroups[0];
                 }
                 else
                 {
-                    soundGroupHelper.SetAudioMixerGroup(m_AudioMixer.FindMatchingGroups("Master")[0]);
+                    soundGroupHelper.AudioMixerGroup = m_AudioMixer.FindMatchingGroups("Master")[0];
                 }
             }
 
@@ -385,7 +385,63 @@ namespace UnityGameFramework.Runtime
         /// <returns>声音的序列编号。</returns>
         public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams, Entity bindingEntity, object userData)
         {
-            return m_SoundManager.PlaySound(soundAssetName, soundGroupName, playSoundParams, new PlaySoundInfo(bindingEntity, userData));
+            return m_SoundManager.PlaySound(soundAssetName, soundGroupName, playSoundParams, new PlaySoundInfo(bindingEntity, Vector3.zero, userData));
+        }
+
+        /// <summary>
+        /// 播放声音。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="playSoundParams">播放声音参数。</param>
+        /// <param name="worldPosition">声音所在的世界坐标。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>声音的序列编号。</returns>
+        public int PlaySound(string soundAssetName, string soundGroupName, Vector3 worldPosition)
+        {
+            return PlaySound(soundAssetName, soundGroupName, null, worldPosition, null);
+        }
+
+        /// <summary>
+        /// 播放声音。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="playSoundParams">播放声音参数。</param>
+        /// <param name="worldPosition">声音所在的世界坐标。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>声音的序列编号。</returns>
+        public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams, Vector3 worldPosition)
+        {
+            return PlaySound(soundAssetName, soundGroupName, playSoundParams, worldPosition, null);
+        }
+
+        /// <summary>
+        /// 播放声音。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="playSoundParams">播放声音参数。</param>
+        /// <param name="worldPosition">声音所在的世界坐标。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>声音的序列编号。</returns>
+        public int PlaySound(string soundAssetName, string soundGroupName, Vector3 worldPosition, object userData)
+        {
+            return PlaySound(soundAssetName, soundGroupName, null, worldPosition, userData);
+        }
+
+        /// <summary>
+        /// 播放声音。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="playSoundParams">播放声音参数。</param>
+        /// <param name="worldPosition">声音所在的世界坐标。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>声音的序列编号。</returns>
+        public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams, Vector3 worldPosition, object userData)
+        {
+            return m_SoundManager.PlaySound(soundAssetName, soundGroupName, playSoundParams, new PlaySoundInfo(null, worldPosition, userData));
         }
 
         /// <summary>
@@ -441,11 +497,11 @@ namespace UnityGameFramework.Runtime
                 AudioMixerGroup[] audioMixerGroups = m_AudioMixer.FindMatchingGroups(string.Format("Master/{0}/{1}", soundGroupName, index.ToString()));
                 if (audioMixerGroups.Length > 0)
                 {
-                    soundAgentHelper.SetAudioMixerGroup(audioMixerGroups[0]);
+                    soundAgentHelper.AudioMixerGroup = audioMixerGroups[0];
                 }
                 else
                 {
-                    soundAgentHelper.SetAudioMixerGroup(soundGroupHelper.AudioMixerGroup);
+                    soundAgentHelper.AudioMixerGroup = soundGroupHelper.AudioMixerGroup;
                 }
             }
 
@@ -457,9 +513,17 @@ namespace UnityGameFramework.Runtime
         private void OnPlaySoundSuccess(object sender, GameFramework.Sound.PlaySoundSuccessEventArgs e)
         {
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)e.UserData;
-            if (playSoundInfo != null && playSoundInfo.BindingEntity != null)
+            if (playSoundInfo != null)
             {
-                e.SoundAgent.SetBindingEntity(playSoundInfo.BindingEntity);
+                SoundAgentHelperBase soundAgentHelper = (SoundAgentHelperBase)e.SoundAgent.Helper;
+                if (playSoundInfo.BindingEntity != null)
+                {
+                    soundAgentHelper.SetBindingEntity(playSoundInfo.BindingEntity);
+                }
+                else
+                {
+                    soundAgentHelper.SetWorldPosition(playSoundInfo.WorldPosition);
+                }
             }
 
             if (m_EnablePlaySoundSuccessEvent)

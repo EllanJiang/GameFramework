@@ -5,7 +5,6 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Entity;
 using GameFramework.Sound;
 using System;
 using UnityEngine;
@@ -18,20 +17,6 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public abstract class SoundAgentHelperBase : MonoBehaviour, ISoundAgentHelper
     {
-        [SerializeField]
-        private AudioMixerGroup m_AudioMixerGroup = null;
-
-        /// <summary>
-        /// 获取声音代理辅助器所在的混音组。
-        /// </summary>
-        public AudioMixerGroup AudioMixerGroup
-        {
-            get
-            {
-                return m_AudioMixerGroup;
-            }
-        }
-
         /// <summary>
         /// 获取当前是否正在播放。
         /// </summary>
@@ -122,6 +107,15 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
+        /// 获取或设置声音代理辅助器所在的混音组。
+        /// </summary>
+        public abstract AudioMixerGroup AudioMixerGroup
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 重置声音代理事件。
         /// </summary>
         public abstract event EventHandler<ResetSoundAgentEventArgs> ResetSoundAgent;
@@ -162,15 +156,12 @@ namespace UnityGameFramework.Runtime
         /// 设置声音绑定的实体。
         /// </summary>
         /// <param name="bindingEntity">声音绑定的实体。</param>
-        public abstract void SetBindingEntity(IEntity bindingEntity);
+        public abstract void SetBindingEntity(Entity bindingEntity);
 
         /// <summary>
-        /// 设置声音代理辅助器所在的混音组。
+        /// 设置声音所在的世界坐标。
         /// </summary>
-        /// <param name="audioMixerGroup">混音组。</param>
-        protected internal virtual void SetAudioMixerGroup(AudioMixerGroup audioMixerGroup)
-        {
-            m_AudioMixerGroup = audioMixerGroup;
-        }
+        /// <param name="worldPosition">声音所在的世界坐标。</param>
+        public abstract void SetWorldPosition(Vector3 worldPosition);
     }
 }

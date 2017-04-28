@@ -5,7 +5,6 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Entity;
 using System;
 
 namespace GameFramework.Sound
@@ -255,6 +254,17 @@ namespace GameFramework.Sound
             }
 
             /// <summary>
+            /// 获取声音代理辅助器。
+            /// </summary>
+            public ISoundAgentHelper Helper
+            {
+                get
+                {
+                    return m_SoundAgentHelper;
+                }
+            }
+
+            /// <summary>
             /// 获取声音创建时间。
             /// </summary>
             internal DateTime SetSoundAssetTime
@@ -319,15 +329,6 @@ namespace GameFramework.Sound
                 SpatialBlend = Constant.DefaultSpatialBlend;
                 MaxDistance = Constant.DefaultMaxDistance;
                 m_SoundAgentHelper.Reset();
-            }
-
-            /// <summary>
-            /// 设置声音绑定的实体。
-            /// </summary>
-            /// <param name="bindingEntity">声音绑定的实体。</param>
-            public void SetBindingEntity(IEntity bindingEntity)
-            {
-                m_SoundAgentHelper.SetBindingEntity(bindingEntity);
             }
 
             internal bool SetSoundAsset(object soundAsset)

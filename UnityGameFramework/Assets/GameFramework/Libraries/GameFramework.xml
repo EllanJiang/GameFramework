@@ -11508,6 +11508,11 @@
             获取或设置声音最大距离。
             </summary>
         </member>
+        <member name="P:GameFramework.Sound.ISoundAgent.Helper">
+            <summary>
+            获取声音代理辅助器。
+            </summary>
+        </member>
         <member name="M:GameFramework.Sound.ISoundAgent.Play">
             <summary>
             播放声音。
@@ -11532,12 +11537,6 @@
             <summary>
             重置声音代理。
             </summary>
-        </member>
-        <member name="M:GameFramework.Sound.ISoundAgent.SetBindingEntity(GameFramework.Entity.IEntity)">
-            <summary>
-            设置声音绑定的实体。
-            </summary>
-            <param name="bindingEntity">声音绑定的实体。</param>
         </member>
         <member name="T:GameFramework.Sound.ISoundAgentHelper">
             <summary>
@@ -11630,12 +11629,6 @@
             </summary>
             <param name="soundAsset">声音资源。</param>
             <returns>设置声音资源是否成功。</returns>
-        </member>
-        <member name="M:GameFramework.Sound.ISoundAgentHelper.SetBindingEntity(GameFramework.Entity.IEntity)">
-            <summary>
-            设置声音绑定的实体。
-            </summary>
-            <param name="bindingEntity">声音绑定的实体。</param>
         </member>
         <member name="T:GameFramework.Sound.ISoundGroup">
             <summary>
@@ -12363,6 +12356,11 @@
             获取或设置声音最大距离。
             </summary>
         </member>
+        <member name="P:GameFramework.Sound.SoundManager.SoundAgent.Helper">
+            <summary>
+            获取声音代理辅助器。
+            </summary>
+        </member>
         <member name="P:GameFramework.Sound.SoundManager.SoundAgent.SetSoundAssetTime">
             <summary>
             获取声音创建时间。
@@ -12392,12 +12390,6 @@
             <summary>
             重置声音代理。
             </summary>
-        </member>
-        <member name="M:GameFramework.Sound.SoundManager.SoundAgent.SetBindingEntity(GameFramework.Entity.IEntity)">
-            <summary>
-            设置声音绑定的实体。
-            </summary>
-            <param name="bindingEntity">声音绑定的实体。</param>
         </member>
         <member name="T:GameFramework.Sound.SoundManager.SoundGroup">
             <summary>

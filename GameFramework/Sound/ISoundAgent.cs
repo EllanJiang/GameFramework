@@ -5,8 +5,6 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Entity;
-
 namespace GameFramework.Sound
 {
     /// <summary>
@@ -136,6 +134,14 @@ namespace GameFramework.Sound
         }
 
         /// <summary>
+        /// 获取声音代理辅助器。
+        /// </summary>
+        ISoundAgentHelper Helper
+        {
+            get;
+        }
+
+        /// <summary>
         /// 播放声音。
         /// </summary>
         void Play();
@@ -159,11 +165,5 @@ namespace GameFramework.Sound
         /// 重置声音代理。
         /// </summary>
         void Reset();
-
-        /// <summary>
-        /// 设置声音绑定的实体。
-        /// </summary>
-        /// <param name="bindingEntity">声音绑定的实体。</param>
-        void SetBindingEntity(IEntity bindingEntity);
     }
 }

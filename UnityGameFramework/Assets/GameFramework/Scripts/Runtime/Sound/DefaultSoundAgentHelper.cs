@@ -5,7 +5,6 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Entity;
 using GameFramework.Sound;
 using System;
 using UnityEngine;
@@ -171,6 +170,21 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
+        /// 获取或设置声音代理辅助器所在的混音组。
+        /// </summary>
+        public override AudioMixerGroup AudioMixerGroup
+        {
+            get
+            {
+                return m_AudioSource.outputAudioMixerGroup;
+            }
+            set
+            {
+                m_AudioSource.outputAudioMixerGroup = value;
+            }
+        }
+
+        /// <summary>
         /// 重置声音代理事件。
         /// </summary>
         public override event EventHandler<ResetSoundAgentEventArgs> ResetSoundAgent
@@ -248,23 +262,28 @@ namespace UnityGameFramework.Runtime
         /// 设置声音绑定的实体。
         /// </summary>
         /// <param name="bindingEntity">声音绑定的实体。</param>
-        public override void SetBindingEntity(IEntity bindingEntity)
+        public override void SetBindingEntity(Entity bindingEntity)
         {
-            m_BindingEntityLogic = ((Entity)bindingEntity).Logic;
-            if (m_BindingEntityLogic == null && m_ResetSoundAgentEventHandler != null)
+            m_BindingEntityLogic = bindingEntity.Logic;
+            if (m_BindingEntityLogic != null)
             {
-                m_ResetSoundAgentEventHandler(this, new ResetSoundAgentEventArgs());
+                UpdateAgentPosition();
                 return;
             }
 
-            UpdateAgentPosition();
+            if (m_ResetSoundAgentEventHandler != null)
+            {
+                m_ResetSoundAgentEventHandler(this, new ResetSoundAgentEventArgs());
+            }
         }
 
-        protected internal override void SetAudioMixerGroup(AudioMixerGroup audioMixerGroup)
+        /// <summary>
+        /// 设置声音所在的世界坐标。
+        /// </summary>
+        /// <param name="worldPosition">声音所在的世界坐标。</param>
+        public override void SetWorldPosition(Vector3 worldPosition)
         {
-            base.SetAudioMixerGroup(audioMixerGroup);
-
-            m_AudioSource.outputAudioMixerGroup = audioMixerGroup;
+            m_CachedTransform.position = worldPosition;
         }
 
         private void Awake()
@@ -283,23 +302,24 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (m_BindingEntityLogic == null)
+            if (m_BindingEntityLogic != null)
             {
-                return;
+                UpdateAgentPosition();
             }
-
-            UpdateAgentPosition();
         }
 
         private void UpdateAgentPosition()
         {
-            if (!m_BindingEntityLogic.IsAvailable && m_ResetSoundAgentEventHandler != null)
+            if (m_BindingEntityLogic.IsAvailable)
             {
-                m_ResetSoundAgentEventHandler(this, new ResetSoundAgentEventArgs());
+                m_CachedTransform.position = m_BindingEntityLogic.CachedTransform.position;
                 return;
             }
 
-            m_CachedTransform.position = m_BindingEntityLogic.CachedTransform.position;
+            if (m_ResetSoundAgentEventHandler != null)
+            {
+                m_ResetSoundAgentEventHandler(this, new ResetSoundAgentEventArgs());
+            }
         }
     }
 }

@@ -5,7 +5,6 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Entity;
 using System;
 
 namespace GameFramework.Sound
@@ -140,11 +139,5 @@ namespace GameFramework.Sound
         /// <param name="soundAsset">声音资源。</param>
         /// <returns>设置声音资源是否成功。</returns>
         bool SetSoundAsset(object soundAsset);
-
-        /// <summary>
-        /// 设置声音绑定的实体。
-        /// </summary>
-        /// <param name="bindingEntity">声音绑定的实体。</param>
-        void SetBindingEntity(IEntity bindingEntity);
     }
 }
