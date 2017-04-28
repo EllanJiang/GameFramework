@@ -87,8 +87,6 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             m_VersionListDatas = new Dictionary<BuildTarget, VersionListData>();
             m_BuildReport = new BuildReport();
 
-            Utility.Zip.SetZipHelper(this);
-
             WindowsSelected = MacOSXSelected = IOSSelected = AndroidSelected = WindowsStoreSelected = true;
             ZipSelected = true;
             RecordScatteredDependencyAssetsSelected = false;
@@ -554,6 +552,8 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             {
                 return false;
             }
+
+            Utility.Zip.SetZipHelper(this);
 
             if (Directory.Exists(OutputPackagePath))
             {
