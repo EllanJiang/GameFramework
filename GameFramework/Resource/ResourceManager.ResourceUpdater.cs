@@ -406,6 +406,13 @@ namespace GameFramework.Resource
                         return;
                     }
 
+                    if (bytes == null)
+                    {
+                        string errorMessage = string.Format("Unable to decompress from file '{0}'.", e.DownloadPath);
+                        OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
+                        return;
+                    }
+
                     if (updateInfo.Length != bytes.Length)
                     {
                         string errorMessage = string.Format("Resource length error, need '{0}', downloaded '{1}'.", updateInfo.Length.ToString(), bytes.Length.ToString());

@@ -202,6 +202,13 @@ namespace GameFramework.Resource
                     return;
                 }
 
+                if (bytes == null)
+                {
+                    string errorMessage = string.Format("Unable to decompress latest version list '{0}'.", e.DownloadPath);
+                    OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
+                    return;
+                }
+
                 if (m_VersionListLength != bytes.Length)
                 {
                     string errorMessage = string.Format("Latest version list length error, need '{0}', downloaded '{1}'.", m_VersionListLength.ToString(), bytes.Length.ToString());
