@@ -36,6 +36,16 @@ namespace UnityGameFramework.Editor
             }
 
             Match match = m_LogRegex.Match(selectedStackTrace);
+            if (!match.Success)
+            {
+                return false;
+            }
+
+            if (!match.Groups[1].Value.Contains("BaseComponent.cs"))
+            {
+                return false;
+            }
+
             match = match.NextMatch();
             if (!match.Success)
             {
