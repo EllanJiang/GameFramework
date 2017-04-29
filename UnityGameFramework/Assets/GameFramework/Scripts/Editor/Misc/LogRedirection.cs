@@ -19,7 +19,7 @@ namespace UnityGameFramework.Editor
     /// </summary>
     internal static class LogRedirection
     {
-        private static readonly Regex m_LogRegex = new Regex(@"\(at (.+):(.+)\)");
+        private static readonly Regex m_LogRegex = new Regex(@" \(at (.+)\:(.+)\)\r?\n");
 
         [OnOpenAsset(0)]
         private static bool OnOpenAsset(int instanceId, int line)
