@@ -7,6 +7,7 @@
 
 using GameFramework.Sound;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -20,6 +21,7 @@ namespace UnityGameFramework.Runtime
         private Transform m_CachedTransform = null;
         private AudioSource m_AudioSource = null;
         private EntityLogic m_BindingEntityLogic = null;
+        private float m_VolumeWhenPause = 0f;
         private EventHandler<ResetSoundAgentEventArgs> m_ResetSoundAgentEventHandler = null;
 
         /// <summary>
@@ -202,33 +204,74 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 播放声音。
         /// </summary>
-        public override void Play()
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        public override void Play(float fadeInSeconds)
         {
+            StopAllCoroutines();
+
             m_AudioSource.Play();
+            if (fadeInSeconds > 0f)
+            {
+                float volume = m_AudioSource.volume;
+                m_AudioSource.volume = 0f;
+                StartCoroutine(FadeToVolume(m_AudioSource, volume, fadeInSeconds));
+            }
         }
 
         /// <summary>
         /// 停止播放声音。
         /// </summary>
-        public override void Stop()
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public override void Stop(float fadeOutSeconds)
         {
-            m_AudioSource.Stop();
+            StopAllCoroutines();
+
+            if (fadeOutSeconds > 0f)
+            {
+                StartCoroutine(StopCo(fadeOutSeconds));
+            }
+            else
+            {
+                m_AudioSource.Stop();
+            }
         }
 
         /// <summary>
         /// 暂停播放声音。
         /// </summary>
-        public override void Pause()
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public override void Pause(float fadeOutSeconds)
         {
-            m_AudioSource.Pause();
+            StopAllCoroutines();
+
+            m_VolumeWhenPause = m_AudioSource.volume;
+            if (fadeOutSeconds > 0f)
+            {
+                StartCoroutine(PauseCo(fadeOutSeconds));
+            }
+            else
+            {
+                m_AudioSource.Pause();
+            }
         }
 
         /// <summary>
         /// 恢复播放声音。
         /// </summary>
-        public override void Resume()
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        public override void Resume(float fadeInSeconds)
         {
+            StopAllCoroutines();
+
             m_AudioSource.UnPause();
+            if (fadeInSeconds > 0f)
+            {
+                StartCoroutine(FadeToVolume(m_AudioSource, m_VolumeWhenPause, fadeInSeconds));
+            }
+            else
+            {
+                m_AudioSource.volume = m_VolumeWhenPause;
+            }
         }
 
         /// <summary>
@@ -239,6 +282,7 @@ namespace UnityGameFramework.Runtime
             m_CachedTransform.localPosition = Vector3.zero;
             m_AudioSource.clip = null;
             m_BindingEntityLogic = null;
+            m_VolumeWhenPause = 0f;
         }
 
         /// <summary>
@@ -320,6 +364,39 @@ namespace UnityGameFramework.Runtime
             {
                 m_ResetSoundAgentEventHandler(this, new ResetSoundAgentEventArgs());
             }
+        }
+
+        private IEnumerator StopCo(float duration)
+        {
+            yield return FadeToVolume(m_AudioSource, 0f, duration);
+            m_AudioSource.Stop();
+        }
+
+        private IEnumerator PauseCo(float duration)
+        {
+            yield return FadeToVolume(m_AudioSource, 0f, duration);
+            m_AudioSource.Pause();
+        }
+
+        /// <summary>
+        /// 音量渐变。
+        /// </summary>
+        /// <param name="audioSource">目标声音播放者。</param>
+        /// <param name="volume">目标音量。</param>
+        /// <param name="fadeSeconds">声音渐变时间，以秒为单位。</param>
+        /// <returns></returns>
+        private IEnumerator FadeToVolume(AudioSource audioSource, float volume, float fadeSeconds)
+        {
+            float time = 0f;
+            float originalVolume = audioSource.volume;
+            while (time < fadeSeconds)
+            {
+                time += UnityEngine.Time.deltaTime;
+                audioSource.volume = Mathf.Lerp(originalVolume, volume, time / fadeSeconds);
+                yield return new WaitForEndOfFrame();
+            }
+
+            audioSource.volume = volume;
         }
     }
 }

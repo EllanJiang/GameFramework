@@ -123,22 +123,26 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 播放声音。
         /// </summary>
-        public abstract void Play();
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        public abstract void Play(float fadeInSeconds);
 
         /// <summary>
         /// 停止播放声音。
         /// </summary>
-        public abstract void Stop();
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public abstract void Stop(float fadeOutSeconds);
 
         /// <summary>
         /// 暂停播放声音。
         /// </summary>
-        public abstract void Pause();
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public abstract void Pause(float fadeOutSeconds);
 
         /// <summary>
         /// 恢复播放声音。
         /// </summary>
-        public abstract void Resume();
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        public abstract void Resume(float fadeInSeconds);
 
         /// <summary>
         /// 重置声音代理辅助器。

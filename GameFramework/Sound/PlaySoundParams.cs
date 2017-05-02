@@ -17,6 +17,7 @@ namespace GameFramework.Sound
         private bool m_Loop;
         private int m_Priority;
         private float m_VolumeInSoundGroup;
+        private float m_FadeInSeconds;
         private float m_Pitch;
         private float m_PanStereo;
         private float m_SpatialBlend;
@@ -32,6 +33,7 @@ namespace GameFramework.Sound
             m_Loop = Constant.DefaultLoop;
             m_Priority = Constant.DefaultPriority;
             m_VolumeInSoundGroup = Constant.DefaultVolume;
+            m_FadeInSeconds = Constant.DefaultFadeInSeconds;
             m_Pitch = Constant.DefaultPitch;
             m_PanStereo = Constant.DefaultPanStereo;
             m_SpatialBlend = Constant.DefaultSpatialBlend;
@@ -110,6 +112,21 @@ namespace GameFramework.Sound
             set
             {
                 m_VolumeInSoundGroup = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置声音淡入时间，以秒为单位。
+        /// </summary>
+        public float FadeInSeconds
+        {
+            get
+            {
+                return m_FadeInSeconds;
+            }
+            set
+            {
+                m_FadeInSeconds = value;
             }
         }
 

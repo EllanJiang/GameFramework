@@ -375,9 +375,78 @@ namespace GameFramework.Sound
         /// <returns>是否停止播放声音成功。</returns>
         public bool StopSound(int serialId)
         {
+            return StopSound(serialId, Constant.DefaultFadeOutSeconds);
+        }
+
+        /// <summary>
+        /// 停止播放声音。
+        /// </summary>
+        /// <param name="serialId">要停止播放声音的序列编号。</param>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        /// <returns>是否停止播放声音成功。</returns>
+        public bool StopSound(int serialId, float fadeOutSeconds)
+        {
             foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
-                if (soundGroup.Value.StopSound(serialId))
+                if (soundGroup.Value.StopSound(serialId, fadeOutSeconds))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 暂停播放声音。
+        /// </summary>
+        /// <param name="serialId">要暂停播放声音的序列编号。</param>
+        /// <returns>是否暂停播放声音成功。</returns>
+        public bool PauseSound(int serialId)
+        {
+            return PauseSound(serialId, Constant.DefaultFadeOutSeconds);
+        }
+
+        /// <summary>
+        /// 暂停播放声音。
+        /// </summary>
+        /// <param name="serialId">要暂停播放声音的序列编号。</param>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        /// <returns>是否暂停播放声音成功。</returns>
+        public bool PauseSound(int serialId, float fadeOutSeconds)
+        {
+            foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
+            {
+                if (soundGroup.Value.PauseSound(serialId, fadeOutSeconds))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 恢复播放声音。
+        /// </summary>
+        /// <param name="serialId">要恢复播放声音的序列编号。</param>
+        /// <returns>是否恢复播放声音成功。</returns>
+        public bool ResumeSound(int serialId)
+        {
+            return ResumeSound(serialId, Constant.DefaultFadeInSeconds);
+        }
+
+        /// <summary>
+        /// 恢复播放声音。
+        /// </summary>
+        /// <param name="serialId">要恢复播放声音的序列编号。</param>
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        /// <returns>是否恢复播放声音成功。</returns>
+        public bool ResumeSound(int serialId, float fadeInSeconds)
+        {
+            foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
+            {
+                if (soundGroup.Value.ResumeSound(serialId, fadeInSeconds))
                 {
                     return true;
                 }
@@ -392,13 +461,23 @@ namespace GameFramework.Sound
         /// <param name="soundGroupName">声音组名称。</param>
         public void StopAllSounds(string soundGroupName)
         {
+            StopAllSounds(soundGroupName, Constant.DefaultFadeOutSeconds);
+        }
+
+        /// <summary>
+        /// 停止所有声音。
+        /// </summary>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public void StopAllSounds(string soundGroupName, float fadeOutSeconds)
+        {
             SoundGroup soundGroup = (SoundGroup)GetSoundGroup(soundGroupName);
             if (soundGroup == null)
             {
                 throw new GameFrameworkException(string.Format("Sound group '{0}' is not exist.", soundGroupName));
             }
 
-            soundGroup.StopAllSounds();
+            soundGroup.StopAllSounds(fadeOutSeconds);
         }
 
         /// <summary>
@@ -406,9 +485,18 @@ namespace GameFramework.Sound
         /// </summary>
         public void StopAllSounds()
         {
+            StopAllSounds(Constant.DefaultFadeOutSeconds);
+        }
+
+        /// <summary>
+        /// 停止所有声音。
+        /// </summary>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public void StopAllSounds(float fadeOutSeconds)
+        {
             foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
-                soundGroup.Value.StopAllSounds();
+                soundGroup.Value.StopAllSounds(fadeOutSeconds);
             }
         }
 

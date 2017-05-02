@@ -17,6 +17,8 @@ namespace GameFramework.Sound
         internal const bool DefaultLoop = false;
         internal const int DefaultPriority = 0;
         internal const float DefaultVolume = 1f;
+        internal const float DefaultFadeInSeconds = 0f;
+        internal const float DefaultFadeOutSeconds = 0f;
         internal const float DefaultPitch = 1f;
         internal const float DefaultPanStereo = 0f;
         internal const float DefaultSpatialBlend = 0f;

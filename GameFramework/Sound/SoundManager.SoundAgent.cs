@@ -280,7 +280,16 @@ namespace GameFramework.Sound
             /// </summary>
             public void Play()
             {
-                m_SoundAgentHelper.Play();
+                m_SoundAgentHelper.Play(Constant.DefaultFadeInSeconds);
+            }
+
+            /// <summary>
+            /// 播放声音。
+            /// </summary>
+            /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+            public void Play(float fadeInSeconds)
+            {
+                m_SoundAgentHelper.Play(fadeInSeconds);
             }
 
             /// <summary>
@@ -288,7 +297,16 @@ namespace GameFramework.Sound
             /// </summary>
             public void Stop()
             {
-                m_SoundAgentHelper.Stop();
+                m_SoundAgentHelper.Stop(Constant.DefaultFadeOutSeconds);
+            }
+
+            /// <summary>
+            /// 停止播放声音。
+            /// </summary>
+            /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+            public void Stop(float fadeOutSeconds)
+            {
+                m_SoundAgentHelper.Stop(fadeOutSeconds);
             }
 
             /// <summary>
@@ -296,7 +314,16 @@ namespace GameFramework.Sound
             /// </summary>
             public void Pause()
             {
-                m_SoundAgentHelper.Pause();
+                m_SoundAgentHelper.Pause(Constant.DefaultFadeOutSeconds);
+            }
+
+            /// <summary>
+            /// 暂停播放声音。
+            /// </summary>
+            /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+            public void Pause(float fadeOutSeconds)
+            {
+                m_SoundAgentHelper.Pause(fadeOutSeconds);
             }
 
             /// <summary>
@@ -304,7 +331,16 @@ namespace GameFramework.Sound
             /// </summary>
             public void Resume()
             {
-                m_SoundAgentHelper.Resume();
+                m_SoundAgentHelper.Resume(Constant.DefaultFadeInSeconds);
+            }
+
+            /// <summary>
+            /// 恢复播放声音。
+            /// </summary>
+            /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+            public void Resume(float fadeInSeconds)
+            {
+                m_SoundAgentHelper.Resume(fadeInSeconds);
             }
 
             /// <summary>

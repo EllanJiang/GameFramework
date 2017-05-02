@@ -11518,20 +11518,44 @@
             播放声音。
             </summary>
         </member>
+        <member name="M:GameFramework.Sound.ISoundAgent.Play(System.Single)">
+            <summary>
+            播放声音。
+            </summary>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        </member>
         <member name="M:GameFramework.Sound.ISoundAgent.Stop">
             <summary>
             停止播放声音。
             </summary>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundAgent.Stop(System.Single)">
+            <summary>
+            停止播放声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
         <member name="M:GameFramework.Sound.ISoundAgent.Pause">
             <summary>
             暂停播放声音。
             </summary>
         </member>
+        <member name="M:GameFramework.Sound.ISoundAgent.Pause(System.Single)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        </member>
         <member name="M:GameFramework.Sound.ISoundAgent.Resume">
             <summary>
             恢复播放声音。
             </summary>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundAgent.Resume(System.Single)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
         </member>
         <member name="M:GameFramework.Sound.ISoundAgent.Reset">
             <summary>
@@ -11598,25 +11622,29 @@
             重置声音代理事件。
             </summary>
         </member>
-        <member name="M:GameFramework.Sound.ISoundAgentHelper.Play">
+        <member name="M:GameFramework.Sound.ISoundAgentHelper.Play(System.Single)">
             <summary>
             播放声音。
             </summary>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
         </member>
-        <member name="M:GameFramework.Sound.ISoundAgentHelper.Stop">
+        <member name="M:GameFramework.Sound.ISoundAgentHelper.Stop(System.Single)">
             <summary>
             停止播放声音。
             </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
-        <member name="M:GameFramework.Sound.ISoundAgentHelper.Pause">
+        <member name="M:GameFramework.Sound.ISoundAgentHelper.Pause(System.Single)">
             <summary>
             暂停播放声音。
             </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
-        <member name="M:GameFramework.Sound.ISoundAgentHelper.Resume">
+        <member name="M:GameFramework.Sound.ISoundAgentHelper.Resume(System.Single)">
             <summary>
             恢复播放声音。
             </summary>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
         </member>
         <member name="M:GameFramework.Sound.ISoundAgentHelper.Reset">
             <summary>
@@ -11812,16 +11840,67 @@
             <param name="serialId">要停止播放声音的序列编号。</param>
             <returns>是否停止播放声音成功。</returns>
         </member>
+        <member name="M:GameFramework.Sound.ISoundManager.StopSound(System.Int32,System.Single)">
+            <summary>
+            停止播放声音。
+            </summary>
+            <param name="serialId">要停止播放声音的序列编号。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+            <returns>是否停止播放声音成功。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundManager.PauseSound(System.Int32)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="serialId">要暂停播放声音的序列编号。</param>
+            <returns>是否暂停播放声音成功。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundManager.PauseSound(System.Int32,System.Single)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="serialId">要暂停播放声音的序列编号。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+            <returns>是否暂停播放声音成功。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundManager.ResumeSound(System.Int32)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="serialId">要恢复播放声音的序列编号。</param>
+            <returns>是否恢复播放声音成功。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundManager.ResumeSound(System.Int32,System.Single)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="serialId">要恢复播放声音的序列编号。</param>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+            <returns>是否恢复播放声音成功。</returns>
+        </member>
         <member name="M:GameFramework.Sound.ISoundManager.StopAllSounds(System.String)">
             <summary>
             停止所有声音。
             </summary>
             <param name="soundGroupName">声音组名称。</param>
         </member>
+        <member name="M:GameFramework.Sound.ISoundManager.StopAllSounds(System.String,System.Single)">
+            <summary>
+            停止所有声音。
+            </summary>
+            <param name="soundGroupName">声音组名称。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        </member>
         <member name="M:GameFramework.Sound.ISoundManager.StopAllSounds">
             <summary>
             停止所有声音。
             </summary>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundManager.StopAllSounds(System.Single)">
+            <summary>
+            停止所有声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
         <member name="T:GameFramework.Sound.PlaySoundDependencyAssetEventArgs">
             <summary>
@@ -11996,6 +12075,11 @@
         <member name="P:GameFramework.Sound.PlaySoundParams.VolumeInSoundGroup">
             <summary>
             获取或设置在声音组内音量大小。
+            </summary>
+        </member>
+        <member name="P:GameFramework.Sound.PlaySoundParams.FadeInSeconds">
+            <summary>
+            获取或设置声音淡入时间，以秒为单位。
             </summary>
         </member>
         <member name="P:GameFramework.Sound.PlaySoundParams.Pitch">
@@ -12262,16 +12346,67 @@
             <param name="serialId">要停止播放声音的序列编号。</param>
             <returns>是否停止播放声音成功。</returns>
         </member>
+        <member name="M:GameFramework.Sound.SoundManager.StopSound(System.Int32,System.Single)">
+            <summary>
+            停止播放声音。
+            </summary>
+            <param name="serialId">要停止播放声音的序列编号。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+            <returns>是否停止播放声音成功。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.PauseSound(System.Int32)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="serialId">要暂停播放声音的序列编号。</param>
+            <returns>是否暂停播放声音成功。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.PauseSound(System.Int32,System.Single)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="serialId">要暂停播放声音的序列编号。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+            <returns>是否暂停播放声音成功。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.ResumeSound(System.Int32)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="serialId">要恢复播放声音的序列编号。</param>
+            <returns>是否恢复播放声音成功。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.ResumeSound(System.Int32,System.Single)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="serialId">要恢复播放声音的序列编号。</param>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+            <returns>是否恢复播放声音成功。</returns>
+        </member>
         <member name="M:GameFramework.Sound.SoundManager.StopAllSounds(System.String)">
             <summary>
             停止所有声音。
             </summary>
             <param name="soundGroupName">声音组名称。</param>
         </member>
+        <member name="M:GameFramework.Sound.SoundManager.StopAllSounds(System.String,System.Single)">
+            <summary>
+            停止所有声音。
+            </summary>
+            <param name="soundGroupName">声音组名称。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        </member>
         <member name="M:GameFramework.Sound.SoundManager.StopAllSounds">
             <summary>
             停止所有声音。
             </summary>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.StopAllSounds(System.Single)">
+            <summary>
+            停止所有声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
         <member name="T:GameFramework.Sound.SoundManager.SoundAgent">
             <summary>
@@ -12371,20 +12506,44 @@
             播放声音。
             </summary>
         </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Play(System.Single)">
+            <summary>
+            播放声音。
+            </summary>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        </member>
         <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Stop">
             <summary>
             停止播放声音。
             </summary>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Stop(System.Single)">
+            <summary>
+            停止播放声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
         <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Pause">
             <summary>
             暂停播放声音。
             </summary>
         </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Pause(System.Single)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        </member>
         <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Resume">
             <summary>
             恢复播放声音。
             </summary>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Resume(System.Single)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
         </member>
         <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Reset">
             <summary>
@@ -12450,17 +12609,35 @@
             <param name="errorCode">错误码。</param>
             <returns>用于播放的声音代理。</returns>
         </member>
-        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.StopSound(System.Int32)">
+        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.StopSound(System.Int32,System.Single)">
             <summary>
             停止播放声音。
             </summary>
             <param name="serialId">要停止播放声音的序列编号。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
             <returns>是否停止播放声音成功。</returns>
         </member>
-        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.StopAllSounds">
+        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.PauseSound(System.Int32,System.Single)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="serialId">要暂停播放声音的序列编号。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+            <returns>是否暂停播放声音成功。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.ResumeSound(System.Int32,System.Single)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="serialId">要恢复播放声音的序列编号。</param>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+            <returns>是否恢复播放声音成功。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.StopAllSounds(System.Single)">
             <summary>
             停止所有声音。
             </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
         <member name="T:GameFramework.UI.CloseUIFormCompleteEventArgs">
             <summary>

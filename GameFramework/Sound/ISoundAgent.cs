@@ -147,9 +147,21 @@ namespace GameFramework.Sound
         void Play();
 
         /// <summary>
+        /// 播放声音。
+        /// </summary>
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        void Play(float fadeInSeconds);
+
+        /// <summary>
         /// 停止播放声音。
         /// </summary>
         void Stop();
+
+        /// <summary>
+        /// 停止播放声音。
+        /// </summary>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        void Stop(float fadeOutSeconds);
 
         /// <summary>
         /// 暂停播放声音。
@@ -157,9 +169,21 @@ namespace GameFramework.Sound
         void Pause();
 
         /// <summary>
+        /// 暂停播放声音。
+        /// </summary>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        void Pause(float fadeOutSeconds);
+
+        /// <summary>
         /// 恢复播放声音。
         /// </summary>
         void Resume();
+
+        /// <summary>
+        /// 恢复播放声音。
+        /// </summary>
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        void Resume(float fadeInSeconds);
 
         /// <summary>
         /// 重置声音代理。
