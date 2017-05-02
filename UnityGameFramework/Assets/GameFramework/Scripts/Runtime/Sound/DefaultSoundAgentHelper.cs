@@ -366,33 +366,26 @@ namespace UnityGameFramework.Runtime
             }
         }
 
-        private IEnumerator StopCo(float duration)
+        private IEnumerator StopCo(float fadeOutSeconds)
         {
-            yield return FadeToVolume(m_AudioSource, 0f, duration);
+            yield return FadeToVolume(m_AudioSource, 0f, fadeOutSeconds);
             m_AudioSource.Stop();
         }
 
-        private IEnumerator PauseCo(float duration)
+        private IEnumerator PauseCo(float fadeOutSeconds)
         {
-            yield return FadeToVolume(m_AudioSource, 0f, duration);
+            yield return FadeToVolume(m_AudioSource, 0f, fadeOutSeconds);
             m_AudioSource.Pause();
         }
 
-        /// <summary>
-        /// 音量渐变。
-        /// </summary>
-        /// <param name="audioSource">目标声音播放者。</param>
-        /// <param name="volume">目标音量。</param>
-        /// <param name="fadeSeconds">声音渐变时间，以秒为单位。</param>
-        /// <returns></returns>
-        private IEnumerator FadeToVolume(AudioSource audioSource, float volume, float fadeSeconds)
+        private IEnumerator FadeToVolume(AudioSource audioSource, float volume, float duration)
         {
             float time = 0f;
             float originalVolume = audioSource.volume;
-            while (time < fadeSeconds)
+            while (time < duration)
             {
                 time += UnityEngine.Time.deltaTime;
-                audioSource.volume = Mathf.Lerp(originalVolume, volume, time / fadeSeconds);
+                audioSource.volume = Mathf.Lerp(originalVolume, volume, time / duration);
                 yield return new WaitForEndOfFrame();
             }
 
