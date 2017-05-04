@@ -10,7 +10,6 @@ using GameFramework.Localization;
 using GameFramework.Resource;
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace UnityGameFramework.Runtime
 {
@@ -21,11 +20,6 @@ namespace UnityGameFramework.Runtime
     public sealed class BaseComponent : GameFrameworkComponent
     {
         private const int DefaultDpi = 96;  // default windows dpi
-
-        /// <summary>
-        /// 游戏框架所在的场景编号。
-        /// </summary>
-        internal const int GameFrameworkSceneId = 0;
 
         private string m_GameVersion = string.Empty;
         private int m_InternalApplicationVersion = 0;
@@ -218,11 +212,7 @@ namespace UnityGameFramework.Runtime
 
             Log.Info("Game Framework version is {0}. Unity Game Framework version is {1}.", GameFrameworkEntry.Version, GameEntry.Version);
 
-#if !UNITY_5_3 && !UNITY_5_3_OR_NEWER
-            Log.Error("Game Framework only applies with Unity 5.3 and above, but current Unity version is {0}.", Application.unityVersion);
-            GameEntry.Shutdown(ShutdownType.Quit);
-#else
-
+#if UNITY_5_3_OR_NEWER || UNITY_5_3
             InitZipHelper();
             InitJsonHelper();
 
@@ -242,6 +232,12 @@ namespace UnityGameFramework.Runtime
             Time.timeScale = m_GameSpeed;
             Application.runInBackground = m_RunInBackground;
             Screen.sleepTimeout = m_NeverSleep ? SleepTimeout.NeverSleep : SleepTimeout.SystemSetting;
+#else
+            Log.Error("Game Framework only applies with Unity 5.3 and above, but current Unity version is {0}.", Application.unityVersion);
+            GameEntry.Shutdown(ShutdownType.Quit);
+#endif
+#if UNITY_5_6_OR_NEWER
+            Application.lowMemory += OnLowMemory;
 #endif
         }
 
@@ -295,6 +291,15 @@ namespace UnityGameFramework.Runtime
             GameSpeed = 1f;
         }
 
+        internal void Shutdown()
+        {
+#if UNITY_5_6_OR_NEWER
+            Application.lowMemory -= OnLowMemory;
+#endif
+            GameFrameworkEntry.Shutdown();
+            Destroy(gameObject);
+        }
+
         private void InitZipHelper()
         {
             Type zipHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_ZipHelperTypeName);
@@ -333,17 +338,6 @@ namespace UnityGameFramework.Runtime
             Utility.Json.SetJsonHelper(jsonHelper);
         }
 
-        internal void Reload()
-        {
-            SceneManager.LoadScene(GameFrameworkSceneId);
-        }
-
-        internal void Shutdown()
-        {
-            GameFrameworkEntry.Shutdown();
-            Destroy(gameObject);
-        }
-
         private void LogCallback(LogLevel level, object message)
         {
             switch (level)
@@ -362,6 +356,23 @@ namespace UnityGameFramework.Runtime
                     break;
                 default:
                     throw new GameFrameworkException(message.ToString());
+            }
+        }
+
+        private void OnLowMemory()
+        {
+            Log.Info("Low memory reported...");
+
+            ObjectPoolComponent objectPoolComponent = GameEntry.GetComponent<ObjectPoolComponent>();
+            if (objectPoolComponent != null)
+            {
+                objectPoolComponent.ReleaseAllUnused();
+            }
+
+            ResourceComponent resourceCompoent = GameEntry.GetComponent<ResourceComponent>();
+            if (resourceCompoent != null)
+            {
+                resourceCompoent.ForceUnloadUnusedAssets(true);
             }
         }
     }

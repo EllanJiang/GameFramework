@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace UnityGameFramework.Editor
 {
@@ -27,7 +28,7 @@ namespace UnityGameFramework.Editor
 
             foreach (string assemblyName in AssemblyNames)
             {
-                System.Reflection.Assembly assembly = System.Reflection.Assembly.Load(assemblyName);
+                Assembly assembly = Assembly.Load(assemblyName);
                 if (assembly == null)
                 {
                     continue;

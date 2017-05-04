@@ -42,10 +42,15 @@ namespace Utility
                 return null;
             }
 
-            int codeLength = code.Length;
-            if (code == null || codeLength <= 0)
+            if (code == null)
             {
                 throw new GameFrameworkException("Code is invalid.");
+            }
+
+            int codeLength = code.Length;
+            if (codeLength <= 0)
+            {
+                throw new GameFrameworkException("Code length is invalid.");
             }
 
             int codeIndex = 0;

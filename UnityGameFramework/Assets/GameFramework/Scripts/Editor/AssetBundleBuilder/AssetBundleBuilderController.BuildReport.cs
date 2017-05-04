@@ -38,10 +38,10 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             private bool m_RecordScatteredDependencyAssetsSelected = false;
             private int m_BuildAssetBundleOptions = 0;
             private StringBuilder m_LogBuilder = null;
-            private IDictionary<string, AssetBundleData> m_AssetBundleDatas = null;
+            private SortedDictionary<string, AssetBundleData> m_AssetBundleDatas = null;
 
             public void Initialize(string buildReportPath, string productName, string companyName, string gameIdentifier, string applicableGameVersion, int internalResourceVersion, string unityVersion,
-                bool windowsSelected, bool macOSXSelected, bool iOSSelected, bool androidSelected, bool windowsStoreSelected, bool zipSelected, bool recordScatteredDependencyAssetsSelected, int buildAssetBundleOptions, IDictionary<string, AssetBundleData> assetBundleDatas)
+                bool windowsSelected, bool macOSXSelected, bool iOSSelected, bool androidSelected, bool windowsStoreSelected, bool zipSelected, bool recordScatteredDependencyAssetsSelected, int buildAssetBundleOptions, SortedDictionary<string, AssetBundleData> assetBundleDatas)
             {
                 if (string.IsNullOrEmpty(buildReportPath))
                 {

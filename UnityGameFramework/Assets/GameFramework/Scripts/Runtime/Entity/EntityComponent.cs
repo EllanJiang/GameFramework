@@ -450,7 +450,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
         public void AttachEntity(int childEntityId, int parentEntityId)
         {
-            AttachEntity(GetEntity(childEntityId), GetEntity(parentEntityId), null, null);
+            AttachEntity(GetEntity(childEntityId), GetEntity(parentEntityId), string.Empty, null);
         }
 
         /// <summary>
@@ -460,7 +460,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="parentEntity">被附加的父实体。</param>
         public void AttachEntity(int childEntityId, Entity parentEntity)
         {
-            AttachEntity(GetEntity(childEntityId), parentEntity, null, null);
+            AttachEntity(GetEntity(childEntityId), parentEntity, string.Empty, null);
         }
 
         /// <summary>
@@ -470,7 +470,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
         public void AttachEntity(Entity childEntity, int parentEntityId)
         {
-            AttachEntity(childEntity, GetEntity(parentEntityId), null, null);
+            AttachEntity(childEntity, GetEntity(parentEntityId), string.Empty, null);
         }
 
         /// <summary>
@@ -480,7 +480,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="parentEntity">被附加的父实体。</param>
         public void AttachEntity(Entity childEntity, Entity parentEntity)
         {
-            AttachEntity(childEntity, parentEntity, null, null);
+            AttachEntity(childEntity, parentEntity, string.Empty, null);
         }
 
         /// <summary>
@@ -532,10 +532,54 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="childEntityId">要附加的子实体的实体编号。</param>
         /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        public void AttachEntity(int childEntityId, int parentEntityId, Transform parentTransform)
+        {
+            AttachEntity(GetEntity(childEntityId), GetEntity(parentEntityId), parentTransform, null);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntityId">要附加的子实体的实体编号。</param>
+        /// <param name="parentEntity">被附加的父实体。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        public void AttachEntity(int childEntityId, Entity parentEntity, Transform parentTransform)
+        {
+            AttachEntity(GetEntity(childEntityId), parentEntity, parentTransform, null);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntity">要附加的子实体。</param>
+        /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        public void AttachEntity(Entity childEntity, int parentEntityId, Transform parentTransform)
+        {
+            AttachEntity(childEntity, GetEntity(parentEntityId), parentTransform, null);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntity">要附加的子实体。</param>
+        /// <param name="parentEntity">被附加的父实体。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        public void AttachEntity(Entity childEntity, Entity parentEntity, Transform parentTransform)
+        {
+            AttachEntity(childEntity, parentEntity, parentTransform, null);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntityId">要附加的子实体的实体编号。</param>
+        /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
         /// <param name="userData">用户自定义数据。</param>
         public void AttachEntity(int childEntityId, int parentEntityId, object userData)
         {
-            AttachEntity(GetEntity(childEntityId), GetEntity(parentEntityId), null, userData);
+            AttachEntity(GetEntity(childEntityId), GetEntity(parentEntityId), string.Empty, userData);
         }
 
         /// <summary>
@@ -546,7 +590,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void AttachEntity(int childEntityId, Entity parentEntity, object userData)
         {
-            AttachEntity(GetEntity(childEntityId), parentEntity, null, userData);
+            AttachEntity(GetEntity(childEntityId), parentEntity, string.Empty, userData);
         }
 
         /// <summary>
@@ -557,7 +601,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void AttachEntity(Entity childEntity, int parentEntityId, object userData)
         {
-            AttachEntity(childEntity, GetEntity(parentEntityId), null, userData);
+            AttachEntity(childEntity, GetEntity(parentEntityId), string.Empty, userData);
         }
 
         /// <summary>
@@ -568,7 +612,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void AttachEntity(Entity childEntity, Entity parentEntity, object userData)
         {
-            AttachEntity(childEntity, parentEntity, null, userData);
+            AttachEntity(childEntity, parentEntity, string.Empty, userData);
         }
 
         /// <summary>
@@ -641,6 +685,71 @@ namespace UnityGameFramework.Runtime
                     Log.Warning("Can not find transform path '{0}' from parent entity '{1}'.", parentTransformPath, parentEntity.Logic.Name);
                     parentTransform = parentEntity.Logic.CachedTransform;
                 }
+            }
+
+            AttachEntity(childEntity, parentEntity, parentTransform, userData);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntityId">要附加的子实体的实体编号。</param>
+        /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void AttachEntity(int childEntityId, int parentEntityId, Transform parentTransform, object userData)
+        {
+            AttachEntity(GetEntity(childEntityId), GetEntity(parentEntityId), parentTransform, userData);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntityId">要附加的子实体的实体编号。</param>
+        /// <param name="parentEntity">被附加的父实体。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void AttachEntity(int childEntityId, Entity parentEntity, Transform parentTransform, object userData)
+        {
+            AttachEntity(GetEntity(childEntityId), parentEntity, parentTransform, userData);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntity">要附加的子实体。</param>
+        /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void AttachEntity(Entity childEntity, int parentEntityId, Transform parentTransform, object userData)
+        {
+            AttachEntity(childEntity, GetEntity(parentEntityId), parentTransform, userData);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntity">要附加的子实体。</param>
+        /// <param name="parentEntity">被附加的父实体。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void AttachEntity(Entity childEntity, Entity parentEntity, Transform parentTransform, object userData)
+        {
+            if (childEntity == null)
+            {
+                Log.Warning("Child entity is invalid.");
+                return;
+            }
+
+            if (parentEntity == null)
+            {
+                Log.Warning("Parent entity is invalid.");
+                return;
+            }
+
+            if (parentTransform == null)
+            {
+                parentTransform = parentEntity.Logic.CachedTransform;
             }
 
             m_EntityManager.AttachEntity(childEntity, parentEntity, new AttachEntityInfo(parentTransform, userData));

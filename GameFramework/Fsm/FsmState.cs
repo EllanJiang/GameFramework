@@ -16,7 +16,7 @@ namespace GameFramework.Fsm
     /// <typeparam name="T">有限状态机持有者类型。</typeparam>
     public abstract class FsmState<T> where T : class
     {
-        private readonly IDictionary<int, FsmEventHandler<T>> m_EventHandlers;
+        private readonly Dictionary<int, FsmEventHandler<T>> m_EventHandlers;
 
         /// <summary>
         /// 初始化有限状态机状态基类的新实例。

@@ -9,15 +9,10 @@ using GameFramework;
 using GameFramework.Download;
 using System;
 using System.Collections.Generic;
-
 #if UNITY_5_4_OR_NEWER
-
 using UnityEngine.Networking;
-
 #else
-
 using UnityEngine.Experimental.Networking;
-
 #endif
 
 namespace UnityGameFramework.Runtime
@@ -202,7 +197,13 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (m_UnityWebRequest.isError)
+            bool isError = false;
+#if UNITY_2017_1_OR_NEWER
+            isError = m_UnityWebRequest.isNetworkError;
+#else
+            isError = m_UnityWebRequest.isError;
+#endif
+            if (isError)
             {
                 m_DownloadAgentHelperErrorEventHandler(this, new DownloadAgentHelperErrorEventArgs(m_UnityWebRequest.error));
             }

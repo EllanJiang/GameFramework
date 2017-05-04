@@ -33,8 +33,8 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
         private readonly AssetBundleCollection m_AssetBundleCollection;
         private readonly AssetBundleAnalyzerController m_AssetBundleAnalyzerController;
-        private readonly IDictionary<string, AssetBundleData> m_AssetBundleDatas;
-        private readonly IDictionary<BuildTarget, VersionListData> m_VersionListDatas;
+        private readonly SortedDictionary<string, AssetBundleData> m_AssetBundleDatas;
+        private readonly Dictionary<BuildTarget, VersionListData> m_VersionListDatas;
         private readonly BuildReport m_BuildReport;
 
         public AssetBundleBuilderController()
@@ -87,8 +87,6 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             m_VersionListDatas = new Dictionary<BuildTarget, VersionListData>();
             m_BuildReport = new BuildReport();
 
-            Utility.Zip.SetZipHelper(this);
-
             WindowsSelected = MacOSXSelected = IOSSelected = AndroidSelected = WindowsStoreSelected = true;
             ZipSelected = true;
             RecordScatteredDependencyAssetsSelected = false;
@@ -129,7 +127,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         {
             get
             {
-                return PlayerSettings.bundleVersion;
+                return Application.version;
             }
         }
 
@@ -554,6 +552,8 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             {
                 return false;
             }
+
+            Utility.Zip.SetZipHelper(this);
 
             if (Directory.Exists(OutputPackagePath))
             {

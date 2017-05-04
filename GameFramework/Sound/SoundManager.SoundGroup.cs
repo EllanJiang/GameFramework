@@ -18,7 +18,7 @@ namespace GameFramework.Sound
         {
             private readonly string m_Name;
             private readonly ISoundGroupHelper m_SoundGroupHelper;
-            private readonly IList<SoundAgent> m_SoundAgents;
+            private readonly List<SoundAgent> m_SoundAgents;
             private bool m_AvoidBeingReplacedBySamePriority;
             private bool m_Mute;
             private float m_Volume;
@@ -199,7 +199,7 @@ namespace GameFramework.Sound
                 candidateAgent.PanStereo = playSoundParams.PanStereo;
                 candidateAgent.SpatialBlend = playSoundParams.SpatialBlend;
                 candidateAgent.MaxDistance = playSoundParams.MaxDistance;
-                candidateAgent.Play();
+                candidateAgent.Play(playSoundParams.FadeInSeconds);
                 return candidateAgent;
             }
 
@@ -207,8 +207,9 @@ namespace GameFramework.Sound
             /// 停止播放声音。
             /// </summary>
             /// <param name="serialId">要停止播放声音的序列编号。</param>
+            /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
             /// <returns>是否停止播放声音成功。</returns>
-            public bool StopSound(int serialId)
+            public bool StopSound(int serialId, float fadeOutSeconds)
             {
                 foreach (SoundAgent soundAgent in m_SoundAgents)
                 {
@@ -217,7 +218,51 @@ namespace GameFramework.Sound
                         continue;
                     }
 
-                    soundAgent.Stop();
+                    soundAgent.Stop(fadeOutSeconds);
+                    return true;
+                }
+
+                return false;
+            }
+
+            /// <summary>
+            /// 暂停播放声音。
+            /// </summary>
+            /// <param name="serialId">要暂停播放声音的序列编号。</param>
+            /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+            /// <returns>是否暂停播放声音成功。</returns>
+            public bool PauseSound(int serialId, float fadeOutSeconds)
+            {
+                foreach (SoundAgent soundAgent in m_SoundAgents)
+                {
+                    if (soundAgent.SerialId != serialId)
+                    {
+                        continue;
+                    }
+
+                    soundAgent.Pause(fadeOutSeconds);
+                    return true;
+                }
+
+                return false;
+            }
+
+            /// <summary>
+            /// 恢复播放声音。
+            /// </summary>
+            /// <param name="serialId">要恢复播放声音的序列编号。</param>
+            /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+            /// <returns>是否恢复播放声音成功。</returns>
+            public bool ResumeSound(int serialId, float fadeInSeconds)
+            {
+                foreach (SoundAgent soundAgent in m_SoundAgents)
+                {
+                    if (soundAgent.SerialId != serialId)
+                    {
+                        continue;
+                    }
+
+                    soundAgent.Resume(fadeInSeconds);
                     return true;
                 }
 
@@ -227,13 +272,14 @@ namespace GameFramework.Sound
             /// <summary>
             /// 停止所有声音。
             /// </summary>
-            public void StopAllSounds()
+            /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+            public void StopAllSounds(float fadeOutSeconds)
             {
                 foreach (SoundAgent soundAgent in m_SoundAgents)
                 {
                     if (soundAgent.IsPlaying)
                     {
-                        soundAgent.Stop();
+                        soundAgent.Stop(fadeOutSeconds);
                     }
                 }
             }

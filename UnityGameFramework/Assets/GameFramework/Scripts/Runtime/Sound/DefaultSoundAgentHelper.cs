@@ -5,10 +5,11 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Entity;
 using GameFramework.Sound;
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace UnityGameFramework.Runtime
 {
@@ -20,6 +21,7 @@ namespace UnityGameFramework.Runtime
         private Transform m_CachedTransform = null;
         private AudioSource m_AudioSource = null;
         private EntityLogic m_BindingEntityLogic = null;
+        private float m_VolumeWhenPause = 0f;
         private EventHandler<ResetSoundAgentEventArgs> m_ResetSoundAgentEventHandler = null;
 
         /// <summary>
@@ -170,6 +172,21 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
+        /// 获取或设置声音代理辅助器所在的混音组。
+        /// </summary>
+        public override AudioMixerGroup AudioMixerGroup
+        {
+            get
+            {
+                return m_AudioSource.outputAudioMixerGroup;
+            }
+            set
+            {
+                m_AudioSource.outputAudioMixerGroup = value;
+            }
+        }
+
+        /// <summary>
         /// 重置声音代理事件。
         /// </summary>
         public override event EventHandler<ResetSoundAgentEventArgs> ResetSoundAgent
@@ -187,33 +204,74 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 播放声音。
         /// </summary>
-        public override void Play()
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        public override void Play(float fadeInSeconds)
         {
+            StopAllCoroutines();
+
             m_AudioSource.Play();
+            if (fadeInSeconds > 0f)
+            {
+                float volume = m_AudioSource.volume;
+                m_AudioSource.volume = 0f;
+                StartCoroutine(FadeToVolume(m_AudioSource, volume, fadeInSeconds));
+            }
         }
 
         /// <summary>
         /// 停止播放声音。
         /// </summary>
-        public override void Stop()
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public override void Stop(float fadeOutSeconds)
         {
-            m_AudioSource.Stop();
+            StopAllCoroutines();
+
+            if (fadeOutSeconds > 0f)
+            {
+                StartCoroutine(StopCo(fadeOutSeconds));
+            }
+            else
+            {
+                m_AudioSource.Stop();
+            }
         }
 
         /// <summary>
         /// 暂停播放声音。
         /// </summary>
-        public override void Pause()
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public override void Pause(float fadeOutSeconds)
         {
-            m_AudioSource.Pause();
+            StopAllCoroutines();
+
+            m_VolumeWhenPause = m_AudioSource.volume;
+            if (fadeOutSeconds > 0f)
+            {
+                StartCoroutine(PauseCo(fadeOutSeconds));
+            }
+            else
+            {
+                m_AudioSource.Pause();
+            }
         }
 
         /// <summary>
         /// 恢复播放声音。
         /// </summary>
-        public override void Resume()
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        public override void Resume(float fadeInSeconds)
         {
+            StopAllCoroutines();
+
             m_AudioSource.UnPause();
+            if (fadeInSeconds > 0f)
+            {
+                StartCoroutine(FadeToVolume(m_AudioSource, m_VolumeWhenPause, fadeInSeconds));
+            }
+            else
+            {
+                m_AudioSource.volume = m_VolumeWhenPause;
+            }
         }
 
         /// <summary>
@@ -224,6 +282,7 @@ namespace UnityGameFramework.Runtime
             m_CachedTransform.localPosition = Vector3.zero;
             m_AudioSource.clip = null;
             m_BindingEntityLogic = null;
+            m_VolumeWhenPause = 0f;
         }
 
         /// <summary>
@@ -247,16 +306,28 @@ namespace UnityGameFramework.Runtime
         /// 设置声音绑定的实体。
         /// </summary>
         /// <param name="bindingEntity">声音绑定的实体。</param>
-        public override void SetBindingEntity(IEntity bindingEntity)
+        public override void SetBindingEntity(Entity bindingEntity)
         {
-            m_BindingEntityLogic = ((Entity)bindingEntity).Logic;
-            if (m_BindingEntityLogic == null && m_ResetSoundAgentEventHandler != null)
+            m_BindingEntityLogic = bindingEntity.Logic;
+            if (m_BindingEntityLogic != null)
             {
-                m_ResetSoundAgentEventHandler(this, new ResetSoundAgentEventArgs());
+                UpdateAgentPosition();
                 return;
             }
 
-            UpdateAgentPosition();
+            if (m_ResetSoundAgentEventHandler != null)
+            {
+                m_ResetSoundAgentEventHandler(this, new ResetSoundAgentEventArgs());
+            }
+        }
+
+        /// <summary>
+        /// 设置声音所在的世界坐标。
+        /// </summary>
+        /// <param name="worldPosition">声音所在的世界坐标。</param>
+        public override void SetWorldPosition(Vector3 worldPosition)
+        {
+            m_CachedTransform.position = worldPosition;
         }
 
         private void Awake()
@@ -275,23 +346,50 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            if (m_BindingEntityLogic == null)
+            if (m_BindingEntityLogic != null)
             {
-                return;
+                UpdateAgentPosition();
             }
-
-            UpdateAgentPosition();
         }
 
         private void UpdateAgentPosition()
         {
-            if (!m_BindingEntityLogic.IsAvailable && m_ResetSoundAgentEventHandler != null)
+            if (m_BindingEntityLogic.IsAvailable)
             {
-                m_ResetSoundAgentEventHandler(this, new ResetSoundAgentEventArgs());
+                m_CachedTransform.position = m_BindingEntityLogic.CachedTransform.position;
                 return;
             }
 
-            m_CachedTransform.position = m_BindingEntityLogic.CachedTransform.position;
+            if (m_ResetSoundAgentEventHandler != null)
+            {
+                m_ResetSoundAgentEventHandler(this, new ResetSoundAgentEventArgs());
+            }
+        }
+
+        private IEnumerator StopCo(float fadeOutSeconds)
+        {
+            yield return FadeToVolume(m_AudioSource, 0f, fadeOutSeconds);
+            m_AudioSource.Stop();
+        }
+
+        private IEnumerator PauseCo(float fadeOutSeconds)
+        {
+            yield return FadeToVolume(m_AudioSource, 0f, fadeOutSeconds);
+            m_AudioSource.Pause();
+        }
+
+        private IEnumerator FadeToVolume(AudioSource audioSource, float volume, float duration)
+        {
+            float time = 0f;
+            float originalVolume = audioSource.volume;
+            while (time < duration)
+            {
+                time += UnityEngine.Time.deltaTime;
+                audioSource.volume = Mathf.Lerp(originalVolume, volume, time / duration);
+                yield return new WaitForEndOfFrame();
+            }
+
+            audioSource.volume = volume;
         }
     }
 }

@@ -16,10 +16,12 @@ namespace GameFramework.Entity
         /// </summary>
         private sealed class EntityInfo
         {
+            private static readonly IEntity[] EmptyArray = new IEntity[] { };
+
             private readonly IEntity m_Entity;
             private EntityStatus m_Status;
             private IEntity m_ParentEntity;
-            private IList<IEntity> m_ChildEntities;
+            private List<IEntity> m_ChildEntities;
 
             public EntityInfo(IEntity entity)
             {
@@ -70,10 +72,10 @@ namespace GameFramework.Entity
             {
                 if (m_ChildEntities == null)
                 {
-                    return new IEntity[0];
+                    return EmptyArray;
                 }
 
-                return ((List<IEntity>)m_ChildEntities).ToArray();
+                return m_ChildEntities.ToArray();
             }
 
             public void AddChildEntity(IEntity childEntity)

@@ -59,6 +59,11 @@ namespace Utility
         public static string GetRemotePath(params string[] path)
         {
             string combinePath = GetCombinePath(path);
+            if (combinePath == null)
+            {
+                return null;
+            }
+
             return combinePath.Contains("://") ? combinePath : "file:///" + combinePath;
         }
 

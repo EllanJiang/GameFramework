@@ -19,7 +19,7 @@ namespace GameFramework.DataTable
         /// <typeparam name="T">数据表行的类型。</typeparam>
         private sealed class DataTable<T> : DataTableBase, IDataTable<T> where T : class, IDataRow, new()
         {
-            private readonly IDictionary<int, T> m_DataSet;
+            private readonly Dictionary<int, T> m_DataSet;
             private T m_MinIdDataRow;
             private T m_MaxIdDataRow;
 

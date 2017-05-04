@@ -97,7 +97,7 @@ namespace GameFramework.Resource
                             string[] names = new string[resourceCount];
                             string[] variants = new string[resourceCount];
                             int[] lengths = new int[resourceCount];
-                            IDictionary<string, string[]> dependencyAssetNamesCollection = new Dictionary<string, string[]>();
+                            Dictionary<string, string[]> dependencyAssetNamesCollection = new Dictionary<string, string[]>();
                             for (int i = 0; i < resourceCount; i++)
                             {
                                 names[i] = Utility.Converter.GetStringFromBytes(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
@@ -201,7 +201,7 @@ namespace GameFramework.Resource
                 }
             }
 
-            private void ProcessAssetDependencyInfo(IDictionary<string, string[]> dependencyAssetNamesCollection)
+            private void ProcessAssetDependencyInfo(Dictionary<string, string[]> dependencyAssetNamesCollection)
             {
                 foreach (KeyValuePair<string, string[]> dependencyAssetNamesCollectionItem in dependencyAssetNamesCollection)
                 {

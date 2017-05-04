@@ -145,6 +145,44 @@ namespace GameFramework.Sound
         bool StopSound(int serialId);
 
         /// <summary>
+        /// 停止播放声音。
+        /// </summary>
+        /// <param name="serialId">要停止播放声音的序列编号。</param>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        /// <returns>是否停止播放声音成功。</returns>
+        bool StopSound(int serialId, float fadeOutSeconds);
+
+        /// <summary>
+        /// 暂停播放声音。
+        /// </summary>
+        /// <param name="serialId">要暂停播放声音的序列编号。</param>
+        /// <returns>是否暂停播放声音成功。</returns>
+        bool PauseSound(int serialId);
+
+        /// <summary>
+        /// 暂停播放声音。
+        /// </summary>
+        /// <param name="serialId">要暂停播放声音的序列编号。</param>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        /// <returns>是否暂停播放声音成功。</returns>
+        bool PauseSound(int serialId, float fadeOutSeconds);
+
+        /// <summary>
+        /// 恢复播放声音。
+        /// </summary>
+        /// <param name="serialId">要恢复播放声音的序列编号。</param>
+        /// <returns>是否恢复播放声音成功。</returns>
+        bool ResumeSound(int serialId);
+
+        /// <summary>
+        /// 恢复播放声音。
+        /// </summary>
+        /// <param name="serialId">要恢复播放声音的序列编号。</param>
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        /// <returns>是否恢复播放声音成功。</returns>
+        bool ResumeSound(int serialId, float fadeInSeconds);
+
+        /// <summary>
         /// 停止所有声音。
         /// </summary>
         /// <param name="soundGroupName">声音组名称。</param>
@@ -153,6 +191,19 @@ namespace GameFramework.Sound
         /// <summary>
         /// 停止所有声音。
         /// </summary>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        void StopAllSounds(string soundGroupName, float fadeOutSeconds);
+
+        /// <summary>
+        /// 停止所有声音。
+        /// </summary>
         void StopAllSounds();
+
+        /// <summary>
+        /// 停止所有声音。
+        /// </summary>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        void StopAllSounds(float fadeOutSeconds);
     }
 }

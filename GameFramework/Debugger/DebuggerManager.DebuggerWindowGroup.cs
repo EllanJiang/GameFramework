@@ -16,7 +16,7 @@ namespace GameFramework.Debugger
         /// </summary>
         private sealed class DebuggerWindowGroup : IDebuggerWindowGroup
         {
-            private readonly IList<KeyValuePair<string, IDebuggerWindow>> m_DebuggerWindows;
+            private readonly List<KeyValuePair<string, IDebuggerWindow>> m_DebuggerWindows;
             private int m_SelectedIndex;
             private string[] m_DebuggerWindowNames;
 

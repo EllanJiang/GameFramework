@@ -62,7 +62,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Internet Reachability:", Application.internetReachability.ToString());
                     DrawItem("Background Loading Priority:", Application.backgroundLoadingPriority.ToString());
                     DrawItem("Is Playing:", Application.isPlaying.ToString());
-#if !UNITY_5_5_OR_NEWER
+#if UNITY_5_3 || UNITY_5_4
                     DrawItem("Is Showing Splash Screen:", Application.isShowingSplashScreen.ToString());
 #endif
                     DrawItem("Run In Background:", Application.runInBackground.ToString());
@@ -77,7 +77,7 @@ namespace UnityGameFramework.Runtime
 #if UNITY_5_6_OR_NEWER
                     DrawItem("Is Focused:", Application.isFocused.ToString());
 #endif
-#if !UNITY_5_4_OR_NEWER
+#if UNITY_5_3
                     DrawItem("Stack Trace Log Type:", Application.stackTraceLogType.ToString());
 #endif
                 }

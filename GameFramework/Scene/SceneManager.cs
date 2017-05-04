@@ -16,9 +16,9 @@ namespace GameFramework.Scene
     /// </summary>
     internal sealed class SceneManager : GameFrameworkModule, ISceneManager
     {
-        private readonly IList<string> m_LoadedSceneAssetNames;
-        private readonly IList<string> m_LoadingSceneAssetNames;
-        private readonly IList<string> m_UnloadingSceneAssetNames;
+        private readonly List<string> m_LoadedSceneAssetNames;
+        private readonly List<string> m_LoadingSceneAssetNames;
+        private readonly List<string> m_UnloadingSceneAssetNames;
         private readonly LoadSceneCallbacks m_LoadSceneCallbacks;
         private readonly UnloadSceneCallbacks m_UnloadSceneCallbacks;
         private IResourceManager m_ResourceManager;
@@ -165,7 +165,8 @@ namespace GameFramework.Scene
         /// </summary>
         internal override void Shutdown()
         {
-            foreach (string loadedSceneAssetName in m_LoadedSceneAssetNames)
+            string[] loadedSceneAssetNames = m_LoadedSceneAssetNames.ToArray();
+            foreach (string loadedSceneAssetName in loadedSceneAssetNames)
             {
                 if (SceneIsUnloading(loadedSceneAssetName))
                 {
@@ -215,7 +216,7 @@ namespace GameFramework.Scene
         /// <returns>已加载场景的资源名称。</returns>
         public string[] GetLoadedSceneAssetNames()
         {
-            return ((List<string>)m_LoadedSceneAssetNames).ToArray();
+            return m_LoadedSceneAssetNames.ToArray();
         }
 
         /// <summary>
@@ -239,7 +240,7 @@ namespace GameFramework.Scene
         /// <returns>正在加载场景的资源名称。</returns>
         public string[] GetLoadingSceneAssetNames()
         {
-            return ((List<string>)m_LoadingSceneAssetNames).ToArray();
+            return m_LoadingSceneAssetNames.ToArray();
         }
 
         /// <summary>
@@ -263,7 +264,7 @@ namespace GameFramework.Scene
         /// <returns>正在卸载场景的资源名称。</returns>
         public string[] GetUnloadingSceneAssetNames()
         {
-            return ((List<string>)m_UnloadingSceneAssetNames).ToArray();
+            return m_UnloadingSceneAssetNames.ToArray();
         }
 
         /// <summary>

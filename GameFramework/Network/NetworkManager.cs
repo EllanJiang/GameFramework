@@ -15,7 +15,7 @@ namespace GameFramework.Network
     /// </summary>
     internal sealed partial class NetworkManager : GameFrameworkModule, INetworkManager
     {
-        private readonly IDictionary<string, NetworkChannel> m_NetworkChannels;
+        private readonly Dictionary<string, NetworkChannel> m_NetworkChannels;
         private readonly EventPool<Packet> m_EventPool;
         private INetworkHelper m_NetworkHelper;
 
@@ -151,7 +151,7 @@ namespace GameFramework.Network
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
-            foreach (KeyValuePair<string, NetworkChannel> networkChannel in (Dictionary<string, NetworkChannel>)m_NetworkChannels)
+            foreach (KeyValuePair<string, NetworkChannel> networkChannel in m_NetworkChannels)
             {
                 networkChannel.Value.Update(elapseSeconds, realElapseSeconds);
             }

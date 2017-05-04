@@ -74,7 +74,7 @@ namespace UnityGameFramework.Runtime
             m_SceneManager.UnloadSceneSuccess += OnUnloadSceneSuccess;
             m_SceneManager.UnloadSceneFailure += OnUnloadSceneFailure;
 
-            m_GameFrameworkScene = SceneManager.GetSceneAt(BaseComponent.GameFrameworkSceneId);
+            m_GameFrameworkScene = SceneManager.GetSceneAt(GameEntry.GameFrameworkSceneId);
             if (!m_GameFrameworkScene.IsValid())
             {
                 Log.Fatal("Game framework scene is invalid.");
@@ -219,7 +219,7 @@ namespace UnityGameFramework.Runtime
             }
 
             string sceneName = sceneAssetName.Substring(sceneNamePosition + 1);
-            sceneNamePosition = sceneName.IndexOf('.');
+            sceneNamePosition = sceneName.LastIndexOf(".unity");
             if (sceneNamePosition > 0)
             {
                 sceneName = sceneName.Substring(0, sceneNamePosition);

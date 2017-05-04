@@ -16,8 +16,8 @@ namespace Utility
     /// </summary>
     public static class Converter
     {
-        private const float INCHES_TO_CENTIMETERS = 2.54f; // 1 inch = 2.54 cm
-        private const float CENTIMETERS_TO_INCHES = 1f / INCHES_TO_CENTIMETERS; // 1 cm = 0.3937 inches
+        private const float InchesToCentimeters = 2.54f; // 1 inch = 2.54 cm
+        private const float CentimetersToInches = 1f / InchesToCentimeters; // 1 cm = 0.3937 inches
 
         /// <summary>
         /// 获取或设置屏幕每英寸点数。
@@ -40,7 +40,7 @@ namespace Utility
                 throw new GameFrameworkException("You must set screen DPI first.");
             }
 
-            return INCHES_TO_CENTIMETERS * pixels / ScreenDpi;
+            return InchesToCentimeters * pixels / ScreenDpi;
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Utility
                 throw new GameFrameworkException("You must set screen DPI first.");
             }
 
-            return CENTIMETERS_TO_INCHES * centimeters * ScreenDpi;
+            return CentimetersToInches * centimeters * ScreenDpi;
         }
 
         /// <summary>

@@ -16,6 +16,8 @@ namespace Utility
     /// </summary>
     public static partial class Verifier
     {
+        private static readonly byte[] Zero = new byte[] { 0, 0, 0, 0 };
+
         /// <summary>
         /// 计算二进制流的 CRC32。
         /// </summary>
@@ -25,7 +27,7 @@ namespace Utility
         {
             if (bytes == null)
             {
-                return new byte[] { 0, 0, 0, 0 };
+                return Zero;
             }
 
             using (MemoryStream memoryStream = new MemoryStream(bytes))
@@ -46,7 +48,7 @@ namespace Utility
         {
             if (!File.Exists(fileName))
             {
-                return new byte[] { 0, 0, 0, 0 };
+                return Zero;
             }
 
             using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
