@@ -21,7 +21,7 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public static class GameEntry
     {
-        private const string UnityGameFrameworkVersion = "3.0.3";
+        private const string UnityGameFrameworkVersion = "3.0.4";
         private static readonly LinkedList<GameFrameworkComponent> s_GameFrameworkComponents = new LinkedList<GameFrameworkComponent>();
 
         /// <summary>
