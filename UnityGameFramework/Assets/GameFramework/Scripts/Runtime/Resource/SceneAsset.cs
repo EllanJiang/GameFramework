@@ -7,7 +7,7 @@
 
 namespace UnityGameFramework.Runtime
 {
-    internal sealed class DummySceneObject
+    internal sealed class SceneAsset
     {
 
     }
