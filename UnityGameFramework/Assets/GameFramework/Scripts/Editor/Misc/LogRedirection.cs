@@ -63,7 +63,7 @@ namespace UnityGameFramework.Editor
                 }
             }
 
-            InternalEditorUtility.OpenFileAtLineExternal(Utility.Path.GetCombinePath(Application.dataPath, match.Groups[1].Value.Substring(6)), int.Parse(match.Groups[2].Value));
+            InternalEditorUtility.OpenFileAtLineExternal(Utility.Path.GetCombinePath(Application.dataPath, match.Groups[1].Value.Substring(7)), int.Parse(match.Groups[2].Value));
             return true;
         }
 
