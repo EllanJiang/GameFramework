@@ -12,7 +12,7 @@ namespace GameFramework.Download
     /// </summary>
     public sealed class DownloadAgentHelperUpdateEventArgs : GameFrameworkEventArgs
     {
-        private byte[] m_Bytes;
+        private readonly byte[] m_Bytes;
 
         /// <summary>
         /// 初始化下载代理辅助器更新事件的新实例。

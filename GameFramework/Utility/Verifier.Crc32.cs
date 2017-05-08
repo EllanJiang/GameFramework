@@ -16,8 +16,6 @@ namespace Utility
         /// </summary>
         private class Crc32 : HashAlgorithm
         {
-            private static uint[] DefaultTable = null;
-
             /// <summary>
             /// 默认多项式。
             /// </summary>
@@ -28,19 +26,19 @@ namespace Utility
             /// </summary>
             public const uint DefaultSeed = 0xffffffff;
 
-            private uint hash;
-            private uint seed;
-            private uint[] table;
+            private static uint[] s_DefaultTable = null;
+            private readonly uint m_Seed;
+            private readonly uint[] m_Table;
+            private uint m_Hash;
 
             /// <summary>
             /// 初始化 CRC32 类的新实例。
             /// </summary>
             public Crc32()
             {
-                hash = 0;
-                seed = DefaultSeed;
-                table = InitializeTable(DefaultPolynomial);
-                hash = seed;
+                m_Seed = DefaultSeed;
+                m_Table = InitializeTable(DefaultPolynomial);
+                m_Hash = DefaultSeed;
             }
 
             /// <summary>
@@ -50,9 +48,9 @@ namespace Utility
             /// <param name="seed">指定的种子数。</param>
             public Crc32(uint polynomial, uint seed)
             {
-                table = InitializeTable(polynomial);
-                this.seed = seed;
-                hash = seed;
+                m_Seed = seed;
+                m_Table = InitializeTable(polynomial);
+                m_Hash = seed;
             }
 
             /// <summary>
@@ -60,7 +58,7 @@ namespace Utility
             /// </summary>
             public override void Initialize()
             {
-                hash = seed;
+                m_Hash = m_Seed;
             }
 
             /// <summary>
@@ -71,7 +69,7 @@ namespace Utility
             /// <param name="cbSize">字节数组中用作数据的字节数。</param>
             protected override void HashCore(byte[] array, int ibStart, int cbSize)
             {
-                hash = CalculateHash(table, hash, array, ibStart, cbSize);
+                m_Hash = CalculateHash(m_Table, m_Hash, array, ibStart, cbSize);
             }
 
             /// <summary>
@@ -80,16 +78,16 @@ namespace Utility
             /// <returns>计算所得的哈希代码。</returns>
             protected override byte[] HashFinal()
             {
-                byte[] hashBuffer = UintToBigEndianBytes(~hash);
+                byte[] hashBuffer = UintToBigEndianBytes(~m_Hash);
                 HashValue = hashBuffer;
                 return hashBuffer;
             }
 
             private static uint[] InitializeTable(uint polynomial)
             {
-                if (polynomial == DefaultPolynomial && DefaultTable != null)
+                if (s_DefaultTable != null && polynomial == DefaultPolynomial)
                 {
-                    return DefaultTable;
+                    return s_DefaultTable;
                 }
 
                 uint[] createTable = new uint[256];
@@ -113,7 +111,7 @@ namespace Utility
 
                 if (polynomial == DefaultPolynomial)
                 {
-                    DefaultTable = createTable;
+                    s_DefaultTable = createTable;
                 }
 
                 return createTable;
@@ -129,6 +127,7 @@ namespace Utility
                         crc = (crc >> 8) ^ table[bytes[i] ^ crc & 0xff];
                     }
                 }
+
                 return crc;
             }
 
