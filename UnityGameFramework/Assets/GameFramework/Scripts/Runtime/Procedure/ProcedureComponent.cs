@@ -57,8 +57,6 @@ namespace UnityGameFramework.Runtime
 
         private IEnumerator Start()
         {
-            IFsmManager fsmManager = GameFrameworkEntry.GetModule<IFsmManager>();
-
             ProcedureBase[] procedures = new ProcedureBase[m_AvailableProcedureTypeNames.Length];
             for (int i = 0; i < m_AvailableProcedureTypeNames.Length; i++)
             {
@@ -88,7 +86,7 @@ namespace UnityGameFramework.Runtime
                 yield break;
             }
 
-            m_ProcedureManager.Initialize(fsmManager, procedures);
+            m_ProcedureManager.Initialize(GameFrameworkEntry.GetModule<IFsmManager>(), procedures);
 
             yield return new WaitForEndOfFrame();
 
