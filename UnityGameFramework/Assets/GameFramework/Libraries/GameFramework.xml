@@ -6347,7 +6347,7 @@
             网络消息包处理器接口。
             </summary>
         </member>
-        <member name="P:GameFramework.Network.IPacketHandler.OpCode">
+        <member name="P:GameFramework.Network.IPacketHandler.Id">
             <summary>
             获取网络消息包协议编号。
             </summary>
