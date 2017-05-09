@@ -135,13 +135,31 @@ namespace GameFramework.UI
             /// <summary>
             /// 界面组中是否存在界面。
             /// </summary>
-            /// <param name="uiFormTypeId">界面类型编号。</param>
+            /// <param name="serialId">界面序列编号。</param>
             /// <returns>界面组中是否存在界面。</returns>
-            public bool HasUIForm(int uiFormTypeId)
+            public bool HasUIForm(int serialId)
             {
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
                 {
-                    if (uiFormInfo.UIForm.TypeId == uiFormTypeId)
+                    if (uiFormInfo.UIForm.SerialId == serialId)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            /// <summary>
+            /// 界面组中是否存在界面。
+            /// </summary>
+            /// <param name="uiFormAssetName">界面资源名称。</param>
+            /// <returns>界面组中是否存在界面。</returns>
+            public bool HasUIForm(string uiFormAssetName)
+            {
+                foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
+                {
+                    if (uiFormInfo.UIForm.UIFormAssetName == uiFormAssetName)
                     {
                         return true;
                     }
@@ -153,13 +171,13 @@ namespace GameFramework.UI
             /// <summary>
             /// 从界面组中获取界面。
             /// </summary>
-            /// <param name="uiFormTypeId">界面类型编号。</param>
+            /// <param name="serialId">界面序列编号。</param>
             /// <returns>要获取的界面。</returns>
-            public IUIForm GetUIForm(int uiFormTypeId)
+            public IUIForm GetUIForm(int serialId)
             {
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
                 {
-                    if (uiFormInfo.UIForm.TypeId == uiFormTypeId)
+                    if (uiFormInfo.UIForm.SerialId == serialId)
                     {
                         return uiFormInfo.UIForm;
                     }
@@ -171,14 +189,32 @@ namespace GameFramework.UI
             /// <summary>
             /// 从界面组中获取界面。
             /// </summary>
-            /// <param name="uiFormTypeId">界面类型编号。</param>
+            /// <param name="uiFormAssetName">界面资源名称。</param>
             /// <returns>要获取的界面。</returns>
-            public IUIForm[] GetUIForms(int uiFormTypeId)
+            public IUIForm GetUIForm(string uiFormAssetName)
+            {
+                foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
+                {
+                    if (uiFormInfo.UIForm.UIFormAssetName == uiFormAssetName)
+                    {
+                        return uiFormInfo.UIForm;
+                    }
+                }
+
+                return null;
+            }
+
+            /// <summary>
+            /// 从界面组中获取界面。
+            /// </summary>
+            /// <param name="uiFormAssetName">界面资源名称。</param>
+            /// <returns>要获取的界面。</returns>
+            public IUIForm[] GetUIForms(string uiFormAssetName)
             {
                 List<IUIForm> uiForms = new List<IUIForm>();
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
                 {
-                    if (uiFormInfo.UIForm.TypeId == uiFormTypeId)
+                    if (uiFormInfo.UIForm.UIFormAssetName == uiFormAssetName)
                     {
                         uiForms.Add(uiFormInfo.UIForm);
                     }
@@ -206,7 +242,7 @@ namespace GameFramework.UI
                 UIFormInfo uiFormInfo = GetUIFormInfo(uiForm);
                 if (uiFormInfo == null)
                 {
-                    throw new GameFrameworkException(string.Format("Can not find UI form info for type '{0}'.", uiForm.TypeId.ToString()));
+                    throw new GameFrameworkException(string.Format("Can not find UI form info for serial id '{0}', UI form asset name is '{1}'.", uiForm.SerialId.ToString(), uiForm.UIFormAssetName));
                 }
 
                 if (!uiFormInfo.Covered)
