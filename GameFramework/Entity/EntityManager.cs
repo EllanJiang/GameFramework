@@ -366,10 +366,10 @@ namespace GameFramework.Entity
         }
 
         /// <summary>
-        /// 是否正在显示实体。
+        /// 是否正在加载实体。
         /// </summary>
         /// <param name="entityId">实体编号。</param>
-        /// <returns>是否正在显示实体。</returns>
+        /// <returns>是否正在加载实体。</returns>
         public bool IsLoadingEntity(int entityId)
         {
             return m_EntitiesBeingLoaded.Contains(entityId);
