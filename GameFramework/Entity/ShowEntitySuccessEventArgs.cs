@@ -15,25 +15,14 @@ namespace GameFramework.Entity
         /// <summary>
         /// 初始化显示实体成功事件的新实例。
         /// </summary>
-        /// <param name="entityAssetName">实体资源名称。</param>
         /// <param name="entity">加载成功的实体。</param>
         /// <param name="duration">加载持续时间。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public ShowEntitySuccessEventArgs(string entityAssetName, IEntity entity, float duration, object userData)
+        public ShowEntitySuccessEventArgs(IEntity entity, float duration, object userData)
         {
-            EntityAssetName = entityAssetName;
             Entity = entity;
             Duration = duration;
             UserData = userData;
-        }
-
-        /// <summary>
-        /// 获取实体资源名称。
-        /// </summary>
-        public string EntityAssetName
-        {
-            get;
-            private set;
         }
 
         /// <summary>

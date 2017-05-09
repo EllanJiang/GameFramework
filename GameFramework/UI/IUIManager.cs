@@ -176,11 +176,30 @@ namespace GameFramework.UI
         IUIForm[] GetUIForms(string uiFormAssetName);
 
         /// <summary>
+        /// 获取所有界面。
+        /// </summary>
+        /// <returns>所有界面。</returns>
+        IUIForm[] GetAllUIForms();
+
+        /// <summary>
+        /// 获取所有正在加载界面的序列编号。
+        /// </summary>
+        /// <returns>所有正在加载界面的序列编号。</returns>
+        int[] GetAllLoadingUIFormSerialIds();
+
+        /// <summary>
         /// 是否正在加载界面。
         /// </summary>
         /// <param name="serialId">界面序列编号。</param>
         /// <returns>是否正在加载界面。</returns>
         bool IsLoadingUIForm(int serialId);
+
+        /// <summary>
+        /// 是否正在加载界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <returns>是否正在加载界面。</returns>
+        bool IsLoadingUIForm(string uiFormAssetName);
 
         /// <summary>
         /// 是否是合法的界面。
@@ -250,6 +269,22 @@ namespace GameFramework.UI
         /// <param name="uiForm">要关闭的界面。</param>
         /// <param name="userData">用户自定义数据。</param>
         void CloseUIForm(IUIForm uiForm, object userData);
+
+        /// <summary>
+        /// 关闭所有界面。
+        /// </summary>
+        void CloseAllUIForms();
+
+        /// <summary>
+        /// 关闭所有界面。
+        /// </summary>
+        /// <param name="userData">用户自定义数据。</param>
+        void CloseAllUIForms(object userData);
+
+        /// <summary>
+        /// 关闭所有正在加载的界面。
+        /// </summary>
+        void CloseAllLoadingUIForms();
 
         /// <summary>
         /// 激活界面。

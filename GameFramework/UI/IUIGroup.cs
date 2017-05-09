@@ -87,5 +87,16 @@ namespace GameFramework.UI
         /// <param name="uiFormAssetName">界面资源名称。</param>
         /// <returns>要获取的界面。</returns>
         IUIForm[] GetUIForms(string uiFormAssetName);
+
+        /// <summary>
+        /// 从界面组中获取所有界面。
+        /// </summary>
+        /// <returns>界面组中的所有界面。</returns>
+        IUIForm[] GetAllUIForms();
+
+        /// <summary>
+        /// 关闭所有界面组中的界面。
+        /// </summary>
+        void CloseAllUIForms();
     }
 }

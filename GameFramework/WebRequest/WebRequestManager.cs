@@ -233,7 +233,7 @@ namespace GameFramework.WebRequest
         }
 
         /// <summary>
-        /// 移除全部 Web 请求任务。
+        /// 移除所有 Web 请求任务。
         /// </summary>
         public void RemoveAllWebRequests()
         {

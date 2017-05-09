@@ -12,13 +12,13 @@ namespace GameFramework.Entity
         private sealed class ShowEntityInfo
         {
             private readonly int m_EntityId;
-            private readonly string m_EntityGroupName;
+            private readonly EntityGroup m_EntityGroup;
             private readonly object m_UserData;
 
-            public ShowEntityInfo(int entityId, string entityGroupName, object userData)
+            public ShowEntityInfo(int entityId, EntityGroup entityGroup, object userData)
             {
                 m_EntityId = entityId;
-                m_EntityGroupName = entityGroupName;
+                m_EntityGroup = entityGroup;
                 m_UserData = userData;
             }
 
@@ -30,11 +30,11 @@ namespace GameFramework.Entity
                 }
             }
 
-            public string EntityGroupName
+            public EntityGroup EntityGroup
             {
                 get
                 {
-                    return m_EntityGroupName;
+                    return m_EntityGroup;
                 }
             }
 

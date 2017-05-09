@@ -19,7 +19,7 @@ namespace GameFramework.Entity
     {
         private readonly Dictionary<int, EntityInfo> m_EntityInfos;
         private readonly Dictionary<string, EntityGroup> m_EntityGroups;
-        private readonly HashSet<int> m_EntitiesBeingLoaded;
+        private readonly List<int> m_EntitiesBeingLoaded;
         private readonly HashSet<int> m_EntitiesToReleaseOnLoad;
         private readonly LinkedList<EntityInfo> m_RecycleQueue;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
@@ -39,7 +39,7 @@ namespace GameFramework.Entity
         {
             m_EntityInfos = new Dictionary<int, EntityInfo>();
             m_EntityGroups = new Dictionary<string, EntityGroup>();
-            m_EntitiesBeingLoaded = new HashSet<int>();
+            m_EntitiesBeingLoaded = new List<int>();
             m_EntitiesToReleaseOnLoad = new HashSet<int>();
             m_RecycleQueue = new LinkedList<EntityInfo>();
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadEntitySuccessCallback, LoadEntityFailureCallback, LoadEntityUpdateCallback, LoadEntityDependencyAssetCallback);
@@ -366,6 +366,15 @@ namespace GameFramework.Entity
         }
 
         /// <summary>
+        /// 获取所有正在加载实体的编号。
+        /// </summary>
+        /// <returns>所有正在加载实体的编号。</returns>
+        public int[] GetAllLoadingEntityIds()
+        {
+            return m_EntitiesBeingLoaded.ToArray();
+        }
+
+        /// <summary>
         /// 是否正在加载实体。
         /// </summary>
         /// <param name="entityId">实体编号。</param>
@@ -440,11 +449,11 @@ namespace GameFramework.Entity
                 }
 
                 m_EntitiesBeingLoaded.Add(entityId);
-                m_ResourceManager.LoadAsset(entityAssetName, m_LoadAssetCallbacks, new ShowEntityInfo(entityId, entityGroupName, userData));
+                m_ResourceManager.LoadAsset(entityAssetName, m_LoadAssetCallbacks, new ShowEntityInfo(entityId, entityGroup, userData));
                 return;
             }
 
-            InternalShowEntity(entityId, entityAssetName, entityGroupName, entityInstanceObject.Target, false, 0f, userData);
+            InternalShowEntity(entityId, entityAssetName, entityGroup, entityInstanceObject.Target, false, 0f, userData);
         }
 
         /// <summary>
@@ -503,7 +512,7 @@ namespace GameFramework.Entity
         }
 
         /// <summary>
-        /// 隐藏全部实体。
+        /// 隐藏所有实体。
         /// </summary>
         public void HideAllEntities()
         {
@@ -511,16 +520,11 @@ namespace GameFramework.Entity
         }
 
         /// <summary>
-        /// 隐藏全部实体。
+        /// 隐藏所有实体。
         /// </summary>
         /// <param name="userData">用户自定义数据。</param>
         public void HideAllEntities(object userData)
         {
-            foreach (int entityId in m_EntitiesBeingLoaded)
-            {
-                m_EntitiesToReleaseOnLoad.Add(entityId);
-            }
-
             while (m_EntityInfos.Count > 0)
             {
                 foreach (KeyValuePair<int, EntityInfo> entityInfo in m_EntityInfos)
@@ -528,6 +532,17 @@ namespace GameFramework.Entity
                     InternalHideEntity(entityInfo.Value, userData);
                     break;
                 }
+            }
+        }
+
+        /// <summary>
+        /// 隐藏所有正在加载的实体。
+        /// </summary>
+        public void HideAllLoadingEntities()
+        {
+            foreach (int entityId in m_EntitiesBeingLoaded)
+            {
+                m_EntitiesToReleaseOnLoad.Add(entityId);
             }
         }
 
@@ -901,16 +916,10 @@ namespace GameFramework.Entity
             return null;
         }
 
-        private void InternalShowEntity(int entityId, string entityAssetName, string entityGroupName, object entityInstance, bool isNewInstance, float duration, object userData)
+        private void InternalShowEntity(int entityId, string entityAssetName, EntityGroup entityGroup, object entityInstance, bool isNewInstance, float duration, object userData)
         {
             try
             {
-                EntityGroup entityGroup = (EntityGroup)GetEntityGroup(entityGroupName);
-                if (entityGroup == null)
-                {
-                    throw new GameFrameworkException(string.Format("Entity group '{0}' is invalid.", entityGroupName));
-                }
-
                 IEntity entity = m_EntityHelper.CreateEntity(entityInstance, entityGroup, userData);
                 if (entity == null)
                 {
@@ -920,7 +929,7 @@ namespace GameFramework.Entity
                 EntityInfo entityInfo = new EntityInfo(entity);
                 m_EntityInfos.Add(entityId, entityInfo);
                 entityInfo.Status = EntityStatus.WillInit;
-                entity.OnInit(entityId, entityGroup, isNewInstance, userData);
+                entity.OnInit(entityId, entityAssetName, entityGroup, isNewInstance, userData);
                 entityInfo.Status = EntityStatus.Inited;
                 entityGroup.AddEntity(entity);
                 entityInfo.Status = EntityStatus.WillShow;
@@ -929,14 +938,14 @@ namespace GameFramework.Entity
 
                 if (m_ShowEntitySuccessEventHandler != null)
                 {
-                    m_ShowEntitySuccessEventHandler(this, new ShowEntitySuccessEventArgs(entityAssetName, entity, duration, userData));
+                    m_ShowEntitySuccessEventHandler(this, new ShowEntitySuccessEventArgs(entity, duration, userData));
                 }
             }
             catch (Exception exception)
             {
                 if (m_ShowEntityFailureEventHandler != null)
                 {
-                    m_ShowEntityFailureEventHandler(this, new ShowEntityFailureEventArgs(entityId, entityAssetName, entityGroupName, exception.ToString(), userData));
+                    m_ShowEntityFailureEventHandler(this, new ShowEntityFailureEventArgs(entityId, entityAssetName, entityGroup.Name, exception.ToString(), userData));
                     return;
                 }
 
@@ -973,7 +982,7 @@ namespace GameFramework.Entity
 
             if (m_HideEntityCompleteEventHandler != null)
             {
-                m_HideEntityCompleteEventHandler(this, new HideEntityCompleteEventArgs(entity.Id, userData));
+                m_HideEntityCompleteEventHandler(this, new HideEntityCompleteEventArgs(entity.Id, entity.EntityAssetName, entityGroup, userData));
             }
 
             m_RecycleQueue.AddLast(entityInfo);
@@ -987,6 +996,9 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException("Show entity info is invalid.");
             }
 
+            EntityInstanceObject entityInstanceObject = new EntityInstanceObject(entityAssetName, entityAsset, m_EntityHelper.InstantiateEntity(entityAsset), m_EntityHelper);
+            showEntityInfo.EntityGroup.RegisterEntityInstanceObject(entityInstanceObject, true);
+
             m_EntitiesBeingLoaded.Remove(showEntityInfo.EntityId);
             if (m_EntitiesToReleaseOnLoad.Contains(showEntityInfo.EntityId))
             {
@@ -996,16 +1008,7 @@ namespace GameFramework.Entity
                 return;
             }
 
-            EntityGroup entityGroup = (EntityGroup)GetEntityGroup(showEntityInfo.EntityGroupName);
-            if (entityGroup == null)
-            {
-                throw new GameFrameworkException(string.Format("Entity group '{0}' is not exist.", showEntityInfo.EntityGroupName));
-            }
-
-            EntityInstanceObject entityInstanceObject = new EntityInstanceObject(entityAssetName, entityAsset, m_EntityHelper.InstantiateEntity(entityAsset), m_EntityHelper);
-            entityGroup.RegisterEntityInstanceObject(entityInstanceObject, true);
-
-            InternalShowEntity(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroupName, entityInstanceObject.Target, true, duration, showEntityInfo.UserData);
+            InternalShowEntity(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroup, entityInstanceObject.Target, true, duration, showEntityInfo.UserData);
         }
 
         private void LoadEntityFailureCallback(string entityAssetName, LoadResourceStatus status, string errorMessage, object userData)
@@ -1017,10 +1020,11 @@ namespace GameFramework.Entity
             }
 
             m_EntitiesBeingLoaded.Remove(showEntityInfo.EntityId);
+            m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.EntityId);
             string appendErrorMessage = string.Format("Load entity failure, asset name '{0}', status '{1}', error message '{2}'.", entityAssetName, status.ToString(), errorMessage);
             if (m_ShowEntityFailureEventHandler != null)
             {
-                m_ShowEntityFailureEventHandler(this, new ShowEntityFailureEventArgs(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroupName, appendErrorMessage, showEntityInfo.UserData));
+                m_ShowEntityFailureEventHandler(this, new ShowEntityFailureEventArgs(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroup.Name, appendErrorMessage, showEntityInfo.UserData));
                 return;
             }
 
@@ -1037,7 +1041,7 @@ namespace GameFramework.Entity
 
             if (m_ShowEntityUpdateEventHandler != null)
             {
-                m_ShowEntityUpdateEventHandler(this, new ShowEntityUpdateEventArgs(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroupName, progress, showEntityInfo.UserData));
+                m_ShowEntityUpdateEventHandler(this, new ShowEntityUpdateEventArgs(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroup.Name, progress, showEntityInfo.UserData));
             }
         }
 
@@ -1051,7 +1055,7 @@ namespace GameFramework.Entity
 
             if (m_ShowEntityDependencyAssetEventHandler != null)
             {
-                m_ShowEntityDependencyAssetEventHandler(this, new ShowEntityDependencyAssetEventArgs(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroupName, dependencyAssetName, loadedCount, totalCount, showEntityInfo.UserData));
+                m_ShowEntityDependencyAssetEventHandler(this, new ShowEntityDependencyAssetEventArgs(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroup.Name, dependencyAssetName, loadedCount, totalCount, showEntityInfo.UserData));
             }
         }
     }
