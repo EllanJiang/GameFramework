@@ -267,7 +267,7 @@ namespace GameFramework.Resource
         event EventHandler<ResourceUpdateFailureEventArgs> ResourceUpdateFailure;
 
         /// <summary>
-        /// 资源更新所有完成事件。
+        /// 资源更新全部完成事件。
         /// </summary>
         event EventHandler<ResourceUpdateAllCompleteEventArgs> ResourceUpdateAllComplete;
 
