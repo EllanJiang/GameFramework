@@ -186,9 +186,9 @@ namespace GameFramework.Entity
         internal override void Shutdown()
         {
             HideAllLoadedEntities();
+            m_EntityGroups.Clear();
             m_EntitiesBeingLoaded.Clear();
             m_EntitiesToReleaseOnLoad.Clear();
-            m_EntityGroups.Clear();
             m_RecycleQueue.Clear();
         }
 

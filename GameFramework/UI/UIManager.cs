@@ -229,6 +229,7 @@ namespace GameFramework.UI
         /// </summary>
         internal override void Shutdown()
         {
+            CloseAllLoadedUIForms();
             m_UIGroups.Clear();
             m_UIFormsBeingLoaded.Clear();
             m_UIFormAssetNamesBeingLoaded.Clear();
