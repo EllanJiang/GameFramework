@@ -18,6 +18,7 @@ namespace UnityGameFramework.Runtime
     public sealed class Entity : MonoBehaviour, IEntity
     {
         private int m_Id;
+        private string m_EntityAssetName;
         private IEntityGroup m_EntityGroup;
         private EntityLogic m_EntityLogic;
 
@@ -29,6 +30,17 @@ namespace UnityGameFramework.Runtime
             get
             {
                 return m_Id;
+            }
+        }
+
+        /// <summary>
+        /// 获取实体资源名称。
+        /// </summary>
+        public string EntityAssetName
+        {
+            get
+            {
+                return m_EntityAssetName;
             }
         }
 
@@ -69,12 +81,14 @@ namespace UnityGameFramework.Runtime
         /// 实体初始化。
         /// </summary>
         /// <param name="entityId">实体编号。</param>
+        /// <param name="entityAssetName">实体资源名称。</param>
         /// <param name="entityGroup">实体所属的实体组。</param>
         /// <param name="isNewInstance">是否是新实例。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void OnInit(int entityId, IEntityGroup entityGroup, bool isNewInstance, object userData)
+        public void OnInit(int entityId, string entityAssetName, IEntityGroup entityGroup, bool isNewInstance, object userData)
         {
             m_Id = entityId;
+            m_EntityAssetName = entityAssetName;
             if (isNewInstance)
             {
                 m_EntityGroup = entityGroup;

@@ -20,7 +20,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="e">内部事件。</param>
         public OpenUIFormFailureEventArgs(GameFramework.UI.OpenUIFormFailureEventArgs e)
         {
-            UIFormTypeId = e.UIFormTypeId;
+            SerialId = e.SerialId;
             UIFormAssetName = e.UIFormAssetName;
             UIGroupName = e.UIGroupName;
             PauseCoveredUIForm = e.PauseCoveredUIForm;
@@ -40,9 +40,9 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取界面类型编号。
+        /// 获取界面序列编号。
         /// </summary>
-        public int UIFormTypeId
+        public int SerialId
         {
             get;
             private set;

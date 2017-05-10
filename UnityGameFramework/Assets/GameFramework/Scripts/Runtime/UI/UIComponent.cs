@@ -292,36 +292,53 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 界面组中是否存在界面。
+        /// 是否存在界面。
         /// </summary>
-        /// <param name="uiFormTypeId">界面类型编号。</param>
-        /// <param name="uiGroupName">界面组名称。</param>
-        /// <returns>界面组中是否存在界面。</returns>
-        public bool HasUIForm(int uiFormTypeId, string uiGroupName)
+        /// <param name="serialId">界面序列编号。</param>
+        /// <returns>是否存在界面。</returns>
+        public bool HasUIForm(int serialId)
         {
-            return m_UIManager.HasUIForm(uiFormTypeId, uiGroupName);
+            return m_UIManager.HasUIForm(serialId);
         }
 
         /// <summary>
-        /// 从界面组中获取界面。
+        /// 是否存在界面。
         /// </summary>
-        /// <param name="uiFormTypeId">界面类型编号。</param>
-        /// <param name="uiGroupName">界面组名称。</param>
-        /// <returns>要获取的界面。</returns>
-        public UIForm GetUIForm(int uiFormTypeId, string uiGroupName)
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <returns>是否存在界面。</returns>
+        public bool HasUIForm(string uiFormAssetName)
         {
-            return (UIForm)m_UIManager.GetUIForm(uiFormTypeId, uiGroupName);
+            return m_UIManager.HasUIForm(uiFormAssetName);
         }
 
         /// <summary>
-        /// 从界面组中获取界面。
+        /// 获取界面。
         /// </summary>
-        /// <param name="uiFormTypeId">界面类型编号。</param>
-        /// <param name="uiGroupName">界面组名称。</param>
+        /// <param name="serialId">界面序列编号。</param>
         /// <returns>要获取的界面。</returns>
-        public UIForm[] GetUIForms(int uiFormTypeId, string uiGroupName)
+        public UIForm GetUIForm(int serialId)
         {
-            IUIForm[] uiForms = m_UIManager.GetUIForms(uiFormTypeId, uiGroupName);
+            return (UIForm)m_UIManager.GetUIForm(serialId);
+        }
+
+        /// <summary>
+        /// 获取界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <returns>要获取的界面。</returns>
+        public UIForm GetUIForm(string uiFormAssetName)
+        {
+            return (UIForm)m_UIManager.GetUIForm(uiFormAssetName);
+        }
+
+        /// <summary>
+        /// 获取界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <returns>要获取的界面。</returns>
+        public IUIForm[] GetUIForms(string uiFormAssetName)
+        {
+            IUIForm[] uiForms = m_UIManager.GetUIForms(uiFormAssetName);
             UIForm[] uiFormImpls = new UIForm[uiForms.Length];
             for (int i = 0; i < uiForms.Length; i++)
             {
@@ -332,58 +349,132 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 打开界面。
+        /// 获取所有已加载的界面。
         /// </summary>
-        /// <param name="uiFormTypeId">界面类型编号。</param>
-        /// <param name="uiFormAssetName">界面资源名称。</param>
-        /// <param name="uiGroupName">界面组名称。</param>
-        public void OpenUIForm(int uiFormTypeId, string uiFormAssetName, string uiGroupName)
+        /// <returns>所有已加载的界面。</returns>
+        public UIForm[] GetAllLoadedUIForms()
         {
-            m_UIManager.OpenUIForm(uiFormTypeId, uiFormAssetName, uiGroupName);
+            IUIForm[] uiForms = m_UIManager.GetAllLoadedUIForms();
+            UIForm[] uiFormImpls = new UIForm[uiForms.Length];
+            for (int i = 0; i < uiForms.Length; i++)
+            {
+                uiFormImpls[i] = (UIForm)uiForms[i];
+            }
+
+            return uiFormImpls;
+        }
+
+        /// <summary>
+        /// 获取所有正在加载界面的序列编号。
+        /// </summary>
+        /// <returns>所有正在加载界面的序列编号。</returns>
+        public int[] GetAllLoadingUIFormSerialIds()
+        {
+            return m_UIManager.GetAllLoadingUIFormSerialIds();
+        }
+
+        /// <summary>
+        /// 是否正在加载界面。
+        /// </summary>
+        /// <param name="serialId">界面序列编号。</param>
+        /// <returns>是否正在加载界面。</returns>
+        public bool IsLoadingUIForm(int serialId)
+        {
+            return m_UIManager.IsLoadingUIForm(serialId);
+        }
+
+        /// <summary>
+        /// 是否正在加载界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <returns>是否正在加载界面。</returns>
+        public bool IsLoadingUIForm(string uiFormAssetName)
+        {
+            return m_UIManager.IsLoadingUIForm(uiFormAssetName);
+        }
+
+        /// <summary>
+        /// 是否是合法的界面。
+        /// </summary>
+        /// <param name="uiForm">界面。</param>
+        /// <returns>界面是否合法。</returns>
+        public bool IsValidUIForm(IUIForm uiForm)
+        {
+            return m_UIManager.IsValidUIForm(uiForm);
         }
 
         /// <summary>
         /// 打开界面。
         /// </summary>
-        /// <param name="uiFormTypeId">界面类型编号。</param>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="uiGroupName">界面组名称。</param>
+        /// <returns>界面的序列编号。</returns>
+        public int OpenUIForm(string uiFormAssetName, string uiGroupName)
+        {
+            return m_UIManager.OpenUIForm(uiFormAssetName, uiGroupName);
+        }
+
+        /// <summary>
+        /// 打开界面。
+        /// </summary>
         /// <param name="uiFormAssetName">界面资源名称。</param>
         /// <param name="uiGroupName">界面组名称。</param>
         /// <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
-        public void OpenUIForm(int uiFormTypeId, string uiFormAssetName, string uiGroupName, bool pauseCoveredUIForm)
+        /// <returns>界面的序列编号。</returns>
+        public int OpenUIForm(string uiFormAssetName, string uiGroupName, bool pauseCoveredUIForm)
         {
-            m_UIManager.OpenUIForm(uiFormTypeId, uiFormAssetName, uiGroupName, pauseCoveredUIForm);
+            return m_UIManager.OpenUIForm(uiFormAssetName, uiGroupName, pauseCoveredUIForm);
         }
 
         /// <summary>
         /// 打开界面。
         /// </summary>
-        /// <param name="uiFormTypeId">界面类型编号。</param>
         /// <param name="uiFormAssetName">界面资源名称。</param>
         /// <param name="uiGroupName">界面组名称。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void OpenUIForm(int uiFormTypeId, string uiFormAssetName, string uiGroupName, object userData)
+        /// <returns>界面的序列编号。</returns>
+        public int OpenUIForm(string uiFormAssetName, string uiGroupName, object userData)
         {
-            m_UIManager.OpenUIForm(uiFormTypeId, uiFormAssetName, uiGroupName, userData);
+            return m_UIManager.OpenUIForm(uiFormAssetName, uiGroupName, userData);
         }
 
         /// <summary>
         /// 打开界面。
         /// </summary>
-        /// <param name="uiFormTypeId">界面类型编号。</param>
         /// <param name="uiFormAssetName">界面资源名称。</param>
         /// <param name="uiGroupName">界面组名称。</param>
         /// <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void OpenUIForm(int uiFormTypeId, string uiFormAssetName, string uiGroupName, bool pauseCoveredUIForm, object userData)
+        /// <returns>界面的序列编号。</returns>
+        public int OpenUIForm(string uiFormAssetName, string uiGroupName, bool pauseCoveredUIForm, object userData)
         {
-            m_UIManager.OpenUIForm(uiFormTypeId, uiFormAssetName, uiGroupName, pauseCoveredUIForm, userData);
+            return m_UIManager.OpenUIForm(uiFormAssetName, uiGroupName, pauseCoveredUIForm, userData);
+        }
+
+        /// <summary>
+        /// 关闭界面。
+        /// </summary>
+        /// <param name="serialId">要关闭界面的序列编号。</param>
+        public void CloseUIForm(int serialId)
+        {
+            m_UIManager.CloseUIForm(serialId);
+        }
+
+        /// <summary>
+        /// 关闭界面。
+        /// </summary>
+        /// <param name="serialId">要关闭界面的序列编号。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void CloseUIForm(int serialId, object userData)
+        {
+            m_UIManager.CloseUIForm(serialId, userData);
         }
 
         /// <summary>
         /// 关闭界面。
         /// </summary>
         /// <param name="uiForm">要关闭的界面。</param>
-        public void CloseUIForm(UIForm uiForm)
+        public void CloseUIForm(IUIForm uiForm)
         {
             m_UIManager.CloseUIForm(uiForm);
         }
@@ -396,6 +487,31 @@ namespace UnityGameFramework.Runtime
         public void CloseUIForm(UIForm uiForm, object userData)
         {
             m_UIManager.CloseUIForm(uiForm, userData);
+        }
+
+        /// <summary>
+        /// 关闭所有已加载的界面。
+        /// </summary>
+        public void CloseAllLoadedUIForms()
+        {
+            m_UIManager.CloseAllLoadedUIForms();
+        }
+
+        /// <summary>
+        /// 关闭所有已加载的界面。
+        /// </summary>
+        /// <param name="userData">用户自定义数据。</param>
+        public void CloseAllLoadedUIForms(object userData)
+        {
+            m_UIManager.CloseAllLoadedUIForms(userData);
+        }
+
+        /// <summary>
+        /// 关闭所有正在加载的界面。
+        /// </summary>
+        public void CloseAllLoadingUIForms()
+        {
+            m_UIManager.CloseAllLoadingUIForms();
         }
 
         /// <summary>

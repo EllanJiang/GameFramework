@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using GameFramework.Event;
+using GameFramework.UI;
 
 namespace UnityGameFramework.Runtime
 {
@@ -20,7 +21,9 @@ namespace UnityGameFramework.Runtime
         /// <param name="e">内部事件。</param>
         public CloseUIFormCompleteEventArgs(GameFramework.UI.CloseUIFormCompleteEventArgs e)
         {
-            UIFormTypeId = e.UIFormTypeId;
+            SerialId = e.SerialId;
+            UIFormAssetName = e.UIFormAssetName;
+            UIGroup = e.UIGroup;
             UserData = e.UserData;
         }
 
@@ -36,9 +39,27 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取界面类型编号。
+        /// 获取界面序列编号。
         /// </summary>
-        public int UIFormTypeId
+        public int SerialId
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取界面资源名称。
+        /// </summary>
+        public string UIFormAssetName
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取界面所属的界面组。
+        /// </summary>
+        public IUIGroup UIGroup
         {
             get;
             private set;

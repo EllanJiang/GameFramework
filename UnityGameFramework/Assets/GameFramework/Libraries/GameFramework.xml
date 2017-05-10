@@ -1323,7 +1323,7 @@
         </member>
         <member name="M:GameFramework.TaskPool`1.RemoveAllTasks">
             <summary>
-            移除全部任务。
+            移除所有任务。
             </summary>
         </member>
         <member name="T:GameFramework.Variable`1">
@@ -2162,31 +2162,31 @@
         </member>
         <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.GetAllDataRows">
             <summary>
-            获取全部数据表行。
+            获取所有数据表行。
             </summary>
-            <returns>全部数据表行。</returns>
+            <returns>所有数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.GetAllDataRows(System.Predicate{`0})">
             <summary>
-            获取全部符合条件的数据表行。
+            获取所有符合条件的数据表行。
             </summary>
             <param name="condition">要检查的条件。</param>
-            <returns>全部符合条件的数据表行。</returns>
+            <returns>所有符合条件的数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.GetAllDataRows(System.Comparison{`0})">
             <summary>
-            获取全部排序后的数据表行。
+            获取所有排序后的数据表行。
             </summary>
             <param name="comparison">要排序的条件。</param>
-            <returns>全部排序后的数据表行。</returns>
+            <returns>所有排序后的数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.GetAllDataRows(System.Predicate{`0},System.Comparison{`0})">
             <summary>
-            获取全部排序后的符合条件的数据表行。
+            获取所有排序后的符合条件的数据表行。
             </summary>
             <param name="condition">要检查的条件。</param>
             <param name="comparison">要排序的条件。</param>
-            <returns>全部排序后的符合条件的数据表行。</returns>
+            <returns>所有排序后的符合条件的数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.GetEnumerator">
             <summary>
@@ -2279,31 +2279,31 @@
         </member>
         <member name="M:GameFramework.DataTable.IDataTable`1.GetAllDataRows">
             <summary>
-            获取全部数据表行。
+            获取所有数据表行。
             </summary>
-            <returns>全部数据表行。</returns>
+            <returns>所有数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.IDataTable`1.GetAllDataRows(System.Predicate{`0})">
             <summary>
-            获取全部符合条件的数据表行。
+            获取所有符合条件的数据表行。
             </summary>
             <param name="condition">要检查的条件。</param>
-            <returns>全部符合条件的数据表行。</returns>
+            <returns>所有符合条件的数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.IDataTable`1.GetAllDataRows(System.Comparison{`0})">
             <summary>
-            获取全部排序后的数据表行。
+            获取所有排序后的数据表行。
             </summary>
             <param name="comparison">要排序的条件。</param>
-            <returns>全部排序后的数据表行。</returns>
+            <returns>所有排序后的数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.IDataTable`1.GetAllDataRows(System.Predicate{`0},System.Comparison{`0})">
             <summary>
-            获取全部排序后的符合条件的数据表行。
+            获取所有排序后的符合条件的数据表行。
             </summary>
             <param name="condition">要检查的条件。</param>
             <param name="comparison">要排序的条件。</param>
-            <returns>全部排序后的符合条件的数据表行。</returns>
+            <returns>所有排序后的符合条件的数据表行。</returns>
         </member>
         <member name="T:GameFramework.DataTable.IDataTableHelper">
             <summary>
@@ -3070,7 +3070,7 @@
         </member>
         <member name="M:GameFramework.Download.DownloadManager.RemoveAllDownload">
             <summary>
-            移除全部下载任务。
+            移除所有下载任务。
             </summary>
         </member>
         <member name="T:GameFramework.Download.DownloadManager.DownloadAgent">
@@ -3494,7 +3494,7 @@
         </member>
         <member name="M:GameFramework.Download.IDownloadManager.RemoveAllDownload">
             <summary>
-            移除全部下载任务。
+            移除所有下载任务。
             </summary>
         </member>
         <member name="T:GameFramework.Entity.EntityManager">
@@ -3611,25 +3611,52 @@
             <param name="entityId">实体编号。</param>
             <returns>是否存在实体。</returns>
         </member>
+        <member name="M:GameFramework.Entity.EntityManager.HasEntity(System.String)">
+            <summary>
+            是否存在实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>是否存在实体。</returns>
+        </member>
         <member name="M:GameFramework.Entity.EntityManager.GetEntity(System.Int32)">
             <summary>
             获取实体。
             </summary>
             <param name="entityId">实体编号。</param>
-            <return>实体。</return>
+            <returns>要获取的实体。</returns>
         </member>
-        <member name="M:GameFramework.Entity.EntityManager.GetAllEntities">
+        <member name="M:GameFramework.Entity.EntityManager.GetEntity(System.String)">
             <summary>
-            获取所有实体。
+            获取实体。
             </summary>
-            <returns>所有实体。</returns>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.GetEntities(System.String)">
+            <summary>
+            获取实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.GetAllLoadedEntities">
+            <summary>
+            获取所有已加载的实体。
+            </summary>
+            <returns>所有已加载的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.GetAllLoadingEntityIds">
+            <summary>
+            获取所有正在加载实体的编号。
+            </summary>
+            <returns>所有正在加载实体的编号。</returns>
         </member>
         <member name="M:GameFramework.Entity.EntityManager.IsLoadingEntity(System.Int32)">
             <summary>
-            是否正在显示实体。
+            是否正在加载实体。
             </summary>
             <param name="entityId">实体编号。</param>
-            <returns>是否正在显示实体。</returns>
+            <returns>是否正在加载实体。</returns>
         </member>
         <member name="M:GameFramework.Entity.EntityManager.IsValidEntity(GameFramework.Entity.IEntity)">
             <summary>
@@ -3681,16 +3708,21 @@
             <param name="entity">实体。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Entity.EntityManager.HideAllEntities">
+        <member name="M:GameFramework.Entity.EntityManager.HideAllLoadedEntities">
             <summary>
-            隐藏全部实体。
+            隐藏所有已加载的实体。
             </summary>
         </member>
-        <member name="M:GameFramework.Entity.EntityManager.HideAllEntities(System.Object)">
+        <member name="M:GameFramework.Entity.EntityManager.HideAllLoadedEntities(System.Object)">
             <summary>
-            隐藏全部实体。
+            隐藏所有已加载的实体。
             </summary>
             <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.HideAllLoadingEntities">
+            <summary>
+            隐藏所有正在加载的实体。
+            </summary>
         </member>
         <member name="M:GameFramework.Entity.EntityManager.GetParentEntity(System.Int32)">
             <summary>
@@ -3912,6 +3944,47 @@
             <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
             <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         </member>
+        <member name="M:GameFramework.Entity.EntityManager.EntityGroup.HasEntity(System.Int32)">
+            <summary>
+            实体组中是否存在实体。
+            </summary>
+            <param name="entityId">实体序列编号。</param>
+            <returns>实体组中是否存在实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.EntityGroup.HasEntity(System.String)">
+            <summary>
+            实体组中是否存在实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>实体组中是否存在实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.EntityGroup.GetEntity(System.Int32)">
+            <summary>
+            从实体组中获取实体。
+            </summary>
+            <param name="entityId">实体序列编号。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.EntityGroup.GetEntity(System.String)">
+            <summary>
+            从实体组中获取实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.EntityGroup.GetEntities(System.String)">
+            <summary>
+            从实体组中获取实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.EntityGroup.GetAllEntities">
+            <summary>
+            从实体组中获取所有实体。
+            </summary>
+            <returns>实体组中的所有实体。</returns>
+        </member>
         <member name="M:GameFramework.Entity.EntityManager.EntityGroup.AddEntity(GameFramework.Entity.IEntity)">
             <summary>
             往实体组增加实体。
@@ -3944,16 +4017,28 @@
             隐藏实体完成事件。
             </summary>
         </member>
-        <member name="M:GameFramework.Entity.HideEntityCompleteEventArgs.#ctor(System.Int32,System.Object)">
+        <member name="M:GameFramework.Entity.HideEntityCompleteEventArgs.#ctor(System.Int32,System.String,GameFramework.Entity.IEntityGroup,System.Object)">
             <summary>
             初始化隐藏实体完成事件的新实例。
             </summary>
             <param name="entityId">实体编号。</param>
+            <param name="entityAssetName">实体资源名称。</param>
+            <param name="entityGroup">实体所属的实体组。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
         <member name="P:GameFramework.Entity.HideEntityCompleteEventArgs.EntityId">
             <summary>
             获取实体编号。
+            </summary>
+        </member>
+        <member name="P:GameFramework.Entity.HideEntityCompleteEventArgs.EntityAssetName">
+            <summary>
+            获取实体资源名称。
+            </summary>
+        </member>
+        <member name="P:GameFramework.Entity.HideEntityCompleteEventArgs.EntityGroup">
+            <summary>
+            获取实体所属的实体组。
             </summary>
         </member>
         <member name="P:GameFramework.Entity.HideEntityCompleteEventArgs.UserData">
@@ -3971,6 +4056,11 @@
             获取实体编号。
             </summary>
         </member>
+        <member name="P:GameFramework.Entity.IEntity.EntityAssetName">
+            <summary>
+            获取实体资源名称。
+            </summary>
+        </member>
         <member name="P:GameFramework.Entity.IEntity.Handle">
             <summary>
             获取实体实例。
@@ -3981,11 +4071,12 @@
             获取实体所属的实体组。
             </summary>
         </member>
-        <member name="M:GameFramework.Entity.IEntity.OnInit(System.Int32,GameFramework.Entity.IEntityGroup,System.Boolean,System.Object)">
+        <member name="M:GameFramework.Entity.IEntity.OnInit(System.Int32,System.String,GameFramework.Entity.IEntityGroup,System.Boolean,System.Object)">
             <summary>
             实体初始化。
             </summary>
             <param name="entityId">实体编号。</param>
+            <param name="entityAssetName">实体资源名称。</param>
             <param name="entityGroup">实体所属的实体组。</param>
             <param name="isNewInstance">是否是新实例。</param>
             <param name="userData">用户自定义数据。</param>
@@ -4081,6 +4172,47 @@
             <summary>
             获取实体组辅助器。
             </summary>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityGroup.HasEntity(System.Int32)">
+            <summary>
+            实体组中是否存在实体。
+            </summary>
+            <param name="entityId">实体序列编号。</param>
+            <returns>实体组中是否存在实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityGroup.HasEntity(System.String)">
+            <summary>
+            实体组中是否存在实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>实体组中是否存在实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityGroup.GetEntity(System.Int32)">
+            <summary>
+            从实体组中获取实体。
+            </summary>
+            <param name="entityId">实体序列编号。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityGroup.GetEntity(System.String)">
+            <summary>
+            从实体组中获取实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityGroup.GetEntities(System.String)">
+            <summary>
+            从实体组中获取实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityGroup.GetAllEntities">
+            <summary>
+            从实体组中获取所有实体。
+            </summary>
+            <returns>实体组中的所有实体。</returns>
         </member>
         <member name="T:GameFramework.Entity.IEntityGroupHelper">
             <summary>
@@ -4212,18 +4344,45 @@
             <param name="entityId">实体编号。</param>
             <returns>是否存在实体。</returns>
         </member>
+        <member name="M:GameFramework.Entity.IEntityManager.HasEntity(System.String)">
+            <summary>
+            是否存在实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>是否存在实体。</returns>
+        </member>
         <member name="M:GameFramework.Entity.IEntityManager.GetEntity(System.Int32)">
             <summary>
             获取实体。
             </summary>
             <param name="entityId">实体编号。</param>
-            <returns>实体。</returns>
+            <returns>要获取的实体。</returns>
         </member>
-        <member name="M:GameFramework.Entity.IEntityManager.GetAllEntities">
+        <member name="M:GameFramework.Entity.IEntityManager.GetEntity(System.String)">
             <summary>
-            获取所有实体。
+            获取实体。
             </summary>
-            <returns>所有实体。</returns>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityManager.GetEntities(System.String)">
+            <summary>
+            获取实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityManager.GetAllLoadedEntities">
+            <summary>
+            获取所有已加载的实体。
+            </summary>
+            <returns>所有已加载的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityManager.GetAllLoadingEntityIds">
+            <summary>
+            获取所有正在加载实体的编号。
+            </summary>
+            <returns>所有正在加载实体的编号。</returns>
         </member>
         <member name="M:GameFramework.Entity.IEntityManager.IsLoadingEntity(System.Int32)">
             <summary>
@@ -4282,16 +4441,21 @@
             <param name="entity">实体。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Entity.IEntityManager.HideAllEntities">
+        <member name="M:GameFramework.Entity.IEntityManager.HideAllLoadedEntities">
             <summary>
-            隐藏全部实体。
+            隐藏所有已加载的实体。
             </summary>
         </member>
-        <member name="M:GameFramework.Entity.IEntityManager.HideAllEntities(System.Object)">
+        <member name="M:GameFramework.Entity.IEntityManager.HideAllLoadedEntities(System.Object)">
             <summary>
-            隐藏全部实体。
+            隐藏所有已加载的实体。
             </summary>
             <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityManager.HideAllLoadingEntities">
+            <summary>
+            隐藏所有正在加载的实体。
+            </summary>
         </member>
         <member name="M:GameFramework.Entity.IEntityManager.GetParentEntity(System.Int32)">
             <summary>
@@ -4544,19 +4708,13 @@
             显示实体成功事件。
             </summary>
         </member>
-        <member name="M:GameFramework.Entity.ShowEntitySuccessEventArgs.#ctor(System.String,GameFramework.Entity.IEntity,System.Single,System.Object)">
+        <member name="M:GameFramework.Entity.ShowEntitySuccessEventArgs.#ctor(GameFramework.Entity.IEntity,System.Single,System.Object)">
             <summary>
             初始化显示实体成功事件的新实例。
             </summary>
-            <param name="entityAssetName">实体资源名称。</param>
             <param name="entity">加载成功的实体。</param>
             <param name="duration">加载持续时间。</param>
             <param name="userData">用户自定义数据。</param>
-        </member>
-        <member name="P:GameFramework.Entity.ShowEntitySuccessEventArgs.EntityAssetName">
-            <summary>
-            获取实体资源名称。
-            </summary>
         </member>
         <member name="P:GameFramework.Entity.ShowEntitySuccessEventArgs.Entity">
             <summary>
@@ -12764,16 +12922,28 @@
             关闭界面完成事件。
             </summary>
         </member>
-        <member name="M:GameFramework.UI.CloseUIFormCompleteEventArgs.#ctor(System.Int32,System.Object)">
+        <member name="M:GameFramework.UI.CloseUIFormCompleteEventArgs.#ctor(System.Int32,System.String,GameFramework.UI.IUIGroup,System.Object)">
             <summary>
             初始化关闭界面完成事件的新实例。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <param name="uiGroup">界面所属的界面组。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="P:GameFramework.UI.CloseUIFormCompleteEventArgs.UIFormTypeId">
+        <member name="P:GameFramework.UI.CloseUIFormCompleteEventArgs.SerialId">
             <summary>
-            获取界面类型编号。
+            获取界面序列编号。
+            </summary>
+        </member>
+        <member name="P:GameFramework.UI.CloseUIFormCompleteEventArgs.UIFormAssetName">
+            <summary>
+            获取界面资源名称。
+            </summary>
+        </member>
+        <member name="P:GameFramework.UI.CloseUIFormCompleteEventArgs.UIGroup">
+            <summary>
+            获取界面所属的界面组。
             </summary>
         </member>
         <member name="P:GameFramework.UI.CloseUIFormCompleteEventArgs.UserData">
@@ -12786,9 +12956,14 @@
             界面接口。
             </summary>
         </member>
-        <member name="P:GameFramework.UI.IUIForm.TypeId">
+        <member name="P:GameFramework.UI.IUIForm.SerialId">
             <summary>
-            获取界面类型编号。
+            获取界面序列编号。
+            </summary>
+        </member>
+        <member name="P:GameFramework.UI.IUIForm.UIFormAssetName">
+            <summary>
+            获取界面资源名称。
             </summary>
         </member>
         <member name="P:GameFramework.UI.IUIForm.Handle">
@@ -12811,12 +12986,13 @@
             获取是否暂停被覆盖的界面。
             </summary>
         </member>
-        <member name="M:GameFramework.UI.IUIForm.OnInit(System.Int32,GameFramework.UI.IUIGroup,System.Boolean,System.Boolean,System.Object)">
+        <member name="M:GameFramework.UI.IUIForm.OnInit(System.Int32,System.String,GameFramework.UI.IUIGroup,System.Boolean,System.Boolean,System.Object)">
             <summary>
             初始化界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroup">界面所处的界面组。</param>
+            <param name="serialId">界面序列编号。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <param name="uiGroup">界面所属的界面组。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
             <param name="isNewInstance">是否是新实例。</param>
             <param name="userData">用户自定义数据。</param>
@@ -12940,22 +13116,42 @@
             <summary>
             界面组中是否存在界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
+            <returns>界面组中是否存在界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIGroup.HasUIForm(System.String)">
+            <summary>
+            界面组中是否存在界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
             <returns>界面组中是否存在界面。</returns>
         </member>
         <member name="M:GameFramework.UI.IUIGroup.GetUIForm(System.Int32)">
             <summary>
             从界面组中获取界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
             <returns>要获取的界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIGroup.GetUIForms(System.Int32)">
+        <member name="M:GameFramework.UI.IUIGroup.GetUIForm(System.String)">
             <summary>
             从界面组中获取界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
             <returns>要获取的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIGroup.GetUIForms(System.String)">
+            <summary>
+            从界面组中获取界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>要获取的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIGroup.GetAllUIForms">
+            <summary>
+            从界面组中获取所有界面。
+            </summary>
+            <returns>界面组中的所有界面。</returns>
         </member>
         <member name="T:GameFramework.UI.IUIGroupHelper">
             <summary>
@@ -13078,64 +13274,121 @@
             <param name="uiGroupHelper">界面组辅助器。</param>
             <returns>是否增加界面组成功。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.HasUIForm(System.Int32,System.String)">
+        <member name="M:GameFramework.UI.IUIManager.HasUIForm(System.Int32)">
             <summary>
-            界面组中是否存在界面。
+            是否存在界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroupName">界面组名称。</param>
-            <returns>界面组中是否存在界面。</returns>
+            <param name="serialId">界面序列编号。</param>
+            <returns>是否存在界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.GetUIForm(System.Int32,System.String)">
+        <member name="M:GameFramework.UI.IUIManager.HasUIForm(System.String)">
             <summary>
-            从界面组中获取界面。
+            是否存在界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroupName">界面组名称。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>是否存在界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.GetUIForm(System.Int32)">
+            <summary>
+            获取界面。
+            </summary>
+            <param name="serialId">界面序列编号。</param>
             <returns>要获取的界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.GetUIForms(System.Int32,System.String)">
+        <member name="M:GameFramework.UI.IUIManager.GetUIForm(System.String)">
             <summary>
-            从界面组中获取界面。
+            获取界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroupName">界面组名称。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
             <returns>要获取的界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.Int32,System.String,System.String)">
+        <member name="M:GameFramework.UI.IUIManager.GetUIForms(System.String)">
+            <summary>
+            获取界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>要获取的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.GetAllLoadedUIForms">
+            <summary>
+            获取所有已加载的界面。
+            </summary>
+            <returns>所有已加载的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.GetAllLoadingUIFormSerialIds">
+            <summary>
+            获取所有正在加载界面的序列编号。
+            </summary>
+            <returns>所有正在加载界面的序列编号。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.IsLoadingUIForm(System.Int32)">
+            <summary>
+            是否正在加载界面。
+            </summary>
+            <param name="serialId">界面序列编号。</param>
+            <returns>是否正在加载界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.IsLoadingUIForm(System.String)">
+            <summary>
+            是否正在加载界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>是否正在加载界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.IsValidUIForm(GameFramework.UI.IUIForm)">
+            <summary>
+            是否是合法的界面。
+            </summary>
+            <param name="uiForm">界面。</param>
+            <returns>界面是否合法。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.String,System.String)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
+            <returns>界面的序列编号。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.Int32,System.String,System.String,System.Boolean)">
+        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.String,System.String,System.Boolean)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
+            <returns>界面的序列编号。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.Int32,System.String,System.String,System.Object)">
+        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.String,System.String,System.Object)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="userData">用户自定义数据。</param>
+            <returns>界面的序列编号。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.Int32,System.String,System.String,System.Boolean,System.Object)">
+        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.String,System.String,System.Boolean,System.Object)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
+            <param name="userData">用户自定义数据。</param>
+            <returns>界面的序列编号。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.CloseUIForm(System.Int32)">
+            <summary>
+            关闭界面。
+            </summary>
+            <param name="serialId">要关闭界面的序列编号。</param>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.CloseUIForm(System.Int32,System.Object)">
+            <summary>
+            关闭界面。
+            </summary>
+            <param name="serialId">要关闭界面的序列编号。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
         <member name="M:GameFramework.UI.IUIManager.CloseUIForm(GameFramework.UI.IUIForm)">
@@ -13150,6 +13403,22 @@
             </summary>
             <param name="uiForm">要关闭的界面。</param>
             <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.CloseAllLoadedUIForms">
+            <summary>
+            关闭所有已加载的界面。
+            </summary>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.CloseAllLoadedUIForms(System.Object)">
+            <summary>
+            关闭所有已加载的界面。
+            </summary>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.CloseAllLoadingUIForms">
+            <summary>
+            关闭所有正在加载的界面。
+            </summary>
         </member>
         <member name="M:GameFramework.UI.IUIManager.RefocusUIForm(GameFramework.UI.IUIForm)">
             <summary>
@@ -13168,14 +13437,14 @@
             <summary>
             设置界面是否被加锁。
             </summary>
-            <param name="uiForm">界面。</param>
+            <param name="uiForm">要设置是否被加锁的界面。</param>
             <param name="locked">界面是否被加锁。</param>
         </member>
         <member name="M:GameFramework.UI.IUIManager.SetUIFormPriority(GameFramework.UI.IUIForm,System.Int32)">
             <summary>
             设置界面的优先级。
             </summary>
-            <param name="uiForm">界面。</param>
+            <param name="uiForm">要设置优先级的界面。</param>
             <param name="priority">界面优先级。</param>
         </member>
         <member name="T:GameFramework.UI.OpenUIFormDependencyAssetEventArgs">
@@ -13187,7 +13456,7 @@
             <summary>
             初始化打开界面时加载依赖资源事件的新实例。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
@@ -13196,9 +13465,9 @@
             <param name="totalCount">总共加载依赖资源数量。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="P:GameFramework.UI.OpenUIFormDependencyAssetEventArgs.UIFormTypeId">
+        <member name="P:GameFramework.UI.OpenUIFormDependencyAssetEventArgs.SerialId">
             <summary>
-            获取界面类型编号。
+            获取界面序列编号。
             </summary>
         </member>
         <member name="P:GameFramework.UI.OpenUIFormDependencyAssetEventArgs.UIFormAssetName">
@@ -13245,16 +13514,16 @@
             <summary>
             初始化打开界面失败事件的新实例。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
             <param name="errorMessage">错误信息。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="P:GameFramework.UI.OpenUIFormFailureEventArgs.UIFormTypeId">
+        <member name="P:GameFramework.UI.OpenUIFormFailureEventArgs.SerialId">
             <summary>
-            获取界面类型编号。
+            获取界面序列编号。
             </summary>
         </member>
         <member name="P:GameFramework.UI.OpenUIFormFailureEventArgs.UIFormAssetName">
@@ -13287,19 +13556,13 @@
             打开界面成功事件。
             </summary>
         </member>
-        <member name="M:GameFramework.UI.OpenUIFormSuccessEventArgs.#ctor(System.String,GameFramework.UI.IUIForm,System.Single,System.Object)">
+        <member name="M:GameFramework.UI.OpenUIFormSuccessEventArgs.#ctor(GameFramework.UI.IUIForm,System.Single,System.Object)">
             <summary>
             初始化打开界面成功事件的新实例。
             </summary>
-            <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiForm">加载成功的界面。</param>
             <param name="duration">加载持续时间。</param>
             <param name="userData">用户自定义数据。</param>
-        </member>
-        <member name="P:GameFramework.UI.OpenUIFormSuccessEventArgs.UIFormAssetName">
-            <summary>
-            获取界面资源名称。
-            </summary>
         </member>
         <member name="P:GameFramework.UI.OpenUIFormSuccessEventArgs.UIForm">
             <summary>
@@ -13325,16 +13588,16 @@
             <summary>
             初始化打开界面更新事件的新实例。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
             <param name="progress">打开界面进度。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="P:GameFramework.UI.OpenUIFormUpdateEventArgs.UIFormTypeId">
+        <member name="P:GameFramework.UI.OpenUIFormUpdateEventArgs.SerialId">
             <summary>
-            获取界面类型编号。
+            获取界面序列编号。
             </summary>
         </member>
         <member name="P:GameFramework.UI.OpenUIFormUpdateEventArgs.UIFormAssetName">
@@ -13489,64 +13752,121 @@
             <param name="uiGroupHelper">界面组辅助器。</param>
             <returns>是否增加界面组成功。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.HasUIForm(System.Int32,System.String)">
+        <member name="M:GameFramework.UI.UIManager.HasUIForm(System.Int32)">
             <summary>
-            界面组中是否存在界面。
+            是否存在界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroupName">界面组名称。</param>
-            <returns>界面组中是否存在界面。</returns>
+            <param name="serialId">界面序列编号。</param>
+            <returns>是否存在界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.GetUIForm(System.Int32,System.String)">
+        <member name="M:GameFramework.UI.UIManager.HasUIForm(System.String)">
             <summary>
-            从界面组中获取界面。
+            是否存在界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroupName">界面组名称。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>是否存在界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.GetUIForm(System.Int32)">
+            <summary>
+            获取界面。
+            </summary>
+            <param name="serialId">界面序列编号。</param>
             <returns>要获取的界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.GetUIForms(System.Int32,System.String)">
+        <member name="M:GameFramework.UI.UIManager.GetUIForm(System.String)">
             <summary>
-            从界面组中获取界面。
+            获取界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroupName">界面组名称。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
             <returns>要获取的界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.Int32,System.String,System.String)">
+        <member name="M:GameFramework.UI.UIManager.GetUIForms(System.String)">
+            <summary>
+            获取界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>要获取的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.GetAllLoadedUIForms">
+            <summary>
+            获取所有已加载的界面。
+            </summary>
+            <returns>所有已加载的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.GetAllLoadingUIFormSerialIds">
+            <summary>
+            获取所有正在加载界面的序列编号。
+            </summary>
+            <returns>所有正在加载界面的序列编号。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.IsLoadingUIForm(System.Int32)">
+            <summary>
+            是否正在加载界面。
+            </summary>
+            <param name="serialId">界面序列编号。</param>
+            <returns>是否正在加载界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.IsLoadingUIForm(System.String)">
+            <summary>
+            是否正在加载界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>是否正在加载界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.IsValidUIForm(GameFramework.UI.IUIForm)">
+            <summary>
+            是否是合法的界面。
+            </summary>
+            <param name="uiForm">界面。</param>
+            <returns>界面是否合法。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.String,System.String)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
+            <returns>界面的序列编号。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.Int32,System.String,System.String,System.Boolean)">
+        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.String,System.String,System.Boolean)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
+            <returns>界面的序列编号。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.Int32,System.String,System.String,System.Object)">
+        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.String,System.String,System.Object)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="userData">用户自定义数据。</param>
+            <returns>界面的序列编号。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.Int32,System.String,System.String,System.Boolean,System.Object)">
+        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.String,System.String,System.Boolean,System.Object)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
+            <param name="userData">用户自定义数据。</param>
+            <returns>界面的序列编号。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.CloseUIForm(System.Int32)">
+            <summary>
+            关闭界面。
+            </summary>
+            <param name="serialId">要关闭界面的序列编号。</param>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.CloseUIForm(System.Int32,System.Object)">
+            <summary>
+            关闭界面。
+            </summary>
+            <param name="serialId">要关闭界面的序列编号。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
         <member name="M:GameFramework.UI.UIManager.CloseUIForm(GameFramework.UI.IUIForm)">
@@ -13561,6 +13881,22 @@
             </summary>
             <param name="uiForm">要关闭的界面。</param>
             <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.CloseAllLoadedUIForms">
+            <summary>
+            关闭所有已加载的界面。
+            </summary>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.CloseAllLoadedUIForms(System.Object)">
+            <summary>
+            关闭所有已加载的界面。
+            </summary>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.CloseAllLoadingUIForms">
+            <summary>
+            关闭所有正在加载的界面。
+            </summary>
         </member>
         <member name="M:GameFramework.UI.UIManager.RefocusUIForm(GameFramework.UI.IUIForm)">
             <summary>
@@ -13579,14 +13915,14 @@
             <summary>
             设置界面是否被加锁。
             </summary>
-            <param name="uiForm">界面。</param>
+            <param name="uiForm">要设置是否被加锁的界面。</param>
             <param name="locked">界面是否被加锁。</param>
         </member>
         <member name="M:GameFramework.UI.UIManager.SetUIFormPriority(GameFramework.UI.IUIForm,System.Int32)">
             <summary>
             设置界面的优先级。
             </summary>
-            <param name="uiForm">界面。</param>
+            <param name="uiForm">要设置优先级的界面。</param>
             <param name="priority">界面优先级。</param>
         </member>
         <member name="T:GameFramework.UI.UIManager.UIFormInstanceObject">
@@ -13643,22 +13979,42 @@
             <summary>
             界面组中是否存在界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
+            <returns>界面组中是否存在界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.UIGroup.HasUIForm(System.String)">
+            <summary>
+            界面组中是否存在界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
             <returns>界面组中是否存在界面。</returns>
         </member>
         <member name="M:GameFramework.UI.UIManager.UIGroup.GetUIForm(System.Int32)">
             <summary>
             从界面组中获取界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
             <returns>要获取的界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.UIGroup.GetUIForms(System.Int32)">
+        <member name="M:GameFramework.UI.UIManager.UIGroup.GetUIForm(System.String)">
             <summary>
             从界面组中获取界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
             <returns>要获取的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.UIGroup.GetUIForms(System.String)">
+            <summary>
+            从界面组中获取界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>要获取的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.UIGroup.GetAllUIForms">
+            <summary>
+            从界面组中获取所有界面。
+            </summary>
+            <returns>界面组中的所有界面。</returns>
         </member>
         <member name="M:GameFramework.UI.UIManager.UIGroup.AddUIForm(GameFramework.UI.IUIForm)">
             <summary>
@@ -13837,7 +14193,7 @@
         </member>
         <member name="M:GameFramework.WebRequest.IWebRequestManager.RemoveAllWebRequests">
             <summary>
-            移除全部 Web 请求任务。
+            移除所有 Web 请求任务。
             </summary>
         </member>
         <member name="T:GameFramework.WebRequest.WebRequestAgentHelperCompleteEventArgs">
@@ -14016,7 +14372,7 @@
         </member>
         <member name="M:GameFramework.WebRequest.WebRequestManager.RemoveAllWebRequests">
             <summary>
-            移除全部 Web 请求任务。
+            移除所有 Web 请求任务。
             </summary>
         </member>
         <member name="T:GameFramework.WebRequest.WebRequestManager.WebRequestAgent">
