@@ -93,10 +93,5 @@ namespace GameFramework.UI
         /// </summary>
         /// <returns>界面组中的所有界面。</returns>
         IUIForm[] GetAllUIForms();
-
-        /// <summary>
-        /// 关闭所有界面组中的界面。
-        /// </summary>
-        void CloseAllUIForms();
     }
 }

@@ -176,10 +176,10 @@ namespace GameFramework.UI
         IUIForm[] GetUIForms(string uiFormAssetName);
 
         /// <summary>
-        /// 获取所有界面。
+        /// 获取所有已加载的界面。
         /// </summary>
-        /// <returns>所有界面。</returns>
-        IUIForm[] GetAllUIForms();
+        /// <returns>所有已加载的界面。</returns>
+        IUIForm[] GetAllLoadedUIForms();
 
         /// <summary>
         /// 获取所有正在加载界面的序列编号。
@@ -271,15 +271,15 @@ namespace GameFramework.UI
         void CloseUIForm(IUIForm uiForm, object userData);
 
         /// <summary>
-        /// 关闭所有界面。
+        /// 关闭所有已加载的界面。
         /// </summary>
-        void CloseAllUIForms();
+        void CloseAllLoadedUIForms();
 
         /// <summary>
-        /// 关闭所有界面。
+        /// 关闭所有已加载的界面。
         /// </summary>
         /// <param name="userData">用户自定义数据。</param>
-        void CloseAllUIForms(object userData);
+        void CloseAllLoadedUIForms(object userData);
 
         /// <summary>
         /// 关闭所有正在加载的界面。

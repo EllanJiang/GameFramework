@@ -143,10 +143,10 @@ namespace GameFramework.Entity
         IEntity[] GetEntities(string entityAssetName);
 
         /// <summary>
-        /// 获取所有实体。
+        /// 获取所有已加载的实体。
         /// </summary>
-        /// <returns>所有实体。</returns>
-        IEntity[] GetAllEntities();
+        /// <returns>所有已加载的实体。</returns>
+        IEntity[] GetAllLoadedEntities();
 
         /// <summary>
         /// 获取所有正在加载实体的编号。
@@ -212,15 +212,15 @@ namespace GameFramework.Entity
         void HideEntity(IEntity entity, object userData);
 
         /// <summary>
-        /// 隐藏所有实体。
+        /// 隐藏所有已加载的实体。
         /// </summary>
-        void HideAllEntities();
+        void HideAllLoadedEntities();
 
         /// <summary>
-        /// 隐藏所有实体。
+        /// 隐藏所有已加载的实体。
         /// </summary>
         /// <param name="userData">用户自定义数据。</param>
-        void HideAllEntities(object userData);
+        void HideAllLoadedEntities(object userData);
 
         /// <summary>
         /// 隐藏所有正在加载的实体。

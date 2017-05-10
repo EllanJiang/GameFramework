@@ -157,6 +157,11 @@ namespace GameFramework.UI
             /// <returns>界面组中是否存在界面。</returns>
             public bool HasUIForm(string uiFormAssetName)
             {
+                if (string.IsNullOrEmpty(uiFormAssetName))
+                {
+                    throw new GameFrameworkException("UI form asset name is invalid.");
+                }
+
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
                 {
                     if (uiFormInfo.UIForm.UIFormAssetName == uiFormAssetName)
@@ -193,6 +198,11 @@ namespace GameFramework.UI
             /// <returns>要获取的界面。</returns>
             public IUIForm GetUIForm(string uiFormAssetName)
             {
+                if (string.IsNullOrEmpty(uiFormAssetName))
+                {
+                    throw new GameFrameworkException("UI form asset name is invalid.");
+                }
+
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
                 {
                     if (uiFormInfo.UIForm.UIFormAssetName == uiFormAssetName)
@@ -211,6 +221,11 @@ namespace GameFramework.UI
             /// <returns>要获取的界面。</returns>
             public IUIForm[] GetUIForms(string uiFormAssetName)
             {
+                if (string.IsNullOrEmpty(uiFormAssetName))
+                {
+                    throw new GameFrameworkException("UI form asset name is invalid.");
+                }
+
                 List<IUIForm> uiForms = new List<IUIForm>();
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
                 {
@@ -218,6 +233,21 @@ namespace GameFramework.UI
                     {
                         uiForms.Add(uiFormInfo.UIForm);
                     }
+                }
+
+                return uiForms.ToArray();
+            }
+
+            /// <summary>
+            /// 从界面组中获取所有界面。
+            /// </summary>
+            /// <returns>界面组中的所有界面。</returns>
+            public IUIForm[] GetAllUIForms()
+            {
+                List<IUIForm> uiForms = new List<IUIForm>();
+                foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
+                {
+                    uiForms.Add(uiFormInfo.UIForm);
                 }
 
                 return uiForms.ToArray();

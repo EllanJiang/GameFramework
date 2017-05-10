@@ -185,7 +185,7 @@ namespace GameFramework.Entity
         /// </summary>
         internal override void Shutdown()
         {
-            HideAllEntities();
+            HideAllLoadedEntities();
             m_EntitiesBeingLoaded.Clear();
             m_EntitiesToReleaseOnLoad.Clear();
             m_EntityGroups.Clear();
@@ -334,10 +334,33 @@ namespace GameFramework.Entity
         }
 
         /// <summary>
+        /// 是否存在实体。
+        /// </summary>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <returns>是否存在实体。</returns>
+        public bool HasEntity(string entityAssetName)
+        {
+            if (string.IsNullOrEmpty(entityAssetName))
+            {
+                throw new GameFrameworkException("Entity asset name is invalid.");
+            }
+
+            foreach (KeyValuePair<int, EntityInfo> entityInfo in m_EntityInfos)
+            {
+                if (entityInfo.Value.Entity.EntityAssetName == entityAssetName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// 获取实体。
         /// </summary>
         /// <param name="entityId">实体编号。</param>
-        /// <return>实体。</return>
+        /// <returns>要获取的实体。</returns>
         public IEntity GetEntity(int entityId)
         {
             EntityInfo entityInfo = GetEntityInfo(entityId);
@@ -350,10 +373,57 @@ namespace GameFramework.Entity
         }
 
         /// <summary>
-        /// 获取所有实体。
+        /// 获取实体。
         /// </summary>
-        /// <returns>所有实体。</returns>
-        public IEntity[] GetAllEntities()
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <returns>要获取的实体。</returns>
+        public IEntity GetEntity(string entityAssetName)
+        {
+            if (string.IsNullOrEmpty(entityAssetName))
+            {
+                throw new GameFrameworkException("Entity asset name is invalid.");
+            }
+
+            foreach (KeyValuePair<int, EntityInfo> entityInfo in m_EntityInfos)
+            {
+                if (entityInfo.Value.Entity.EntityAssetName == entityAssetName)
+                {
+                    return entityInfo.Value.Entity;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 获取实体。
+        /// </summary>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <returns>要获取的实体。</returns>
+        public IEntity[] GetEntities(string entityAssetName)
+        {
+            if (string.IsNullOrEmpty(entityAssetName))
+            {
+                throw new GameFrameworkException("Entity asset name is invalid.");
+            }
+
+            List<IEntity> entities = new List<IEntity>();
+            foreach (KeyValuePair<int, EntityInfo> entityInfo in m_EntityInfos)
+            {
+                if (entityInfo.Value.Entity.EntityAssetName == entityAssetName)
+                {
+                    entities.Add(entityInfo.Value.Entity);
+                }
+            }
+
+            return entities.ToArray();
+        }
+
+        /// <summary>
+        /// 获取所有已加载的实体。
+        /// </summary>
+        /// <returns>所有已加载的实体。</returns>
+        public IEntity[] GetAllLoadedEntities()
         {
             int index = 0;
             IEntity[] entities = new IEntity[m_EntityInfos.Count];
@@ -427,6 +497,16 @@ namespace GameFramework.Entity
             if (m_EntityHelper == null)
             {
                 throw new GameFrameworkException("You must set entity helper first.");
+            }
+
+            if (string.IsNullOrEmpty(entityAssetName))
+            {
+                throw new GameFrameworkException("Entity asset name is invalid.");
+            }
+
+            if (string.IsNullOrEmpty(entityGroupName))
+            {
+                throw new GameFrameworkException("Entity group name is invalid.");
             }
 
             if (m_EntityInfos.ContainsKey(entityId))
@@ -512,18 +592,18 @@ namespace GameFramework.Entity
         }
 
         /// <summary>
-        /// 隐藏所有实体。
+        /// 隐藏所有已加载的实体。
         /// </summary>
-        public void HideAllEntities()
+        public void HideAllLoadedEntities()
         {
-            HideAllEntities(null);
+            HideAllLoadedEntities(null);
         }
 
         /// <summary>
-        /// 隐藏所有实体。
+        /// 隐藏所有已加载的实体。
         /// </summary>
         /// <param name="userData">用户自定义数据。</param>
-        public void HideAllEntities(object userData)
+        public void HideAllLoadedEntities(object userData)
         {
             while (m_EntityInfos.Count > 0)
             {
@@ -974,7 +1054,6 @@ namespace GameFramework.Entity
             }
 
             entityGroup.RemoveEntity(entity);
-
             if (!m_EntityInfos.Remove(entity.Id))
             {
                 throw new GameFrameworkException("Entity info is unmanaged.");

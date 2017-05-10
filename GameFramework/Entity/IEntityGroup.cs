@@ -75,9 +75,9 @@ namespace GameFramework.Entity
         /// <summary>
         /// 实体组中是否存在实体。
         /// </summary>
-        /// <param name="serialId">实体序列编号。</param>
+        /// <param name="entityId">实体序列编号。</param>
         /// <returns>实体组中是否存在实体。</returns>
-        bool HasEntity(int serialId);
+        bool HasEntity(int entityId);
 
         /// <summary>
         /// 实体组中是否存在实体。
@@ -89,9 +89,9 @@ namespace GameFramework.Entity
         /// <summary>
         /// 从实体组中获取实体。
         /// </summary>
-        /// <param name="serialId">实体序列编号。</param>
+        /// <param name="entityId">实体序列编号。</param>
         /// <returns>要获取的实体。</returns>
-        IEntity GetEntity(int serialId);
+        IEntity GetEntity(int entityId);
 
         /// <summary>
         /// 从实体组中获取实体。
@@ -112,10 +112,5 @@ namespace GameFramework.Entity
         /// </summary>
         /// <returns>实体组中的所有实体。</returns>
         IEntity[] GetAllEntities();
-
-        /// <summary>
-        /// 关闭所有实体组中的实体。
-        /// </summary>
-        void CloseAllEntities();
     }
 }
