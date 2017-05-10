@@ -17,6 +17,8 @@ namespace GameFramework.Sound
     internal sealed partial class SoundManager : GameFrameworkModule, ISoundManager
     {
         private readonly Dictionary<string, SoundGroup> m_SoundGroups;
+        private readonly List<int> m_SoundsBeingLoaded;
+        private readonly HashSet<int> m_SoundsToReleaseOnLoad;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
         private IResourceManager m_ResourceManager;
         private ISoundHelper m_SoundHelper;
@@ -32,6 +34,8 @@ namespace GameFramework.Sound
         public SoundManager()
         {
             m_SoundGroups = new Dictionary<string, SoundGroup>();
+            m_SoundsBeingLoaded = new List<int>();
+            m_SoundsToReleaseOnLoad = new HashSet<int>();
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadSoundSuccessCallback, LoadSoundFailureCallback, LoadSoundUpdateCallback, LoadSoundDependencyAssetCallback);
             m_ResourceManager = null;
             m_SoundHelper = null;
@@ -128,7 +132,10 @@ namespace GameFramework.Sound
         /// </summary>
         internal override void Shutdown()
         {
-
+            StopAllLoadedSounds();
+            m_SoundGroups.Clear();
+            m_SoundsBeingLoaded.Clear();
+            m_SoundsToReleaseOnLoad.Clear();
         }
 
         /// <summary>
@@ -279,6 +286,25 @@ namespace GameFramework.Sound
         }
 
         /// <summary>
+        /// 获取所有正在加载声音的序列编号。
+        /// </summary>
+        /// <returns>所有正在加载声音的序列编号。</returns>
+        public int[] GetAllLoadingSoundSerialIds()
+        {
+            return m_SoundsBeingLoaded.ToArray();
+        }
+
+        /// <summary>
+        /// 是否正在加载声音。
+        /// </summary>
+        /// <param name="serialId">声音序列编号。</param>
+        /// <returns>是否正在加载声音。</returns>
+        public bool IsLoadingSound(int serialId)
+        {
+            return m_SoundsBeingLoaded.Contains(serialId);
+        }
+
+        /// <summary>
         /// 播放声音。
         /// </summary>
         /// <param name="soundAssetName">声音资源名称。</param>
@@ -364,6 +390,7 @@ namespace GameFramework.Sound
                 throw new GameFrameworkException(errorMessage);
             }
 
+            m_SoundsBeingLoaded.Add(serialId);
             m_ResourceManager.LoadAsset(soundAssetName, m_LoadAssetCallbacks, new PlaySoundInfo(serialId, soundGroup, playSoundParams, userData));
             return serialId;
         }
@@ -372,10 +399,9 @@ namespace GameFramework.Sound
         /// 停止播放声音。
         /// </summary>
         /// <param name="serialId">要停止播放声音的序列编号。</param>
-        /// <returns>是否停止播放声音成功。</returns>
-        public bool StopSound(int serialId)
+        public void StopSound(int serialId)
         {
-            return StopSound(serialId, Constant.DefaultFadeOutSeconds);
+            StopSound(serialId, Constant.DefaultFadeOutSeconds);
         }
 
         /// <summary>
@@ -383,28 +409,63 @@ namespace GameFramework.Sound
         /// </summary>
         /// <param name="serialId">要停止播放声音的序列编号。</param>
         /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
-        /// <returns>是否停止播放声音成功。</returns>
-        public bool StopSound(int serialId, float fadeOutSeconds)
+        public void StopSound(int serialId, float fadeOutSeconds)
         {
+            if (IsLoadingSound(serialId))
+            {
+                m_SoundsToReleaseOnLoad.Add(serialId);
+                return;
+            }
+
             foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
                 if (soundGroup.Value.StopSound(serialId, fadeOutSeconds))
                 {
-                    return true;
+                    return;
                 }
             }
 
-            return false;
+            throw new GameFrameworkException(string.Format("Can not find sound '{0}'.", serialId.ToString()));
+        }
+
+        /// <summary>
+        /// 停止所有已加载的声音。
+        /// </summary>
+        public void StopAllLoadedSounds()
+        {
+            StopAllLoadedSounds(Constant.DefaultFadeOutSeconds);
+        }
+
+        /// <summary>
+        /// 停止所有已加载的声音。
+        /// </summary>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public void StopAllLoadedSounds(float fadeOutSeconds)
+        {
+            foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
+            {
+                soundGroup.Value.StopAllLoadedSounds(fadeOutSeconds);
+            }
+        }
+
+        /// <summary>
+        /// 停止所有正在加载的声音。
+        /// </summary>
+        public void StopAllLoadingSounds()
+        {
+            foreach (int serialId in m_SoundsBeingLoaded)
+            {
+                m_SoundsToReleaseOnLoad.Add(serialId);
+            }
         }
 
         /// <summary>
         /// 暂停播放声音。
         /// </summary>
         /// <param name="serialId">要暂停播放声音的序列编号。</param>
-        /// <returns>是否暂停播放声音成功。</returns>
-        public bool PauseSound(int serialId)
+        public void PauseSound(int serialId)
         {
-            return PauseSound(serialId, Constant.DefaultFadeOutSeconds);
+            PauseSound(serialId, Constant.DefaultFadeOutSeconds);
         }
 
         /// <summary>
@@ -412,28 +473,26 @@ namespace GameFramework.Sound
         /// </summary>
         /// <param name="serialId">要暂停播放声音的序列编号。</param>
         /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
-        /// <returns>是否暂停播放声音成功。</returns>
-        public bool PauseSound(int serialId, float fadeOutSeconds)
+        public void PauseSound(int serialId, float fadeOutSeconds)
         {
             foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
                 if (soundGroup.Value.PauseSound(serialId, fadeOutSeconds))
                 {
-                    return true;
+                    return;
                 }
             }
 
-            return false;
+            throw new GameFrameworkException(string.Format("Can not find sound '{0}'.", serialId.ToString()));
         }
 
         /// <summary>
         /// 恢复播放声音。
         /// </summary>
         /// <param name="serialId">要恢复播放声音的序列编号。</param>
-        /// <returns>是否恢复播放声音成功。</returns>
-        public bool ResumeSound(int serialId)
+        public void ResumeSound(int serialId)
         {
-            return ResumeSound(serialId, Constant.DefaultFadeInSeconds);
+            ResumeSound(serialId, Constant.DefaultFadeInSeconds);
         }
 
         /// <summary>
@@ -441,63 +500,17 @@ namespace GameFramework.Sound
         /// </summary>
         /// <param name="serialId">要恢复播放声音的序列编号。</param>
         /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
-        /// <returns>是否恢复播放声音成功。</returns>
-        public bool ResumeSound(int serialId, float fadeInSeconds)
+        public void ResumeSound(int serialId, float fadeInSeconds)
         {
             foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
                 if (soundGroup.Value.ResumeSound(serialId, fadeInSeconds))
                 {
-                    return true;
+                    return;
                 }
             }
 
-            return false;
-        }
-
-        /// <summary>
-        /// 停止所有声音。
-        /// </summary>
-        /// <param name="soundGroupName">声音组名称。</param>
-        public void StopAllSounds(string soundGroupName)
-        {
-            StopAllSounds(soundGroupName, Constant.DefaultFadeOutSeconds);
-        }
-
-        /// <summary>
-        /// 停止所有声音。
-        /// </summary>
-        /// <param name="soundGroupName">声音组名称。</param>
-        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
-        public void StopAllSounds(string soundGroupName, float fadeOutSeconds)
-        {
-            SoundGroup soundGroup = (SoundGroup)GetSoundGroup(soundGroupName);
-            if (soundGroup == null)
-            {
-                throw new GameFrameworkException(string.Format("Sound group '{0}' is not exist.", soundGroupName));
-            }
-
-            soundGroup.StopAllSounds(fadeOutSeconds);
-        }
-
-        /// <summary>
-        /// 停止所有声音。
-        /// </summary>
-        public void StopAllSounds()
-        {
-            StopAllSounds(Constant.DefaultFadeOutSeconds);
-        }
-
-        /// <summary>
-        /// 停止所有声音。
-        /// </summary>
-        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
-        public void StopAllSounds(float fadeOutSeconds)
-        {
-            foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
-            {
-                soundGroup.Value.StopAllSounds(fadeOutSeconds);
-            }
+            throw new GameFrameworkException(string.Format("Can not find sound '{0}'.", serialId.ToString()));
         }
 
         private void LoadSoundSuccessCallback(string soundAssetName, object soundAsset, float duration, object userData)
@@ -506,6 +519,15 @@ namespace GameFramework.Sound
             if (playSoundInfo == null)
             {
                 throw new GameFrameworkException("Play sound info is invalid.");
+            }
+
+            m_SoundsBeingLoaded.Remove(playSoundInfo.SerialId);
+            if (m_SoundsToReleaseOnLoad.Contains(playSoundInfo.SerialId))
+            {
+                Log.Debug("Release sound '{0}' on loading success.", playSoundInfo.SerialId.ToString());
+                m_SoundsToReleaseOnLoad.Remove(playSoundInfo.SerialId);
+                m_SoundHelper.ReleaseSoundAsset(soundAsset);
+                return;
             }
 
             PlaySoundErrorCode? errorCode = null;
@@ -519,6 +541,7 @@ namespace GameFramework.Sound
             }
             else
             {
+                m_SoundsToReleaseOnLoad.Remove(playSoundInfo.SerialId);
                 m_SoundHelper.ReleaseSoundAsset(soundAsset);
                 string errorMessage = string.Format("Sound group '{0}' play sound '{1}' failure.", playSoundInfo.SoundGroup.Name, soundAssetName);
                 if (m_PlaySoundFailureEventHandler != null)
@@ -539,6 +562,8 @@ namespace GameFramework.Sound
                 throw new GameFrameworkException("Play sound info is invalid.");
             }
 
+            m_SoundsBeingLoaded.Remove(playSoundInfo.SerialId);
+            m_SoundsToReleaseOnLoad.Remove(playSoundInfo.SerialId);
             string appendErrorMessage = string.Format("Load sound failure, asset name '{0}', status '{1}', error message '{2}'.", soundAssetName, status.ToString(), errorMessage);
             if (m_PlaySoundFailureEventHandler != null)
             {
