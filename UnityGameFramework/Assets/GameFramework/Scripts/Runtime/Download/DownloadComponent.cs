@@ -200,7 +200,7 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 移除全部下载任务。
+        /// 移除所有下载任务。
         /// </summary>
         public void RemoveAllDownload()
         {

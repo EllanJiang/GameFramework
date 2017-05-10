@@ -373,7 +373,7 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 隐藏全部实体。
+        /// 隐藏所有实体。
         /// </summary>
         public void HideAllEntities()
         {
@@ -381,7 +381,7 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 隐藏全部实体。
+        /// 隐藏所有实体。
         /// </summary>
         /// <param name="userData">用户自定义数据。</param>
         public void HideAllEntities(object userData)
