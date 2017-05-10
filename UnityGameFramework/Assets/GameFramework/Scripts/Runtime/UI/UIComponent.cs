@@ -336,7 +336,7 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="uiFormAssetName">界面资源名称。</param>
         /// <returns>要获取的界面。</returns>
-        public IUIForm[] GetUIForms(string uiFormAssetName)
+        public UIForm[] GetUIForms(string uiFormAssetName)
         {
             IUIForm[] uiForms = m_UIManager.GetUIForms(uiFormAssetName);
             UIForm[] uiFormImpls = new UIForm[uiForms.Length];
@@ -398,7 +398,7 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="uiForm">界面。</param>
         /// <returns>界面是否合法。</returns>
-        public bool IsValidUIForm(IUIForm uiForm)
+        public bool IsValidUIForm(UIForm uiForm)
         {
             return m_UIManager.IsValidUIForm(uiForm);
         }
@@ -474,7 +474,7 @@ namespace UnityGameFramework.Runtime
         /// 关闭界面。
         /// </summary>
         /// <param name="uiForm">要关闭的界面。</param>
-        public void CloseUIForm(IUIForm uiForm)
+        public void CloseUIForm(UIForm uiForm)
         {
             m_UIManager.CloseUIForm(uiForm);
         }
