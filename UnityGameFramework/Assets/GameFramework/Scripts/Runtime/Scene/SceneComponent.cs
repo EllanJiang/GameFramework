@@ -77,7 +77,7 @@ namespace UnityGameFramework.Runtime
             m_GameFrameworkScene = SceneManager.GetSceneAt(GameEntry.GameFrameworkSceneId);
             if (!m_GameFrameworkScene.IsValid())
             {
-                Log.Fatal("Game framework scene is invalid.");
+                Log.Fatal("Game Framework scene is invalid.");
                 return;
             }
         }

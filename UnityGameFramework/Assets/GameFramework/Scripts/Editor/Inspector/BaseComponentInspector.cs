@@ -38,7 +38,7 @@ namespace UnityGameFramework.Editor
             {
                 m_EditorResourceMode.boolValue = EditorGUILayout.BeginToggleGroup("Editor Resource Mode", m_EditorResourceMode.boolValue);
                 {
-                    EditorGUILayout.HelpBox("Editor resource mode option is only for editor mode. Game framework will use editor resource files, which you should validate first.", MessageType.Warning);
+                    EditorGUILayout.HelpBox("Editor resource mode option is only for editor mode. Game Framework will use editor resource files, which you should validate first.", MessageType.Warning);
                     EditorGUILayout.PropertyField(m_EditorLanguage);
                     EditorGUILayout.HelpBox("Editor language option is only use for localization test in editor mode.", MessageType.Info);
                 }
