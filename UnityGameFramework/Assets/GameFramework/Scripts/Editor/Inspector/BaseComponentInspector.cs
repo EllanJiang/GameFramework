@@ -21,6 +21,7 @@ namespace UnityGameFramework.Editor
         private SerializedProperty m_EditorLanguage = null;
         private SerializedProperty m_ZipHelperTypeName = null;
         private SerializedProperty m_JsonHelperTypeName = null;
+        private SerializedProperty m_ProfilerHelperTypeName = null;
         private SerializedProperty m_FrameRate = null;
         private SerializedProperty m_GameSpeed = null;
         private SerializedProperty m_RunInBackground = null;
@@ -48,6 +49,7 @@ namespace UnityGameFramework.Editor
 
                 EditorGUILayout.PropertyField(m_ZipHelperTypeName);
                 EditorGUILayout.PropertyField(m_JsonHelperTypeName);
+                EditorGUILayout.PropertyField(m_ProfilerHelperTypeName);
             }
             EditorGUI.EndDisabledGroup();
 
@@ -122,6 +124,7 @@ namespace UnityGameFramework.Editor
             m_EditorLanguage = serializedObject.FindProperty("m_EditorLanguage");
             m_ZipHelperTypeName = serializedObject.FindProperty("m_ZipHelperTypeName");
             m_JsonHelperTypeName = serializedObject.FindProperty("m_JsonHelperTypeName");
+            m_ProfilerHelperTypeName = serializedObject.FindProperty("m_ProfilerHelperTypeName");
             m_FrameRate = serializedObject.FindProperty("m_FrameRate");
             m_GameSpeed = serializedObject.FindProperty("m_GameSpeed");
             m_RunInBackground = serializedObject.FindProperty("m_RunInBackground");

@@ -9,6 +9,7 @@ using GameFramework;
 using GameFramework.Localization;
 using GameFramework.Resource;
 using System;
+using System.Threading;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -36,6 +37,9 @@ namespace UnityGameFramework.Runtime
 
         [SerializeField]
         private string m_JsonHelperTypeName = "Utility.JsonHelper";
+
+        [SerializeField]
+        private string m_ProfilerHelperTypeName = "Utility.ProfilerHelper";
 
         [SerializeField]
         private int m_FrameRate = 30;
@@ -215,6 +219,7 @@ namespace UnityGameFramework.Runtime
 #if UNITY_5_3_OR_NEWER || UNITY_5_3
             InitZipHelper();
             InitJsonHelper();
+            InitProfilerHelper();
 
             Utility.Converter.ScreenDpi = Screen.dpi;
             if (Utility.Converter.ScreenDpi <= 0)
@@ -324,18 +329,37 @@ namespace UnityGameFramework.Runtime
             Type jsonHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_JsonHelperTypeName);
             if (jsonHelperType == null)
             {
-                Log.Error("Can not find Json helper type '{0}'.", m_JsonHelperTypeName);
+                Log.Error("Can not find JSON helper type '{0}'.", m_JsonHelperTypeName);
                 return;
             }
 
             Utility.Json.IJsonHelper jsonHelper = (Utility.Json.IJsonHelper)Activator.CreateInstance(jsonHelperType);
             if (jsonHelper == null)
             {
-                Log.Error("Can not create Json helper instance '{0}'.", m_JsonHelperTypeName);
+                Log.Error("Can not create JSON helper instance '{0}'.", m_JsonHelperTypeName);
                 return;
             }
 
             Utility.Json.SetJsonHelper(jsonHelper);
+        }
+
+        private void InitProfilerHelper()
+        {
+            Type profilerHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_ProfilerHelperTypeName);
+            if (profilerHelperType == null)
+            {
+                Log.Error("Can not find profiler helper type '{0}'.", m_ProfilerHelperTypeName);
+                return;
+            }
+
+            Utility.Profiler.IProfilerHelper profilerHelper = (Utility.Profiler.IProfilerHelper)Activator.CreateInstance(profilerHelperType, Thread.CurrentThread);
+            if (profilerHelper == null)
+            {
+                Log.Error("Can not create profiler helper instance '{0}'.", m_ProfilerHelperTypeName);
+                return;
+            }
+
+            Utility.Profiler.SetProfilerHelper(profilerHelper);
         }
 
         private void LogCallback(LogLevel level, object message)
