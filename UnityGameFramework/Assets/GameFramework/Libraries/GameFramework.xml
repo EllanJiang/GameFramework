@@ -14819,6 +14819,44 @@
             <param name="directoryName">要处理的文件夹名称。</param>
             <returns>是否移除空文件夹成功。</returns>
         </member>
+        <member name="T:Utility.Profiler">
+            <summary>
+            性能分析相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:Utility.Profiler.SetProfilerHelper(Utility.Profiler.IProfilerHelper)">
+            <summary>
+            设置性能分析辅助器。
+            </summary>
+            <param name="profilerHelper">要设置的性能分析辅助器。</param>
+        </member>
+        <member name="M:Utility.Profiler.BeginSample(System.String)">
+            <summary>
+            开始采样。
+            </summary>
+            <param name="name">采样名称。</param>
+        </member>
+        <member name="M:Utility.Profiler.EndSample">
+            <summary>
+            结束采样。
+            </summary>
+        </member>
+        <member name="T:Utility.Profiler.IProfilerHelper">
+            <summary>
+            性能分析辅助器接口。
+            </summary>
+        </member>
+        <member name="M:Utility.Profiler.IProfilerHelper.BeginSample(System.String)">
+            <summary>
+            开始采样。
+            </summary>
+            <param name="name">采样名称。</param>
+        </member>
+        <member name="M:Utility.Profiler.IProfilerHelper.EndSample">
+            <summary>
+            结束采样。
+            </summary>
+        </member>
         <member name="T:Utility.Random">
             <summary>
             随机相关的实用函数。

@@ -10,7 +10,7 @@ using GameFramework;
 namespace Utility
 {
     /// <summary>
-    /// 性能分析类。
+    /// 性能分析相关的实用函数。
     /// </summary>
     public static partial class Profiler
     {
