@@ -692,7 +692,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
                 if (m_BuildEventHandler != null)
                 {
-                    m_BuildReport.LogInfo("Execute build event PreProcessBuildAll...");
+                    m_BuildReport.LogInfo("Execute build event handler 'PreProcessBuildAll'...");
                     m_BuildEventHandler.PreProcessBuildAll(ProductName, CompanyName, GameIdentifier, ApplicableGameVersion, InternalResourceVersion, UnityVersion, buildAssetBundleOptions, ZipSelected, OutputDirectory, WorkingPath, OutputPackagePath, OutputFullPath, OutputPackedPath, BuildReportPath);
                 }
 
@@ -725,7 +725,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
                 if (m_BuildEventHandler != null)
                 {
-                    m_BuildReport.LogInfo("Execute build event PostProcessBuildAll...");
+                    m_BuildReport.LogInfo("Execute build event handler 'PostProcessBuildAll'...");
                     m_BuildEventHandler.PostProcessBuildAll(ProductName, CompanyName, GameIdentifier, ApplicableGameVersion, InternalResourceVersion, UnityVersion, buildAssetBundleOptions, ZipSelected, OutputDirectory, WorkingPath, OutputPackagePath, OutputFullPath, OutputPackedPath, BuildReportPath);
                 }
 
@@ -812,7 +812,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
             if (m_BuildEventHandler != null)
             {
-                m_BuildReport.LogInfo("Execute build event PreProcessBuild for '{0}'...", buildTarget.ToString());
+                m_BuildReport.LogInfo("Execute build event handler 'PreProcessBuild' for '{0}'...", buildTarget.ToString());
                 m_BuildEventHandler.PreProcessBuild(buildTarget, workingPath, outputPackagePath, outputFullPath, outputPackedPath);
             }
 
@@ -860,7 +860,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
             if (m_BuildEventHandler != null)
             {
-                m_BuildReport.LogInfo("Execute build event PostProcessBuild for '{0}'...", buildTarget.ToString());
+                m_BuildReport.LogInfo("Execute build event handler 'PostProcessBuild' for '{0}'...", buildTarget.ToString());
                 m_BuildEventHandler.PostProcessBuild(buildTarget, workingPath, outputPackagePath, outputFullPath, outputPackedPath);
             }
 
