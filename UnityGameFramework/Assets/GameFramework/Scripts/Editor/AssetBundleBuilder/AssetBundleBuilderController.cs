@@ -36,6 +36,9 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         private readonly SortedDictionary<string, AssetBundleData> m_AssetBundleDatas;
         private readonly Dictionary<BuildTarget, VersionListData> m_VersionListDatas;
         private readonly BuildReport m_BuildReport;
+        private readonly string[] m_BuildEventTypeNames;
+        private string m_BuildEventTypeName;
+        private IBuildEvent m_BuildEvent;
 
         public AssetBundleBuilderController()
         {
@@ -86,6 +89,13 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             m_AssetBundleDatas = new SortedDictionary<string, AssetBundleData>();
             m_VersionListDatas = new Dictionary<BuildTarget, VersionListData>();
             m_BuildReport = new BuildReport();
+
+            List<string> buildEvents = new List<string>();
+            buildEvents.Add("<None>");
+            buildEvents.AddRange(Type.GetEditorTypeNames(typeof(IBuildEvent)));
+            m_BuildEventTypeNames = buildEvents.ToArray();
+            m_BuildEventTypeName = string.Empty;
+            m_BuildEvent = null;
 
             WindowsSelected = MacOSXSelected = IOSSelected = AndroidSelected = WindowsStoreSelected = true;
             ZipSelected = true;
@@ -224,6 +234,12 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         }
 
         public bool ChunkBasedCompressionSelected
+        {
+            get;
+            set;
+        }
+
+        public int BuildEventTypeNameIndex
         {
             get;
             set;
@@ -420,6 +436,20 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                                 UncompressedAssetBundleSelected = false;
                             }
                             break;
+                        case "BuildEventTypeName":
+                            BuildEventTypeNameIndex = 0;
+                            string buildEventTypeName = xmlNode.InnerText;
+                            for (int j = 1; j < m_BuildEventTypeNames.Length; j++)
+                            {
+                                if (buildEventTypeName == m_BuildEventTypeNames[j])
+                                {
+                                    BuildEventTypeNameIndex = j;
+                                    break;
+                                }
+                            }
+
+                            RefreshBuildEvent();
+                            break;
                         case "OutputDirectory":
                             OutputDirectory = xmlNode.InnerText;
                             break;
@@ -499,8 +529,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 xmlElement = xmlDocument.CreateElement("ChunkBasedCompressionSelected");
                 xmlElement.InnerText = ChunkBasedCompressionSelected.ToString();
                 xmlSettings.AppendChild(xmlElement);
+                xmlElement = xmlDocument.CreateElement("BuildEventTypeName");
+                xmlElement.InnerText = m_BuildEventTypeName;
+                xmlSettings.AppendChild(xmlElement);
                 xmlElement = xmlDocument.CreateElement("OutputDirectory");
-                xmlElement.InnerText = OutputDirectory.ToString();
+                xmlElement.InnerText = OutputDirectory;
                 xmlSettings.AppendChild(xmlElement);
 
                 xmlDocument.Save(configurationName);
@@ -511,6 +544,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 File.Delete(configurationName);
                 return false;
             }
+        }
+
+        public void SetBuildEvent(IBuildEvent buildEvent)
+        {
+            m_BuildEvent = buildEvent;
         }
 
         public byte[] Compress(byte[] bytes)
@@ -544,6 +582,38 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         public byte[] Decompress(byte[] bytes)
         {
             throw new GameFrameworkException("Decompress is not implemented.");
+        }
+
+        public string[] GetBuildEventTypeNames()
+        {
+            return m_BuildEventTypeNames;
+        }
+
+        public bool RefreshBuildEvent()
+        {
+            bool retVal = false;
+            if (BuildEventTypeNameIndex > 0 && BuildEventTypeNameIndex < m_BuildEventTypeNames.Length)
+            {
+                System.Type buildEventType = System.Type.GetType(m_BuildEventTypeNames[BuildEventTypeNameIndex]);
+                if (buildEventType != null)
+                {
+                    IBuildEvent buildEvent = (IBuildEvent)Activator.CreateInstance(buildEventType);
+                    if (buildEvent != null)
+                    {
+                        m_BuildEventTypeName = m_BuildEventTypeNames[BuildEventTypeNameIndex];
+                        SetBuildEvent(buildEvent);
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                retVal = true;
+            }
+
+            m_BuildEventTypeName = string.Empty;
+            SetBuildEvent(null);
+            return retVal;
         }
 
         public bool BuildAssetBundles()
@@ -620,6 +690,12 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 m_BuildReport.LogInfo("Prepare build map complete.");
                 m_BuildReport.LogInfo("Start build AssetBundles for selected build targets...");
 
+                if (m_BuildEvent != null)
+                {
+                    m_BuildReport.LogInfo("Execute build event PreProcessBuildAll...");
+                    m_BuildEvent.PreProcessBuildAll(ProductName, CompanyName, GameIdentifier, ApplicableGameVersion, InternalResourceVersion, UnityVersion, buildAssetBundleOptions, ZipSelected, OutputDirectory, WorkingPath, OutputPackagePath, OutputFullPath, OutputPackedPath, BuildReportPath);
+                }
+
                 if (WindowsSelected)
                 {
                     BuildAssetBundles(buildMap, buildAssetBundleOptions, ZipSelected, BuildTarget.StandaloneWindows);
@@ -646,6 +722,12 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 }
 
                 ProcessRecord(OutputDirectory);
+
+                if (m_BuildEvent != null)
+                {
+                    m_BuildReport.LogInfo("Execute build event PostProcessBuildAll...");
+                    m_BuildEvent.PostProcessBuildAll(ProductName, CompanyName, GameIdentifier, ApplicableGameVersion, InternalResourceVersion, UnityVersion, buildAssetBundleOptions, ZipSelected, OutputDirectory, WorkingPath, OutputPackagePath, OutputFullPath, OutputPackedPath, BuildReportPath);
+                }
 
                 m_BuildReport.LogInfo("Build AssetBundles for selected build targets complete.");
                 m_BuildReport.SaveReport();
@@ -728,6 +810,12 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 Directory.CreateDirectory(workingPath);
             }
 
+            if (m_BuildEvent != null)
+            {
+                m_BuildReport.LogInfo("Execute build event PreProcessBuild for '{0}'...", buildTarget.ToString());
+                m_BuildEvent.PreProcessBuild(buildTarget, workingPath, outputPackagePath, outputFullPath, outputPackedPath);
+            }
+
             // Build AssetBundles
             m_BuildReport.LogInfo("Unity start build AssetBundles for '{0}'...", buildTarget.ToString());
             AssetBundleManifest assetBundleManifest = BuildPipeline.BuildAssetBundles(workingPath, buildMap, buildOptions, buildTarget);
@@ -769,6 +857,12 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             m_BuildReport.LogInfo("Process readonly list for '{0}' complete.", buildTarget.ToString());
 
             m_VersionListDatas.Add(buildTarget, versionListData);
+
+            if (m_BuildEvent != null)
+            {
+                m_BuildReport.LogInfo("Execute build event PostProcessBuild for '{0}'...", buildTarget.ToString());
+                m_BuildEvent.PostProcessBuild(buildTarget, workingPath, outputPackagePath, outputFullPath, outputPackedPath);
+            }
 
             if (ProcessAssetBundleComplete != null)
             {

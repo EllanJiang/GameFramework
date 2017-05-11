@@ -23,7 +23,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         private static void Open()
         {
             AssetBundleBuilder window = GetWindow<AssetBundleBuilder>(true, "AssetBundle Builder", true);
-            window.minSize = window.maxSize = new Vector2(666f, 555f);
+            window.minSize = window.maxSize = new Vector2(666f, 570f);
         }
 
         private void OnEnable()
@@ -183,6 +183,24 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 EditorGUILayout.LabelField("Build", EditorStyles.boldLabel);
                 EditorGUILayout.BeginVertical("box");
                 {
+                    EditorGUILayout.BeginHorizontal();
+                    {
+                        EditorGUILayout.LabelField("Build Event", GUILayout.Width(160f));
+                        int selectedIndex = EditorGUILayout.Popup(m_Controller.BuildEventTypeNameIndex, m_Controller.GetBuildEventTypeNames());
+                        if (selectedIndex != m_Controller.BuildEventTypeNameIndex)
+                        {
+                            m_Controller.BuildEventTypeNameIndex = selectedIndex;
+                            if (m_Controller.RefreshBuildEvent())
+                            {
+                                Debug.Log("Set build event success.");
+                            }
+                            else
+                            {
+                                Debug.LogWarning("Set build event failure.");
+                            }
+                        }
+                    }
+                    EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     {
                         EditorGUILayout.LabelField("Internal Resource Version", GUILayout.Width(160f));
