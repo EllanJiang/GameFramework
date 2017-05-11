@@ -270,6 +270,8 @@
     <Compile Include="Utility\Json.IJsonHelper.cs" />
     <Compile Include="Utility\Nullable.cs" />
     <Compile Include="Utility\Path.cs" />
+    <Compile Include="Utility\Profiler.cs" />
+    <Compile Include="Utility\Profiler.IProfilerHelper.cs" />
     <Compile Include="Utility\Random.cs" />
     <Compile Include="Utility\Text.cs" />
     <Compile Include="Utility\Verifier.Crc32.cs" />
