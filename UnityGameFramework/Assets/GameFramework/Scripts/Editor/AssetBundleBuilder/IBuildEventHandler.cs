@@ -10,9 +10,9 @@ using UnityEditor;
 namespace UnityGameFramework.Editor.AssetBundleTools
 {
     /// <summary>
-    /// 生成资源包事件。
+    /// 生成资源包事件处理函数。
     /// </summary>
-    public interface IBuildEvent
+    public interface IBuildEventHandler
     {
         /// <summary>
         /// 所有生成开始前的预处理事件。
@@ -57,7 +57,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             string outputDirectory, string workingPath, string outputPackagePath, string outputFullPath, string outputPackedPath, string buildReportPath);
 
         /// <summary>
-        /// 
+        /// 生成某个平台开始前的预处理事件。
         /// </summary>
         /// <param name="buildTarget">生成平台。</param>
         /// <param name="workingPath">生成时的工作路径。</param>
@@ -67,7 +67,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         void PreProcessBuild(BuildTarget buildTarget, string workingPath, string outputPackagePath, string outputFullPath, string outputPackedPath);
 
         /// <summary>
-        /// 
+        /// 生成某个平台结束后的后处理事件。
         /// </summary>
         /// <param name="buildTarget">生成平台。</param>
         /// <param name="workingPath">生成时的工作路径。</param>

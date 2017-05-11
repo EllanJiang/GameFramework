@@ -17,7 +17,7 @@
       <IgnoreTypeTreeChangesSelected>False</IgnoreTypeTreeChangesSelected>
       <AppendHashToAssetBundleNameSelected>False</AppendHashToAssetBundleNameSelected>
       <ChunkBasedCompressionSelected>True</ChunkBasedCompressionSelected>
-      <BuildEventTypeName></BuildEventTypeName>
+      <BuildEventHandlerTypeName></BuildEventHandlerTypeName>
       <OutputDirectory></OutputDirectory>
     </Settings>
   </AssetBundleBuilder>

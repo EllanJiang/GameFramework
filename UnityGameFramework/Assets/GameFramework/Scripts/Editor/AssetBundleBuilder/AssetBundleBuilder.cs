@@ -185,12 +185,12 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 {
                     EditorGUILayout.BeginHorizontal();
                     {
-                        EditorGUILayout.LabelField("Build Event", GUILayout.Width(160f));
-                        int selectedIndex = EditorGUILayout.Popup(m_Controller.BuildEventTypeNameIndex, m_Controller.GetBuildEventTypeNames());
-                        if (selectedIndex != m_Controller.BuildEventTypeNameIndex)
+                        EditorGUILayout.LabelField("Build Event Handler", GUILayout.Width(160f));
+                        int selectedIndex = EditorGUILayout.Popup(m_Controller.BuildEventHandlerTypeNameIndex, m_Controller.GetBuildEventHandlerTypeNames());
+                        if (selectedIndex != m_Controller.BuildEventHandlerTypeNameIndex)
                         {
-                            m_Controller.BuildEventTypeNameIndex = selectedIndex;
-                            if (m_Controller.RefreshBuildEvent())
+                            m_Controller.BuildEventHandlerTypeNameIndex = selectedIndex;
+                            if (m_Controller.RefreshBuildEventHandler())
                             {
                                 Debug.Log("Set build event success.");
                             }
