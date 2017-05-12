@@ -33,13 +33,13 @@ namespace UnityGameFramework.Runtime
         private Language m_EditorLanguage = Language.Unspecified;
 
         [SerializeField]
-        private string m_ZipHelperTypeName = "Utility.ZipHelper";
+        private string m_ZipHelperTypeName = "UnityGameFramework.Runtime.ZipHelper";
 
         [SerializeField]
-        private string m_JsonHelperTypeName = "Utility.JsonHelper";
+        private string m_JsonHelperTypeName = "UnityGameFramework.Runtime.JsonHelper";
 
         [SerializeField]
-        private string m_ProfilerHelperTypeName = "Utility.ProfilerHelper";
+        private string m_ProfilerHelperTypeName = "UnityGameFramework.Runtime.ProfilerHelper";
 
         [SerializeField]
         private int m_FrameRate = 30;
