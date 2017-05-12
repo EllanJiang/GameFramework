@@ -204,7 +204,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                         if (selectedIndex != m_BuildEventHandlerTypeNameIndex)
                         {
                             m_BuildEventHandlerTypeNameIndex = selectedIndex;
-                            m_Controller.BuildEventHandlerTypeName = (selectedIndex > 0 && selectedIndex < names.Length ? names[selectedIndex] : string.Empty);
+                            m_Controller.BuildEventHandlerTypeName = (selectedIndex <= 0 ? string.Empty : names[selectedIndex]);
                             if (m_Controller.RefreshBuildEventHandler())
                             {
                                 Debug.Log("Set build event success.");

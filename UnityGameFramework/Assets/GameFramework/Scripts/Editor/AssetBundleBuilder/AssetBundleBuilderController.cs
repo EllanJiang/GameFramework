@@ -22,6 +22,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         private const string VersionListFileName = "version";
         private const string ResourceListFileName = "list";
         private const string RecordName = "GameResourceVersion";
+        private const string NoneOptionName = "<None>";
         private static readonly char[] PackageListHeader = new char[] { 'E', 'L', 'P' };
         private static readonly char[] VersionListHeader = new char[] { 'E', 'L', 'V' };
         private static readonly char[] ReadOnlyListHeader = new char[] { 'E', 'L', 'R' };
@@ -90,7 +91,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             m_BuildReport = new BuildReport();
 
             m_BuildEventHandlerTypeNames = new List<string>();
-            m_BuildEventHandlerTypeNames.Add("<None>");
+            m_BuildEventHandlerTypeNames.Add(NoneOptionName);
             m_BuildEventHandlerTypeNames.AddRange(Type.GetEditorTypeNames(typeof(IBuildEventHandler)));
             m_BuildEventHandler = null;
 
