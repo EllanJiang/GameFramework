@@ -118,6 +118,13 @@ namespace UnityGameFramework.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
+        protected override void OnCompileComplete()
+        {
+            base.OnCompileComplete();
+
+            RefreshTypeNames();
+        }
+
         private void OnEnable()
         {
             m_EditorResourceMode = serializedObject.FindProperty("m_EditorResourceMode");
@@ -129,6 +136,11 @@ namespace UnityGameFramework.Editor
             m_GameSpeed = serializedObject.FindProperty("m_GameSpeed");
             m_RunInBackground = serializedObject.FindProperty("m_RunInBackground");
             m_NeverSleep = serializedObject.FindProperty("m_NeverSleep");
+        }
+
+        private void RefreshTypeNames()
+        {
+            serializedObject.ApplyModifiedProperties();
         }
 
         private float GetGameSpeed(int selectedGameSpeed)

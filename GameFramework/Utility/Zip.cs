@@ -22,11 +22,6 @@ namespace GameFramework
             /// <param name="zipHelper">要设置的压缩解压缩辅助器。</param>
             public static void SetZipHelper(IZipHelper zipHelper)
             {
-                if (zipHelper == null)
-                {
-                    throw new GameFrameworkException("Zip helper is invalid.");
-                }
-
                 s_ZipHelper = zipHelper;
             }
 

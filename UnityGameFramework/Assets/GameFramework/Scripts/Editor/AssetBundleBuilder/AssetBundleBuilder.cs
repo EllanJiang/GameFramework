@@ -18,6 +18,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
     {
         private AssetBundleBuilderController m_Controller = null;
         private bool m_OrderBuildAssetBundles = false;
+        private int m_BuildEventHandlerTypeNameIndex = 0;
 
         [MenuItem("Game Framework/AssetBundle Tools/AssetBundle Builder", false, 31)]
         private static void Open()
@@ -43,6 +44,18 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             if (m_Controller.Load())
             {
                 Debug.Log("Load configuration success.");
+                m_BuildEventHandlerTypeNameIndex = 0;
+                string[] buildEventHandlerTypeNames = m_Controller.GetBuildEventHandlerTypeNames();
+                for (int i = 0; i < buildEventHandlerTypeNames.Length; i++)
+                {
+                    if (m_Controller.BuildEventHandlerTypeName == buildEventHandlerTypeNames[i])
+                    {
+                        m_BuildEventHandlerTypeNameIndex = i;
+                        break;
+                    }
+                }
+
+                m_Controller.RefreshBuildEventHandler();
             }
             else
             {
@@ -186,10 +199,12 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                     EditorGUILayout.BeginHorizontal();
                     {
                         EditorGUILayout.LabelField("Build Event Handler", GUILayout.Width(160f));
-                        int selectedIndex = EditorGUILayout.Popup(m_Controller.BuildEventHandlerTypeNameIndex, m_Controller.GetBuildEventHandlerTypeNames());
-                        if (selectedIndex != m_Controller.BuildEventHandlerTypeNameIndex)
+                        string[] names = m_Controller.GetBuildEventHandlerTypeNames();
+                        int selectedIndex = EditorGUILayout.Popup(m_BuildEventHandlerTypeNameIndex, names);
+                        if (selectedIndex != m_BuildEventHandlerTypeNameIndex)
                         {
-                            m_Controller.BuildEventHandlerTypeNameIndex = selectedIndex;
+                            m_BuildEventHandlerTypeNameIndex = selectedIndex;
+                            m_Controller.BuildEventHandlerTypeName = (selectedIndex > 0 && selectedIndex < names.Length ? names[selectedIndex] : string.Empty);
                             if (m_Controller.RefreshBuildEventHandler())
                             {
                                 Debug.Log("Set build event success.");

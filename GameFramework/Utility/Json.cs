@@ -22,11 +22,6 @@ namespace GameFramework
             /// <param name="jsonHelper">要设置的 JSON 辅助器。</param>
             public static void SetJsonHelper(IJsonHelper jsonHelper)
             {
-                if (jsonHelper == null)
-                {
-                    throw new GameFrameworkException("JSON helper is invalid.");
-                }
-
                 s_JsonHelper = jsonHelper;
             }
 

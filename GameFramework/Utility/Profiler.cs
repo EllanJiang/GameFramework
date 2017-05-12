@@ -23,11 +23,6 @@ namespace GameFramework
             /// <param name="profilerHelper">要设置的性能分析辅助器。</param>
             public static void SetProfilerHelper(IProfilerHelper profilerHelper)
             {
-                if (profilerHelper == null)
-                {
-                    throw new GameFrameworkException("Profiler helper is invalid.");
-                }
-
                 s_ProfilerHelper = profilerHelper;
             }
 

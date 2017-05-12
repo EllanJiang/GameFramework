@@ -307,6 +307,11 @@ namespace UnityGameFramework.Runtime
 
         private void InitZipHelper()
         {
+            if (string.IsNullOrEmpty(m_ZipHelperTypeName))
+            {
+                return;
+            }
+
             Type zipHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_ZipHelperTypeName);
             if (zipHelperType == null)
             {
@@ -326,6 +331,11 @@ namespace UnityGameFramework.Runtime
 
         private void InitJsonHelper()
         {
+            if (string.IsNullOrEmpty(m_JsonHelperTypeName))
+            {
+                return;
+            }
+
             Type jsonHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_JsonHelperTypeName);
             if (jsonHelperType == null)
             {
@@ -345,6 +355,11 @@ namespace UnityGameFramework.Runtime
 
         private void InitProfilerHelper()
         {
+            if (string.IsNullOrEmpty(m_ProfilerHelperTypeName))
+            {
+                return;
+            }
+
             Type profilerHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_ProfilerHelperTypeName);
             if (profilerHelperType == null)
             {
