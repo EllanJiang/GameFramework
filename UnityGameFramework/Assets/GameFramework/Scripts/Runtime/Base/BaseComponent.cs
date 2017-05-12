@@ -256,6 +256,14 @@ namespace UnityGameFramework.Runtime
             GameFrameworkEntry.Update(Time.deltaTime, Time.unscaledDeltaTime);
         }
 
+        private void OnDestroy()
+        {
+#if UNITY_5_6_OR_NEWER
+            Application.lowMemory -= OnLowMemory;
+#endif
+            GameFrameworkEntry.Shutdown();
+        }
+
         /// <summary>
         /// 暂停游戏。
         /// </summary>
@@ -298,10 +306,6 @@ namespace UnityGameFramework.Runtime
 
         internal void Shutdown()
         {
-#if UNITY_5_6_OR_NEWER
-            Application.lowMemory -= OnLowMemory;
-#endif
-            GameFrameworkEntry.Shutdown();
             Destroy(gameObject);
         }
 
