@@ -85,7 +85,7 @@ namespace UnityGameFramework.Runtime
                 m_DataTableManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
             }
 
-            DataTableHelperBase dataTableHelper = Utility.Helper.CreateHelper(m_DataTableHelperTypeName, m_CustomDataTableHelper);
+            DataTableHelperBase dataTableHelper = Helper.CreateHelper(m_DataTableHelperTypeName, m_CustomDataTableHelper);
             if (dataTableHelper == null)
             {
                 Log.Error("Can not create data table helper.");

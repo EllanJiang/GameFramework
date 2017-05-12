@@ -14086,6 +14086,495 @@
             获取或设置界面是否遮挡。
             </summary>
         </member>
+        <member name="T:GameFramework.Utility">
+            <summary>
+            实用函数集。
+            </summary>
+        </member>
+        <member name="T:GameFramework.Utility.Assembly">
+            <summary>
+            程序集相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Assembly.GetLoadedAssemblyNames">
+            <summary>
+            获取已加载的程序集名称。
+            </summary>
+            <returns>已加载的程序集名称。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Assembly.GetTypeWithinLoadedAssemblies(System.String)">
+            <summary>
+            从已加载的程序集中获取类型。
+            </summary>
+            <param name="typeName">要获取的类型名。</param>
+            <returns>获取的类型。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Converter">
+            <summary>
+            类型转换相关的实用函数。
+            </summary>
+        </member>
+        <member name="P:GameFramework.Utility.Converter.ScreenDpi">
+            <summary>
+            获取或设置屏幕每英寸点数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetCentimetersFromPixels(System.Single)">
+            <summary>
+            将像素转换为厘米。
+            </summary>
+            <param name="pixels">像素。</param>
+            <returns>厘米。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetPixelsFromCentimeters(System.Single)">
+            <summary>
+            将厘米转换为像素。
+            </summary>
+            <param name="centimeters">厘米。</param>
+            <returns>像素。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetInchesFromPixels(System.Single)">
+            <summary>
+            将像素转换为英寸。
+            </summary>
+            <param name="pixels">像素。</param>
+            <returns>英寸。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetPixelsFromInches(System.Single)">
+            <summary>
+            将英寸转换为像素。
+            </summary>
+            <param name="inches">英寸。</param>
+            <returns>像素。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytesFromInt(System.Int32)">
+            <summary>
+            以字节数组的形式返回指定的 32 位有符号整数值。
+            </summary>
+            <param name="int32">要转换的数字。</param>
+            <returns>长度为 4 的字节数组。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetIntFromBytes(System.Byte[])">
+            <summary>
+            返回由字节数组中指定位置的四个字节转换来的 32 位有符号整数。
+            </summary>
+            <param name="bytes">字节数组。</param>
+            <returns>由四个字节构成、从 startIndex 开始的 32 位有符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetIntFromBytes(System.Byte[],System.Int32)">
+            <summary>
+            返回由字节数组中指定位置的四个字节转换来的 32 位有符号整数。
+            </summary>
+            <param name="bytes">字节数组。</param>
+            <param name="startIndex">bytes 内的起始位置。</param>
+            <returns>由四个字节构成、从 startIndex 开始的 32 位有符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetStringFromBytes(System.Byte[])">
+            <summary>
+            将 UTF-8 字节流转换为字符串。
+            </summary>
+            <param name="bytes">要转换的字节流。</param>
+            <returns>转化后的字符串。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytesFromString(System.String)">
+            <summary>
+            将字符串转换为 UTF-8 字节流。
+            </summary>
+            <param name="str">要转换的字符串。</param>
+            <returns>转换后的 UTF-8 字节流。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Encryption">
+            <summary>
+            加密解密相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Encryption.GetQuickXorBytes(System.Byte[],System.Byte[])">
+            <summary>
+            将 bytes 使用 code 做异或运算的快速版本。
+            </summary>
+            <param name="bytes">原始二进制流。</param>
+            <param name="code">异或二进制流。</param>
+            <returns>异或后的二进制流。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Encryption.GetXorBytes(System.Byte[],System.Byte[],System.Int32)">
+            <summary>
+            将 bytes 使用 code 做异或运算。
+            </summary>
+            <param name="bytes">原始二进制流。</param>
+            <param name="code">异或二进制流。</param>
+            <param name="length">异或计算长度，若小于等于 0，则计算整个二进制流。</param>
+            <returns>异或后的二进制流。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Json">
+            <summary>
+            JSON 相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Json.SetJsonHelper(GameFramework.Utility.Json.IJsonHelper)">
+            <summary>
+            设置 JSON 辅助器。
+            </summary>
+            <param name="jsonHelper">要设置的 JSON 辅助器。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Json.ToJson(System.Object)">
+            <summary>
+            将对象序列化为 JSON 字符串。
+            </summary>
+            <param name="obj">要序列化的对象。</param>
+            <returns>序列化后的 JSON 字符串。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Json.ToJsonData(System.Object)">
+            <summary>
+            将对象序列化为 JSON 流。
+            </summary>
+            <param name="obj">要序列化的对象。</param>
+            <returns>序列化后的 JSON 流。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Json.ToObject``1(System.String)">
+            <summary>
+            将 JSON 字符串反序列化为对象。
+            </summary>
+            <typeparam name="T">对象类型。</typeparam>
+            <param name="json">要反序列化的 JSON 字符串。</param>
+            <returns>反序列化后的对象。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Json.ToObject``1(System.Byte[])">
+            <summary>
+            将 JSON 流反序列化为对象。
+            </summary>
+            <typeparam name="T">对象类型。</typeparam>
+            <param name="jsonData">要反序列化的 JSON 流。</param>
+            <returns>反序列化后的对象。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Json.IJsonHelper">
+            <summary>
+            JSON 辅助器接口。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Json.IJsonHelper.ToJson(System.Object)">
+            <summary>
+            将对象序列化为 JSON 字符串。
+            </summary>
+            <param name="obj">要序列化的对象。</param>
+            <returns>序列化后的 JSON 字符串。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Json.IJsonHelper.ToObject``1(System.String)">
+            <summary>
+            将 JSON 字符串反序列化为对象。
+            </summary>
+            <typeparam name="T">对象类型。</typeparam>
+            <param name="json">要反序列化的 JSON 字符串。</param>
+            <returns>反序列化后的对象。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Nullable">
+            <summary>
+            可空类型相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Nullable.IsNullable``1(``0)">
+            <summary>
+            获取对象是否是可空类型。
+            </summary>
+            <typeparam name="T">对象类型。</typeparam>
+            <param name="t">对象。</param>
+            <returns>对象是否是可空类型。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Nullable.IsNullable``1(System.Nullable{``0})">
+            <summary>
+            获取对象是否是可空类型。
+            </summary>
+            <typeparam name="T">对象类型。</typeparam>
+            <param name="t">对象。</param>
+            <returns>对象是否是可空类型。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Path">
+            <summary>
+            路径相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Path.GetRegularPath(System.String)">
+            <summary>
+            获取规范的路径。
+            </summary>
+            <param name="path">要规范的路径。</param>
+            <returns>规范的路径。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Path.GetCombinePath(System.String[])">
+            <summary>
+            获取连接后的路径。
+            </summary>
+            <param name="path">路径片段。</param>
+            <returns>连接后的路径。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Path.GetRemotePath(System.String[])">
+            <summary>
+            获取远程格式的路径（带有file:// 或 http:// 前缀）。
+            </summary>
+            <param name="path">原始路径。</param>
+            <returns>远程格式路径。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Path.GetResourceNameWithSuffix(System.String)">
+            <summary>
+            获取带有后缀的资源名。
+            </summary>
+            <param name="resourceName">原始资源名。</param>
+            <returns>带有后缀的资源名。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Path.GetResourceNameWithCrc32AndSuffix(System.String,System.Int32)">
+            <summary>
+            获取带有 CRC32 和后缀的资源名。
+            </summary>
+            <param name="resourceName">原始资源名。</param>
+            <param name="hashCode">CRC32 哈希值。</param>
+            <returns>带有 CRC32 和后缀的资源名。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Path.RemoveEmptyDirectory(System.String)">
+            <summary>
+            移除空文件夹。
+            </summary>
+            <param name="directoryName">要处理的文件夹名称。</param>
+            <returns>是否移除空文件夹成功。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Profiler">
+            <summary>
+            性能分析相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Profiler.SetProfilerHelper(GameFramework.Utility.Profiler.IProfilerHelper)">
+            <summary>
+            设置性能分析辅助器。
+            </summary>
+            <param name="profilerHelper">要设置的性能分析辅助器。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Profiler.BeginSample(System.String)">
+            <summary>
+            开始采样。
+            </summary>
+            <param name="name">采样名称。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Profiler.EndSample">
+            <summary>
+            结束采样。
+            </summary>
+        </member>
+        <member name="T:GameFramework.Utility.Profiler.IProfilerHelper">
+            <summary>
+            性能分析辅助器接口。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Profiler.IProfilerHelper.BeginSample(System.String)">
+            <summary>
+            开始采样。
+            </summary>
+            <param name="name">采样名称。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Profiler.IProfilerHelper.EndSample">
+            <summary>
+            结束采样。
+            </summary>
+        </member>
+        <member name="T:GameFramework.Utility.Random">
+            <summary>
+            随机相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Random.GetRandom">
+            <summary>
+            返回非负随机数。
+            </summary>
+            <returns>大于等于零且小于 System.Int32.MaxValue 的 32 位带符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Random.GetRandom(System.Int32)">
+            <summary>
+            返回一个小于所指定最大值的非负随机数。
+            </summary>
+            <param name="maxValue">要生成的随机数的上界（随机数不能取该上界值）。maxValue 必须大于等于零。</param>
+            <returns>大于等于零且小于 maxValue 的 32 位带符号整数，即：返回值的范围通常包括零但不包括 maxValue。不过，如果 maxValue 等于零，则返回 maxValue。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Random.GetRandom(System.Int32,System.Int32)">
+            <summary>
+            返回一个指定范围内的随机数。
+            </summary>
+            <param name="minValue">返回的随机数的下界（随机数可取该下界值）。</param>
+            <param name="maxValue">返回的随机数的上界（随机数不能取该上界值）。maxValue 必须大于等于 minValue。</param>
+            <returns>一个大于等于 minValue 且小于 maxValue 的 32 位带符号整数，即：返回的值范围包括 minValue 但不包括 maxValue。如果 minValue 等于 maxValue，则返回 minValue。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Random.GetRandomDouble">
+            <summary>
+            返回一个介于 0.0 和 1.0 之间的随机数。
+            </summary>
+            <returns>大于等于 0.0 并且小于 1.0 的双精度浮点数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Random.GetRandomBytes(System.Byte[])">
+            <summary>
+            用随机数填充指定字节数组的元素。
+            </summary>
+            <param name="buffer">包含随机数的字节数组。</param>
+        </member>
+        <member name="T:GameFramework.Utility.Text">
+            <summary>
+            字符相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Text.SplitToLines(System.String)">
+            <summary>
+            将文本按行切分。
+            </summary>
+            <param name="text">要切分的文本。</param>
+            <returns>按行切分后的文本。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Text.GetFullName``1(System.String)">
+            <summary>
+            根据类型和名称获取完整名称。
+            </summary>
+            <typeparam name="T">类型。</typeparam>
+            <param name="name">名称。</param>
+            <returns>完整名称。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Text.GetFullName(System.Type,System.String)">
+            <summary>
+            根据类型和名称获取完整名称。
+            </summary>
+            <param name="type">类型。</param>
+            <param name="name">名称。</param>
+            <returns>完整名称。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Text.FieldNameForDisplay(System.String)">
+            <summary>
+            获取用于编辑器显示的名称。
+            </summary>
+            <param name="fieldName">字段名称。</param>
+            <returns>编辑器显示名称。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Text.ReadLine(System.String,System.Int32@)">
+            <summary>
+            读取一行文本。
+            </summary>
+            <param name="text">要读取的文本。</param>
+            <param name="position">开始的位置。</param>
+            <returns>一行文本。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Verifier">
+            <summary>
+            校验相关的实用函数。
+            </summary>
+        </member>
+        <member name="T:GameFramework.Utility.Verifier.Crc32">
+            <summary>
+            CRC32 算法。
+            </summary>
+        </member>
+        <member name="F:GameFramework.Utility.Verifier.Crc32.DefaultPolynomial">
+            <summary>
+            默认多项式。
+            </summary>
+        </member>
+        <member name="F:GameFramework.Utility.Verifier.Crc32.DefaultSeed">
+            <summary>
+            默认种子数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.Crc32.#ctor">
+            <summary>
+            初始化 CRC32 类的新实例。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.Crc32.#ctor(System.UInt32,System.UInt32)">
+            <summary>
+            初始化 CRC32 类的新实例。
+            </summary>
+            <param name="polynomial">指定的多项式。</param>
+            <param name="seed">指定的种子数。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.Crc32.Initialize">
+            <summary>
+            初始化 Crc32 类的实现。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.Crc32.HashCore(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            将写入对象的数据路由到哈希算法以计算哈希值。
+            </summary>
+            <param name="array">要计算其哈希代码的输入。</param>
+            <param name="ibStart">字节数组中的偏移量，从该位置开始使用数据。</param>
+            <param name="cbSize">字节数组中用作数据的字节数。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.Crc32.HashFinal">
+            <summary>
+            在加密流对象处理完最后的数据后完成哈希计算。
+            </summary>
+            <returns>计算所得的哈希代码。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.GetCrc32(System.Byte[])">
+            <summary>
+            计算二进制流的 CRC32。
+            </summary>
+            <param name="bytes">指定的二进制流。</param>
+            <returns>计算后的 CRC32。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.GetCrc32(System.String)">
+            <summary>
+            计算指定文件的 CRC32。
+            </summary>
+            <param name="fileName">指定文件的完全限定名称。</param>
+            <returns>计算后的 CRC32。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.GetMD5(System.Byte[])">
+            <summary>
+            计算二进制流的 MD5。
+            </summary>
+            <param name="bytes">指定的二进制流。</param>
+            <returns>计算后的 MD5。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Zip">
+            <summary>
+            压缩解压缩相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Zip.SetZipHelper(GameFramework.Utility.Zip.IZipHelper)">
+            <summary>
+            设置压缩解压缩辅助器。
+            </summary>
+            <param name="zipHelper">要设置的压缩解压缩辅助器。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Zip.Compress(System.Byte[])">
+            <summary>
+            压缩数据。
+            </summary>
+            <param name="bytes">要压缩的数据。</param>
+            <returns>压缩后的数据。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Zip.Decompress(System.Byte[])">
+            <summary>
+            解压缩数据。
+            </summary>
+            <param name="bytes">要解压缩的数据。</param>
+            <returns>解压缩后的数据。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Zip.IZipHelper">
+            <summary>
+            压缩解压缩辅助器接口。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Zip.IZipHelper.Compress(System.Byte[])">
+            <summary>
+            压缩数据。
+            </summary>
+            <param name="bytes">要压缩的数据。</param>
+            <returns>压缩后的数据。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Zip.IZipHelper.Decompress(System.Byte[])">
+            <summary>
+            解压缩数据。
+            </summary>
+            <param name="bytes">要解压缩的数据。</param>
+            <returns>解压缩后的数据。</returns>
+        </member>
+        <member name="T:GameFramework.DontProfileAttribute">
+            <summary>
+            避免被注入性能采样代码的标记。
+            </summary>
+        </member>
         <member name="T:GameFramework.WebRequest.IWebRequestAgentHelper">
             <summary>
             Web 请求代理辅助器接口。
@@ -14580,485 +15069,6 @@
             获取 Web 响应的数据流。
             </summary>
             <returns>Web 响应的数据流。</returns>
-        </member>
-        <member name="T:Utility.Assembly">
-            <summary>
-            程序集相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Assembly.GetLoadedAssemblyNames">
-            <summary>
-            获取已加载的程序集名称。
-            </summary>
-            <returns>已加载的程序集名称。</returns>
-        </member>
-        <member name="M:Utility.Assembly.GetTypeWithinLoadedAssemblies(System.String)">
-            <summary>
-            从已加载的程序集中获取类型。
-            </summary>
-            <param name="typeName">要获取的类型名。</param>
-            <returns>获取的类型。</returns>
-        </member>
-        <member name="T:Utility.Converter">
-            <summary>
-            类型转换相关的实用函数。
-            </summary>
-        </member>
-        <member name="P:Utility.Converter.ScreenDpi">
-            <summary>
-            获取或设置屏幕每英寸点数。
-            </summary>
-        </member>
-        <member name="M:Utility.Converter.GetCentimetersFromPixels(System.Single)">
-            <summary>
-            将像素转换为厘米。
-            </summary>
-            <param name="pixels">像素。</param>
-            <returns>厘米。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetPixelsFromCentimeters(System.Single)">
-            <summary>
-            将厘米转换为像素。
-            </summary>
-            <param name="centimeters">厘米。</param>
-            <returns>像素。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetInchesFromPixels(System.Single)">
-            <summary>
-            将像素转换为英寸。
-            </summary>
-            <param name="pixels">像素。</param>
-            <returns>英寸。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetPixelsFromInches(System.Single)">
-            <summary>
-            将英寸转换为像素。
-            </summary>
-            <param name="inches">英寸。</param>
-            <returns>像素。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetBytesFromInt(System.Int32)">
-            <summary>
-            以字节数组的形式返回指定的 32 位有符号整数值。
-            </summary>
-            <param name="int32">要转换的数字。</param>
-            <returns>长度为 4 的字节数组。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetIntFromBytes(System.Byte[])">
-            <summary>
-            返回由字节数组中指定位置的四个字节转换来的 32 位有符号整数。
-            </summary>
-            <param name="bytes">字节数组。</param>
-            <returns>由四个字节构成、从 startIndex 开始的 32 位有符号整数。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetIntFromBytes(System.Byte[],System.Int32)">
-            <summary>
-            返回由字节数组中指定位置的四个字节转换来的 32 位有符号整数。
-            </summary>
-            <param name="bytes">字节数组。</param>
-            <param name="startIndex">bytes 内的起始位置。</param>
-            <returns>由四个字节构成、从 startIndex 开始的 32 位有符号整数。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetStringFromBytes(System.Byte[])">
-            <summary>
-            将 UTF-8 字节流转换为字符串。
-            </summary>
-            <param name="bytes">要转换的字节流。</param>
-            <returns>转化后的字符串。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetBytesFromString(System.String)">
-            <summary>
-            将字符串转换为 UTF-8 字节流。
-            </summary>
-            <param name="str">要转换的字符串。</param>
-            <returns>转换后的 UTF-8 字节流。</returns>
-        </member>
-        <member name="T:Utility.Encryption">
-            <summary>
-            加密解密相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Encryption.GetQuickXorBytes(System.Byte[],System.Byte[])">
-            <summary>
-            将 bytes 使用 code 做异或运算的快速版本。
-            </summary>
-            <param name="bytes">原始二进制流。</param>
-            <param name="code">异或二进制流。</param>
-            <returns>异或后的二进制流。</returns>
-        </member>
-        <member name="M:Utility.Encryption.GetXorBytes(System.Byte[],System.Byte[],System.Int32)">
-            <summary>
-            将 bytes 使用 code 做异或运算。
-            </summary>
-            <param name="bytes">原始二进制流。</param>
-            <param name="code">异或二进制流。</param>
-            <param name="length">异或计算长度，若小于等于 0，则计算整个二进制流。</param>
-            <returns>异或后的二进制流。</returns>
-        </member>
-        <member name="T:Utility.Json">
-            <summary>
-            JSON 相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Json.SetJsonHelper(Utility.Json.IJsonHelper)">
-            <summary>
-            设置 JSON 辅助器。
-            </summary>
-            <param name="jsonHelper">要设置的 JSON 辅助器。</param>
-        </member>
-        <member name="M:Utility.Json.ToJson(System.Object)">
-            <summary>
-            将对象序列化为 JSON 字符串。
-            </summary>
-            <param name="obj">要序列化的对象。</param>
-            <returns>序列化后的 JSON 字符串。</returns>
-        </member>
-        <member name="M:Utility.Json.ToJsonData(System.Object)">
-            <summary>
-            将对象序列化为 JSON 流。
-            </summary>
-            <param name="obj">要序列化的对象。</param>
-            <returns>序列化后的 JSON 流。</returns>
-        </member>
-        <member name="M:Utility.Json.ToObject``1(System.String)">
-            <summary>
-            将 JSON 字符串反序列化为对象。
-            </summary>
-            <typeparam name="T">对象类型。</typeparam>
-            <param name="json">要反序列化的 JSON 字符串。</param>
-            <returns>反序列化后的对象。</returns>
-        </member>
-        <member name="M:Utility.Json.ToObject``1(System.Byte[])">
-            <summary>
-            将 JSON 流反序列化为对象。
-            </summary>
-            <typeparam name="T">对象类型。</typeparam>
-            <param name="jsonData">要反序列化的 JSON 流。</param>
-            <returns>反序列化后的对象。</returns>
-        </member>
-        <member name="T:Utility.Json.IJsonHelper">
-            <summary>
-            JSON 辅助器接口。
-            </summary>
-        </member>
-        <member name="M:Utility.Json.IJsonHelper.ToJson(System.Object)">
-            <summary>
-            将对象序列化为 JSON 字符串。
-            </summary>
-            <param name="obj">要序列化的对象。</param>
-            <returns>序列化后的 JSON 字符串。</returns>
-        </member>
-        <member name="M:Utility.Json.IJsonHelper.ToObject``1(System.String)">
-            <summary>
-            将 JSON 字符串反序列化为对象。
-            </summary>
-            <typeparam name="T">对象类型。</typeparam>
-            <param name="json">要反序列化的 JSON 字符串。</param>
-            <returns>反序列化后的对象。</returns>
-        </member>
-        <member name="T:Utility.Nullable">
-            <summary>
-            可空类型相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Nullable.IsNullable``1(``0)">
-            <summary>
-            获取对象是否是可空类型。
-            </summary>
-            <typeparam name="T">对象类型。</typeparam>
-            <param name="t">对象。</param>
-            <returns>对象是否是可空类型。</returns>
-        </member>
-        <member name="M:Utility.Nullable.IsNullable``1(System.Nullable{``0})">
-            <summary>
-            获取对象是否是可空类型。
-            </summary>
-            <typeparam name="T">对象类型。</typeparam>
-            <param name="t">对象。</param>
-            <returns>对象是否是可空类型。</returns>
-        </member>
-        <member name="T:Utility.Path">
-            <summary>
-            路径相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Path.GetRegularPath(System.String)">
-            <summary>
-            获取规范的路径。
-            </summary>
-            <param name="path">要规范的路径。</param>
-            <returns>规范的路径。</returns>
-        </member>
-        <member name="M:Utility.Path.GetCombinePath(System.String[])">
-            <summary>
-            获取连接后的路径。
-            </summary>
-            <param name="path">路径片段。</param>
-            <returns>连接后的路径。</returns>
-        </member>
-        <member name="M:Utility.Path.GetRemotePath(System.String[])">
-            <summary>
-            获取远程格式的路径（带有file:// 或 http:// 前缀）。
-            </summary>
-            <param name="path">原始路径。</param>
-            <returns>远程格式路径。</returns>
-        </member>
-        <member name="M:Utility.Path.GetResourceNameWithSuffix(System.String)">
-            <summary>
-            获取带有后缀的资源名。
-            </summary>
-            <param name="resourceName">原始资源名。</param>
-            <returns>带有后缀的资源名。</returns>
-        </member>
-        <member name="M:Utility.Path.GetResourceNameWithCrc32AndSuffix(System.String,System.Int32)">
-            <summary>
-            获取带有 CRC32 和后缀的资源名。
-            </summary>
-            <param name="resourceName">原始资源名。</param>
-            <param name="hashCode">CRC32 哈希值。</param>
-            <returns>带有 CRC32 和后缀的资源名。</returns>
-        </member>
-        <member name="M:Utility.Path.RemoveEmptyDirectory(System.String)">
-            <summary>
-            移除空文件夹。
-            </summary>
-            <param name="directoryName">要处理的文件夹名称。</param>
-            <returns>是否移除空文件夹成功。</returns>
-        </member>
-        <member name="T:Utility.Profiler">
-            <summary>
-            性能分析相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Profiler.SetProfilerHelper(Utility.Profiler.IProfilerHelper)">
-            <summary>
-            设置性能分析辅助器。
-            </summary>
-            <param name="profilerHelper">要设置的性能分析辅助器。</param>
-        </member>
-        <member name="M:Utility.Profiler.BeginSample(System.String)">
-            <summary>
-            开始采样。
-            </summary>
-            <param name="name">采样名称。</param>
-        </member>
-        <member name="M:Utility.Profiler.EndSample">
-            <summary>
-            结束采样。
-            </summary>
-        </member>
-        <member name="T:Utility.Profiler.IProfilerHelper">
-            <summary>
-            性能分析辅助器接口。
-            </summary>
-        </member>
-        <member name="M:Utility.Profiler.IProfilerHelper.BeginSample(System.String)">
-            <summary>
-            开始采样。
-            </summary>
-            <param name="name">采样名称。</param>
-        </member>
-        <member name="M:Utility.Profiler.IProfilerHelper.EndSample">
-            <summary>
-            结束采样。
-            </summary>
-        </member>
-        <member name="T:Utility.Random">
-            <summary>
-            随机相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Random.GetRandom">
-            <summary>
-            返回非负随机数。
-            </summary>
-            <returns>大于等于零且小于 System.Int32.MaxValue 的 32 位带符号整数。</returns>
-        </member>
-        <member name="M:Utility.Random.GetRandom(System.Int32)">
-            <summary>
-            返回一个小于所指定最大值的非负随机数。
-            </summary>
-            <param name="maxValue">要生成的随机数的上界（随机数不能取该上界值）。maxValue 必须大于等于零。</param>
-            <returns>大于等于零且小于 maxValue 的 32 位带符号整数，即：返回值的范围通常包括零但不包括 maxValue。不过，如果 maxValue 等于零，则返回 maxValue。</returns>
-        </member>
-        <member name="M:Utility.Random.GetRandom(System.Int32,System.Int32)">
-            <summary>
-            返回一个指定范围内的随机数。
-            </summary>
-            <param name="minValue">返回的随机数的下界（随机数可取该下界值）。</param>
-            <param name="maxValue">返回的随机数的上界（随机数不能取该上界值）。maxValue 必须大于等于 minValue。</param>
-            <returns>一个大于等于 minValue 且小于 maxValue 的 32 位带符号整数，即：返回的值范围包括 minValue 但不包括 maxValue。如果 minValue 等于 maxValue，则返回 minValue。</returns>
-        </member>
-        <member name="M:Utility.Random.GetRandomDouble">
-            <summary>
-            返回一个介于 0.0 和 1.0 之间的随机数。
-            </summary>
-            <returns>大于等于 0.0 并且小于 1.0 的双精度浮点数。</returns>
-        </member>
-        <member name="M:Utility.Random.GetRandomBytes(System.Byte[])">
-            <summary>
-            用随机数填充指定字节数组的元素。
-            </summary>
-            <param name="buffer">包含随机数的字节数组。</param>
-        </member>
-        <member name="T:Utility.Text">
-            <summary>
-            字符相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Text.SplitToLines(System.String)">
-            <summary>
-            将文本按行切分。
-            </summary>
-            <param name="text">要切分的文本。</param>
-            <returns>按行切分后的文本。</returns>
-        </member>
-        <member name="M:Utility.Text.GetFullName``1(System.String)">
-            <summary>
-            根据类型和名称获取完整名称。
-            </summary>
-            <typeparam name="T">类型。</typeparam>
-            <param name="name">名称。</param>
-            <returns>完整名称。</returns>
-        </member>
-        <member name="M:Utility.Text.GetFullName(System.Type,System.String)">
-            <summary>
-            根据类型和名称获取完整名称。
-            </summary>
-            <param name="type">类型。</param>
-            <param name="name">名称。</param>
-            <returns>完整名称。</returns>
-        </member>
-        <member name="M:Utility.Text.FieldNameForDisplay(System.String)">
-            <summary>
-            获取用于编辑器显示的名称。
-            </summary>
-            <param name="fieldName">字段名称。</param>
-            <returns>编辑器显示名称。</returns>
-        </member>
-        <member name="M:Utility.Text.ReadLine(System.String,System.Int32@)">
-            <summary>
-            读取一行文本。
-            </summary>
-            <param name="text">要读取的文本。</param>
-            <param name="position">开始的位置。</param>
-            <returns>一行文本。</returns>
-        </member>
-        <member name="T:Utility.Verifier">
-            <summary>
-            校验相关的实用函数。
-            </summary>
-        </member>
-        <member name="T:Utility.Verifier.Crc32">
-            <summary>
-            CRC32 算法。
-            </summary>
-        </member>
-        <member name="F:Utility.Verifier.Crc32.DefaultPolynomial">
-            <summary>
-            默认多项式。
-            </summary>
-        </member>
-        <member name="F:Utility.Verifier.Crc32.DefaultSeed">
-            <summary>
-            默认种子数。
-            </summary>
-        </member>
-        <member name="M:Utility.Verifier.Crc32.#ctor">
-            <summary>
-            初始化 CRC32 类的新实例。
-            </summary>
-        </member>
-        <member name="M:Utility.Verifier.Crc32.#ctor(System.UInt32,System.UInt32)">
-            <summary>
-            初始化 CRC32 类的新实例。
-            </summary>
-            <param name="polynomial">指定的多项式。</param>
-            <param name="seed">指定的种子数。</param>
-        </member>
-        <member name="M:Utility.Verifier.Crc32.Initialize">
-            <summary>
-            初始化 Crc32 类的实现。
-            </summary>
-        </member>
-        <member name="M:Utility.Verifier.Crc32.HashCore(System.Byte[],System.Int32,System.Int32)">
-            <summary>
-            将写入对象的数据路由到哈希算法以计算哈希值。
-            </summary>
-            <param name="array">要计算其哈希代码的输入。</param>
-            <param name="ibStart">字节数组中的偏移量，从该位置开始使用数据。</param>
-            <param name="cbSize">字节数组中用作数据的字节数。</param>
-        </member>
-        <member name="M:Utility.Verifier.Crc32.HashFinal">
-            <summary>
-            在加密流对象处理完最后的数据后完成哈希计算。
-            </summary>
-            <returns>计算所得的哈希代码。</returns>
-        </member>
-        <member name="M:Utility.Verifier.GetCrc32(System.Byte[])">
-            <summary>
-            计算二进制流的 CRC32。
-            </summary>
-            <param name="bytes">指定的二进制流。</param>
-            <returns>计算后的 CRC32。</returns>
-        </member>
-        <member name="M:Utility.Verifier.GetCrc32(System.String)">
-            <summary>
-            计算指定文件的 CRC32。
-            </summary>
-            <param name="fileName">指定文件的完全限定名称。</param>
-            <returns>计算后的 CRC32。</returns>
-        </member>
-        <member name="M:Utility.Verifier.GetMD5(System.Byte[])">
-            <summary>
-            计算二进制流的 MD5。
-            </summary>
-            <param name="bytes">指定的二进制流。</param>
-            <returns>计算后的 MD5。</returns>
-        </member>
-        <member name="T:Utility.Zip">
-            <summary>
-            压缩解压缩相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Zip.SetZipHelper(Utility.Zip.IZipHelper)">
-            <summary>
-            设置压缩解压缩辅助器。
-            </summary>
-            <param name="zipHelper">要设置的压缩解压缩辅助器。</param>
-        </member>
-        <member name="M:Utility.Zip.Compress(System.Byte[])">
-            <summary>
-            压缩数据。
-            </summary>
-            <param name="bytes">要压缩的数据。</param>
-            <returns>压缩后的数据。</returns>
-        </member>
-        <member name="M:Utility.Zip.Decompress(System.Byte[])">
-            <summary>
-            解压缩数据。
-            </summary>
-            <param name="bytes">要解压缩的数据。</param>
-            <returns>解压缩后的数据。</returns>
-        </member>
-        <member name="T:Utility.Zip.IZipHelper">
-            <summary>
-            压缩解压缩辅助器接口。
-            </summary>
-        </member>
-        <member name="M:Utility.Zip.IZipHelper.Compress(System.Byte[])">
-            <summary>
-            压缩数据。
-            </summary>
-            <param name="bytes">要压缩的数据。</param>
-            <returns>压缩后的数据。</returns>
-        </member>
-        <member name="M:Utility.Zip.IZipHelper.Decompress(System.Byte[])">
-            <summary>
-            解压缩数据。
-            </summary>
-            <param name="bytes">要解压缩的数据。</param>
-            <returns>解压缩后的数据。</returns>
         </member>
     </members>
 </doc>

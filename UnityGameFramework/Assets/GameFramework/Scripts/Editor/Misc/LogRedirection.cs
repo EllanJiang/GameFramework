@@ -5,6 +5,7 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;

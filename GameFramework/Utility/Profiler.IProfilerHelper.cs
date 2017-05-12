@@ -5,25 +5,28 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-namespace Utility
+namespace GameFramework
 {
-    public static partial class Profiler
+    public static partial class Utility
     {
-        /// <summary>
-        /// 性能分析辅助器接口。
-        /// </summary>
-        public interface IProfilerHelper
+        public static partial class Profiler
         {
             /// <summary>
-            /// 开始采样。
+            /// 性能分析辅助器接口。
             /// </summary>
-            /// <param name="name">采样名称。</param>
-            void BeginSample(string name);
+            public interface IProfilerHelper
+            {
+                /// <summary>
+                /// 开始采样。
+                /// </summary>
+                /// <param name="name">采样名称。</param>
+                void BeginSample(string name);
 
-            /// <summary>
-            /// 结束采样。
-            /// </summary>
-            void EndSample();
+                /// <summary>
+                /// 结束采样。
+                /// </summary>
+                void EndSample();
+            }
         }
     }
 }

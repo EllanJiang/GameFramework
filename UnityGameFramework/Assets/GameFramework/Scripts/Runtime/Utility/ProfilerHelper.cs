@@ -8,12 +8,12 @@
 using GameFramework;
 using System.Threading;
 
-namespace Utility
+namespace UnityGameFramework.Runtime
 {
     /// <summary>
     /// 性能分析辅助器。
     /// </summary>
-    internal class ProfilerHelper : Profiler.IProfilerHelper
+    internal class ProfilerHelper : Utility.Profiler.IProfilerHelper
     {
         private Thread m_MainThread = null;
 

@@ -121,7 +121,7 @@ namespace UnityGameFramework.Runtime
                 m_LocalizationManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
             }
 
-            LocalizationHelperBase localizationHelper = Utility.Helper.CreateHelper(m_LocalizationHelperTypeName, m_CustomLocalizationHelper);
+            LocalizationHelperBase localizationHelper = Helper.CreateHelper(m_LocalizationHelperTypeName, m_CustomLocalizationHelper);
             if (localizationHelper == null)
             {
                 Log.Error("Can not create localization helper.");
