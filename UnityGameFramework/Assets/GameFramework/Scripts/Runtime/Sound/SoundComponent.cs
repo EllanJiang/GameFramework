@@ -20,6 +20,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 声音组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Sound")]
     public sealed partial class SoundComponent : GameFrameworkComponent
     {

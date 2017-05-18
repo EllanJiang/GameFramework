@@ -17,6 +17,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 基础组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Base")]
     public sealed class BaseComponent : GameFrameworkComponent
     {

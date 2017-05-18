@@ -16,6 +16,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 场景组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Scene")]
     public sealed class SceneComponent : GameFrameworkComponent
     {

@@ -16,6 +16,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 数据表组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Data Table")]
     public sealed class DataTableComponent : GameFrameworkComponent
     {

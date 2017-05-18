@@ -17,6 +17,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 实体组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Entity")]
     public sealed partial class EntityComponent : GameFrameworkComponent
     {

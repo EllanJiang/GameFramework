@@ -17,6 +17,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 流程组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Procedure")]
     public sealed class ProcedureComponent : GameFrameworkComponent
     {

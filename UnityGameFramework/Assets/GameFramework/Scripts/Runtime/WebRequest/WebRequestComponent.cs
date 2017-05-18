@@ -14,6 +14,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// Web 请求组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Web Request")]
     public sealed class WebRequestComponent : GameFrameworkComponent
     {

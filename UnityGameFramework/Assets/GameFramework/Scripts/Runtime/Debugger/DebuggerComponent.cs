@@ -15,6 +15,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 调试组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Debugger")]
     public sealed partial class DebuggerComponent : GameFrameworkComponent
     {

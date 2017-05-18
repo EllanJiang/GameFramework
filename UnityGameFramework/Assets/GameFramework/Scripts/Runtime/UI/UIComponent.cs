@@ -16,6 +16,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 界面组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/UI")]
     public sealed partial class UIComponent : GameFrameworkComponent
     {

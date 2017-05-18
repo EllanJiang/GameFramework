@@ -15,6 +15,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 本地化组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Localization")]
     public sealed class LocalizationComponent : GameFrameworkComponent
     {
