@@ -216,7 +216,7 @@ namespace GameFramework.WebRequest
                 throw new GameFrameworkException("You must add web request agent first.");
             }
 
-            WebRequestTask webRequestTask = new WebRequestTask(webRequestUri, null, m_Timeout, userData);
+            WebRequestTask webRequestTask = new WebRequestTask(webRequestUri, postData, m_Timeout, userData);
             m_TaskPool.AddTask(webRequestTask);
 
             return webRequestTask.SerialId;
