@@ -169,7 +169,7 @@ namespace GameFramework.Resource
 
             private void OnDownloadSuccess(object sender, DownloadSuccessEventArgs e)
             {
-                VersionListProcessor versionListProcessor = (VersionListProcessor)e.UserData;
+                VersionListProcessor versionListProcessor = e.UserData as VersionListProcessor;
                 if (versionListProcessor == null || versionListProcessor != this)
                 {
                     return;
@@ -226,7 +226,7 @@ namespace GameFramework.Resource
 
             private void OnDownloadFailure(object sender, DownloadFailureEventArgs e)
             {
-                VersionListProcessor versionListProcessor = (VersionListProcessor)e.UserData;
+                VersionListProcessor versionListProcessor = e.UserData as VersionListProcessor;
                 if (versionListProcessor == null || versionListProcessor != this)
                 {
                     return;
