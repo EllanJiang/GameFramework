@@ -13,6 +13,7 @@ using UnityEngine.Networking;
 #else
 using UnityEngine.Experimental.Networking;
 #endif
+using Utility = GameFramework.Utility;
 
 namespace UnityGameFramework.Runtime
 {
