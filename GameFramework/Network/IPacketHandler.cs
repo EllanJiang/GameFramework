@@ -15,7 +15,7 @@ namespace GameFramework.Network
         /// <summary>
         /// 获取网络消息包协议编号。
         /// </summary>
-        int OpCode
+        int Id
         {
             get;
         }

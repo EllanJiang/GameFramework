@@ -9,26 +9,23 @@ namespace GameFramework
 {
     public static partial class Utility
     {
-        public static partial class Zip
+        public static partial class Profiler
         {
             /// <summary>
-            /// 压缩解压缩辅助器接口。
+            /// 性能分析辅助器接口。
             /// </summary>
-            public interface IZipHelper
+            public interface IProfilerHelper
             {
                 /// <summary>
-                /// 压缩数据。
+                /// 开始采样。
                 /// </summary>
-                /// <param name="bytes">要压缩的数据。</param>
-                /// <returns>压缩后的数据。</returns>
-                byte[] Compress(byte[] bytes);
+                /// <param name="name">采样名称。</param>
+                void BeginSample(string name);
 
                 /// <summary>
-                /// 解压缩数据。
+                /// 结束采样。
                 /// </summary>
-                /// <param name="bytes">要解压缩的数据。</param>
-                /// <returns>解压缩后的数据。</returns>
-                byte[] Decompress(byte[] bytes);
+                void EndSample();
             }
         }
     }

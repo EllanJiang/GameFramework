@@ -301,7 +301,7 @@ namespace GameFramework.Network
                 throw new GameFrameworkException("Packet handler is invalid.");
             }
 
-            m_EventPool.Subscribe(handler.OpCode, handler.Handle);
+            m_EventPool.Subscribe(handler.Id, handler.Handle);
         }
 
         private void OnNetworkChannelConnected(NetworkChannel networkChannel, object userData)

@@ -16,6 +16,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 场景组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Scene")]
     public sealed class SceneComponent : GameFrameworkComponent
     {
@@ -77,7 +78,7 @@ namespace UnityGameFramework.Runtime
             m_GameFrameworkScene = SceneManager.GetSceneAt(GameEntry.GameFrameworkSceneId);
             if (!m_GameFrameworkScene.IsValid())
             {
-                Log.Fatal("Game framework scene is invalid.");
+                Log.Fatal("Game Framework scene is invalid.");
                 return;
             }
         }

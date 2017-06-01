@@ -34,7 +34,7 @@ namespace UnityGameFramework.Runtime
         {
             get
             {
-                return (int)EventId.LoadDictionaryFailure;
+                return (int)EventId.LoadDictionaryUpdate;
             }
         }
 

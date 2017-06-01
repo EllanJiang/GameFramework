@@ -5,6 +5,7 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -19,7 +20,7 @@ namespace UnityGameFramework.Editor
     /// </summary>
     internal static class LogRedirection
     {
-        private static readonly Regex m_LogRegex = new Regex(@" \(at (.+)\:(.+)\)\r?\n");
+        private static readonly Regex s_LogRegex = new Regex(@" \(at (.+)\:(\d+)\)\r?\n");
 
         [OnOpenAsset(0)]
         private static bool OnOpenAsset(int instanceId, int line)
@@ -35,7 +36,7 @@ namespace UnityGameFramework.Editor
                 return false;
             }
 
-            Match match = m_LogRegex.Match(selectedStackTrace);
+            Match match = s_LogRegex.Match(selectedStackTrace);
             if (!match.Success)
             {
                 return false;
@@ -63,7 +64,7 @@ namespace UnityGameFramework.Editor
                 }
             }
 
-            InternalEditorUtility.OpenFileAtLineExternal(Application.dataPath + match.Groups[1].Value.Substring(6), int.Parse(match.Groups[2].Value));
+            InternalEditorUtility.OpenFileAtLineExternal(Utility.Path.GetCombinePath(Application.dataPath, match.Groups[1].Value.Substring(7)), int.Parse(match.Groups[2].Value));
             return true;
         }
 

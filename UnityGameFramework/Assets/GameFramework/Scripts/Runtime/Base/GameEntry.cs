@@ -21,7 +21,7 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public static class GameEntry
     {
-        private const string UnityGameFrameworkVersion = "3.0.3";
+        private const string UnityGameFrameworkVersion = "3.0.4";
         private static readonly LinkedList<GameFrameworkComponent> s_GameFrameworkComponents = new LinkedList<GameFrameworkComponent>();
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace UnityGameFramework.Runtime
         {
             if (gameFrameworkComponent == null)
             {
-                Log.Error("Game framework component is invalid.");
+                Log.Error("Game Framework component is invalid.");
                 return;
             }
 
@@ -149,7 +149,7 @@ namespace UnityGameFramework.Runtime
             {
                 if (current.Value.GetType() == type)
                 {
-                    Log.Error("Game framework component type '{0}' is already exist.", type.FullName);
+                    Log.Error("Game Framework component type '{0}' is already exist.", type.FullName);
                     return;
                 }
 

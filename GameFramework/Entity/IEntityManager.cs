@@ -115,17 +115,44 @@ namespace GameFramework.Entity
         bool HasEntity(int entityId);
 
         /// <summary>
+        /// 是否存在实体。
+        /// </summary>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <returns>是否存在实体。</returns>
+        bool HasEntity(string entityAssetName);
+
+        /// <summary>
         /// 获取实体。
         /// </summary>
         /// <param name="entityId">实体编号。</param>
-        /// <returns>实体。</returns>
+        /// <returns>要获取的实体。</returns>
         IEntity GetEntity(int entityId);
 
         /// <summary>
-        /// 获取所有实体。
+        /// 获取实体。
         /// </summary>
-        /// <returns>所有实体。</returns>
-        IEntity[] GetAllEntities();
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <returns>要获取的实体。</returns>
+        IEntity GetEntity(string entityAssetName);
+
+        /// <summary>
+        /// 获取实体。
+        /// </summary>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <returns>要获取的实体。</returns>
+        IEntity[] GetEntities(string entityAssetName);
+
+        /// <summary>
+        /// 获取所有已加载的实体。
+        /// </summary>
+        /// <returns>所有已加载的实体。</returns>
+        IEntity[] GetAllLoadedEntities();
+
+        /// <summary>
+        /// 获取所有正在加载实体的编号。
+        /// </summary>
+        /// <returns>所有正在加载实体的编号。</returns>
+        int[] GetAllLoadingEntityIds();
 
         /// <summary>
         /// 是否正在加载实体。
@@ -185,15 +212,20 @@ namespace GameFramework.Entity
         void HideEntity(IEntity entity, object userData);
 
         /// <summary>
-        /// 隐藏全部实体。
+        /// 隐藏所有已加载的实体。
         /// </summary>
-        void HideAllEntities();
+        void HideAllLoadedEntities();
 
         /// <summary>
-        /// 隐藏全部实体。
+        /// 隐藏所有已加载的实体。
         /// </summary>
         /// <param name="userData">用户自定义数据。</param>
-        void HideAllEntities(object userData);
+        void HideAllLoadedEntities(object userData);
+
+        /// <summary>
+        /// 隐藏所有正在加载的实体。
+        /// </summary>
+        void HideAllLoadingEntities();
 
         /// <summary>
         /// 获取父实体。

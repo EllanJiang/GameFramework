@@ -18,12 +18,13 @@ namespace UnityGameFramework.Editor.AssetBundleTools
     {
         private AssetBundleBuilderController m_Controller = null;
         private bool m_OrderBuildAssetBundles = false;
+        private int m_BuildEventHandlerTypeNameIndex = 0;
 
         [MenuItem("Game Framework/AssetBundle Tools/AssetBundle Builder", false, 31)]
         private static void Open()
         {
             AssetBundleBuilder window = GetWindow<AssetBundleBuilder>(true, "AssetBundle Builder", true);
-            window.minSize = window.maxSize = new Vector2(666f, 555f);
+            window.minSize = window.maxSize = new Vector2(666f, 570f);
         }
 
         private void OnEnable()
@@ -43,6 +44,18 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             if (m_Controller.Load())
             {
                 Debug.Log("Load configuration success.");
+                m_BuildEventHandlerTypeNameIndex = 0;
+                string[] buildEventHandlerTypeNames = m_Controller.GetBuildEventHandlerTypeNames();
+                for (int i = 0; i < buildEventHandlerTypeNames.Length; i++)
+                {
+                    if (m_Controller.BuildEventHandlerTypeName == buildEventHandlerTypeNames[i])
+                    {
+                        m_BuildEventHandlerTypeNameIndex = i;
+                        break;
+                    }
+                }
+
+                m_Controller.RefreshBuildEventHandler();
             }
             else
             {
@@ -183,6 +196,26 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 EditorGUILayout.LabelField("Build", EditorStyles.boldLabel);
                 EditorGUILayout.BeginVertical("box");
                 {
+                    EditorGUILayout.BeginHorizontal();
+                    {
+                        EditorGUILayout.LabelField("Build Event Handler", GUILayout.Width(160f));
+                        string[] names = m_Controller.GetBuildEventHandlerTypeNames();
+                        int selectedIndex = EditorGUILayout.Popup(m_BuildEventHandlerTypeNameIndex, names);
+                        if (selectedIndex != m_BuildEventHandlerTypeNameIndex)
+                        {
+                            m_BuildEventHandlerTypeNameIndex = selectedIndex;
+                            m_Controller.BuildEventHandlerTypeName = (selectedIndex <= 0 ? string.Empty : names[selectedIndex]);
+                            if (m_Controller.RefreshBuildEventHandler())
+                            {
+                                Debug.Log("Set build event success.");
+                            }
+                            else
+                            {
+                                Debug.LogWarning("Set build event failure.");
+                            }
+                        }
+                    }
+                    EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     {
                         EditorGUILayout.LabelField("Internal Resource Version", GUILayout.Width(160f));

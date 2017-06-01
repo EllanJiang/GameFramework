@@ -5,14 +5,15 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework;
 using UnityEngine;
 
-namespace Utility
+namespace UnityGameFramework.Runtime
 {
     /// <summary>
     /// JSON 函数集辅助器。
     /// </summary>
-    internal class JsonHelper : Json.IJsonHelper
+    internal class JsonHelper : Utility.Json.IJsonHelper
     {
         /// <summary>
         /// 将对象序列化为 JSON 字符串。

@@ -9,6 +9,7 @@ using GameFramework;
 using GameFramework.Localization;
 using GameFramework.Resource;
 using System;
+using System.Threading;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -16,6 +17,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 基础组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Base")]
     public sealed class BaseComponent : GameFrameworkComponent
     {
@@ -32,10 +34,13 @@ namespace UnityGameFramework.Runtime
         private Language m_EditorLanguage = Language.Unspecified;
 
         [SerializeField]
-        private string m_ZipHelperTypeName = "Utility.ZipHelper";
+        private string m_ZipHelperTypeName = "UnityGameFramework.Runtime.ZipHelper";
 
         [SerializeField]
-        private string m_JsonHelperTypeName = "Utility.JsonHelper";
+        private string m_JsonHelperTypeName = "UnityGameFramework.Runtime.JsonHelper";
+
+        [SerializeField]
+        private string m_ProfilerHelperTypeName = "UnityGameFramework.Runtime.ProfilerHelper";
 
         [SerializeField]
         private int m_FrameRate = 30;
@@ -215,6 +220,7 @@ namespace UnityGameFramework.Runtime
 #if UNITY_5_3_OR_NEWER || UNITY_5_3
             InitZipHelper();
             InitJsonHelper();
+            InitProfilerHelper();
 
             Utility.Converter.ScreenDpi = Screen.dpi;
             if (Utility.Converter.ScreenDpi <= 0)
@@ -249,6 +255,14 @@ namespace UnityGameFramework.Runtime
         private void Update()
         {
             GameFrameworkEntry.Update(Time.deltaTime, Time.unscaledDeltaTime);
+        }
+
+        private void OnDestroy()
+        {
+#if UNITY_5_6_OR_NEWER
+            Application.lowMemory -= OnLowMemory;
+#endif
+            GameFrameworkEntry.Shutdown();
         }
 
         /// <summary>
@@ -293,15 +307,16 @@ namespace UnityGameFramework.Runtime
 
         internal void Shutdown()
         {
-#if UNITY_5_6_OR_NEWER
-            Application.lowMemory -= OnLowMemory;
-#endif
-            GameFrameworkEntry.Shutdown();
             Destroy(gameObject);
         }
 
         private void InitZipHelper()
         {
+            if (string.IsNullOrEmpty(m_ZipHelperTypeName))
+            {
+                return;
+            }
+
             Type zipHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_ZipHelperTypeName);
             if (zipHelperType == null)
             {
@@ -321,21 +336,50 @@ namespace UnityGameFramework.Runtime
 
         private void InitJsonHelper()
         {
+            if (string.IsNullOrEmpty(m_JsonHelperTypeName))
+            {
+                return;
+            }
+
             Type jsonHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_JsonHelperTypeName);
             if (jsonHelperType == null)
             {
-                Log.Error("Can not find Json helper type '{0}'.", m_JsonHelperTypeName);
+                Log.Error("Can not find JSON helper type '{0}'.", m_JsonHelperTypeName);
                 return;
             }
 
             Utility.Json.IJsonHelper jsonHelper = (Utility.Json.IJsonHelper)Activator.CreateInstance(jsonHelperType);
             if (jsonHelper == null)
             {
-                Log.Error("Can not create Json helper instance '{0}'.", m_JsonHelperTypeName);
+                Log.Error("Can not create JSON helper instance '{0}'.", m_JsonHelperTypeName);
                 return;
             }
 
             Utility.Json.SetJsonHelper(jsonHelper);
+        }
+
+        private void InitProfilerHelper()
+        {
+            if (string.IsNullOrEmpty(m_ProfilerHelperTypeName))
+            {
+                return;
+            }
+
+            Type profilerHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_ProfilerHelperTypeName);
+            if (profilerHelperType == null)
+            {
+                Log.Error("Can not find profiler helper type '{0}'.", m_ProfilerHelperTypeName);
+                return;
+            }
+
+            Utility.Profiler.IProfilerHelper profilerHelper = (Utility.Profiler.IProfilerHelper)Activator.CreateInstance(profilerHelperType, Thread.CurrentThread);
+            if (profilerHelper == null)
+            {
+                Log.Error("Can not create profiler helper instance '{0}'.", m_ProfilerHelperTypeName);
+                return;
+            }
+
+            Utility.Profiler.SetProfilerHelper(profilerHelper);
         }
 
         private void LogCallback(LogLevel level, object message)

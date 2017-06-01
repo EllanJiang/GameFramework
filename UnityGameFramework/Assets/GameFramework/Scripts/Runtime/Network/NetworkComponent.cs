@@ -14,6 +14,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 网络组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Network")]
     public sealed partial class NetworkComponent : GameFrameworkComponent
     {
@@ -71,7 +72,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            NetworkHelperBase networkHelper = Utility.Helper.CreateHelper(m_NetworkHelperTypeName, m_CustomNetworkHelper);
+            NetworkHelperBase networkHelper = Helper.CreateHelper(m_NetworkHelperTypeName, m_CustomNetworkHelper);
             if (networkHelper == null)
             {
                 Log.Error("Can not create network helper.");

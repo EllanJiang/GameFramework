@@ -116,7 +116,7 @@ namespace GameFramework.WebRequest
         bool RemoveWebRequest(int serialId);
 
         /// <summary>
-        /// 移除全部 Web 请求任务。
+        /// 移除所有 Web 请求任务。
         /// </summary>
         void RemoveAllWebRequests();
     }

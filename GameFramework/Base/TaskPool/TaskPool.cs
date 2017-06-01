@@ -187,7 +187,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 移除全部任务。
+        /// 移除所有任务。
         /// </summary>
         public void RemoveAllTasks()
         {

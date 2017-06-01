@@ -270,10 +270,24 @@ namespace GameFramework.Sound
             }
 
             /// <summary>
-            /// 停止所有声音。
+            /// 停止所有已加载的声音。
+            /// </summary>
+            public void StopAllLoadedSounds()
+            {
+                foreach (SoundAgent soundAgent in m_SoundAgents)
+                {
+                    if (soundAgent.IsPlaying)
+                    {
+                        soundAgent.Stop();
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 停止所有已加载的声音。
             /// </summary>
             /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
-            public void StopAllSounds(float fadeOutSeconds)
+            public void StopAllLoadedSounds(float fadeOutSeconds)
             {
                 foreach (SoundAgent soundAgent in m_SoundAgents)
                 {
