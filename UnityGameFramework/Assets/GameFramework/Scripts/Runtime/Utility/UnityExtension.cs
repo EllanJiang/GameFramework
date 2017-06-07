@@ -59,7 +59,7 @@ public static class UnityExtension
     }
 
     /// <summary>
-    /// 取 <see cref="UnityEngine.Vector3" /> 的 (x, z) 转换为 Vector2。
+    /// 取 <see cref="UnityEngine.Vector3" /> 的 (x, y, z) 转换为 <see cref="UnityEngine.Vector2" /> 的 (x, z)。
     /// </summary>
     /// <param name="vector3">要转换的 Vector3。</param>
     /// <returns>转换后的 Vector2。</returns>
@@ -69,7 +69,7 @@ public static class UnityExtension
     }
 
     /// <summary>
-    /// 取 <see cref="UnityEngine.Vector2" /> 的 (x, y) 和给定参数 y 转换为 Vector3。
+    /// 取 <see cref="UnityEngine.Vector2" /> 的 (x, y) 转换为 <see cref="UnityEngine.Vector3" /> 的 (x, 0, y)。
     /// </summary>
     /// <param name="vector2">要转换的 Vector2。</param>
     /// <returns>转换后的 Vector3。</returns>
@@ -79,7 +79,7 @@ public static class UnityExtension
     }
 
     /// <summary>
-    /// 取 <see cref="UnityEngine.Vector2" /> 的 (x, y) 和给定参数 y 转换为 Vector3。
+    /// 取 <see cref="UnityEngine.Vector2" /> 的 (x, y) 和给定参数 y 转换为 <see cref="UnityEngine.Vector3" /> 的 (x, 参数 y, y)。
     /// </summary>
     /// <param name="vector2">要转换的 Vector2。</param>
     /// <param name="y">Vector3 的 y 值。</param>
