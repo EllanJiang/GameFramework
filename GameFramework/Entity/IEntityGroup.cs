@@ -71,5 +71,46 @@ namespace GameFramework.Entity
         {
             get;
         }
+
+        /// <summary>
+        /// 实体组中是否存在实体。
+        /// </summary>
+        /// <param name="entityId">实体序列编号。</param>
+        /// <returns>实体组中是否存在实体。</returns>
+        bool HasEntity(int entityId);
+
+        /// <summary>
+        /// 实体组中是否存在实体。
+        /// </summary>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <returns>实体组中是否存在实体。</returns>
+        bool HasEntity(string entityAssetName);
+
+        /// <summary>
+        /// 从实体组中获取实体。
+        /// </summary>
+        /// <param name="entityId">实体序列编号。</param>
+        /// <returns>要获取的实体。</returns>
+        IEntity GetEntity(int entityId);
+
+        /// <summary>
+        /// 从实体组中获取实体。
+        /// </summary>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <returns>要获取的实体。</returns>
+        IEntity GetEntity(string entityAssetName);
+
+        /// <summary>
+        /// 从实体组中获取实体。
+        /// </summary>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <returns>要获取的实体。</returns>
+        IEntity[] GetEntities(string entityAssetName);
+
+        /// <summary>
+        /// 从实体组中获取所有实体。
+        /// </summary>
+        /// <returns>实体组中的所有实体。</returns>
+        IEntity[] GetAllEntities();
     }
 }

@@ -14,6 +14,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 对象池组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Object Pool")]
     public sealed class ObjectPoolComponent : GameFrameworkComponent
     {

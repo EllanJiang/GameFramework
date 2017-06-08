@@ -62,5 +62,16 @@ namespace GameFramework.Sound
         {
             get;
         }
+
+        /// <summary>
+        /// 停止所有已加载的声音。
+        /// </summary>
+        void StopAllLoadedSounds();
+
+        /// <summary>
+        /// 停止所有已加载的声音。
+        /// </summary>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        void StopAllLoadedSounds(float fadeOutSeconds);
     }
 }

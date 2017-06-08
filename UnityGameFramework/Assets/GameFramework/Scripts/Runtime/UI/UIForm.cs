@@ -16,20 +16,32 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public sealed class UIForm : MonoBehaviour, IUIForm
     {
-        private int m_TypeId;
+        private int m_SerialId;
+        private string m_UIFormAssetName;
         private IUIGroup m_UIGroup;
         private int m_DepthInUIGroup;
         private bool m_PauseCoveredUIForm;
         private UIFormLogic m_UIFormLogic;
 
         /// <summary>
-        /// 获取界面类型编号。
+        /// 获取界面序列编号。
         /// </summary>
-        public int TypeId
+        public int SerialId
         {
             get
             {
-                return m_TypeId;
+                return m_SerialId;
+            }
+        }
+
+        /// <summary>
+        /// 获取界面资源名称。
+        /// </summary>
+        public string UIFormAssetName
+        {
+            get
+            {
+                return m_UIFormAssetName;
             }
         }
 
@@ -91,14 +103,16 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 初始化界面。
         /// </summary>
-        /// <param name="uiFormTypeId">界面类型编号。</param>
+        /// <param name="serialId">界面序列编号。</param>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
         /// <param name="uiGroup">界面所处的界面组。</param>
         /// <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
         /// <param name="isNewInstance">是否是新实例。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void OnInit(int uiFormTypeId, IUIGroup uiGroup, bool pauseCoveredUIForm, bool isNewInstance, object userData)
+        public void OnInit(int serialId, string uiFormAssetName, IUIGroup uiGroup, bool pauseCoveredUIForm, bool isNewInstance, object userData)
         {
-            m_TypeId = uiFormTypeId;
+            m_SerialId = serialId;
+            m_UIFormAssetName = uiFormAssetName;
             if (isNewInstance)
             {
                 m_UIGroup = uiGroup;
@@ -132,7 +146,7 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         public void OnRecycle()
         {
-            m_TypeId = 0;
+            m_SerialId = 0;
             m_DepthInUIGroup = 0;
             m_PauseCoveredUIForm = true;
         }

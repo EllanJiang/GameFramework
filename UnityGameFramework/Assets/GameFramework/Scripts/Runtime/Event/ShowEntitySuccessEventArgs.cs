@@ -23,7 +23,6 @@ namespace UnityGameFramework.Runtime
         {
             ShowEntityInfo showEntityInfo = (ShowEntityInfo)e.UserData;
             EntityLogicType = showEntityInfo.EntityLogicType;
-            EntityAssetName = e.EntityAssetName;
             Entity = (Entity)e.Entity;
             Duration = e.Duration;
             UserData = showEntityInfo.UserData;
@@ -44,15 +43,6 @@ namespace UnityGameFramework.Runtime
         /// 获取实体逻辑类型。
         /// </summary>
         public Type EntityLogicType
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取实体资源名称。
-        /// </summary>
-        public string EntityAssetName
         {
             get;
             private set;

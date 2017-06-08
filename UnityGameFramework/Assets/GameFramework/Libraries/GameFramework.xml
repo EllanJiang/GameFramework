@@ -989,6 +989,30 @@
             </summary>
             <param name="message">日志内容。</param>
         </member>
+        <member name="M:GameFramework.Log.Debug(System.String,System.Object)">
+            <summary>
+            记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+        </member>
+        <member name="M:GameFramework.Log.Debug(System.String,System.Object,System.Object)">
+            <summary>
+            记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+            <param name="arg1">日志参数 1。</param>
+        </member>
+        <member name="M:GameFramework.Log.Debug(System.String,System.Object,System.Object,System.Object)">
+            <summary>
+            记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+            <param name="arg1">日志参数 1。</param>
+            <param name="arg2">日志参数 2。</param>
+        </member>
         <member name="M:GameFramework.Log.Debug(System.String,System.Object[])">
             <summary>
             记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
@@ -1001,6 +1025,30 @@
             打印信息级别日志，用于记录程序正常运行日志信息。
             </summary>
             <param name="message">日志内容</param>
+        </member>
+        <member name="M:GameFramework.Log.Info(System.String,System.Object)">
+            <summary>
+            打印信息级别日志，用于记录程序正常运行日志信息。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+        </member>
+        <member name="M:GameFramework.Log.Info(System.String,System.Object,System.Object)">
+            <summary>
+            打印信息级别日志，用于记录程序正常运行日志信息。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+            <param name="arg1">日志参数 1。</param>
+        </member>
+        <member name="M:GameFramework.Log.Info(System.String,System.Object,System.Object,System.Object)">
+            <summary>
+            打印信息级别日志，用于记录程序正常运行日志信息。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+            <param name="arg1">日志参数 1。</param>
+            <param name="arg2">日志参数 2。</param>
         </member>
         <member name="M:GameFramework.Log.Info(System.String,System.Object[])">
             <summary>
@@ -1015,6 +1063,30 @@
             </summary>
             <param name="message">日志内容。</param>
         </member>
+        <member name="M:GameFramework.Log.Warning(System.String,System.Object)">
+            <summary>
+            打印警告级别日志，建议在发生局部功能逻辑错误，但尚不会导致游戏崩溃或异常时使用。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+        </member>
+        <member name="M:GameFramework.Log.Warning(System.String,System.Object,System.Object)">
+            <summary>
+            打印警告级别日志，建议在发生局部功能逻辑错误，但尚不会导致游戏崩溃或异常时使用。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+            <param name="arg1">日志参数 1。</param>
+        </member>
+        <member name="M:GameFramework.Log.Warning(System.String,System.Object,System.Object,System.Object)">
+            <summary>
+            打印警告级别日志，建议在发生局部功能逻辑错误，但尚不会导致游戏崩溃或异常时使用。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+            <param name="arg1">日志参数 1。</param>
+            <param name="arg2">日志参数 2。</param>
+        </member>
         <member name="M:GameFramework.Log.Warning(System.String,System.Object[])">
             <summary>
             打印警告级别日志，建议在发生局部功能逻辑错误，但尚不会导致游戏崩溃或异常时使用。
@@ -1028,6 +1100,30 @@
             </summary>
             <param name="message">日志内容。</param>
         </member>
+        <member name="M:GameFramework.Log.Error(System.String,System.Object)">
+            <summary>
+            打印错误级别日志，建议在发生功能逻辑错误，但尚不会导致游戏崩溃或异常时使用。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+        </member>
+        <member name="M:GameFramework.Log.Error(System.String,System.Object,System.Object)">
+            <summary>
+            打印错误级别日志，建议在发生功能逻辑错误，但尚不会导致游戏崩溃或异常时使用。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+            <param name="arg1">日志参数 1。</param>
+        </member>
+        <member name="M:GameFramework.Log.Error(System.String,System.Object,System.Object,System.Object)">
+            <summary>
+            打印错误级别日志，建议在发生功能逻辑错误，但尚不会导致游戏崩溃或异常时使用。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+            <param name="arg1">日志参数 1。</param>
+            <param name="arg2">日志参数 2。</param>
+        </member>
         <member name="M:GameFramework.Log.Error(System.String,System.Object[])">
             <summary>
             打印错误级别日志，建议在发生功能逻辑错误，但尚不会导致游戏崩溃或异常时使用。
@@ -1040,6 +1136,30 @@
             打印严重错误级别日志，建议在发生严重错误，可能导致游戏崩溃或异常时使用，此时应尝试重启进程或重建游戏框架。
             </summary>
             <param name="message">日志内容。</param>
+        </member>
+        <member name="M:GameFramework.Log.Fatal(System.String,System.Object)">
+            <summary>
+            打印严重错误级别日志，建议在发生严重错误，可能导致游戏崩溃或异常时使用，此时应尝试重启进程或重建游戏框架。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+        </member>
+        <member name="M:GameFramework.Log.Fatal(System.String,System.Object,System.Object)">
+            <summary>
+            打印严重错误级别日志，建议在发生严重错误，可能导致游戏崩溃或异常时使用，此时应尝试重启进程或重建游戏框架。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+            <param name="arg1">日志参数 1。</param>
+        </member>
+        <member name="M:GameFramework.Log.Fatal(System.String,System.Object,System.Object,System.Object)">
+            <summary>
+            打印严重错误级别日志，建议在发生严重错误，可能导致游戏崩溃或异常时使用，此时应尝试重启进程或重建游戏框架。
+            </summary>
+            <param name="format">日志格式。</param>
+            <param name="arg0">日志参数 0。</param>
+            <param name="arg1">日志参数 1。</param>
+            <param name="arg2">日志参数 2。</param>
         </member>
         <member name="M:GameFramework.Log.Fatal(System.String,System.Object[])">
             <summary>
@@ -1203,7 +1323,7 @@
         </member>
         <member name="M:GameFramework.TaskPool`1.RemoveAllTasks">
             <summary>
-            移除全部任务。
+            移除所有任务。
             </summary>
         </member>
         <member name="T:GameFramework.Variable`1">
@@ -2042,31 +2162,31 @@
         </member>
         <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.GetAllDataRows">
             <summary>
-            获取全部数据表行。
+            获取所有数据表行。
             </summary>
-            <returns>全部数据表行。</returns>
+            <returns>所有数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.GetAllDataRows(System.Predicate{`0})">
             <summary>
-            获取全部符合条件的数据表行。
+            获取所有符合条件的数据表行。
             </summary>
             <param name="condition">要检查的条件。</param>
-            <returns>全部符合条件的数据表行。</returns>
+            <returns>所有符合条件的数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.GetAllDataRows(System.Comparison{`0})">
             <summary>
-            获取全部排序后的数据表行。
+            获取所有排序后的数据表行。
             </summary>
             <param name="comparison">要排序的条件。</param>
-            <returns>全部排序后的数据表行。</returns>
+            <returns>所有排序后的数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.GetAllDataRows(System.Predicate{`0},System.Comparison{`0})">
             <summary>
-            获取全部排序后的符合条件的数据表行。
+            获取所有排序后的符合条件的数据表行。
             </summary>
             <param name="condition">要检查的条件。</param>
             <param name="comparison">要排序的条件。</param>
-            <returns>全部排序后的符合条件的数据表行。</returns>
+            <returns>所有排序后的符合条件的数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.DataTableManager.DataTable`1.GetEnumerator">
             <summary>
@@ -2159,31 +2279,31 @@
         </member>
         <member name="M:GameFramework.DataTable.IDataTable`1.GetAllDataRows">
             <summary>
-            获取全部数据表行。
+            获取所有数据表行。
             </summary>
-            <returns>全部数据表行。</returns>
+            <returns>所有数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.IDataTable`1.GetAllDataRows(System.Predicate{`0})">
             <summary>
-            获取全部符合条件的数据表行。
+            获取所有符合条件的数据表行。
             </summary>
             <param name="condition">要检查的条件。</param>
-            <returns>全部符合条件的数据表行。</returns>
+            <returns>所有符合条件的数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.IDataTable`1.GetAllDataRows(System.Comparison{`0})">
             <summary>
-            获取全部排序后的数据表行。
+            获取所有排序后的数据表行。
             </summary>
             <param name="comparison">要排序的条件。</param>
-            <returns>全部排序后的数据表行。</returns>
+            <returns>所有排序后的数据表行。</returns>
         </member>
         <member name="M:GameFramework.DataTable.IDataTable`1.GetAllDataRows(System.Predicate{`0},System.Comparison{`0})">
             <summary>
-            获取全部排序后的符合条件的数据表行。
+            获取所有排序后的符合条件的数据表行。
             </summary>
             <param name="condition">要检查的条件。</param>
             <param name="comparison">要排序的条件。</param>
-            <returns>全部排序后的符合条件的数据表行。</returns>
+            <returns>所有排序后的符合条件的数据表行。</returns>
         </member>
         <member name="T:GameFramework.DataTable.IDataTableHelper">
             <summary>
@@ -2950,7 +3070,7 @@
         </member>
         <member name="M:GameFramework.Download.DownloadManager.RemoveAllDownload">
             <summary>
-            移除全部下载任务。
+            移除所有下载任务。
             </summary>
         </member>
         <member name="T:GameFramework.Download.DownloadManager.DownloadAgent">
@@ -3374,7 +3494,7 @@
         </member>
         <member name="M:GameFramework.Download.IDownloadManager.RemoveAllDownload">
             <summary>
-            移除全部下载任务。
+            移除所有下载任务。
             </summary>
         </member>
         <member name="T:GameFramework.Entity.EntityManager">
@@ -3491,25 +3611,52 @@
             <param name="entityId">实体编号。</param>
             <returns>是否存在实体。</returns>
         </member>
+        <member name="M:GameFramework.Entity.EntityManager.HasEntity(System.String)">
+            <summary>
+            是否存在实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>是否存在实体。</returns>
+        </member>
         <member name="M:GameFramework.Entity.EntityManager.GetEntity(System.Int32)">
             <summary>
             获取实体。
             </summary>
             <param name="entityId">实体编号。</param>
-            <return>实体。</return>
+            <returns>要获取的实体。</returns>
         </member>
-        <member name="M:GameFramework.Entity.EntityManager.GetAllEntities">
+        <member name="M:GameFramework.Entity.EntityManager.GetEntity(System.String)">
             <summary>
-            获取所有实体。
+            获取实体。
             </summary>
-            <returns>所有实体。</returns>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.GetEntities(System.String)">
+            <summary>
+            获取实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.GetAllLoadedEntities">
+            <summary>
+            获取所有已加载的实体。
+            </summary>
+            <returns>所有已加载的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.GetAllLoadingEntityIds">
+            <summary>
+            获取所有正在加载实体的编号。
+            </summary>
+            <returns>所有正在加载实体的编号。</returns>
         </member>
         <member name="M:GameFramework.Entity.EntityManager.IsLoadingEntity(System.Int32)">
             <summary>
-            是否正在显示实体。
+            是否正在加载实体。
             </summary>
             <param name="entityId">实体编号。</param>
-            <returns>是否正在显示实体。</returns>
+            <returns>是否正在加载实体。</returns>
         </member>
         <member name="M:GameFramework.Entity.EntityManager.IsValidEntity(GameFramework.Entity.IEntity)">
             <summary>
@@ -3561,16 +3708,21 @@
             <param name="entity">实体。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Entity.EntityManager.HideAllEntities">
+        <member name="M:GameFramework.Entity.EntityManager.HideAllLoadedEntities">
             <summary>
-            隐藏全部实体。
+            隐藏所有已加载的实体。
             </summary>
         </member>
-        <member name="M:GameFramework.Entity.EntityManager.HideAllEntities(System.Object)">
+        <member name="M:GameFramework.Entity.EntityManager.HideAllLoadedEntities(System.Object)">
             <summary>
-            隐藏全部实体。
+            隐藏所有已加载的实体。
             </summary>
             <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.HideAllLoadingEntities">
+            <summary>
+            隐藏所有正在加载的实体。
+            </summary>
         </member>
         <member name="M:GameFramework.Entity.EntityManager.GetParentEntity(System.Int32)">
             <summary>
@@ -3792,6 +3944,47 @@
             <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
             <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         </member>
+        <member name="M:GameFramework.Entity.EntityManager.EntityGroup.HasEntity(System.Int32)">
+            <summary>
+            实体组中是否存在实体。
+            </summary>
+            <param name="entityId">实体序列编号。</param>
+            <returns>实体组中是否存在实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.EntityGroup.HasEntity(System.String)">
+            <summary>
+            实体组中是否存在实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>实体组中是否存在实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.EntityGroup.GetEntity(System.Int32)">
+            <summary>
+            从实体组中获取实体。
+            </summary>
+            <param name="entityId">实体序列编号。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.EntityGroup.GetEntity(System.String)">
+            <summary>
+            从实体组中获取实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.EntityGroup.GetEntities(System.String)">
+            <summary>
+            从实体组中获取实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.EntityManager.EntityGroup.GetAllEntities">
+            <summary>
+            从实体组中获取所有实体。
+            </summary>
+            <returns>实体组中的所有实体。</returns>
+        </member>
         <member name="M:GameFramework.Entity.EntityManager.EntityGroup.AddEntity(GameFramework.Entity.IEntity)">
             <summary>
             往实体组增加实体。
@@ -3824,16 +4017,28 @@
             隐藏实体完成事件。
             </summary>
         </member>
-        <member name="M:GameFramework.Entity.HideEntityCompleteEventArgs.#ctor(System.Int32,System.Object)">
+        <member name="M:GameFramework.Entity.HideEntityCompleteEventArgs.#ctor(System.Int32,System.String,GameFramework.Entity.IEntityGroup,System.Object)">
             <summary>
             初始化隐藏实体完成事件的新实例。
             </summary>
             <param name="entityId">实体编号。</param>
+            <param name="entityAssetName">实体资源名称。</param>
+            <param name="entityGroup">实体所属的实体组。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
         <member name="P:GameFramework.Entity.HideEntityCompleteEventArgs.EntityId">
             <summary>
             获取实体编号。
+            </summary>
+        </member>
+        <member name="P:GameFramework.Entity.HideEntityCompleteEventArgs.EntityAssetName">
+            <summary>
+            获取实体资源名称。
+            </summary>
+        </member>
+        <member name="P:GameFramework.Entity.HideEntityCompleteEventArgs.EntityGroup">
+            <summary>
+            获取实体所属的实体组。
             </summary>
         </member>
         <member name="P:GameFramework.Entity.HideEntityCompleteEventArgs.UserData">
@@ -3851,6 +4056,11 @@
             获取实体编号。
             </summary>
         </member>
+        <member name="P:GameFramework.Entity.IEntity.EntityAssetName">
+            <summary>
+            获取实体资源名称。
+            </summary>
+        </member>
         <member name="P:GameFramework.Entity.IEntity.Handle">
             <summary>
             获取实体实例。
@@ -3861,11 +4071,12 @@
             获取实体所属的实体组。
             </summary>
         </member>
-        <member name="M:GameFramework.Entity.IEntity.OnInit(System.Int32,GameFramework.Entity.IEntityGroup,System.Boolean,System.Object)">
+        <member name="M:GameFramework.Entity.IEntity.OnInit(System.Int32,System.String,GameFramework.Entity.IEntityGroup,System.Boolean,System.Object)">
             <summary>
             实体初始化。
             </summary>
             <param name="entityId">实体编号。</param>
+            <param name="entityAssetName">实体资源名称。</param>
             <param name="entityGroup">实体所属的实体组。</param>
             <param name="isNewInstance">是否是新实例。</param>
             <param name="userData">用户自定义数据。</param>
@@ -3961,6 +4172,47 @@
             <summary>
             获取实体组辅助器。
             </summary>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityGroup.HasEntity(System.Int32)">
+            <summary>
+            实体组中是否存在实体。
+            </summary>
+            <param name="entityId">实体序列编号。</param>
+            <returns>实体组中是否存在实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityGroup.HasEntity(System.String)">
+            <summary>
+            实体组中是否存在实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>实体组中是否存在实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityGroup.GetEntity(System.Int32)">
+            <summary>
+            从实体组中获取实体。
+            </summary>
+            <param name="entityId">实体序列编号。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityGroup.GetEntity(System.String)">
+            <summary>
+            从实体组中获取实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityGroup.GetEntities(System.String)">
+            <summary>
+            从实体组中获取实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityGroup.GetAllEntities">
+            <summary>
+            从实体组中获取所有实体。
+            </summary>
+            <returns>实体组中的所有实体。</returns>
         </member>
         <member name="T:GameFramework.Entity.IEntityGroupHelper">
             <summary>
@@ -4092,18 +4344,45 @@
             <param name="entityId">实体编号。</param>
             <returns>是否存在实体。</returns>
         </member>
+        <member name="M:GameFramework.Entity.IEntityManager.HasEntity(System.String)">
+            <summary>
+            是否存在实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>是否存在实体。</returns>
+        </member>
         <member name="M:GameFramework.Entity.IEntityManager.GetEntity(System.Int32)">
             <summary>
             获取实体。
             </summary>
             <param name="entityId">实体编号。</param>
-            <returns>实体。</returns>
+            <returns>要获取的实体。</returns>
         </member>
-        <member name="M:GameFramework.Entity.IEntityManager.GetAllEntities">
+        <member name="M:GameFramework.Entity.IEntityManager.GetEntity(System.String)">
             <summary>
-            获取所有实体。
+            获取实体。
             </summary>
-            <returns>所有实体。</returns>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityManager.GetEntities(System.String)">
+            <summary>
+            获取实体。
+            </summary>
+            <param name="entityAssetName">实体资源名称。</param>
+            <returns>要获取的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityManager.GetAllLoadedEntities">
+            <summary>
+            获取所有已加载的实体。
+            </summary>
+            <returns>所有已加载的实体。</returns>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityManager.GetAllLoadingEntityIds">
+            <summary>
+            获取所有正在加载实体的编号。
+            </summary>
+            <returns>所有正在加载实体的编号。</returns>
         </member>
         <member name="M:GameFramework.Entity.IEntityManager.IsLoadingEntity(System.Int32)">
             <summary>
@@ -4162,16 +4441,21 @@
             <param name="entity">实体。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="M:GameFramework.Entity.IEntityManager.HideAllEntities">
+        <member name="M:GameFramework.Entity.IEntityManager.HideAllLoadedEntities">
             <summary>
-            隐藏全部实体。
+            隐藏所有已加载的实体。
             </summary>
         </member>
-        <member name="M:GameFramework.Entity.IEntityManager.HideAllEntities(System.Object)">
+        <member name="M:GameFramework.Entity.IEntityManager.HideAllLoadedEntities(System.Object)">
             <summary>
-            隐藏全部实体。
+            隐藏所有已加载的实体。
             </summary>
             <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Entity.IEntityManager.HideAllLoadingEntities">
+            <summary>
+            隐藏所有正在加载的实体。
+            </summary>
         </member>
         <member name="M:GameFramework.Entity.IEntityManager.GetParentEntity(System.Int32)">
             <summary>
@@ -4424,19 +4708,13 @@
             显示实体成功事件。
             </summary>
         </member>
-        <member name="M:GameFramework.Entity.ShowEntitySuccessEventArgs.#ctor(System.String,GameFramework.Entity.IEntity,System.Single,System.Object)">
+        <member name="M:GameFramework.Entity.ShowEntitySuccessEventArgs.#ctor(GameFramework.Entity.IEntity,System.Single,System.Object)">
             <summary>
             初始化显示实体成功事件的新实例。
             </summary>
-            <param name="entityAssetName">实体资源名称。</param>
             <param name="entity">加载成功的实体。</param>
             <param name="duration">加载持续时间。</param>
             <param name="userData">用户自定义数据。</param>
-        </member>
-        <member name="P:GameFramework.Entity.ShowEntitySuccessEventArgs.EntityAssetName">
-            <summary>
-            获取实体资源名称。
-            </summary>
         </member>
         <member name="P:GameFramework.Entity.ShowEntitySuccessEventArgs.Entity">
             <summary>
@@ -5975,6 +6253,11 @@
             获取远程终结点的端口号。
             </summary>
         </member>
+        <member name="P:GameFramework.Network.INetworkChannel.PacketHeaderLength">
+            <summary>
+            获取数据包头长度。
+            </summary>
+        </member>
         <member name="P:GameFramework.Network.INetworkChannel.MaxPacketLength">
             <summary>
             获取数据包最大字节数。
@@ -6023,12 +6306,31 @@
             <param name="port">远程主机的端口号。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
+        <member name="M:GameFramework.Network.INetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            连接到远程主机。
+            </summary>
+            <param name="ipAddress">远程主机的 IP 地址。</param>
+            <param name="port">远程主机的端口号。</param>
+            <param name="packetHeaderLength">数据包头长度。</param>
+            <param name="maxPacketLength">数据包最大字节数。</param>
+        </member>
         <member name="M:GameFramework.Network.INetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Object)">
             <summary>
             连接到远程主机。
             </summary>
             <param name="ipAddress">远程主机的 IP 地址。</param>
             <param name="port">远程主机的端口号。</param>
+            <param name="maxPacketLength">数据包最大字节数。</param>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Network.INetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Int32,System.Object)">
+            <summary>
+            连接到远程主机。
+            </summary>
+            <param name="ipAddress">远程主机的 IP 地址。</param>
+            <param name="port">远程主机的端口号。</param>
+            <param name="packetHeaderLength">数据包头长度。</param>
             <param name="maxPacketLength">数据包最大字节数。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
@@ -6203,7 +6505,7 @@
             网络消息包处理器接口。
             </summary>
         </member>
-        <member name="P:GameFramework.Network.IPacketHandler.OpCode">
+        <member name="P:GameFramework.Network.IPacketHandler.Id">
             <summary>
             获取网络消息包协议编号。
             </summary>
@@ -6503,6 +6805,11 @@
             获取远程终结点的端口号。
             </summary>
         </member>
+        <member name="P:GameFramework.Network.NetworkManager.NetworkChannel.PacketHeaderLength">
+            <summary>
+            获取数据包头长度。
+            </summary>
+        </member>
         <member name="P:GameFramework.Network.NetworkManager.NetworkChannel.MaxPacketLength">
             <summary>
             获取数据包最大字节数。
@@ -6558,12 +6865,31 @@
             <param name="port">远程主机的端口号。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
+        <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            连接到远程主机。
+            </summary>
+            <param name="ipAddress">远程主机的 IP 地址。</param>
+            <param name="port">远程主机的端口号。</param>
+            <param name="packetHeaderLength">数据包头长度。</param>
+            <param name="maxPacketLength">数据包最大字节数。</param>
+        </member>
         <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Object)">
             <summary>
             连接到远程主机。
             </summary>
             <param name="ipAddress">远程主机的 IP 地址。</param>
             <param name="port">远程主机的端口号。</param>
+            <param name="maxPacketLength">数据包最大字节数。</param>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.Network.NetworkManager.NetworkChannel.Connect(System.Net.IPAddress,System.Int32,System.Int32,System.Int32,System.Object)">
+            <summary>
+            连接到远程主机。
+            </summary>
+            <param name="ipAddress">远程主机的 IP 地址。</param>
+            <param name="port">远程主机的端口号。</param>
+            <param name="packetHeaderLength">数据包头长度。</param>
             <param name="maxPacketLength">数据包最大字节数。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
@@ -8119,6 +8445,12 @@
             初始化流程管理器的新实例。
             </summary>
         </member>
+        <member name="P:GameFramework.Procedure.ProcedureManager.Priority">
+            <summary>
+            获取游戏框架模块优先级。
+            </summary>
+            <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
+        </member>
         <member name="P:GameFramework.Procedure.ProcedureManager.CurrentProcedure">
             <summary>
             获取当前流程。
@@ -9465,6 +9797,12 @@
             <param name="loadAssetCallbacks">加载资源回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
+        <member name="M:GameFramework.Resource.ResourceManager.UnloadAsset(System.Object)">
+            <summary>
+            卸载资源。
+            </summary>
+            <param name="asset">要卸载的资源。</param>
+        </member>
         <member name="M:GameFramework.Resource.ResourceManager.LoadScene(System.String,GameFramework.Resource.LoadSceneCallbacks)">
             <summary>
             异步加载场景。
@@ -9494,12 +9832,6 @@
             <param name="sceneAssetName">要卸载场景资源的名称。</param>
             <param name="unloadSceneCallbacks">卸载场景回调函数集。</param>
             <param name="userData">用户自定义数据。</param>
-        </member>
-        <member name="M:GameFramework.Resource.ResourceManager.UnloadAsset(System.Object)">
-            <summary>
-            卸载资源。
-            </summary>
-            <param name="asset">要卸载的资源。</param>
         </member>
         <member name="M:GameFramework.Resource.ResourceManager.GetResourceGroupReady(System.String)">
             <summary>
@@ -9741,7 +10073,7 @@
             资源组。
             </summary>
         </member>
-        <member name="M:GameFramework.Resource.ResourceManager.ResourceGroup.#ctor(System.Collections.Generic.IDictionary{GameFramework.Resource.ResourceManager.ResourceName,GameFramework.Resource.ResourceManager.ResourceInfo})">
+        <member name="M:GameFramework.Resource.ResourceManager.ResourceGroup.#ctor(System.Collections.Generic.Dictionary{GameFramework.Resource.ResourceManager.ResourceName,GameFramework.Resource.ResourceManager.ResourceInfo})">
             <summary>
             初始化资源组的新实例。
             </summary>
@@ -11460,36 +11792,59 @@
             获取或设置声音最大距离。
             </summary>
         </member>
+        <member name="P:GameFramework.Sound.ISoundAgent.Helper">
+            <summary>
+            获取声音代理辅助器。
+            </summary>
+        </member>
         <member name="M:GameFramework.Sound.ISoundAgent.Play">
             <summary>
             播放声音。
             </summary>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundAgent.Play(System.Single)">
+            <summary>
+            播放声音。
+            </summary>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
         </member>
         <member name="M:GameFramework.Sound.ISoundAgent.Stop">
             <summary>
             停止播放声音。
             </summary>
         </member>
+        <member name="M:GameFramework.Sound.ISoundAgent.Stop(System.Single)">
+            <summary>
+            停止播放声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        </member>
         <member name="M:GameFramework.Sound.ISoundAgent.Pause">
             <summary>
             暂停播放声音。
             </summary>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundAgent.Pause(System.Single)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
         <member name="M:GameFramework.Sound.ISoundAgent.Resume">
             <summary>
             恢复播放声音。
             </summary>
         </member>
+        <member name="M:GameFramework.Sound.ISoundAgent.Resume(System.Single)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        </member>
         <member name="M:GameFramework.Sound.ISoundAgent.Reset">
             <summary>
             重置声音代理。
             </summary>
-        </member>
-        <member name="M:GameFramework.Sound.ISoundAgent.SetBindingEntity(GameFramework.Entity.IEntity)">
-            <summary>
-            设置声音绑定的实体。
-            </summary>
-            <param name="bindingEntity">声音绑定的实体。</param>
         </member>
         <member name="T:GameFramework.Sound.ISoundAgentHelper">
             <summary>
@@ -11551,25 +11906,29 @@
             重置声音代理事件。
             </summary>
         </member>
-        <member name="M:GameFramework.Sound.ISoundAgentHelper.Play">
+        <member name="M:GameFramework.Sound.ISoundAgentHelper.Play(System.Single)">
             <summary>
             播放声音。
             </summary>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
         </member>
-        <member name="M:GameFramework.Sound.ISoundAgentHelper.Stop">
+        <member name="M:GameFramework.Sound.ISoundAgentHelper.Stop(System.Single)">
             <summary>
             停止播放声音。
             </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
-        <member name="M:GameFramework.Sound.ISoundAgentHelper.Pause">
+        <member name="M:GameFramework.Sound.ISoundAgentHelper.Pause(System.Single)">
             <summary>
             暂停播放声音。
             </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
-        <member name="M:GameFramework.Sound.ISoundAgentHelper.Resume">
+        <member name="M:GameFramework.Sound.ISoundAgentHelper.Resume(System.Single)">
             <summary>
             恢复播放声音。
             </summary>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
         </member>
         <member name="M:GameFramework.Sound.ISoundAgentHelper.Reset">
             <summary>
@@ -11582,12 +11941,6 @@
             </summary>
             <param name="soundAsset">声音资源。</param>
             <returns>设置声音资源是否成功。</returns>
-        </member>
-        <member name="M:GameFramework.Sound.ISoundAgentHelper.SetBindingEntity(GameFramework.Entity.IEntity)">
-            <summary>
-            设置声音绑定的实体。
-            </summary>
-            <param name="bindingEntity">声音绑定的实体。</param>
         </member>
         <member name="T:GameFramework.Sound.ISoundGroup">
             <summary>
@@ -11623,6 +11976,17 @@
             <summary>
             获取声音组辅助器。
             </summary>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundGroup.StopAllLoadedSounds">
+            <summary>
+            停止所有已加载的声音。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundGroup.StopAllLoadedSounds(System.Single)">
+            <summary>
+            停止所有已加载的声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
         <member name="T:GameFramework.Sound.ISoundGroupHelper">
             <summary>
@@ -11728,6 +12092,19 @@
             <param name="soundGroupName">声音组名称。</param>
             <param name="soundAgentHelper">要增加的声音代理辅助器。</param>
         </member>
+        <member name="M:GameFramework.Sound.ISoundManager.GetAllLoadingSoundSerialIds">
+            <summary>
+            获取所有正在加载声音的序列编号。
+            </summary>
+            <returns>所有正在加载声音的序列编号。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundManager.IsLoadingSound(System.Int32)">
+            <summary>
+            是否正在加载声音。
+            </summary>
+            <param name="serialId">声音序列编号。</param>
+            <returns>是否正在加载声音。</returns>
+        </member>
         <member name="M:GameFramework.Sound.ISoundManager.PlaySound(System.String,System.String)">
             <summary>
             播放声音。
@@ -11769,18 +12146,55 @@
             停止播放声音。
             </summary>
             <param name="serialId">要停止播放声音的序列编号。</param>
-            <returns>是否停止播放声音成功。</returns>
         </member>
-        <member name="M:GameFramework.Sound.ISoundManager.StopAllSounds(System.String)">
+        <member name="M:GameFramework.Sound.ISoundManager.StopSound(System.Int32,System.Single)">
             <summary>
-            停止所有声音。
+            停止播放声音。
             </summary>
-            <param name="soundGroupName">声音组名称。</param>
+            <param name="serialId">要停止播放声音的序列编号。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
-        <member name="M:GameFramework.Sound.ISoundManager.StopAllSounds">
+        <member name="M:GameFramework.Sound.ISoundManager.StopAllLoadedSounds">
             <summary>
-            停止所有声音。
+            停止所有已加载的声音。
             </summary>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundManager.StopAllLoadedSounds(System.Single)">
+            <summary>
+            停止所有已加载的声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundManager.StopAllLoadingSounds">
+            <summary>
+            停止所有正在加载的声音。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundManager.PauseSound(System.Int32)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="serialId">要暂停播放声音的序列编号。</param>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundManager.PauseSound(System.Int32,System.Single)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="serialId">要暂停播放声音的序列编号。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundManager.ResumeSound(System.Int32)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="serialId">要恢复播放声音的序列编号。</param>
+        </member>
+        <member name="M:GameFramework.Sound.ISoundManager.ResumeSound(System.Int32,System.Single)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="serialId">要恢复播放声音的序列编号。</param>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
         </member>
         <member name="T:GameFramework.Sound.PlaySoundDependencyAssetEventArgs">
             <summary>
@@ -11955,6 +12369,11 @@
         <member name="P:GameFramework.Sound.PlaySoundParams.VolumeInSoundGroup">
             <summary>
             获取或设置在声音组内音量大小。
+            </summary>
+        </member>
+        <member name="P:GameFramework.Sound.PlaySoundParams.FadeInSeconds">
+            <summary>
+            获取或设置声音淡入时间，以秒为单位。
             </summary>
         </member>
         <member name="P:GameFramework.Sound.PlaySoundParams.Pitch">
@@ -12178,6 +12597,19 @@
             <param name="soundGroupName">声音组名称。</param>
             <param name="soundAgentHelper">要增加的声音代理辅助器。</param>
         </member>
+        <member name="M:GameFramework.Sound.SoundManager.GetAllLoadingSoundSerialIds">
+            <summary>
+            获取所有正在加载声音的序列编号。
+            </summary>
+            <returns>所有正在加载声音的序列编号。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.IsLoadingSound(System.Int32)">
+            <summary>
+            是否正在加载声音。
+            </summary>
+            <param name="serialId">声音序列编号。</param>
+            <returns>是否正在加载声音。</returns>
+        </member>
         <member name="M:GameFramework.Sound.SoundManager.PlaySound(System.String,System.String)">
             <summary>
             播放声音。
@@ -12219,18 +12651,55 @@
             停止播放声音。
             </summary>
             <param name="serialId">要停止播放声音的序列编号。</param>
-            <returns>是否停止播放声音成功。</returns>
         </member>
-        <member name="M:GameFramework.Sound.SoundManager.StopAllSounds(System.String)">
+        <member name="M:GameFramework.Sound.SoundManager.StopSound(System.Int32,System.Single)">
             <summary>
-            停止所有声音。
+            停止播放声音。
             </summary>
-            <param name="soundGroupName">声音组名称。</param>
+            <param name="serialId">要停止播放声音的序列编号。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
-        <member name="M:GameFramework.Sound.SoundManager.StopAllSounds">
+        <member name="M:GameFramework.Sound.SoundManager.StopAllLoadedSounds">
             <summary>
-            停止所有声音。
+            停止所有已加载的声音。
             </summary>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.StopAllLoadedSounds(System.Single)">
+            <summary>
+            停止所有已加载的声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.StopAllLoadingSounds">
+            <summary>
+            停止所有正在加载的声音。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.PauseSound(System.Int32)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="serialId">要暂停播放声音的序列编号。</param>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.PauseSound(System.Int32,System.Single)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="serialId">要暂停播放声音的序列编号。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.ResumeSound(System.Int32)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="serialId">要恢复播放声音的序列编号。</param>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.ResumeSound(System.Int32,System.Single)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="serialId">要恢复播放声音的序列编号。</param>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
         </member>
         <member name="T:GameFramework.Sound.SoundManager.SoundAgent">
             <summary>
@@ -12315,6 +12784,11 @@
             获取或设置声音最大距离。
             </summary>
         </member>
+        <member name="P:GameFramework.Sound.SoundManager.SoundAgent.Helper">
+            <summary>
+            获取声音代理辅助器。
+            </summary>
+        </member>
         <member name="P:GameFramework.Sound.SoundManager.SoundAgent.SetSoundAssetTime">
             <summary>
             获取声音创建时间。
@@ -12325,31 +12799,49 @@
             播放声音。
             </summary>
         </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Play(System.Single)">
+            <summary>
+            播放声音。
+            </summary>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        </member>
         <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Stop">
             <summary>
             停止播放声音。
             </summary>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Stop(System.Single)">
+            <summary>
+            停止播放声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
         <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Pause">
             <summary>
             暂停播放声音。
             </summary>
         </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Pause(System.Single)">
+            <summary>
+            暂停播放声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        </member>
         <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Resume">
             <summary>
             恢复播放声音。
             </summary>
         </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Resume(System.Single)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        </member>
         <member name="M:GameFramework.Sound.SoundManager.SoundAgent.Reset">
             <summary>
             重置声音代理。
             </summary>
-        </member>
-        <member name="M:GameFramework.Sound.SoundManager.SoundAgent.SetBindingEntity(GameFramework.Entity.IEntity)">
-            <summary>
-            设置声音绑定的实体。
-            </summary>
-            <param name="bindingEntity">声音绑定的实体。</param>
         </member>
         <member name="T:GameFramework.Sound.SoundManager.SoundGroup">
             <summary>
@@ -12410,33 +12902,68 @@
             <param name="errorCode">错误码。</param>
             <returns>用于播放的声音代理。</returns>
         </member>
-        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.StopSound(System.Int32)">
+        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.StopSound(System.Int32,System.Single)">
             <summary>
             停止播放声音。
             </summary>
             <param name="serialId">要停止播放声音的序列编号。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
             <returns>是否停止播放声音成功。</returns>
         </member>
-        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.StopAllSounds">
+        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.PauseSound(System.Int32,System.Single)">
             <summary>
-            停止所有声音。
+            暂停播放声音。
             </summary>
+            <param name="serialId">要暂停播放声音的序列编号。</param>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+            <returns>是否暂停播放声音成功。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.ResumeSound(System.Int32,System.Single)">
+            <summary>
+            恢复播放声音。
+            </summary>
+            <param name="serialId">要恢复播放声音的序列编号。</param>
+            <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+            <returns>是否恢复播放声音成功。</returns>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.StopAllLoadedSounds">
+            <summary>
+            停止所有已加载的声音。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Sound.SoundManager.SoundGroup.StopAllLoadedSounds(System.Single)">
+            <summary>
+            停止所有已加载的声音。
+            </summary>
+            <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
         </member>
         <member name="T:GameFramework.UI.CloseUIFormCompleteEventArgs">
             <summary>
             关闭界面完成事件。
             </summary>
         </member>
-        <member name="M:GameFramework.UI.CloseUIFormCompleteEventArgs.#ctor(System.Int32,System.Object)">
+        <member name="M:GameFramework.UI.CloseUIFormCompleteEventArgs.#ctor(System.Int32,System.String,GameFramework.UI.IUIGroup,System.Object)">
             <summary>
             初始化关闭界面完成事件的新实例。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <param name="uiGroup">界面所属的界面组。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="P:GameFramework.UI.CloseUIFormCompleteEventArgs.UIFormTypeId">
+        <member name="P:GameFramework.UI.CloseUIFormCompleteEventArgs.SerialId">
             <summary>
-            获取界面类型编号。
+            获取界面序列编号。
+            </summary>
+        </member>
+        <member name="P:GameFramework.UI.CloseUIFormCompleteEventArgs.UIFormAssetName">
+            <summary>
+            获取界面资源名称。
+            </summary>
+        </member>
+        <member name="P:GameFramework.UI.CloseUIFormCompleteEventArgs.UIGroup">
+            <summary>
+            获取界面所属的界面组。
             </summary>
         </member>
         <member name="P:GameFramework.UI.CloseUIFormCompleteEventArgs.UserData">
@@ -12449,9 +12976,14 @@
             界面接口。
             </summary>
         </member>
-        <member name="P:GameFramework.UI.IUIForm.TypeId">
+        <member name="P:GameFramework.UI.IUIForm.SerialId">
             <summary>
-            获取界面类型编号。
+            获取界面序列编号。
+            </summary>
+        </member>
+        <member name="P:GameFramework.UI.IUIForm.UIFormAssetName">
+            <summary>
+            获取界面资源名称。
             </summary>
         </member>
         <member name="P:GameFramework.UI.IUIForm.Handle">
@@ -12474,12 +13006,13 @@
             获取是否暂停被覆盖的界面。
             </summary>
         </member>
-        <member name="M:GameFramework.UI.IUIForm.OnInit(System.Int32,GameFramework.UI.IUIGroup,System.Boolean,System.Boolean,System.Object)">
+        <member name="M:GameFramework.UI.IUIForm.OnInit(System.Int32,System.String,GameFramework.UI.IUIGroup,System.Boolean,System.Boolean,System.Object)">
             <summary>
             初始化界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroup">界面所处的界面组。</param>
+            <param name="serialId">界面序列编号。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <param name="uiGroup">界面所属的界面组。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
             <param name="isNewInstance">是否是新实例。</param>
             <param name="userData">用户自定义数据。</param>
@@ -12603,22 +13136,42 @@
             <summary>
             界面组中是否存在界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
+            <returns>界面组中是否存在界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIGroup.HasUIForm(System.String)">
+            <summary>
+            界面组中是否存在界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
             <returns>界面组中是否存在界面。</returns>
         </member>
         <member name="M:GameFramework.UI.IUIGroup.GetUIForm(System.Int32)">
             <summary>
             从界面组中获取界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
             <returns>要获取的界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIGroup.GetUIForms(System.Int32)">
+        <member name="M:GameFramework.UI.IUIGroup.GetUIForm(System.String)">
             <summary>
             从界面组中获取界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
             <returns>要获取的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIGroup.GetUIForms(System.String)">
+            <summary>
+            从界面组中获取界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>要获取的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIGroup.GetAllUIForms">
+            <summary>
+            从界面组中获取所有界面。
+            </summary>
+            <returns>界面组中的所有界面。</returns>
         </member>
         <member name="T:GameFramework.UI.IUIGroupHelper">
             <summary>
@@ -12741,64 +13294,121 @@
             <param name="uiGroupHelper">界面组辅助器。</param>
             <returns>是否增加界面组成功。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.HasUIForm(System.Int32,System.String)">
+        <member name="M:GameFramework.UI.IUIManager.HasUIForm(System.Int32)">
             <summary>
-            界面组中是否存在界面。
+            是否存在界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroupName">界面组名称。</param>
-            <returns>界面组中是否存在界面。</returns>
+            <param name="serialId">界面序列编号。</param>
+            <returns>是否存在界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.GetUIForm(System.Int32,System.String)">
+        <member name="M:GameFramework.UI.IUIManager.HasUIForm(System.String)">
             <summary>
-            从界面组中获取界面。
+            是否存在界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroupName">界面组名称。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>是否存在界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.GetUIForm(System.Int32)">
+            <summary>
+            获取界面。
+            </summary>
+            <param name="serialId">界面序列编号。</param>
             <returns>要获取的界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.GetUIForms(System.Int32,System.String)">
+        <member name="M:GameFramework.UI.IUIManager.GetUIForm(System.String)">
             <summary>
-            从界面组中获取界面。
+            获取界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroupName">界面组名称。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
             <returns>要获取的界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.Int32,System.String,System.String)">
+        <member name="M:GameFramework.UI.IUIManager.GetUIForms(System.String)">
+            <summary>
+            获取界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>要获取的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.GetAllLoadedUIForms">
+            <summary>
+            获取所有已加载的界面。
+            </summary>
+            <returns>所有已加载的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.GetAllLoadingUIFormSerialIds">
+            <summary>
+            获取所有正在加载界面的序列编号。
+            </summary>
+            <returns>所有正在加载界面的序列编号。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.IsLoadingUIForm(System.Int32)">
+            <summary>
+            是否正在加载界面。
+            </summary>
+            <param name="serialId">界面序列编号。</param>
+            <returns>是否正在加载界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.IsLoadingUIForm(System.String)">
+            <summary>
+            是否正在加载界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>是否正在加载界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.IsValidUIForm(GameFramework.UI.IUIForm)">
+            <summary>
+            是否是合法的界面。
+            </summary>
+            <param name="uiForm">界面。</param>
+            <returns>界面是否合法。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.String,System.String)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
+            <returns>界面的序列编号。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.Int32,System.String,System.String,System.Boolean)">
+        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.String,System.String,System.Boolean)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
+            <returns>界面的序列编号。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.Int32,System.String,System.String,System.Object)">
+        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.String,System.String,System.Object)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="userData">用户自定义数据。</param>
+            <returns>界面的序列编号。</returns>
         </member>
-        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.Int32,System.String,System.String,System.Boolean,System.Object)">
+        <member name="M:GameFramework.UI.IUIManager.OpenUIForm(System.String,System.String,System.Boolean,System.Object)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
+            <param name="userData">用户自定义数据。</param>
+            <returns>界面的序列编号。</returns>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.CloseUIForm(System.Int32)">
+            <summary>
+            关闭界面。
+            </summary>
+            <param name="serialId">要关闭界面的序列编号。</param>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.CloseUIForm(System.Int32,System.Object)">
+            <summary>
+            关闭界面。
+            </summary>
+            <param name="serialId">要关闭界面的序列编号。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
         <member name="M:GameFramework.UI.IUIManager.CloseUIForm(GameFramework.UI.IUIForm)">
@@ -12813,6 +13423,22 @@
             </summary>
             <param name="uiForm">要关闭的界面。</param>
             <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.CloseAllLoadedUIForms">
+            <summary>
+            关闭所有已加载的界面。
+            </summary>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.CloseAllLoadedUIForms(System.Object)">
+            <summary>
+            关闭所有已加载的界面。
+            </summary>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.UI.IUIManager.CloseAllLoadingUIForms">
+            <summary>
+            关闭所有正在加载的界面。
+            </summary>
         </member>
         <member name="M:GameFramework.UI.IUIManager.RefocusUIForm(GameFramework.UI.IUIForm)">
             <summary>
@@ -12831,14 +13457,14 @@
             <summary>
             设置界面是否被加锁。
             </summary>
-            <param name="uiForm">界面。</param>
+            <param name="uiForm">要设置是否被加锁的界面。</param>
             <param name="locked">界面是否被加锁。</param>
         </member>
         <member name="M:GameFramework.UI.IUIManager.SetUIFormPriority(GameFramework.UI.IUIForm,System.Int32)">
             <summary>
             设置界面的优先级。
             </summary>
-            <param name="uiForm">界面。</param>
+            <param name="uiForm">要设置优先级的界面。</param>
             <param name="priority">界面优先级。</param>
         </member>
         <member name="T:GameFramework.UI.OpenUIFormDependencyAssetEventArgs">
@@ -12850,7 +13476,7 @@
             <summary>
             初始化打开界面时加载依赖资源事件的新实例。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
@@ -12859,9 +13485,9 @@
             <param name="totalCount">总共加载依赖资源数量。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="P:GameFramework.UI.OpenUIFormDependencyAssetEventArgs.UIFormTypeId">
+        <member name="P:GameFramework.UI.OpenUIFormDependencyAssetEventArgs.SerialId">
             <summary>
-            获取界面类型编号。
+            获取界面序列编号。
             </summary>
         </member>
         <member name="P:GameFramework.UI.OpenUIFormDependencyAssetEventArgs.UIFormAssetName">
@@ -12908,16 +13534,16 @@
             <summary>
             初始化打开界面失败事件的新实例。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
             <param name="errorMessage">错误信息。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="P:GameFramework.UI.OpenUIFormFailureEventArgs.UIFormTypeId">
+        <member name="P:GameFramework.UI.OpenUIFormFailureEventArgs.SerialId">
             <summary>
-            获取界面类型编号。
+            获取界面序列编号。
             </summary>
         </member>
         <member name="P:GameFramework.UI.OpenUIFormFailureEventArgs.UIFormAssetName">
@@ -12950,19 +13576,13 @@
             打开界面成功事件。
             </summary>
         </member>
-        <member name="M:GameFramework.UI.OpenUIFormSuccessEventArgs.#ctor(System.String,GameFramework.UI.IUIForm,System.Single,System.Object)">
+        <member name="M:GameFramework.UI.OpenUIFormSuccessEventArgs.#ctor(GameFramework.UI.IUIForm,System.Single,System.Object)">
             <summary>
             初始化打开界面成功事件的新实例。
             </summary>
-            <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiForm">加载成功的界面。</param>
             <param name="duration">加载持续时间。</param>
             <param name="userData">用户自定义数据。</param>
-        </member>
-        <member name="P:GameFramework.UI.OpenUIFormSuccessEventArgs.UIFormAssetName">
-            <summary>
-            获取界面资源名称。
-            </summary>
         </member>
         <member name="P:GameFramework.UI.OpenUIFormSuccessEventArgs.UIForm">
             <summary>
@@ -12988,16 +13608,16 @@
             <summary>
             初始化打开界面更新事件的新实例。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
             <param name="progress">打开界面进度。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
-        <member name="P:GameFramework.UI.OpenUIFormUpdateEventArgs.UIFormTypeId">
+        <member name="P:GameFramework.UI.OpenUIFormUpdateEventArgs.SerialId">
             <summary>
-            获取界面类型编号。
+            获取界面序列编号。
             </summary>
         </member>
         <member name="P:GameFramework.UI.OpenUIFormUpdateEventArgs.UIFormAssetName">
@@ -13152,64 +13772,121 @@
             <param name="uiGroupHelper">界面组辅助器。</param>
             <returns>是否增加界面组成功。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.HasUIForm(System.Int32,System.String)">
+        <member name="M:GameFramework.UI.UIManager.HasUIForm(System.Int32)">
             <summary>
-            界面组中是否存在界面。
+            是否存在界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroupName">界面组名称。</param>
-            <returns>界面组中是否存在界面。</returns>
+            <param name="serialId">界面序列编号。</param>
+            <returns>是否存在界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.GetUIForm(System.Int32,System.String)">
+        <member name="M:GameFramework.UI.UIManager.HasUIForm(System.String)">
             <summary>
-            从界面组中获取界面。
+            是否存在界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroupName">界面组名称。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>是否存在界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.GetUIForm(System.Int32)">
+            <summary>
+            获取界面。
+            </summary>
+            <param name="serialId">界面序列编号。</param>
             <returns>要获取的界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.GetUIForms(System.Int32,System.String)">
+        <member name="M:GameFramework.UI.UIManager.GetUIForm(System.String)">
             <summary>
-            从界面组中获取界面。
+            获取界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
-            <param name="uiGroupName">界面组名称。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
             <returns>要获取的界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.Int32,System.String,System.String)">
+        <member name="M:GameFramework.UI.UIManager.GetUIForms(System.String)">
+            <summary>
+            获取界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>要获取的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.GetAllLoadedUIForms">
+            <summary>
+            获取所有已加载的界面。
+            </summary>
+            <returns>所有已加载的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.GetAllLoadingUIFormSerialIds">
+            <summary>
+            获取所有正在加载界面的序列编号。
+            </summary>
+            <returns>所有正在加载界面的序列编号。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.IsLoadingUIForm(System.Int32)">
+            <summary>
+            是否正在加载界面。
+            </summary>
+            <param name="serialId">界面序列编号。</param>
+            <returns>是否正在加载界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.IsLoadingUIForm(System.String)">
+            <summary>
+            是否正在加载界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>是否正在加载界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.IsValidUIForm(GameFramework.UI.IUIForm)">
+            <summary>
+            是否是合法的界面。
+            </summary>
+            <param name="uiForm">界面。</param>
+            <returns>界面是否合法。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.String,System.String)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
+            <returns>界面的序列编号。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.Int32,System.String,System.String,System.Boolean)">
+        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.String,System.String,System.Boolean)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
+            <returns>界面的序列编号。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.Int32,System.String,System.String,System.Object)">
+        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.String,System.String,System.Object)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="userData">用户自定义数据。</param>
+            <returns>界面的序列编号。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.Int32,System.String,System.String,System.Boolean,System.Object)">
+        <member name="M:GameFramework.UI.UIManager.OpenUIForm(System.String,System.String,System.Boolean,System.Object)">
             <summary>
             打开界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
             <param name="uiFormAssetName">界面资源名称。</param>
             <param name="uiGroupName">界面组名称。</param>
             <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
+            <param name="userData">用户自定义数据。</param>
+            <returns>界面的序列编号。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.CloseUIForm(System.Int32)">
+            <summary>
+            关闭界面。
+            </summary>
+            <param name="serialId">要关闭界面的序列编号。</param>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.CloseUIForm(System.Int32,System.Object)">
+            <summary>
+            关闭界面。
+            </summary>
+            <param name="serialId">要关闭界面的序列编号。</param>
             <param name="userData">用户自定义数据。</param>
         </member>
         <member name="M:GameFramework.UI.UIManager.CloseUIForm(GameFramework.UI.IUIForm)">
@@ -13224,6 +13901,22 @@
             </summary>
             <param name="uiForm">要关闭的界面。</param>
             <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.CloseAllLoadedUIForms">
+            <summary>
+            关闭所有已加载的界面。
+            </summary>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.CloseAllLoadedUIForms(System.Object)">
+            <summary>
+            关闭所有已加载的界面。
+            </summary>
+            <param name="userData">用户自定义数据。</param>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.CloseAllLoadingUIForms">
+            <summary>
+            关闭所有正在加载的界面。
+            </summary>
         </member>
         <member name="M:GameFramework.UI.UIManager.RefocusUIForm(GameFramework.UI.IUIForm)">
             <summary>
@@ -13242,14 +13935,14 @@
             <summary>
             设置界面是否被加锁。
             </summary>
-            <param name="uiForm">界面。</param>
+            <param name="uiForm">要设置是否被加锁的界面。</param>
             <param name="locked">界面是否被加锁。</param>
         </member>
         <member name="M:GameFramework.UI.UIManager.SetUIFormPriority(GameFramework.UI.IUIForm,System.Int32)">
             <summary>
             设置界面的优先级。
             </summary>
-            <param name="uiForm">界面。</param>
+            <param name="uiForm">要设置优先级的界面。</param>
             <param name="priority">界面优先级。</param>
         </member>
         <member name="T:GameFramework.UI.UIManager.UIFormInstanceObject">
@@ -13306,22 +13999,42 @@
             <summary>
             界面组中是否存在界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
+            <returns>界面组中是否存在界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.UIGroup.HasUIForm(System.String)">
+            <summary>
+            界面组中是否存在界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
             <returns>界面组中是否存在界面。</returns>
         </member>
         <member name="M:GameFramework.UI.UIManager.UIGroup.GetUIForm(System.Int32)">
             <summary>
             从界面组中获取界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="serialId">界面序列编号。</param>
             <returns>要获取的界面。</returns>
         </member>
-        <member name="M:GameFramework.UI.UIManager.UIGroup.GetUIForms(System.Int32)">
+        <member name="M:GameFramework.UI.UIManager.UIGroup.GetUIForm(System.String)">
             <summary>
             从界面组中获取界面。
             </summary>
-            <param name="uiFormTypeId">界面类型编号。</param>
+            <param name="uiFormAssetName">界面资源名称。</param>
             <returns>要获取的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.UIGroup.GetUIForms(System.String)">
+            <summary>
+            从界面组中获取界面。
+            </summary>
+            <param name="uiFormAssetName">界面资源名称。</param>
+            <returns>要获取的界面。</returns>
+        </member>
+        <member name="M:GameFramework.UI.UIManager.UIGroup.GetAllUIForms">
+            <summary>
+            从界面组中获取所有界面。
+            </summary>
+            <returns>界面组中的所有界面。</returns>
         </member>
         <member name="M:GameFramework.UI.UIManager.UIGroup.AddUIForm(GameFramework.UI.IUIForm)">
             <summary>
@@ -13371,6 +14084,495 @@
         <member name="P:GameFramework.UI.UIManager.UIGroup.UIFormInfo.Covered">
             <summary>
             获取或设置界面是否遮挡。
+            </summary>
+        </member>
+        <member name="T:GameFramework.Utility">
+            <summary>
+            实用函数集。
+            </summary>
+        </member>
+        <member name="T:GameFramework.Utility.Assembly">
+            <summary>
+            程序集相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Assembly.GetLoadedAssemblyNames">
+            <summary>
+            获取已加载的程序集名称。
+            </summary>
+            <returns>已加载的程序集名称。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Assembly.GetTypeWithinLoadedAssemblies(System.String)">
+            <summary>
+            从已加载的程序集中获取类型。
+            </summary>
+            <param name="typeName">要获取的类型名。</param>
+            <returns>获取的类型。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Converter">
+            <summary>
+            类型转换相关的实用函数。
+            </summary>
+        </member>
+        <member name="P:GameFramework.Utility.Converter.ScreenDpi">
+            <summary>
+            获取或设置屏幕每英寸点数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetCentimetersFromPixels(System.Single)">
+            <summary>
+            将像素转换为厘米。
+            </summary>
+            <param name="pixels">像素。</param>
+            <returns>厘米。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetPixelsFromCentimeters(System.Single)">
+            <summary>
+            将厘米转换为像素。
+            </summary>
+            <param name="centimeters">厘米。</param>
+            <returns>像素。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetInchesFromPixels(System.Single)">
+            <summary>
+            将像素转换为英寸。
+            </summary>
+            <param name="pixels">像素。</param>
+            <returns>英寸。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetPixelsFromInches(System.Single)">
+            <summary>
+            将英寸转换为像素。
+            </summary>
+            <param name="inches">英寸。</param>
+            <returns>像素。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytesFromInt(System.Int32)">
+            <summary>
+            以字节数组的形式返回指定的 32 位有符号整数值。
+            </summary>
+            <param name="int32">要转换的数字。</param>
+            <returns>长度为 4 的字节数组。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetIntFromBytes(System.Byte[])">
+            <summary>
+            返回由字节数组中指定位置的四个字节转换来的 32 位有符号整数。
+            </summary>
+            <param name="bytes">字节数组。</param>
+            <returns>由四个字节构成、从 startIndex 开始的 32 位有符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetIntFromBytes(System.Byte[],System.Int32)">
+            <summary>
+            返回由字节数组中指定位置的四个字节转换来的 32 位有符号整数。
+            </summary>
+            <param name="bytes">字节数组。</param>
+            <param name="startIndex">bytes 内的起始位置。</param>
+            <returns>由四个字节构成、从 startIndex 开始的 32 位有符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetStringFromBytes(System.Byte[])">
+            <summary>
+            将 UTF-8 字节流转换为字符串。
+            </summary>
+            <param name="bytes">要转换的字节流。</param>
+            <returns>转化后的字符串。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytesFromString(System.String)">
+            <summary>
+            将字符串转换为 UTF-8 字节流。
+            </summary>
+            <param name="str">要转换的字符串。</param>
+            <returns>转换后的 UTF-8 字节流。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Encryption">
+            <summary>
+            加密解密相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Encryption.GetQuickXorBytes(System.Byte[],System.Byte[])">
+            <summary>
+            将 bytes 使用 code 做异或运算的快速版本。
+            </summary>
+            <param name="bytes">原始二进制流。</param>
+            <param name="code">异或二进制流。</param>
+            <returns>异或后的二进制流。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Encryption.GetXorBytes(System.Byte[],System.Byte[],System.Int32)">
+            <summary>
+            将 bytes 使用 code 做异或运算。
+            </summary>
+            <param name="bytes">原始二进制流。</param>
+            <param name="code">异或二进制流。</param>
+            <param name="length">异或计算长度，若小于等于 0，则计算整个二进制流。</param>
+            <returns>异或后的二进制流。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Json">
+            <summary>
+            JSON 相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Json.SetJsonHelper(GameFramework.Utility.Json.IJsonHelper)">
+            <summary>
+            设置 JSON 辅助器。
+            </summary>
+            <param name="jsonHelper">要设置的 JSON 辅助器。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Json.ToJson(System.Object)">
+            <summary>
+            将对象序列化为 JSON 字符串。
+            </summary>
+            <param name="obj">要序列化的对象。</param>
+            <returns>序列化后的 JSON 字符串。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Json.ToJsonData(System.Object)">
+            <summary>
+            将对象序列化为 JSON 流。
+            </summary>
+            <param name="obj">要序列化的对象。</param>
+            <returns>序列化后的 JSON 流。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Json.ToObject``1(System.String)">
+            <summary>
+            将 JSON 字符串反序列化为对象。
+            </summary>
+            <typeparam name="T">对象类型。</typeparam>
+            <param name="json">要反序列化的 JSON 字符串。</param>
+            <returns>反序列化后的对象。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Json.ToObject``1(System.Byte[])">
+            <summary>
+            将 JSON 流反序列化为对象。
+            </summary>
+            <typeparam name="T">对象类型。</typeparam>
+            <param name="jsonData">要反序列化的 JSON 流。</param>
+            <returns>反序列化后的对象。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Json.IJsonHelper">
+            <summary>
+            JSON 辅助器接口。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Json.IJsonHelper.ToJson(System.Object)">
+            <summary>
+            将对象序列化为 JSON 字符串。
+            </summary>
+            <param name="obj">要序列化的对象。</param>
+            <returns>序列化后的 JSON 字符串。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Json.IJsonHelper.ToObject``1(System.String)">
+            <summary>
+            将 JSON 字符串反序列化为对象。
+            </summary>
+            <typeparam name="T">对象类型。</typeparam>
+            <param name="json">要反序列化的 JSON 字符串。</param>
+            <returns>反序列化后的对象。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Nullable">
+            <summary>
+            可空类型相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Nullable.IsNullable``1(``0)">
+            <summary>
+            获取对象是否是可空类型。
+            </summary>
+            <typeparam name="T">对象类型。</typeparam>
+            <param name="t">对象。</param>
+            <returns>对象是否是可空类型。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Nullable.IsNullable``1(System.Nullable{``0})">
+            <summary>
+            获取对象是否是可空类型。
+            </summary>
+            <typeparam name="T">对象类型。</typeparam>
+            <param name="t">对象。</param>
+            <returns>对象是否是可空类型。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Path">
+            <summary>
+            路径相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Path.GetRegularPath(System.String)">
+            <summary>
+            获取规范的路径。
+            </summary>
+            <param name="path">要规范的路径。</param>
+            <returns>规范的路径。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Path.GetCombinePath(System.String[])">
+            <summary>
+            获取连接后的路径。
+            </summary>
+            <param name="path">路径片段。</param>
+            <returns>连接后的路径。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Path.GetRemotePath(System.String[])">
+            <summary>
+            获取远程格式的路径（带有file:// 或 http:// 前缀）。
+            </summary>
+            <param name="path">原始路径。</param>
+            <returns>远程格式路径。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Path.GetResourceNameWithSuffix(System.String)">
+            <summary>
+            获取带有后缀的资源名。
+            </summary>
+            <param name="resourceName">原始资源名。</param>
+            <returns>带有后缀的资源名。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Path.GetResourceNameWithCrc32AndSuffix(System.String,System.Int32)">
+            <summary>
+            获取带有 CRC32 和后缀的资源名。
+            </summary>
+            <param name="resourceName">原始资源名。</param>
+            <param name="hashCode">CRC32 哈希值。</param>
+            <returns>带有 CRC32 和后缀的资源名。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Path.RemoveEmptyDirectory(System.String)">
+            <summary>
+            移除空文件夹。
+            </summary>
+            <param name="directoryName">要处理的文件夹名称。</param>
+            <returns>是否移除空文件夹成功。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Profiler">
+            <summary>
+            性能分析相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Profiler.SetProfilerHelper(GameFramework.Utility.Profiler.IProfilerHelper)">
+            <summary>
+            设置性能分析辅助器。
+            </summary>
+            <param name="profilerHelper">要设置的性能分析辅助器。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Profiler.BeginSample(System.String)">
+            <summary>
+            开始采样。
+            </summary>
+            <param name="name">采样名称。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Profiler.EndSample">
+            <summary>
+            结束采样。
+            </summary>
+        </member>
+        <member name="T:GameFramework.Utility.Profiler.IProfilerHelper">
+            <summary>
+            性能分析辅助器接口。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Profiler.IProfilerHelper.BeginSample(System.String)">
+            <summary>
+            开始采样。
+            </summary>
+            <param name="name">采样名称。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Profiler.IProfilerHelper.EndSample">
+            <summary>
+            结束采样。
+            </summary>
+        </member>
+        <member name="T:GameFramework.Utility.Random">
+            <summary>
+            随机相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Random.GetRandom">
+            <summary>
+            返回非负随机数。
+            </summary>
+            <returns>大于等于零且小于 System.Int32.MaxValue 的 32 位带符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Random.GetRandom(System.Int32)">
+            <summary>
+            返回一个小于所指定最大值的非负随机数。
+            </summary>
+            <param name="maxValue">要生成的随机数的上界（随机数不能取该上界值）。maxValue 必须大于等于零。</param>
+            <returns>大于等于零且小于 maxValue 的 32 位带符号整数，即：返回值的范围通常包括零但不包括 maxValue。不过，如果 maxValue 等于零，则返回 maxValue。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Random.GetRandom(System.Int32,System.Int32)">
+            <summary>
+            返回一个指定范围内的随机数。
+            </summary>
+            <param name="minValue">返回的随机数的下界（随机数可取该下界值）。</param>
+            <param name="maxValue">返回的随机数的上界（随机数不能取该上界值）。maxValue 必须大于等于 minValue。</param>
+            <returns>一个大于等于 minValue 且小于 maxValue 的 32 位带符号整数，即：返回的值范围包括 minValue 但不包括 maxValue。如果 minValue 等于 maxValue，则返回 minValue。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Random.GetRandomDouble">
+            <summary>
+            返回一个介于 0.0 和 1.0 之间的随机数。
+            </summary>
+            <returns>大于等于 0.0 并且小于 1.0 的双精度浮点数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Random.GetRandomBytes(System.Byte[])">
+            <summary>
+            用随机数填充指定字节数组的元素。
+            </summary>
+            <param name="buffer">包含随机数的字节数组。</param>
+        </member>
+        <member name="T:GameFramework.Utility.Text">
+            <summary>
+            字符相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Text.SplitToLines(System.String)">
+            <summary>
+            将文本按行切分。
+            </summary>
+            <param name="text">要切分的文本。</param>
+            <returns>按行切分后的文本。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Text.GetFullName``1(System.String)">
+            <summary>
+            根据类型和名称获取完整名称。
+            </summary>
+            <typeparam name="T">类型。</typeparam>
+            <param name="name">名称。</param>
+            <returns>完整名称。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Text.GetFullName(System.Type,System.String)">
+            <summary>
+            根据类型和名称获取完整名称。
+            </summary>
+            <param name="type">类型。</param>
+            <param name="name">名称。</param>
+            <returns>完整名称。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Text.FieldNameForDisplay(System.String)">
+            <summary>
+            获取用于编辑器显示的名称。
+            </summary>
+            <param name="fieldName">字段名称。</param>
+            <returns>编辑器显示名称。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Text.ReadLine(System.String,System.Int32@)">
+            <summary>
+            读取一行文本。
+            </summary>
+            <param name="text">要读取的文本。</param>
+            <param name="position">开始的位置。</param>
+            <returns>一行文本。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Verifier">
+            <summary>
+            校验相关的实用函数。
+            </summary>
+        </member>
+        <member name="T:GameFramework.Utility.Verifier.Crc32">
+            <summary>
+            CRC32 算法。
+            </summary>
+        </member>
+        <member name="F:GameFramework.Utility.Verifier.Crc32.DefaultPolynomial">
+            <summary>
+            默认多项式。
+            </summary>
+        </member>
+        <member name="F:GameFramework.Utility.Verifier.Crc32.DefaultSeed">
+            <summary>
+            默认种子数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.Crc32.#ctor">
+            <summary>
+            初始化 CRC32 类的新实例。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.Crc32.#ctor(System.UInt32,System.UInt32)">
+            <summary>
+            初始化 CRC32 类的新实例。
+            </summary>
+            <param name="polynomial">指定的多项式。</param>
+            <param name="seed">指定的种子数。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.Crc32.Initialize">
+            <summary>
+            初始化 Crc32 类的实现。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.Crc32.HashCore(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            将写入对象的数据路由到哈希算法以计算哈希值。
+            </summary>
+            <param name="array">要计算其哈希代码的输入。</param>
+            <param name="ibStart">字节数组中的偏移量，从该位置开始使用数据。</param>
+            <param name="cbSize">字节数组中用作数据的字节数。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.Crc32.HashFinal">
+            <summary>
+            在加密流对象处理完最后的数据后完成哈希计算。
+            </summary>
+            <returns>计算所得的哈希代码。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.GetCrc32(System.Byte[])">
+            <summary>
+            计算二进制流的 CRC32。
+            </summary>
+            <param name="bytes">指定的二进制流。</param>
+            <returns>计算后的 CRC32。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.GetCrc32(System.String)">
+            <summary>
+            计算指定文件的 CRC32。
+            </summary>
+            <param name="fileName">指定文件的完全限定名称。</param>
+            <returns>计算后的 CRC32。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Verifier.GetMD5(System.Byte[])">
+            <summary>
+            计算二进制流的 MD5。
+            </summary>
+            <param name="bytes">指定的二进制流。</param>
+            <returns>计算后的 MD5。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Zip">
+            <summary>
+            压缩解压缩相关的实用函数。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Zip.SetZipHelper(GameFramework.Utility.Zip.IZipHelper)">
+            <summary>
+            设置压缩解压缩辅助器。
+            </summary>
+            <param name="zipHelper">要设置的压缩解压缩辅助器。</param>
+        </member>
+        <member name="M:GameFramework.Utility.Zip.Compress(System.Byte[])">
+            <summary>
+            压缩数据。
+            </summary>
+            <param name="bytes">要压缩的数据。</param>
+            <returns>压缩后的数据。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Zip.Decompress(System.Byte[])">
+            <summary>
+            解压缩数据。
+            </summary>
+            <param name="bytes">要解压缩的数据。</param>
+            <returns>解压缩后的数据。</returns>
+        </member>
+        <member name="T:GameFramework.Utility.Zip.IZipHelper">
+            <summary>
+            压缩解压缩辅助器接口。
+            </summary>
+        </member>
+        <member name="M:GameFramework.Utility.Zip.IZipHelper.Compress(System.Byte[])">
+            <summary>
+            压缩数据。
+            </summary>
+            <param name="bytes">要压缩的数据。</param>
+            <returns>压缩后的数据。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Zip.IZipHelper.Decompress(System.Byte[])">
+            <summary>
+            解压缩数据。
+            </summary>
+            <param name="bytes">要解压缩的数据。</param>
+            <returns>解压缩后的数据。</returns>
+        </member>
+        <member name="T:GameFramework.DontProfileAttribute">
+            <summary>
+            避免被注入性能采样代码的标记。
             </summary>
         </member>
         <member name="T:GameFramework.WebRequest.IWebRequestAgentHelper">
@@ -13500,7 +14702,7 @@
         </member>
         <member name="M:GameFramework.WebRequest.IWebRequestManager.RemoveAllWebRequests">
             <summary>
-            移除全部 Web 请求任务。
+            移除所有 Web 请求任务。
             </summary>
         </member>
         <member name="T:GameFramework.WebRequest.WebRequestAgentHelperCompleteEventArgs">
@@ -13679,7 +14881,7 @@
         </member>
         <member name="M:GameFramework.WebRequest.WebRequestManager.RemoveAllWebRequests">
             <summary>
-            移除全部 Web 请求任务。
+            移除所有 Web 请求任务。
             </summary>
         </member>
         <member name="T:GameFramework.WebRequest.WebRequestManager.WebRequestAgent">
@@ -13867,447 +15069,6 @@
             获取 Web 响应的数据流。
             </summary>
             <returns>Web 响应的数据流。</returns>
-        </member>
-        <member name="T:Utility.Assembly">
-            <summary>
-            程序集相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Assembly.GetLoadedAssemblyNames">
-            <summary>
-            获取已加载的程序集名称。
-            </summary>
-            <returns>已加载的程序集名称。</returns>
-        </member>
-        <member name="M:Utility.Assembly.GetTypeWithinLoadedAssemblies(System.String)">
-            <summary>
-            从已加载的程序集中获取类型。
-            </summary>
-            <param name="typeName">要获取的类型名。</param>
-            <returns>获取的类型。</returns>
-        </member>
-        <member name="T:Utility.Converter">
-            <summary>
-            类型转换相关的实用函数。
-            </summary>
-        </member>
-        <member name="P:Utility.Converter.ScreenDpi">
-            <summary>
-            获取或设置屏幕每英寸点数。
-            </summary>
-        </member>
-        <member name="M:Utility.Converter.GetCentimetersFromPixels(System.Single)">
-            <summary>
-            将像素转换为厘米。
-            </summary>
-            <param name="pixels">像素。</param>
-            <returns>厘米。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetPixelsFromCentimeters(System.Single)">
-            <summary>
-            将厘米转换为像素。
-            </summary>
-            <param name="centimeters">厘米。</param>
-            <returns>像素。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetInchesFromPixels(System.Single)">
-            <summary>
-            将像素转换为英寸。
-            </summary>
-            <param name="pixels">像素。</param>
-            <returns>英寸。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetPixelsFromInches(System.Single)">
-            <summary>
-            将英寸转换为像素。
-            </summary>
-            <param name="inches">英寸。</param>
-            <returns>像素。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetBytesFromInt(System.Int32)">
-            <summary>
-            以字节数组的形式返回指定的 32 位有符号整数值。
-            </summary>
-            <param name="int32">要转换的数字。</param>
-            <returns>长度为 4 的字节数组。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetIntFromBytes(System.Byte[])">
-            <summary>
-            返回由字节数组中指定位置的四个字节转换来的 32 位有符号整数。
-            </summary>
-            <param name="bytes">字节数组。</param>
-            <returns>由四个字节构成、从 startIndex 开始的 32 位有符号整数。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetIntFromBytes(System.Byte[],System.Int32)">
-            <summary>
-            返回由字节数组中指定位置的四个字节转换来的 32 位有符号整数。
-            </summary>
-            <param name="bytes">字节数组。</param>
-            <param name="startIndex">bytes 内的起始位置。</param>
-            <returns>由四个字节构成、从 startIndex 开始的 32 位有符号整数。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetStringFromBytes(System.Byte[])">
-            <summary>
-            将 UTF-8 字节流转换为字符串。
-            </summary>
-            <param name="bytes">要转换的字节流。</param>
-            <returns>转化后的字符串。</returns>
-        </member>
-        <member name="M:Utility.Converter.GetBytesFromString(System.String)">
-            <summary>
-            将字符串转换为 UTF-8 字节流。
-            </summary>
-            <param name="str">要转换的字符串。</param>
-            <returns>转换后的 UTF-8 字节流。</returns>
-        </member>
-        <member name="T:Utility.Encryption">
-            <summary>
-            加密解密相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Encryption.GetQuickXorBytes(System.Byte[],System.Byte[])">
-            <summary>
-            将 bytes 使用 code 做异或运算的快速版本。
-            </summary>
-            <param name="bytes">原始二进制流。</param>
-            <param name="code">异或二进制流。</param>
-            <returns>异或后的二进制流。</returns>
-        </member>
-        <member name="M:Utility.Encryption.GetXorBytes(System.Byte[],System.Byte[],System.Int32)">
-            <summary>
-            将 bytes 使用 code 做异或运算。
-            </summary>
-            <param name="bytes">原始二进制流。</param>
-            <param name="code">异或二进制流。</param>
-            <param name="length">异或计算长度，若小于等于 0，则计算整个二进制流。</param>
-            <returns>异或后的二进制流。</returns>
-        </member>
-        <member name="T:Utility.Json">
-            <summary>
-            JSON 相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Json.SetJsonHelper(Utility.Json.IJsonHelper)">
-            <summary>
-            设置 JSON 辅助器。
-            </summary>
-            <param name="jsonHelper">要设置的 JSON 辅助器。</param>
-        </member>
-        <member name="M:Utility.Json.ToJson(System.Object)">
-            <summary>
-            将对象序列化为 JSON 字符串。
-            </summary>
-            <param name="obj">要序列化的对象。</param>
-            <returns>序列化后的 JSON 字符串。</returns>
-        </member>
-        <member name="M:Utility.Json.ToJsonData(System.Object)">
-            <summary>
-            将对象序列化为 JSON 流。
-            </summary>
-            <param name="obj">要序列化的对象。</param>
-            <returns>序列化后的 JSON 流。</returns>
-        </member>
-        <member name="M:Utility.Json.ToObject``1(System.String)">
-            <summary>
-            将 JSON 字符串反序列化为对象。
-            </summary>
-            <typeparam name="T">对象类型。</typeparam>
-            <param name="json">要反序列化的 JSON 字符串。</param>
-            <returns>反序列化后的对象。</returns>
-        </member>
-        <member name="M:Utility.Json.ToObject``1(System.Byte[])">
-            <summary>
-            将 JSON 流反序列化为对象。
-            </summary>
-            <typeparam name="T">对象类型。</typeparam>
-            <param name="jsonData">要反序列化的 JSON 流。</param>
-            <returns>反序列化后的对象。</returns>
-        </member>
-        <member name="T:Utility.Json.IJsonHelper">
-            <summary>
-            JSON 辅助器接口。
-            </summary>
-        </member>
-        <member name="M:Utility.Json.IJsonHelper.ToJson(System.Object)">
-            <summary>
-            将对象序列化为 JSON 字符串。
-            </summary>
-            <param name="obj">要序列化的对象。</param>
-            <returns>序列化后的 JSON 字符串。</returns>
-        </member>
-        <member name="M:Utility.Json.IJsonHelper.ToObject``1(System.String)">
-            <summary>
-            将 JSON 字符串反序列化为对象。
-            </summary>
-            <typeparam name="T">对象类型。</typeparam>
-            <param name="json">要反序列化的 JSON 字符串。</param>
-            <returns>反序列化后的对象。</returns>
-        </member>
-        <member name="T:Utility.Nullable">
-            <summary>
-            可空类型相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Nullable.IsNullable``1(``0)">
-            <summary>
-            获取对象是否是可空类型。
-            </summary>
-            <typeparam name="T">对象类型。</typeparam>
-            <param name="t">对象。</param>
-            <returns>对象是否是可空类型。</returns>
-        </member>
-        <member name="M:Utility.Nullable.IsNullable``1(System.Nullable{``0})">
-            <summary>
-            获取对象是否是可空类型。
-            </summary>
-            <typeparam name="T">对象类型。</typeparam>
-            <param name="t">对象。</param>
-            <returns>对象是否是可空类型。</returns>
-        </member>
-        <member name="T:Utility.Path">
-            <summary>
-            路径相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Path.GetRegularPath(System.String)">
-            <summary>
-            获取规范的路径。
-            </summary>
-            <param name="path">要规范的路径。</param>
-            <returns>规范的路径。</returns>
-        </member>
-        <member name="M:Utility.Path.GetCombinePath(System.String[])">
-            <summary>
-            获取连接后的路径。
-            </summary>
-            <param name="path">路径片段。</param>
-            <returns>连接后的路径。</returns>
-        </member>
-        <member name="M:Utility.Path.GetRemotePath(System.String[])">
-            <summary>
-            获取远程格式的路径（带有file:// 或 http:// 前缀）。
-            </summary>
-            <param name="path">原始路径。</param>
-            <returns>远程格式路径。</returns>
-        </member>
-        <member name="M:Utility.Path.GetResourceNameWithSuffix(System.String)">
-            <summary>
-            获取带有后缀的资源名。
-            </summary>
-            <param name="resourceName">原始资源名。</param>
-            <returns>带有后缀的资源名。</returns>
-        </member>
-        <member name="M:Utility.Path.GetResourceNameWithCrc32AndSuffix(System.String,System.Int32)">
-            <summary>
-            获取带有 CRC32 和后缀的资源名。
-            </summary>
-            <param name="resourceName">原始资源名。</param>
-            <param name="hashCode">CRC32 哈希值。</param>
-            <returns>带有 CRC32 和后缀的资源名。</returns>
-        </member>
-        <member name="M:Utility.Path.RemoveEmptyDirectory(System.String)">
-            <summary>
-            移除空文件夹。
-            </summary>
-            <param name="directoryName">要处理的文件夹名称。</param>
-            <returns>是否移除空文件夹成功。</returns>
-        </member>
-        <member name="T:Utility.Random">
-            <summary>
-            随机相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Random.GetRandom">
-            <summary>
-            返回非负随机数。
-            </summary>
-            <returns>大于等于零且小于 System.Int32.MaxValue 的 32 位带符号整数。</returns>
-        </member>
-        <member name="M:Utility.Random.GetRandom(System.Int32)">
-            <summary>
-            返回一个小于所指定最大值的非负随机数。
-            </summary>
-            <param name="maxValue">要生成的随机数的上界（随机数不能取该上界值）。maxValue 必须大于等于零。</param>
-            <returns>大于等于零且小于 maxValue 的 32 位带符号整数，即：返回值的范围通常包括零但不包括 maxValue。不过，如果 maxValue 等于零，则返回 maxValue。</returns>
-        </member>
-        <member name="M:Utility.Random.GetRandom(System.Int32,System.Int32)">
-            <summary>
-            返回一个指定范围内的随机数。
-            </summary>
-            <param name="minValue">返回的随机数的下界（随机数可取该下界值）。</param>
-            <param name="maxValue">返回的随机数的上界（随机数不能取该上界值）。maxValue 必须大于等于 minValue。</param>
-            <returns>一个大于等于 minValue 且小于 maxValue 的 32 位带符号整数，即：返回的值范围包括 minValue 但不包括 maxValue。如果 minValue 等于 maxValue，则返回 minValue。</returns>
-        </member>
-        <member name="M:Utility.Random.GetRandomDouble">
-            <summary>
-            返回一个介于 0.0 和 1.0 之间的随机数。
-            </summary>
-            <returns>大于等于 0.0 并且小于 1.0 的双精度浮点数。</returns>
-        </member>
-        <member name="M:Utility.Random.GetRandomBytes(System.Byte[])">
-            <summary>
-            用随机数填充指定字节数组的元素。
-            </summary>
-            <param name="buffer">包含随机数的字节数组。</param>
-        </member>
-        <member name="T:Utility.Text">
-            <summary>
-            字符相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Text.SplitToLines(System.String)">
-            <summary>
-            将文本按行切分。
-            </summary>
-            <param name="text">要切分的文本。</param>
-            <returns>按行切分后的文本。</returns>
-        </member>
-        <member name="M:Utility.Text.GetFullName``1(System.String)">
-            <summary>
-            根据类型和名称获取完整名称。
-            </summary>
-            <typeparam name="T">类型。</typeparam>
-            <param name="name">名称。</param>
-            <returns>完整名称。</returns>
-        </member>
-        <member name="M:Utility.Text.GetFullName(System.Type,System.String)">
-            <summary>
-            根据类型和名称获取完整名称。
-            </summary>
-            <param name="type">类型。</param>
-            <param name="name">名称。</param>
-            <returns>完整名称。</returns>
-        </member>
-        <member name="M:Utility.Text.FieldNameForDisplay(System.String)">
-            <summary>
-            获取用于编辑器显示的名称。
-            </summary>
-            <param name="fieldName">字段名称。</param>
-            <returns>编辑器显示名称。</returns>
-        </member>
-        <member name="M:Utility.Text.ReadLine(System.String,System.Int32@)">
-            <summary>
-            读取一行文本。
-            </summary>
-            <param name="text">要读取的文本。</param>
-            <param name="position">开始的位置。</param>
-            <returns>一行文本。</returns>
-        </member>
-        <member name="T:Utility.Verifier">
-            <summary>
-            校验相关的实用函数。
-            </summary>
-        </member>
-        <member name="T:Utility.Verifier.Crc32">
-            <summary>
-            CRC32 算法。
-            </summary>
-        </member>
-        <member name="F:Utility.Verifier.Crc32.DefaultPolynomial">
-            <summary>
-            默认多项式。
-            </summary>
-        </member>
-        <member name="F:Utility.Verifier.Crc32.DefaultSeed">
-            <summary>
-            默认种子数。
-            </summary>
-        </member>
-        <member name="M:Utility.Verifier.Crc32.#ctor">
-            <summary>
-            初始化 CRC32 类的新实例。
-            </summary>
-        </member>
-        <member name="M:Utility.Verifier.Crc32.#ctor(System.UInt32,System.UInt32)">
-            <summary>
-            初始化 CRC32 类的新实例。
-            </summary>
-            <param name="polynomial">指定的多项式。</param>
-            <param name="seed">指定的种子数。</param>
-        </member>
-        <member name="M:Utility.Verifier.Crc32.Initialize">
-            <summary>
-            初始化 Crc32 类的实现。
-            </summary>
-        </member>
-        <member name="M:Utility.Verifier.Crc32.HashCore(System.Byte[],System.Int32,System.Int32)">
-            <summary>
-            将写入对象的数据路由到哈希算法以计算哈希值。
-            </summary>
-            <param name="array">要计算其哈希代码的输入。</param>
-            <param name="ibStart">字节数组中的偏移量，从该位置开始使用数据。</param>
-            <param name="cbSize">字节数组中用作数据的字节数。</param>
-        </member>
-        <member name="M:Utility.Verifier.Crc32.HashFinal">
-            <summary>
-            在加密流对象处理完最后的数据后完成哈希计算。
-            </summary>
-            <returns>计算所得的哈希代码。</returns>
-        </member>
-        <member name="M:Utility.Verifier.GetCrc32(System.Byte[])">
-            <summary>
-            计算二进制流的 CRC32。
-            </summary>
-            <param name="bytes">指定的二进制流。</param>
-            <returns>计算后的 CRC32。</returns>
-        </member>
-        <member name="M:Utility.Verifier.GetCrc32(System.String)">
-            <summary>
-            计算指定文件的 CRC32。
-            </summary>
-            <param name="fileName">指定文件的完全限定名称。</param>
-            <returns>计算后的 CRC32。</returns>
-        </member>
-        <member name="M:Utility.Verifier.GetMD5(System.Byte[])">
-            <summary>
-            计算二进制流的 MD5。
-            </summary>
-            <param name="bytes">指定的二进制流。</param>
-            <returns>计算后的 MD5。</returns>
-        </member>
-        <member name="T:Utility.Zip">
-            <summary>
-            压缩解压缩相关的实用函数。
-            </summary>
-        </member>
-        <member name="M:Utility.Zip.SetZipHelper(Utility.Zip.IZipHelper)">
-            <summary>
-            设置压缩解压缩辅助器。
-            </summary>
-            <param name="zipHelper">要设置的压缩解压缩辅助器。</param>
-        </member>
-        <member name="M:Utility.Zip.Compress(System.Byte[])">
-            <summary>
-            压缩数据。
-            </summary>
-            <param name="bytes">要压缩的数据。</param>
-            <returns>压缩后的数据。</returns>
-        </member>
-        <member name="M:Utility.Zip.Decompress(System.Byte[])">
-            <summary>
-            解压缩数据。
-            </summary>
-            <param name="bytes">要解压缩的数据。</param>
-            <returns>解压缩后的数据。</returns>
-        </member>
-        <member name="T:Utility.Zip.IZipHelper">
-            <summary>
-            压缩解压缩辅助器接口。
-            </summary>
-        </member>
-        <member name="M:Utility.Zip.IZipHelper.Compress(System.Byte[])">
-            <summary>
-            压缩数据。
-            </summary>
-            <param name="bytes">要压缩的数据。</param>
-            <returns>压缩后的数据。</returns>
-        </member>
-        <member name="M:Utility.Zip.IZipHelper.Decompress(System.Byte[])">
-            <summary>
-            解压缩数据。
-            </summary>
-            <param name="bytes">要解压缩的数据。</param>
-            <returns>解压缩后的数据。</returns>
         </member>
     </members>
 </doc>

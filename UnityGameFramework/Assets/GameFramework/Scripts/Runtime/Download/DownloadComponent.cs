@@ -14,6 +14,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 下载组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Download")]
     public sealed class DownloadComponent : GameFrameworkComponent
     {
@@ -200,7 +201,7 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 移除全部下载任务。
+        /// 移除所有下载任务。
         /// </summary>
         public void RemoveAllDownload()
         {
@@ -213,7 +214,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="index">下载代理辅助器索引。</param>
         private void AddDownloadAgentHelper(int index)
         {
-            DownloadAgentHelperBase downloadAgentHelper = Utility.Helper.CreateHelper(m_DownloadAgentHelperTypeName, m_CustomDownloadAgentHelper, index);
+            DownloadAgentHelperBase downloadAgentHelper = Helper.CreateHelper(m_DownloadAgentHelperTypeName, m_CustomDownloadAgentHelper, index);
             if (downloadAgentHelper == null)
             {
                 Log.Error("Can not create download agent helper.");

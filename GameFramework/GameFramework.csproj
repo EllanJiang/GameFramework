@@ -265,13 +265,17 @@
     <Compile Include="UI\UIManager.UIGroup.UIFormInfo.cs" />
     <Compile Include="Utility\Assembly.cs" />
     <Compile Include="Utility\Converter.cs" />
+    <Compile Include="Utility\DontProfileAttribute.cs" />
     <Compile Include="Utility\Encryption.cs" />
     <Compile Include="Utility\Json.cs" />
     <Compile Include="Utility\Json.IJsonHelper.cs" />
     <Compile Include="Utility\Nullable.cs" />
     <Compile Include="Utility\Path.cs" />
+    <Compile Include="Utility\Profiler.cs" />
+    <Compile Include="Utility\Profiler.IProfilerHelper.cs" />
     <Compile Include="Utility\Random.cs" />
     <Compile Include="Utility\Text.cs" />
+    <Compile Include="Utility\Utility.cs" />
     <Compile Include="Utility\Verifier.Crc32.cs" />
     <Compile Include="Utility\Verifier.cs" />
     <Compile Include="Utility\Zip.cs" />

@@ -102,6 +102,19 @@ namespace GameFramework.Sound
         void AddSoundAgentHelper(string soundGroupName, ISoundAgentHelper soundAgentHelper);
 
         /// <summary>
+        /// 获取所有正在加载声音的序列编号。
+        /// </summary>
+        /// <returns>所有正在加载声音的序列编号。</returns>
+        int[] GetAllLoadingSoundSerialIds();
+
+        /// <summary>
+        /// 是否正在加载声音。
+        /// </summary>
+        /// <param name="serialId">声音序列编号。</param>
+        /// <returns>是否正在加载声音。</returns>
+        bool IsLoadingSound(int serialId);
+
+        /// <summary>
         /// 播放声音。
         /// </summary>
         /// <param name="soundAssetName">声音资源名称。</param>
@@ -141,18 +154,55 @@ namespace GameFramework.Sound
         /// 停止播放声音。
         /// </summary>
         /// <param name="serialId">要停止播放声音的序列编号。</param>
-        /// <returns>是否停止播放声音成功。</returns>
-        bool StopSound(int serialId);
+        void StopSound(int serialId);
 
         /// <summary>
-        /// 停止所有声音。
+        /// 停止播放声音。
         /// </summary>
-        /// <param name="soundGroupName">声音组名称。</param>
-        void StopAllSounds(string soundGroupName);
+        /// <param name="serialId">要停止播放声音的序列编号。</param>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        void StopSound(int serialId, float fadeOutSeconds);
 
         /// <summary>
-        /// 停止所有声音。
+        /// 停止所有已加载的声音。
         /// </summary>
-        void StopAllSounds();
+        void StopAllLoadedSounds();
+
+        /// <summary>
+        /// 停止所有已加载的声音。
+        /// </summary>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        void StopAllLoadedSounds(float fadeOutSeconds);
+
+        /// <summary>
+        /// 停止所有正在加载的声音。
+        /// </summary>
+        void StopAllLoadingSounds();
+
+        /// <summary>
+        /// 暂停播放声音。
+        /// </summary>
+        /// <param name="serialId">要暂停播放声音的序列编号。</param>
+        void PauseSound(int serialId);
+
+        /// <summary>
+        /// 暂停播放声音。
+        /// </summary>
+        /// <param name="serialId">要暂停播放声音的序列编号。</param>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        void PauseSound(int serialId, float fadeOutSeconds);
+
+        /// <summary>
+        /// 恢复播放声音。
+        /// </summary>
+        /// <param name="serialId">要恢复播放声音的序列编号。</param>
+        void ResumeSound(int serialId);
+
+        /// <summary>
+        /// 恢复播放声音。
+        /// </summary>
+        /// <param name="serialId">要恢复播放声音的序列编号。</param>
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        void ResumeSound(int serialId, float fadeInSeconds);
     }
 }

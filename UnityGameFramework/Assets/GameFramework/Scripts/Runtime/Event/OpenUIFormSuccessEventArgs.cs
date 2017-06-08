@@ -20,7 +20,6 @@ namespace UnityGameFramework.Runtime
         /// <param name="e">内部事件。</param>
         public OpenUIFormSuccessEventArgs(GameFramework.UI.OpenUIFormSuccessEventArgs e)
         {
-            UIFormAssetName = e.UIFormAssetName;
             UIForm = (UIForm)e.UIForm;
             Duration = e.Duration;
             UserData = e.UserData;
@@ -35,15 +34,6 @@ namespace UnityGameFramework.Runtime
             {
                 return (int)EventId.OpenUIFormSuccess;
             }
-        }
-
-        /// <summary>
-        /// 获取界面资源名称。
-        /// </summary>
-        public string UIFormAssetName
-        {
-            get;
-            private set;
         }
 
         /// <summary>

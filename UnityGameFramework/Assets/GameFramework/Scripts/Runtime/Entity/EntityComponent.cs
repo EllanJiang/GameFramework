@@ -17,6 +17,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 实体组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Entity")]
     public sealed partial class EntityComponent : GameFrameworkComponent
     {
@@ -126,7 +127,7 @@ namespace UnityGameFramework.Runtime
 
             m_EntityManager.SetObjectPoolManager(GameFrameworkEntry.GetModule<IObjectPoolManager>());
 
-            EntityHelperBase entityHelper = Utility.Helper.CreateHelper(m_EntityHelperTypeName, m_CustomEntityHelper);
+            EntityHelperBase entityHelper = Helper.CreateHelper(m_EntityHelperTypeName, m_CustomEntityHelper);
             if (entityHelper == null)
             {
                 Log.Error("Can not create entity helper.");
@@ -202,7 +203,7 @@ namespace UnityGameFramework.Runtime
                 return false;
             }
 
-            EntityGroupHelperBase entityGroupHelper = Utility.Helper.CreateHelper(m_EntityGroupHelperTypeName, m_CustomEntityGroupHelper, EntityGroupCount);
+            EntityGroupHelperBase entityGroupHelper = Helper.CreateHelper(m_EntityGroupHelperTypeName, m_CustomEntityGroupHelper, EntityGroupCount);
             if (entityGroupHelper == null)
             {
                 Log.Error("Can not create entity group helper.");
@@ -228,6 +229,16 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
+        /// 是否存在实体。
+        /// </summary>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <returns>是否存在实体。</returns>
+        public bool HasEntity(string entityAssetName)
+        {
+            return m_EntityManager.HasEntity(entityAssetName);
+        }
+
+        /// <summary>
         /// 获取实体。
         /// </summary>
         /// <param name="entityId">实体编号。</param>
@@ -238,12 +249,23 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取所有实体。
+        /// 获取实体。
         /// </summary>
-        /// <returns>所有实体。</returns>
-        public Entity[] GetAllEntities()
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <returns>要获取的实体。</returns>
+        public Entity GetEntity(string entityAssetName)
         {
-            IEntity[] entities = m_EntityManager.GetAllEntities();
+            return (Entity)m_EntityManager.GetEntity(entityAssetName);
+        }
+
+        /// <summary>
+        /// 获取实体。
+        /// </summary>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <returns>要获取的实体。</returns>
+        public Entity[] GetEntities(string entityAssetName)
+        {
+            IEntity[] entities = m_EntityManager.GetEntities(entityAssetName);
             Entity[] entityImpls = new Entity[entities.Length];
             for (int i = 0; i < entities.Length; i++)
             {
@@ -251,6 +273,31 @@ namespace UnityGameFramework.Runtime
             }
 
             return entityImpls;
+        }
+
+        /// <summary>
+        /// 获取所有已加载的实体。
+        /// </summary>
+        /// <returns>所有已加载的实体。</returns>
+        public Entity[] GetAllLoadedEntities()
+        {
+            IEntity[] entities = m_EntityManager.GetAllLoadedEntities();
+            Entity[] entityImpls = new Entity[entities.Length];
+            for (int i = 0; i < entities.Length; i++)
+            {
+                entityImpls[i] = (Entity)entities[i];
+            }
+
+            return entityImpls;
+        }
+
+        /// <summary>
+        /// 获取所有正在加载实体的编号。
+        /// </summary>
+        /// <returns>所有正在加载实体的编号。</returns>
+        public int[] GetAllLoadingEntityIds()
+        {
+            return m_EntityManager.GetAllLoadingEntityIds();
         }
 
         /// <summary>
@@ -270,12 +317,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>实体是否合法。</returns>
         public bool IsValidEntity(Entity entity)
         {
-            if (entity == null)
-            {
-                return false;
-            }
-
-            return HasEntity(entity.Id);
+            return m_EntityManager.IsValidEntity(entity);
         }
 
         /// <summary>
@@ -373,20 +415,28 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 隐藏全部实体。
+        /// 隐藏所有已加载的实体。
         /// </summary>
-        public void HideAllEntities()
+        public void HideAllLoadedEntities()
         {
-            m_EntityManager.HideAllEntities();
+            m_EntityManager.HideAllLoadedEntities();
         }
 
         /// <summary>
-        /// 隐藏全部实体。
+        /// 隐藏所有已加载的实体。
         /// </summary>
         /// <param name="userData">用户自定义数据。</param>
-        public void HideAllEntities(object userData)
+        public void HideAllLoadedEntities(object userData)
         {
-            m_EntityManager.HideAllEntities(userData);
+            m_EntityManager.HideAllLoadedEntities(userData);
+        }
+
+        /// <summary>
+        /// 隐藏所有正在加载的实体。
+        /// </summary>
+        public void HideAllLoadingEntities()
+        {
+            m_EntityManager.HideAllLoadingEntities();
         }
 
         /// <summary>
@@ -450,7 +500,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
         public void AttachEntity(int childEntityId, int parentEntityId)
         {
-            AttachEntity(GetEntity(childEntityId), GetEntity(parentEntityId), null, null);
+            AttachEntity(GetEntity(childEntityId), GetEntity(parentEntityId), string.Empty, null);
         }
 
         /// <summary>
@@ -460,7 +510,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="parentEntity">被附加的父实体。</param>
         public void AttachEntity(int childEntityId, Entity parentEntity)
         {
-            AttachEntity(GetEntity(childEntityId), parentEntity, null, null);
+            AttachEntity(GetEntity(childEntityId), parentEntity, string.Empty, null);
         }
 
         /// <summary>
@@ -470,7 +520,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
         public void AttachEntity(Entity childEntity, int parentEntityId)
         {
-            AttachEntity(childEntity, GetEntity(parentEntityId), null, null);
+            AttachEntity(childEntity, GetEntity(parentEntityId), string.Empty, null);
         }
 
         /// <summary>
@@ -480,7 +530,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="parentEntity">被附加的父实体。</param>
         public void AttachEntity(Entity childEntity, Entity parentEntity)
         {
-            AttachEntity(childEntity, parentEntity, null, null);
+            AttachEntity(childEntity, parentEntity, string.Empty, null);
         }
 
         /// <summary>
@@ -532,10 +582,54 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="childEntityId">要附加的子实体的实体编号。</param>
         /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        public void AttachEntity(int childEntityId, int parentEntityId, Transform parentTransform)
+        {
+            AttachEntity(GetEntity(childEntityId), GetEntity(parentEntityId), parentTransform, null);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntityId">要附加的子实体的实体编号。</param>
+        /// <param name="parentEntity">被附加的父实体。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        public void AttachEntity(int childEntityId, Entity parentEntity, Transform parentTransform)
+        {
+            AttachEntity(GetEntity(childEntityId), parentEntity, parentTransform, null);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntity">要附加的子实体。</param>
+        /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        public void AttachEntity(Entity childEntity, int parentEntityId, Transform parentTransform)
+        {
+            AttachEntity(childEntity, GetEntity(parentEntityId), parentTransform, null);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntity">要附加的子实体。</param>
+        /// <param name="parentEntity">被附加的父实体。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        public void AttachEntity(Entity childEntity, Entity parentEntity, Transform parentTransform)
+        {
+            AttachEntity(childEntity, parentEntity, parentTransform, null);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntityId">要附加的子实体的实体编号。</param>
+        /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
         /// <param name="userData">用户自定义数据。</param>
         public void AttachEntity(int childEntityId, int parentEntityId, object userData)
         {
-            AttachEntity(GetEntity(childEntityId), GetEntity(parentEntityId), null, userData);
+            AttachEntity(GetEntity(childEntityId), GetEntity(parentEntityId), string.Empty, userData);
         }
 
         /// <summary>
@@ -546,7 +640,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void AttachEntity(int childEntityId, Entity parentEntity, object userData)
         {
-            AttachEntity(GetEntity(childEntityId), parentEntity, null, userData);
+            AttachEntity(GetEntity(childEntityId), parentEntity, string.Empty, userData);
         }
 
         /// <summary>
@@ -557,7 +651,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void AttachEntity(Entity childEntity, int parentEntityId, object userData)
         {
-            AttachEntity(childEntity, GetEntity(parentEntityId), null, userData);
+            AttachEntity(childEntity, GetEntity(parentEntityId), string.Empty, userData);
         }
 
         /// <summary>
@@ -568,7 +662,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void AttachEntity(Entity childEntity, Entity parentEntity, object userData)
         {
-            AttachEntity(childEntity, parentEntity, null, userData);
+            AttachEntity(childEntity, parentEntity, string.Empty, userData);
         }
 
         /// <summary>
@@ -641,6 +735,71 @@ namespace UnityGameFramework.Runtime
                     Log.Warning("Can not find transform path '{0}' from parent entity '{1}'.", parentTransformPath, parentEntity.Logic.Name);
                     parentTransform = parentEntity.Logic.CachedTransform;
                 }
+            }
+
+            AttachEntity(childEntity, parentEntity, parentTransform, userData);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntityId">要附加的子实体的实体编号。</param>
+        /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void AttachEntity(int childEntityId, int parentEntityId, Transform parentTransform, object userData)
+        {
+            AttachEntity(GetEntity(childEntityId), GetEntity(parentEntityId), parentTransform, userData);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntityId">要附加的子实体的实体编号。</param>
+        /// <param name="parentEntity">被附加的父实体。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void AttachEntity(int childEntityId, Entity parentEntity, Transform parentTransform, object userData)
+        {
+            AttachEntity(GetEntity(childEntityId), parentEntity, parentTransform, userData);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntity">要附加的子实体。</param>
+        /// <param name="parentEntityId">被附加的父实体的实体编号。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void AttachEntity(Entity childEntity, int parentEntityId, Transform parentTransform, object userData)
+        {
+            AttachEntity(childEntity, GetEntity(parentEntityId), parentTransform, userData);
+        }
+
+        /// <summary>
+        /// 附加子实体。
+        /// </summary>
+        /// <param name="childEntity">要附加的子实体。</param>
+        /// <param name="parentEntity">被附加的父实体。</param>
+        /// <param name="parentTransform">相对于被附加父实体的位置。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void AttachEntity(Entity childEntity, Entity parentEntity, Transform parentTransform, object userData)
+        {
+            if (childEntity == null)
+            {
+                Log.Warning("Child entity is invalid.");
+                return;
+            }
+
+            if (parentEntity == null)
+            {
+                Log.Warning("Parent entity is invalid.");
+                return;
+            }
+
+            if (parentTransform == null)
+            {
+                parentTransform = parentEntity.Logic.CachedTransform;
             }
 
             m_EntityManager.AttachEntity(childEntity, parentEntity, new AttachEntityInfo(parentTransform, userData));

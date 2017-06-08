@@ -26,8 +26,8 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         private const string AssetBundleNamePattern = @"^([A-Za-z0-9\._-]+/)*[A-Za-z0-9\._-]+$";
         private const string AssetBundleVariantPattern = @"^[a-z0-9_-]+$";
         private const string PostfixOfScene = ".unity";
-        private readonly IDictionary<string, AssetBundle> m_AssetBundles;
-        private readonly IDictionary<string, Asset> m_Assets;
+        private readonly SortedDictionary<string, AssetBundle> m_AssetBundles;
+        private readonly SortedDictionary<string, Asset> m_Assets;
 
         public AssetBundleCollection()
         {

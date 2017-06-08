@@ -19,7 +19,7 @@ namespace GameFramework.DataTable
         /// <typeparam name="T">数据表行的类型。</typeparam>
         private sealed class DataTable<T> : DataTableBase, IDataTable<T> where T : class, IDataRow, new()
         {
-            private readonly IDictionary<int, T> m_DataSet;
+            private readonly Dictionary<int, T> m_DataSet;
             private T m_MinIdDataRow;
             private T m_MaxIdDataRow;
 
@@ -214,9 +214,9 @@ namespace GameFramework.DataTable
             }
 
             /// <summary>
-            /// 获取全部数据表行。
+            /// 获取所有数据表行。
             /// </summary>
-            /// <returns>全部数据表行。</returns>
+            /// <returns>所有数据表行。</returns>
             public T[] GetAllDataRows()
             {
                 int index = 0;
@@ -230,10 +230,10 @@ namespace GameFramework.DataTable
             }
 
             /// <summary>
-            /// 获取全部符合条件的数据表行。
+            /// 获取所有符合条件的数据表行。
             /// </summary>
             /// <param name="condition">要检查的条件。</param>
-            /// <returns>全部符合条件的数据表行。</returns>
+            /// <returns>所有符合条件的数据表行。</returns>
             public T[] GetAllDataRows(Predicate<T> condition)
             {
                 if (condition == null)
@@ -255,10 +255,10 @@ namespace GameFramework.DataTable
             }
 
             /// <summary>
-            /// 获取全部排序后的数据表行。
+            /// 获取所有排序后的数据表行。
             /// </summary>
             /// <param name="comparison">要排序的条件。</param>
-            /// <returns>全部排序后的数据表行。</returns>
+            /// <returns>所有排序后的数据表行。</returns>
             public T[] GetAllDataRows(Comparison<T> comparison)
             {
                 if (comparison == null)
@@ -277,11 +277,11 @@ namespace GameFramework.DataTable
             }
 
             /// <summary>
-            /// 获取全部排序后的符合条件的数据表行。
+            /// 获取所有排序后的符合条件的数据表行。
             /// </summary>
             /// <param name="condition">要检查的条件。</param>
             /// <param name="comparison">要排序的条件。</param>
-            /// <returns>全部排序后的符合条件的数据表行。</returns>
+            /// <returns>所有排序后的符合条件的数据表行。</returns>
             public T[] GetAllDataRows(Predicate<T> condition, Comparison<T> comparison)
             {
                 if (condition == null)

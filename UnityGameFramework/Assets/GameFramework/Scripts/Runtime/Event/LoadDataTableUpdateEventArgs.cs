@@ -36,7 +36,7 @@ namespace UnityGameFramework.Runtime
         {
             get
             {
-                return (int)EventId.LoadDataTableFailure;
+                return (int)EventId.LoadDataTableUpdate;
             }
         }
 

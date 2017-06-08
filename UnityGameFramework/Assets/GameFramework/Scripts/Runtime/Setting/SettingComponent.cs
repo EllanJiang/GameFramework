@@ -14,6 +14,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 配置组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Setting")]
     public sealed class SettingComponent : GameFrameworkComponent
     {
@@ -39,7 +40,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            SettingHelperBase settingHelper = Utility.Helper.CreateHelper(m_SettingHelperTypeName, m_CustomSettingHelper);
+            SettingHelperBase settingHelper = Helper.CreateHelper(m_SettingHelperTypeName, m_CustomSettingHelper);
             if (settingHelper == null)
             {
                 Log.Error("Can not create setting helper.");

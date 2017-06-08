@@ -15,15 +15,15 @@ namespace GameFramework.UI
         /// <summary>
         /// 初始化打开界面更新事件的新实例。
         /// </summary>
-        /// <param name="uiFormTypeId">界面类型编号。</param>
+        /// <param name="serialId">界面序列编号。</param>
         /// <param name="uiFormAssetName">界面资源名称。</param>
         /// <param name="uiGroupName">界面组名称。</param>
         /// <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
         /// <param name="progress">打开界面进度。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public OpenUIFormUpdateEventArgs(int uiFormTypeId, string uiFormAssetName, string uiGroupName, bool pauseCoveredUIForm, float progress, object userData)
+        public OpenUIFormUpdateEventArgs(int serialId, string uiFormAssetName, string uiGroupName, bool pauseCoveredUIForm, float progress, object userData)
         {
-            UIFormTypeId = uiFormTypeId;
+            SerialId = serialId;
             UIFormAssetName = uiFormAssetName;
             UIGroupName = uiGroupName;
             PauseCoveredUIForm = pauseCoveredUIForm;
@@ -32,9 +32,9 @@ namespace GameFramework.UI
         }
 
         /// <summary>
-        /// 获取界面类型编号。
+        /// 获取界面序列编号。
         /// </summary>
-        public int UIFormTypeId
+        public int SerialId
         {
             get;
             private set;

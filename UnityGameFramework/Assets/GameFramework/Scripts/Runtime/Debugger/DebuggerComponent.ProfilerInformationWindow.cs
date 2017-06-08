@@ -6,11 +6,8 @@
 //------------------------------------------------------------
 
 using UnityEngine;
-
 #if UNITY_5_5_OR_NEWER
-
 using UnityEngine.Profiling;
-
 #endif
 
 namespace UnityGameFramework.Runtime
@@ -29,7 +26,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Supported:", Profiler.supported.ToString());
                     DrawItem("Enabled:", Profiler.enabled.ToString());
                     DrawItem("Enable Binary Log:", Profiler.enableBinaryLog ? string.Format("True, {0}", Profiler.logFile) : "False");
-#if !UNITY_5_5_OR_NEWER
+#if UNITY_5_3 || UNITY_5_4
                     DrawItem("Max Samples Number Per Frame:", Profiler.maxNumberOfSamplesPerFrame.ToString());
 #endif
 #if UNITY_5_6_OR_NEWER

@@ -5,7 +5,6 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Entity;
 using System;
 
 namespace GameFramework.Sound
@@ -255,6 +254,17 @@ namespace GameFramework.Sound
             }
 
             /// <summary>
+            /// 获取声音代理辅助器。
+            /// </summary>
+            public ISoundAgentHelper Helper
+            {
+                get
+                {
+                    return m_SoundAgentHelper;
+                }
+            }
+
+            /// <summary>
             /// 获取声音创建时间。
             /// </summary>
             internal DateTime SetSoundAssetTime
@@ -270,7 +280,16 @@ namespace GameFramework.Sound
             /// </summary>
             public void Play()
             {
-                m_SoundAgentHelper.Play();
+                m_SoundAgentHelper.Play(Constant.DefaultFadeInSeconds);
+            }
+
+            /// <summary>
+            /// 播放声音。
+            /// </summary>
+            /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+            public void Play(float fadeInSeconds)
+            {
+                m_SoundAgentHelper.Play(fadeInSeconds);
             }
 
             /// <summary>
@@ -278,7 +297,16 @@ namespace GameFramework.Sound
             /// </summary>
             public void Stop()
             {
-                m_SoundAgentHelper.Stop();
+                m_SoundAgentHelper.Stop(Constant.DefaultFadeOutSeconds);
+            }
+
+            /// <summary>
+            /// 停止播放声音。
+            /// </summary>
+            /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+            public void Stop(float fadeOutSeconds)
+            {
+                m_SoundAgentHelper.Stop(fadeOutSeconds);
             }
 
             /// <summary>
@@ -286,7 +314,16 @@ namespace GameFramework.Sound
             /// </summary>
             public void Pause()
             {
-                m_SoundAgentHelper.Pause();
+                m_SoundAgentHelper.Pause(Constant.DefaultFadeOutSeconds);
+            }
+
+            /// <summary>
+            /// 暂停播放声音。
+            /// </summary>
+            /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+            public void Pause(float fadeOutSeconds)
+            {
+                m_SoundAgentHelper.Pause(fadeOutSeconds);
             }
 
             /// <summary>
@@ -294,7 +331,16 @@ namespace GameFramework.Sound
             /// </summary>
             public void Resume()
             {
-                m_SoundAgentHelper.Resume();
+                m_SoundAgentHelper.Resume(Constant.DefaultFadeInSeconds);
+            }
+
+            /// <summary>
+            /// 恢复播放声音。
+            /// </summary>
+            /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+            public void Resume(float fadeInSeconds)
+            {
+                m_SoundAgentHelper.Resume(fadeInSeconds);
             }
 
             /// <summary>
@@ -319,15 +365,6 @@ namespace GameFramework.Sound
                 SpatialBlend = Constant.DefaultSpatialBlend;
                 MaxDistance = Constant.DefaultMaxDistance;
                 m_SoundAgentHelper.Reset();
-            }
-
-            /// <summary>
-            /// 设置声音绑定的实体。
-            /// </summary>
-            /// <param name="bindingEntity">声音绑定的实体。</param>
-            public void SetBindingEntity(IEntity bindingEntity)
-            {
-                m_SoundAgentHelper.SetBindingEntity(bindingEntity);
             }
 
             internal bool SetSoundAsset(object soundAsset)

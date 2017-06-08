@@ -11,13 +11,9 @@ using GameFramework.ObjectPool;
 using GameFramework.Resource;
 using System;
 using System.Collections.Generic;
-
 #if UNITY_EDITOR
-
 using UnityEditor;
-
 #endif
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,6 +22,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 编辑器资源组件。
     /// </summary>
+    [DisallowMultipleComponent]
     public class EditorResourceComponent : MonoBehaviour, IResourceManager
     {
         private string m_ReadOnlyPath = null;

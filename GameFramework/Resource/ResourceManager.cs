@@ -26,11 +26,11 @@ namespace GameFramework.Resource
         private const string BackupFileSuffixName = ".bak";
         private const byte ReadWriteListVersionHeader = 0;
 
-        private readonly IDictionary<string, AssetInfo> m_AssetInfos;
-        private readonly IDictionary<string, AssetDependencyInfo> m_AssetDependencyInfos;
-        private readonly IDictionary<ResourceName, ResourceInfo> m_ResourceInfos;
-        private readonly IDictionary<string, ResourceGroup> m_ResourceGroups;
-        private readonly IDictionary<ResourceName, ReadWriteResourceInfo> m_ReadWriteResourceInfos;
+        private readonly Dictionary<string, AssetInfo> m_AssetInfos;
+        private readonly Dictionary<string, AssetDependencyInfo> m_AssetDependencyInfos;
+        private readonly Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
+        private readonly Dictionary<string, ResourceGroup> m_ResourceGroups;
+        private readonly SortedDictionary<ResourceName, ReadWriteResourceInfo> m_ReadWriteResourceInfos;
         private ResourceIniter m_ResourceIniter;
         private VersionListProcessor m_VersionListProcessor;
         private ResourceChecker m_ResourceChecker;
@@ -968,6 +968,25 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 卸载资源。
+        /// </summary>
+        /// <param name="asset">要卸载的资源。</param>
+        public void UnloadAsset(object asset)
+        {
+            if (asset == null)
+            {
+                throw new GameFrameworkException("Asset is invalid.");
+            }
+
+            if (m_ResourceLoader == null)
+            {
+                return;
+            }
+
+            m_ResourceLoader.UnloadAsset(asset);
+        }
+
+        /// <summary>
         /// 异步加载场景。
         /// </summary>
         /// <param name="sceneAssetName">要加载场景资源的名称。</param>
@@ -1047,25 +1066,6 @@ namespace GameFramework.Resource
             }
 
             m_ResourceLoader.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
-        }
-
-        /// <summary>
-        /// 卸载资源。
-        /// </summary>
-        /// <param name="asset">要卸载的资源。</param>
-        public void UnloadAsset(object asset)
-        {
-            if (asset == null)
-            {
-                throw new GameFrameworkException("Asset is invalid.");
-            }
-
-            if (m_ResourceLoader == null)
-            {
-                return;
-            }
-
-            m_ResourceLoader.UnloadAsset(asset);
         }
 
         /// <summary>

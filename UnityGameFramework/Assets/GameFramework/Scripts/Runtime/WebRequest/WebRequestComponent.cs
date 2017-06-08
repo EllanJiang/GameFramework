@@ -14,6 +14,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// Web 请求组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Web Request")]
     public sealed class WebRequestComponent : GameFrameworkComponent
     {
@@ -214,7 +215,7 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 移除全部 Web 请求任务。
+        /// 移除所有 Web 请求任务。
         /// </summary>
         public void RemoveAllWebRequests()
         {
@@ -227,7 +228,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="index">Web 请求代理辅助器索引。</param>
         private void AddWebRequestAgentHelper(int index)
         {
-            WebRequestAgentHelperBase webRequestAgentHelper = Utility.Helper.CreateHelper(m_WebRequestAgentHelperTypeName, m_CustomWebRequestAgentHelper, index);
+            WebRequestAgentHelperBase webRequestAgentHelper = Helper.CreateHelper(m_WebRequestAgentHelperTypeName, m_CustomWebRequestAgentHelper, index);
             if (webRequestAgentHelper == null)
             {
                 Log.Error("Can not create web request agent helper.");

@@ -123,7 +123,7 @@ namespace GameFramework.Download
         bool RemoveDownload(int serialId);
 
         /// <summary>
-        /// 移除全部下载任务。
+        /// 移除所有下载任务。
         /// </summary>
         void RemoveAllDownload();
     }

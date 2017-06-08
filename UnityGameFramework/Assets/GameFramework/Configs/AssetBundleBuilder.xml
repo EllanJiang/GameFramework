@@ -17,8 +17,8 @@
       <IgnoreTypeTreeChangesSelected>False</IgnoreTypeTreeChangesSelected>
       <AppendHashToAssetBundleNameSelected>False</AppendHashToAssetBundleNameSelected>
       <ChunkBasedCompressionSelected>True</ChunkBasedCompressionSelected>
-      <OutputDirectory>
-      </OutputDirectory>
+      <BuildEventHandlerTypeName></BuildEventHandlerTypeName>
+      <OutputDirectory></OutputDirectory>
     </Settings>
   </AssetBundleBuilder>
 </UnityGameFramework>

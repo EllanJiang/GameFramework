@@ -5,6 +5,7 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework;
 using GameFramework.Fsm;
 using UnityEditor;
 using UnityGameFramework.Runtime;

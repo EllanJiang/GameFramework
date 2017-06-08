@@ -22,7 +22,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Absolute URL:", Application.absoluteURL);
                     DrawItem("Source Value:", Application.srcValue);
                     DrawItem("Streamed Bytes:", Application.streamedBytes.ToString());
-#if !UNITY_5_5_OR_NEWER
+#if UNITY_5_3 || UNITY_5_4
                     DrawItem("Web Security Enabled:", Application.webSecurityEnabled.ToString());
                     DrawItem("Web Security Host URL:", Application.webSecurityHostUrl.ToString());
 #endif

@@ -7,15 +7,12 @@
 
 using GameFramework;
 using GameFramework.Resource;
-
-#if !UNITY_5_4_OR_NEWER
-
+#if UNITY_5_3
 using GameFramework.Scene;
-
 #endif
-
 using GameFramework.Sound;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 namespace UnityGameFramework.Runtime
@@ -23,6 +20,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 声音组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Sound")]
     public sealed partial class SoundComponent : GameFrameworkComponent
     {
@@ -44,6 +42,9 @@ namespace UnityGameFramework.Runtime
 
         [SerializeField]
         private Transform m_InstanceRoot = null;
+
+        [SerializeField]
+        private AudioMixer m_AudioMixer = null;
 
         [SerializeField]
         private string m_SoundHelperTypeName = "UnityGameFramework.Runtime.DefaultSoundHelper";
@@ -74,6 +75,17 @@ namespace UnityGameFramework.Runtime
             get
             {
                 return m_SoundManager.SoundGroupCount;
+            }
+        }
+
+        /// <summary>
+        /// 获取声音混响器。
+        /// </summary>
+        public AudioMixer AudioMixer
+        {
+            get
+            {
+                return m_AudioMixer;
             }
         }
 
@@ -141,7 +153,7 @@ namespace UnityGameFramework.Runtime
                 m_SoundManager.SetResourceManager(GameFrameworkEntry.GetModule<IResourceManager>());
             }
 
-            SoundHelperBase soundHelper = Utility.Helper.CreateHelper(m_SoundHelperTypeName, m_CustomSoundHelper);
+            SoundHelperBase soundHelper = Helper.CreateHelper(m_SoundHelperTypeName, m_CustomSoundHelper);
             if (soundHelper == null)
             {
                 Log.Error("Can not create sound helper.");
@@ -236,7 +248,7 @@ namespace UnityGameFramework.Runtime
                 return false;
             }
 
-            SoundGroupHelperBase soundGroupHelper = Utility.Helper.CreateHelper(m_SoundGroupHelperTypeName, m_CustomSoundGroupHelper, SoundGroupCount);
+            SoundGroupHelperBase soundGroupHelper = Helper.CreateHelper(m_SoundGroupHelperTypeName, m_CustomSoundGroupHelper, SoundGroupCount);
             if (soundGroupHelper == null)
             {
                 Log.Error("Can not create sound group helper.");
@@ -248,6 +260,19 @@ namespace UnityGameFramework.Runtime
             transform.SetParent(m_InstanceRoot);
             transform.localScale = Vector3.one;
 
+            if (m_AudioMixer != null)
+            {
+                AudioMixerGroup[] audioMixerGroups = m_AudioMixer.FindMatchingGroups(string.Format("Master/{0}", soundGroupName));
+                if (audioMixerGroups.Length > 0)
+                {
+                    soundGroupHelper.AudioMixerGroup = audioMixerGroups[0];
+                }
+                else
+                {
+                    soundGroupHelper.AudioMixerGroup = m_AudioMixer.FindMatchingGroups("Master")[0];
+                }
+            }
+
             if (!m_SoundManager.AddSoundGroup(soundGroupName, soundGroupAvoidBeingReplacedBySamePriority, soundGroupMute, soundGroupVolume, soundGroupHelper))
             {
                 return false;
@@ -255,13 +280,32 @@ namespace UnityGameFramework.Runtime
 
             for (int i = 0; i < soundAgentHelperCount; i++)
             {
-                if (!AddSoundAgentHelper(soundGroupName, transform, i))
+                if (!AddSoundAgentHelper(soundGroupName, soundGroupHelper, i))
                 {
                     return false;
                 }
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// 获取所有正在加载声音的序列编号。
+        /// </summary>
+        /// <returns>所有正在加载声音的序列编号。</returns>
+        public int[] GetAllLoadingSoundSerialIds()
+        {
+            return m_SoundManager.GetAllLoadingSoundSerialIds();
+        }
+
+        /// <summary>
+        /// 是否正在加载声音。
+        /// </summary>
+        /// <param name="serialId">声音序列编号。</param>
+        /// <returns>是否正在加载声音。</returns>
+        public bool IsLoadingSound(int serialId)
+        {
+            return m_SoundManager.IsLoadingSound(serialId);
         }
 
         /// <summary>
@@ -361,46 +405,157 @@ namespace UnityGameFramework.Runtime
         /// <returns>声音的序列编号。</returns>
         public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams, Entity bindingEntity, object userData)
         {
-            return m_SoundManager.PlaySound(soundAssetName, soundGroupName, playSoundParams, new PlaySoundInfo(bindingEntity, userData));
+            return m_SoundManager.PlaySound(soundAssetName, soundGroupName, playSoundParams, new PlaySoundInfo(bindingEntity, Vector3.zero, userData));
+        }
+
+        /// <summary>
+        /// 播放声音。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="playSoundParams">播放声音参数。</param>
+        /// <param name="worldPosition">声音所在的世界坐标。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>声音的序列编号。</returns>
+        public int PlaySound(string soundAssetName, string soundGroupName, Vector3 worldPosition)
+        {
+            return PlaySound(soundAssetName, soundGroupName, null, worldPosition, null);
+        }
+
+        /// <summary>
+        /// 播放声音。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="playSoundParams">播放声音参数。</param>
+        /// <param name="worldPosition">声音所在的世界坐标。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>声音的序列编号。</returns>
+        public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams, Vector3 worldPosition)
+        {
+            return PlaySound(soundAssetName, soundGroupName, playSoundParams, worldPosition, null);
+        }
+
+        /// <summary>
+        /// 播放声音。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="playSoundParams">播放声音参数。</param>
+        /// <param name="worldPosition">声音所在的世界坐标。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>声音的序列编号。</returns>
+        public int PlaySound(string soundAssetName, string soundGroupName, Vector3 worldPosition, object userData)
+        {
+            return PlaySound(soundAssetName, soundGroupName, null, worldPosition, userData);
+        }
+
+        /// <summary>
+        /// 播放声音。
+        /// </summary>
+        /// <param name="soundAssetName">声音资源名称。</param>
+        /// <param name="soundGroupName">声音组名称。</param>
+        /// <param name="playSoundParams">播放声音参数。</param>
+        /// <param name="worldPosition">声音所在的世界坐标。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>声音的序列编号。</returns>
+        public int PlaySound(string soundAssetName, string soundGroupName, PlaySoundParams playSoundParams, Vector3 worldPosition, object userData)
+        {
+            return m_SoundManager.PlaySound(soundAssetName, soundGroupName, playSoundParams, new PlaySoundInfo(null, worldPosition, userData));
         }
 
         /// <summary>
         /// 停止播放声音。
         /// </summary>
         /// <param name="serialId">要停止播放声音的序列编号。</param>
-        /// <returns>是否停止播放声音成功。</returns>
-        public bool StopSound(int serialId)
+        public void StopSound(int serialId)
         {
-            return m_SoundManager.StopSound(serialId);
+            m_SoundManager.StopSound(serialId);
         }
 
         /// <summary>
-        /// 停止所有声音。
+        /// 停止播放声音。
         /// </summary>
-        /// <param name="soundGroupName">声音组名称。</param>
-        public void StopAllSounds(string soundGroupName)
+        /// <param name="serialId">要停止播放声音的序列编号。</param>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public void StopSound(int serialId, float fadeOutSeconds)
         {
-            m_SoundManager.StopAllSounds(soundGroupName);
+            m_SoundManager.StopSound(serialId, fadeOutSeconds);
         }
 
         /// <summary>
-        /// 停止所有声音。
+        /// 停止所有已加载的声音。
         /// </summary>
-        public void StopAllSounds()
+        public void StopAllLoadedSounds()
         {
-            m_SoundManager.StopAllSounds();
+            m_SoundManager.StopAllLoadedSounds();
+        }
+
+        /// <summary>
+        /// 停止所有已加载的声音。
+        /// </summary>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public void StopAllLoadedSounds(float fadeOutSeconds)
+        {
+            m_SoundManager.StopAllLoadedSounds(fadeOutSeconds);
+        }
+
+        /// <summary>
+        /// 停止所有正在加载的声音。
+        /// </summary>
+        public void StopAllLoadingSounds()
+        {
+            m_SoundManager.StopAllLoadingSounds();
+        }
+
+        /// <summary>
+        /// 暂停播放声音。
+        /// </summary>
+        /// <param name="serialId">要暂停播放声音的序列编号。</param>
+        public void PauseSound(int serialId)
+        {
+            m_SoundManager.PauseSound(serialId);
+        }
+
+        /// <summary>
+        /// 暂停播放声音。
+        /// </summary>
+        /// <param name="serialId">要暂停播放声音的序列编号。</param>
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public void PauseSound(int serialId, float fadeOutSeconds)
+        {
+            m_SoundManager.PauseSound(serialId, fadeOutSeconds);
+        }
+
+        /// <summary>
+        /// 恢复播放声音。
+        /// </summary>
+        /// <param name="serialId">要恢复播放声音的序列编号。</param>
+        public void ResumeSound(int serialId)
+        {
+            m_SoundManager.ResumeSound(serialId);
+        }
+
+        /// <summary>
+        /// 恢复播放声音。
+        /// </summary>
+        /// <param name="serialId">要恢复播放声音的序列编号。</param>
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        public void ResumeSound(int serialId, float fadeInSeconds)
+        {
+            m_SoundManager.ResumeSound(serialId, fadeInSeconds);
         }
 
         /// <summary>
         /// 增加声音代理辅助器。
         /// </summary>
         /// <param name="soundGroupName">声音组名称。</param>
-        /// <param name="parentTransform">父节点位置。</param>
+        /// <param name="soundGroupHelper">声音组辅助器。</param>
         /// <param name="index">声音代理辅助器索引。</param>
         /// <returns>是否增加声音代理辅助器成功。</returns>
-        private bool AddSoundAgentHelper(string soundGroupName, Transform parentTransform, int index)
+        private bool AddSoundAgentHelper(string soundGroupName, SoundGroupHelperBase soundGroupHelper, int index)
         {
-            SoundAgentHelperBase soundAgentHelper = Utility.Helper.CreateHelper(m_SoundAgentHelperTypeName, m_CustomSoundAgentHelper, index);
+            SoundAgentHelperBase soundAgentHelper = Helper.CreateHelper(m_SoundAgentHelperTypeName, m_CustomSoundAgentHelper, index);
             if (soundAgentHelper == null)
             {
                 Log.Error("Can not create sound agent helper.");
@@ -409,8 +564,21 @@ namespace UnityGameFramework.Runtime
 
             soundAgentHelper.name = string.Format("Sound Agent Helper - {0} - {1}", soundGroupName, index.ToString());
             Transform transform = soundAgentHelper.transform;
-            transform.SetParent(parentTransform);
+            transform.SetParent(soundGroupHelper.transform);
             transform.localScale = Vector3.one;
+
+            if (m_AudioMixer != null)
+            {
+                AudioMixerGroup[] audioMixerGroups = m_AudioMixer.FindMatchingGroups(string.Format("Master/{0}/{1}", soundGroupName, index.ToString()));
+                if (audioMixerGroups.Length > 0)
+                {
+                    soundAgentHelper.AudioMixerGroup = audioMixerGroups[0];
+                }
+                else
+                {
+                    soundAgentHelper.AudioMixerGroup = soundGroupHelper.AudioMixerGroup;
+                }
+            }
 
             m_SoundManager.AddSoundAgentHelper(soundGroupName, soundAgentHelper);
 
@@ -420,9 +588,17 @@ namespace UnityGameFramework.Runtime
         private void OnPlaySoundSuccess(object sender, GameFramework.Sound.PlaySoundSuccessEventArgs e)
         {
             PlaySoundInfo playSoundInfo = (PlaySoundInfo)e.UserData;
-            if (playSoundInfo != null && playSoundInfo.BindingEntity != null)
+            if (playSoundInfo != null)
             {
-                e.SoundAgent.SetBindingEntity(playSoundInfo.BindingEntity);
+                SoundAgentHelperBase soundAgentHelper = (SoundAgentHelperBase)e.SoundAgent.Helper;
+                if (playSoundInfo.BindingEntity != null)
+                {
+                    soundAgentHelper.SetBindingEntity(playSoundInfo.BindingEntity);
+                }
+                else
+                {
+                    soundAgentHelper.SetWorldPosition(playSoundInfo.WorldPosition);
+                }
             }
 
             if (m_EnablePlaySoundSuccessEvent)

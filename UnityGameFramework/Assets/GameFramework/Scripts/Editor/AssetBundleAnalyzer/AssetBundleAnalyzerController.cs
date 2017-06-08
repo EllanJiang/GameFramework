@@ -17,8 +17,8 @@ namespace UnityGameFramework.Editor.AssetBundleTools
     {
         private readonly AssetBundleCollection m_AssetBundleCollection;
 
-        private readonly IDictionary<string, DependencyData> m_DependencyDatas;
-        private readonly IDictionary<string, List<Asset>> m_ScatteredAssets;
+        private readonly Dictionary<string, DependencyData> m_DependencyDatas;
+        private readonly Dictionary<string, List<Asset>> m_ScatteredAssets;
         private readonly HashSet<Stamp> m_AnalyzedStamps;
 
         public AssetBundleAnalyzerController()

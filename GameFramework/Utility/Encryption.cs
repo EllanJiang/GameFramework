@@ -5,66 +5,73 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
 using System;
 
-namespace Utility
+namespace GameFramework
 {
-    /// <summary>
-    /// 加密解密相关的实用函数。
-    /// </summary>
-    internal static class Encryption
+    public static partial class Utility
     {
-        private const int QuickEncryptLength = 220;
-
         /// <summary>
-        /// 将 bytes 使用 code 做异或运算的快速版本。
+        /// 加密解密相关的实用函数。
         /// </summary>
-        /// <param name="bytes">原始二进制流。</param>
-        /// <param name="code">异或二进制流。</param>
-        /// <returns>异或后的二进制流。</returns>
-        public static byte[] GetQuickXorBytes(byte[] bytes, byte[] code)
+        internal static class Encryption
         {
-            return GetXorBytes(bytes, code, QuickEncryptLength);
-        }
+            private const int QuickEncryptLength = 220;
 
-        /// <summary>
-        /// 将 bytes 使用 code 做异或运算。
-        /// </summary>
-        /// <param name="bytes">原始二进制流。</param>
-        /// <param name="code">异或二进制流。</param>
-        /// <param name="length">异或计算长度，若小于等于 0，则计算整个二进制流。</param>
-        /// <returns>异或后的二进制流。</returns>
-        public static byte[] GetXorBytes(byte[] bytes, byte[] code, int length = 0)
-        {
-            if (bytes == null)
+            /// <summary>
+            /// 将 bytes 使用 code 做异或运算的快速版本。
+            /// </summary>
+            /// <param name="bytes">原始二进制流。</param>
+            /// <param name="code">异或二进制流。</param>
+            /// <returns>异或后的二进制流。</returns>
+            public static byte[] GetQuickXorBytes(byte[] bytes, byte[] code)
             {
-                return null;
+                return GetXorBytes(bytes, code, QuickEncryptLength);
             }
 
-            int codeLength = code.Length;
-            if (code == null || codeLength <= 0)
+            /// <summary>
+            /// 将 bytes 使用 code 做异或运算。
+            /// </summary>
+            /// <param name="bytes">原始二进制流。</param>
+            /// <param name="code">异或二进制流。</param>
+            /// <param name="length">异或计算长度，若小于等于 0，则计算整个二进制流。</param>
+            /// <returns>异或后的二进制流。</returns>
+            public static byte[] GetXorBytes(byte[] bytes, byte[] code, int length = 0)
             {
-                throw new GameFrameworkException("Code is invalid.");
+                if (bytes == null)
+                {
+                    return null;
+                }
+
+                if (code == null)
+                {
+                    throw new GameFrameworkException("Code is invalid.");
+                }
+
+                int codeLength = code.Length;
+                if (codeLength <= 0)
+                {
+                    throw new GameFrameworkException("Code length is invalid.");
+                }
+
+                int codeIndex = 0;
+                int bytesLength = bytes.Length;
+                if (length <= 0 || length > bytesLength)
+                {
+                    length = bytesLength;
+                }
+
+                byte[] result = new byte[bytesLength];
+                Buffer.BlockCopy(bytes, 0, result, 0, bytesLength);
+
+                for (int i = 0; i < length; i++)
+                {
+                    result[i] ^= code[codeIndex++];
+                    codeIndex = codeIndex % codeLength;
+                }
+
+                return result;
             }
-
-            int codeIndex = 0;
-            int bytesLength = bytes.Length;
-            if (length <= 0 || length > bytesLength)
-            {
-                length = bytesLength;
-            }
-
-            byte[] result = new byte[bytesLength];
-            Buffer.BlockCopy(bytes, 0, result, 0, bytesLength);
-
-            for (int i = 0; i < length; i++)
-            {
-                result[i] ^= code[codeIndex++];
-                codeIndex = codeIndex % codeLength;
-            }
-
-            return result;
         }
     }
 }

@@ -5,10 +5,10 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Entity;
 using GameFramework.Sound;
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace UnityGameFramework.Runtime
 {
@@ -107,6 +107,15 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
+        /// 获取或设置声音代理辅助器所在的混音组。
+        /// </summary>
+        public abstract AudioMixerGroup AudioMixerGroup
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 重置声音代理事件。
         /// </summary>
         public abstract event EventHandler<ResetSoundAgentEventArgs> ResetSoundAgent;
@@ -114,22 +123,26 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 播放声音。
         /// </summary>
-        public abstract void Play();
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        public abstract void Play(float fadeInSeconds);
 
         /// <summary>
         /// 停止播放声音。
         /// </summary>
-        public abstract void Stop();
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public abstract void Stop(float fadeOutSeconds);
 
         /// <summary>
         /// 暂停播放声音。
         /// </summary>
-        public abstract void Pause();
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        public abstract void Pause(float fadeOutSeconds);
 
         /// <summary>
         /// 恢复播放声音。
         /// </summary>
-        public abstract void Resume();
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        public abstract void Resume(float fadeInSeconds);
 
         /// <summary>
         /// 重置声音代理辅助器。
@@ -147,6 +160,12 @@ namespace UnityGameFramework.Runtime
         /// 设置声音绑定的实体。
         /// </summary>
         /// <param name="bindingEntity">声音绑定的实体。</param>
-        public abstract void SetBindingEntity(IEntity bindingEntity);
+        public abstract void SetBindingEntity(Entity bindingEntity);
+
+        /// <summary>
+        /// 设置声音所在的世界坐标。
+        /// </summary>
+        /// <param name="worldPosition">声音所在的世界坐标。</param>
+        public abstract void SetWorldPosition(Vector3 worldPosition);
     }
 }

@@ -5,9 +5,12 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-namespace UnityGameFramework.Runtime
+namespace GameFramework
 {
-    internal sealed class DummySceneObject
+    /// <summary>
+    /// 实用函数集。
+    /// </summary>
+    public static partial class Utility
     {
 
     }

@@ -161,6 +161,127 @@ namespace GameFramework.Entity
             }
 
             /// <summary>
+            /// 实体组中是否存在实体。
+            /// </summary>
+            /// <param name="entityId">实体序列编号。</param>
+            /// <returns>实体组中是否存在实体。</returns>
+            public bool HasEntity(int entityId)
+            {
+                foreach (IEntity entity in m_Entities)
+                {
+                    if (entity.Id == entityId)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            /// <summary>
+            /// 实体组中是否存在实体。
+            /// </summary>
+            /// <param name="entityAssetName">实体资源名称。</param>
+            /// <returns>实体组中是否存在实体。</returns>
+            public bool HasEntity(string entityAssetName)
+            {
+                if (string.IsNullOrEmpty(entityAssetName))
+                {
+                    throw new GameFrameworkException("Entity asset name is invalid.");
+                }
+
+                foreach (IEntity entity in m_Entities)
+                {
+                    if (entity.EntityAssetName == entityAssetName)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            /// <summary>
+            /// 从实体组中获取实体。
+            /// </summary>
+            /// <param name="entityId">实体序列编号。</param>
+            /// <returns>要获取的实体。</returns>
+            public IEntity GetEntity(int entityId)
+            {
+                foreach (IEntity entity in m_Entities)
+                {
+                    if (entity.Id == entityId)
+                    {
+                        return entity;
+                    }
+                }
+
+                return null;
+            }
+
+            /// <summary>
+            /// 从实体组中获取实体。
+            /// </summary>
+            /// <param name="entityAssetName">实体资源名称。</param>
+            /// <returns>要获取的实体。</returns>
+            public IEntity GetEntity(string entityAssetName)
+            {
+                if (string.IsNullOrEmpty(entityAssetName))
+                {
+                    throw new GameFrameworkException("Entity asset name is invalid.");
+                }
+
+                foreach (IEntity entity in m_Entities)
+                {
+                    if (entity.EntityAssetName == entityAssetName)
+                    {
+                        return entity;
+                    }
+                }
+
+                return null;
+            }
+
+            /// <summary>
+            /// 从实体组中获取实体。
+            /// </summary>
+            /// <param name="entityAssetName">实体资源名称。</param>
+            /// <returns>要获取的实体。</returns>
+            public IEntity[] GetEntities(string entityAssetName)
+            {
+                if (string.IsNullOrEmpty(entityAssetName))
+                {
+                    throw new GameFrameworkException("Entity asset name is invalid.");
+                }
+
+                List<IEntity> entities = new List<IEntity>();
+                foreach (IEntity entity in m_Entities)
+                {
+                    if (entity.EntityAssetName == entityAssetName)
+                    {
+                        entities.Add(entity);
+                    }
+                }
+
+                return entities.ToArray();
+            }
+
+            /// <summary>
+            /// 从实体组中获取所有实体。
+            /// </summary>
+            /// <returns>实体组中的所有实体。</returns>
+            public IEntity[] GetAllEntities()
+            {
+                List<IEntity> entities = new List<IEntity>();
+                foreach (IEntity entity in m_Entities)
+                {
+                    entities.Add(entity);
+                }
+
+                return entities.ToArray();
+            }
+
+            /// <summary>
             /// 往实体组增加实体。
             /// </summary>
             /// <param name="entity">要增加的实体。</param>

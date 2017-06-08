@@ -14,8 +14,8 @@ namespace GameFramework.Fsm
     /// </summary>
     internal sealed class FsmManager : GameFrameworkModule, IFsmManager
     {
-        private readonly IDictionary<string, FsmBase> m_Fsms;
-        private readonly IList<FsmBase> m_TempFsms;
+        private readonly Dictionary<string, FsmBase> m_Fsms;
+        private readonly List<FsmBase> m_TempFsms;
 
         /// <summary>
         /// 初始化有限状态机管理器的新实例。
@@ -62,12 +62,12 @@ namespace GameFramework.Fsm
                 return;
             }
 
-            foreach (KeyValuePair<string, FsmBase> fsm in (Dictionary<string, FsmBase>)m_Fsms)
+            foreach (KeyValuePair<string, FsmBase> fsm in m_Fsms)
             {
                 m_TempFsms.Add(fsm.Value);
             }
 
-            foreach (FsmBase fsm in (List<FsmBase>)m_TempFsms)
+            foreach (FsmBase fsm in m_TempFsms)
             {
                 if (fsm.IsDestroyed)
                 {

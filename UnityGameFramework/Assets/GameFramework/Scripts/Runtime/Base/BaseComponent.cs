@@ -9,23 +9,19 @@ using GameFramework;
 using GameFramework.Localization;
 using GameFramework.Resource;
 using System;
+using System.Threading;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace UnityGameFramework.Runtime
 {
     /// <summary>
     /// 基础组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Base")]
     public sealed class BaseComponent : GameFrameworkComponent
     {
         private const int DefaultDpi = 96;  // default windows dpi
-
-        /// <summary>
-        /// 游戏框架所在的场景编号。
-        /// </summary>
-        internal const int GameFrameworkSceneId = 0;
 
         private string m_GameVersion = string.Empty;
         private int m_InternalApplicationVersion = 0;
@@ -38,10 +34,13 @@ namespace UnityGameFramework.Runtime
         private Language m_EditorLanguage = Language.Unspecified;
 
         [SerializeField]
-        private string m_ZipHelperTypeName = "Utility.ZipHelper";
+        private string m_ZipHelperTypeName = "UnityGameFramework.Runtime.ZipHelper";
 
         [SerializeField]
-        private string m_JsonHelperTypeName = "Utility.JsonHelper";
+        private string m_JsonHelperTypeName = "UnityGameFramework.Runtime.JsonHelper";
+
+        [SerializeField]
+        private string m_ProfilerHelperTypeName = "UnityGameFramework.Runtime.ProfilerHelper";
 
         [SerializeField]
         private int m_FrameRate = 30;
@@ -218,13 +217,10 @@ namespace UnityGameFramework.Runtime
 
             Log.Info("Game Framework version is {0}. Unity Game Framework version is {1}.", GameFrameworkEntry.Version, GameEntry.Version);
 
-#if !UNITY_5_3 && !UNITY_5_3_OR_NEWER
-            Log.Error("Game Framework only applies with Unity 5.3 and above, but current Unity version is {0}.", Application.unityVersion);
-            GameEntry.Shutdown(ShutdownType.Quit);
-#else
-
+#if UNITY_5_3_OR_NEWER || UNITY_5_3
             InitZipHelper();
             InitJsonHelper();
+            InitProfilerHelper();
 
             Utility.Converter.ScreenDpi = Screen.dpi;
             if (Utility.Converter.ScreenDpi <= 0)
@@ -242,6 +238,12 @@ namespace UnityGameFramework.Runtime
             Time.timeScale = m_GameSpeed;
             Application.runInBackground = m_RunInBackground;
             Screen.sleepTimeout = m_NeverSleep ? SleepTimeout.NeverSleep : SleepTimeout.SystemSetting;
+#else
+            Log.Error("Game Framework only applies with Unity 5.3 and above, but current Unity version is {0}.", Application.unityVersion);
+            GameEntry.Shutdown(ShutdownType.Quit);
+#endif
+#if UNITY_5_6_OR_NEWER
+            Application.lowMemory += OnLowMemory;
 #endif
         }
 
@@ -253,6 +255,14 @@ namespace UnityGameFramework.Runtime
         private void Update()
         {
             GameFrameworkEntry.Update(Time.deltaTime, Time.unscaledDeltaTime);
+        }
+
+        private void OnDestroy()
+        {
+#if UNITY_5_6_OR_NEWER
+            Application.lowMemory -= OnLowMemory;
+#endif
+            GameFrameworkEntry.Shutdown();
         }
 
         /// <summary>
@@ -295,8 +305,18 @@ namespace UnityGameFramework.Runtime
             GameSpeed = 1f;
         }
 
+        internal void Shutdown()
+        {
+            Destroy(gameObject);
+        }
+
         private void InitZipHelper()
         {
+            if (string.IsNullOrEmpty(m_ZipHelperTypeName))
+            {
+                return;
+            }
+
             Type zipHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_ZipHelperTypeName);
             if (zipHelperType == null)
             {
@@ -316,32 +336,50 @@ namespace UnityGameFramework.Runtime
 
         private void InitJsonHelper()
         {
+            if (string.IsNullOrEmpty(m_JsonHelperTypeName))
+            {
+                return;
+            }
+
             Type jsonHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_JsonHelperTypeName);
             if (jsonHelperType == null)
             {
-                Log.Error("Can not find Json helper type '{0}'.", m_JsonHelperTypeName);
+                Log.Error("Can not find JSON helper type '{0}'.", m_JsonHelperTypeName);
                 return;
             }
 
             Utility.Json.IJsonHelper jsonHelper = (Utility.Json.IJsonHelper)Activator.CreateInstance(jsonHelperType);
             if (jsonHelper == null)
             {
-                Log.Error("Can not create Json helper instance '{0}'.", m_JsonHelperTypeName);
+                Log.Error("Can not create JSON helper instance '{0}'.", m_JsonHelperTypeName);
                 return;
             }
 
             Utility.Json.SetJsonHelper(jsonHelper);
         }
 
-        internal void Reload()
+        private void InitProfilerHelper()
         {
-            SceneManager.LoadScene(GameFrameworkSceneId);
-        }
+            if (string.IsNullOrEmpty(m_ProfilerHelperTypeName))
+            {
+                return;
+            }
 
-        internal void Shutdown()
-        {
-            GameFrameworkEntry.Shutdown();
-            Destroy(gameObject);
+            Type profilerHelperType = Utility.Assembly.GetTypeWithinLoadedAssemblies(m_ProfilerHelperTypeName);
+            if (profilerHelperType == null)
+            {
+                Log.Error("Can not find profiler helper type '{0}'.", m_ProfilerHelperTypeName);
+                return;
+            }
+
+            Utility.Profiler.IProfilerHelper profilerHelper = (Utility.Profiler.IProfilerHelper)Activator.CreateInstance(profilerHelperType, Thread.CurrentThread);
+            if (profilerHelper == null)
+            {
+                Log.Error("Can not create profiler helper instance '{0}'.", m_ProfilerHelperTypeName);
+                return;
+            }
+
+            Utility.Profiler.SetProfilerHelper(profilerHelper);
         }
 
         private void LogCallback(LogLevel level, object message)
@@ -362,6 +400,23 @@ namespace UnityGameFramework.Runtime
                     break;
                 default:
                     throw new GameFrameworkException(message.ToString());
+            }
+        }
+
+        private void OnLowMemory()
+        {
+            Log.Info("Low memory reported...");
+
+            ObjectPoolComponent objectPoolComponent = GameEntry.GetComponent<ObjectPoolComponent>();
+            if (objectPoolComponent != null)
+            {
+                objectPoolComponent.ReleaseAllUnused();
+            }
+
+            ResourceComponent resourceCompoent = GameEntry.GetComponent<ResourceComponent>();
+            if (resourceCompoent != null)
+            {
+                resourceCompoent.ForceUnloadUnusedAssets(true);
             }
         }
     }

@@ -56,22 +56,42 @@ namespace GameFramework.UI
         /// <summary>
         /// 界面组中是否存在界面。
         /// </summary>
-        /// <param name="uiFormTypeId">界面类型编号。</param>
+        /// <param name="serialId">界面序列编号。</param>
         /// <returns>界面组中是否存在界面。</returns>
-        bool HasUIForm(int uiFormTypeId);
+        bool HasUIForm(int serialId);
+
+        /// <summary>
+        /// 界面组中是否存在界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <returns>界面组中是否存在界面。</returns>
+        bool HasUIForm(string uiFormAssetName);
 
         /// <summary>
         /// 从界面组中获取界面。
         /// </summary>
-        /// <param name="uiFormTypeId">界面类型编号。</param>
+        /// <param name="serialId">界面序列编号。</param>
         /// <returns>要获取的界面。</returns>
-        IUIForm GetUIForm(int uiFormTypeId);
+        IUIForm GetUIForm(int serialId);
 
         /// <summary>
         /// 从界面组中获取界面。
         /// </summary>
-        /// <param name="uiFormTypeId">界面类型编号。</param>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
         /// <returns>要获取的界面。</returns>
-        IUIForm[] GetUIForms(int uiFormTypeId);
+        IUIForm GetUIForm(string uiFormAssetName);
+
+        /// <summary>
+        /// 从界面组中获取界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <returns>要获取的界面。</returns>
+        IUIForm[] GetUIForms(string uiFormAssetName);
+
+        /// <summary>
+        /// 从界面组中获取所有界面。
+        /// </summary>
+        /// <returns>界面组中的所有界面。</returns>
+        IUIForm[] GetAllUIForms();
     }
 }

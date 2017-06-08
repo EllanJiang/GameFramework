@@ -15,6 +15,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 调试组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Debugger")]
     public sealed partial class DebuggerComponent : GameFrameworkComponent
     {
@@ -283,6 +284,11 @@ namespace UnityGameFramework.Runtime
 
         private void DrawDebuggerWindowGroup(IDebuggerWindowGroup debuggerWindowGroup)
         {
+            if (debuggerWindowGroup == null)
+            {
+                return;
+            }
+
             List<string> names = new List<string>();
             string[] debuggerWindowNames = debuggerWindowGroup.GetDebuggerWindowNames();
             for (int i = 0; i < debuggerWindowNames.Length; i++)

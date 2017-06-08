@@ -5,7 +5,6 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.Entity;
 using System;
 
 namespace GameFramework.Sound
@@ -112,22 +111,26 @@ namespace GameFramework.Sound
         /// <summary>
         /// 播放声音。
         /// </summary>
-        void Play();
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        void Play(float fadeInSeconds);
 
         /// <summary>
         /// 停止播放声音。
         /// </summary>
-        void Stop();
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        void Stop(float fadeOutSeconds);
 
         /// <summary>
         /// 暂停播放声音。
         /// </summary>
-        void Pause();
+        /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
+        void Pause(float fadeOutSeconds);
 
         /// <summary>
         /// 恢复播放声音。
         /// </summary>
-        void Resume();
+        /// <param name="fadeInSeconds">声音淡入时间，以秒为单位。</param>
+        void Resume(float fadeInSeconds);
 
         /// <summary>
         /// 重置声音代理辅助器。
@@ -140,11 +143,5 @@ namespace GameFramework.Sound
         /// <param name="soundAsset">声音资源。</param>
         /// <returns>设置声音资源是否成功。</returns>
         bool SetSoundAsset(object soundAsset);
-
-        /// <summary>
-        /// 设置声音绑定的实体。
-        /// </summary>
-        /// <param name="bindingEntity">声音绑定的实体。</param>
-        void SetBindingEntity(IEntity bindingEntity);
     }
 }

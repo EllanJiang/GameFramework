@@ -5,6 +5,7 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework.Entity;
 using GameFramework.Event;
 
 namespace UnityGameFramework.Runtime
@@ -21,6 +22,8 @@ namespace UnityGameFramework.Runtime
         public HideEntityCompleteEventArgs(GameFramework.Entity.HideEntityCompleteEventArgs e)
         {
             EntityId = e.EntityId;
+            EntityAssetName = e.EntityAssetName;
+            EntityGroup = e.EntityGroup;
             UserData = e.UserData;
         }
 
@@ -39,6 +42,24 @@ namespace UnityGameFramework.Runtime
         /// 获取实体编号。
         /// </summary>
         public int EntityId
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取实体资源名称。
+        /// </summary>
+        public string EntityAssetName
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取实体所属的实体组。
+        /// </summary>
+        public IEntityGroup EntityGroup
         {
             get;
             private set;

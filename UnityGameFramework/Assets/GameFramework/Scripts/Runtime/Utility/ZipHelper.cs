@@ -9,12 +9,12 @@ using GameFramework;
 using ICSharpCode.SharpZipLib.GZip;
 using System.IO;
 
-namespace Utility
+namespace UnityGameFramework.Runtime
 {
     /// <summary>
     /// 压缩解压缩辅助器。
     /// </summary>
-    internal class ZipHelper : Zip.IZipHelper
+    internal class ZipHelper : Utility.Zip.IZipHelper
     {
         /// <summary>
         /// 压缩数据。

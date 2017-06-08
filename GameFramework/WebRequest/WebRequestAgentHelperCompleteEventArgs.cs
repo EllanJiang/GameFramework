@@ -12,7 +12,7 @@ namespace GameFramework.WebRequest
     /// </summary>
     public sealed class WebRequestAgentHelperCompleteEventArgs : GameFrameworkEventArgs
     {
-        private byte[] m_WebResponseBytes;
+        private readonly byte[] m_WebResponseBytes;
 
         /// <summary>
         /// 初始化 Web 请求代理辅助器完成事件的新实例。

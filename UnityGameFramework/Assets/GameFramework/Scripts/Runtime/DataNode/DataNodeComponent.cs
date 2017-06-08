@@ -14,6 +14,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 数据结点组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Data Node")]
     public sealed class DataNodeComponent : GameFrameworkComponent
     {

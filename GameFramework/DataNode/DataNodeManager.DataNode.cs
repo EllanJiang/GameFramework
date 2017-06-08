@@ -16,10 +16,12 @@ namespace GameFramework.DataNode
         /// </summary>
         private sealed class DataNode : IDataNode
         {
+            private static readonly DataNode[] EmptyArray = new DataNode[] { };
+
             private readonly string m_Name;
             private Variable m_Data;
             private readonly DataNode m_Parent;
-            private IList<DataNode> m_Childs;
+            private List<DataNode> m_Childs;
 
             /// <summary>
             /// 初始化数据结点的新实例。
@@ -183,10 +185,10 @@ namespace GameFramework.DataNode
             {
                 if (m_Childs == null)
                 {
-                    return new IDataNode[0];
+                    return EmptyArray;
                 }
 
-                return ((List<DataNode>)m_Childs).ToArray();
+                return m_Childs.ToArray();
             }
 
             /// <summary>

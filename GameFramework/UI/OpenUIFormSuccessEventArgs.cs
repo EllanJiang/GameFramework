@@ -15,25 +15,14 @@ namespace GameFramework.UI
         /// <summary>
         /// 初始化打开界面成功事件的新实例。
         /// </summary>
-        /// <param name="uiFormAssetName">界面资源名称。</param>
         /// <param name="uiForm">加载成功的界面。</param>
         /// <param name="duration">加载持续时间。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public OpenUIFormSuccessEventArgs(string uiFormAssetName, IUIForm uiForm, float duration, object userData)
+        public OpenUIFormSuccessEventArgs(IUIForm uiForm, float duration, object userData)
         {
-            UIFormAssetName = uiFormAssetName;
             UIForm = uiForm;
             Duration = duration;
             UserData = userData;
-        }
-
-        /// <summary>
-        /// 获取界面资源名称。
-        /// </summary>
-        public string UIFormAssetName
-        {
-            get;
-            private set;
         }
 
         /// <summary>

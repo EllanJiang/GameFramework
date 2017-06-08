@@ -11,24 +11,24 @@ namespace GameFramework.UI
     {
         private sealed class OpenUIFormInfo
         {
-            private readonly int m_UIFormTypeId;
+            private readonly int m_SerialId;
             private readonly UIGroup m_UIGroup;
             private readonly bool m_PauseCoveredUIForm;
             private readonly object m_UserData;
 
-            public OpenUIFormInfo(int uiFormTypeId, UIGroup uiGroup, bool pauseCoveredUIForm, object userData)
+            public OpenUIFormInfo(int serialId, UIGroup uiGroup, bool pauseCoveredUIForm, object userData)
             {
-                m_UIFormTypeId = uiFormTypeId;
+                m_SerialId = serialId;
                 m_UIGroup = uiGroup;
                 m_PauseCoveredUIForm = pauseCoveredUIForm;
                 m_UserData = userData;
             }
 
-            public int UIFormTypeId
+            public int SerialId
             {
                 get
                 {
-                    return m_UIFormTypeId;
+                    return m_SerialId;
                 }
             }
 

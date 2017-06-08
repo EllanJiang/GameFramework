@@ -392,7 +392,7 @@ namespace UnityGameFramework.Runtime
                 {
                     if (m_AsyncOperation.allowSceneActivation)
                     {
-                        m_LoadResourceAgentHelperLoadCompleteEventHandler(this, new LoadResourceAgentHelperLoadCompleteEventArgs(new DummySceneObject()));
+                        m_LoadResourceAgentHelperLoadCompleteEventHandler(this, new LoadResourceAgentHelperLoadCompleteEventArgs(new SceneAsset()));
                         m_ResourceChildName = null;
                         m_AsyncOperation = null;
                     }

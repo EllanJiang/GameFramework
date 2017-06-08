@@ -17,6 +17,7 @@ namespace UnityGameFramework.Runtime
     /// <summary>
     /// 资源组件。
     /// </summary>
+    [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Resource")]
     public sealed partial class ResourceComponent : GameFrameworkComponent
     {
@@ -507,7 +508,7 @@ namespace UnityGameFramework.Runtime
                 m_ResourceManager.UpdateRetryCount = m_UpdateRetryCount;
             }
 
-            m_ResourceHelper = Utility.Helper.CreateHelper(m_ResourceHelperTypeName, m_CustomResourceHelper);
+            m_ResourceHelper = Helper.CreateHelper(m_ResourceHelperTypeName, m_CustomResourceHelper);
             if (m_ResourceHelper == null)
             {
                 Log.Error("Can not create resource helper.");
@@ -748,7 +749,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="index">加载资源代理辅助器索引。</param>
         private void AddLoadResourceAgentHelper(int index)
         {
-            LoadResourceAgentHelperBase loadResourceAgentHelper = Utility.Helper.CreateHelper(m_LoadResourceAgentHelperTypeName, m_CustomLoadResourceAgentHelper, index);
+            LoadResourceAgentHelperBase loadResourceAgentHelper = Helper.CreateHelper(m_LoadResourceAgentHelperTypeName, m_CustomLoadResourceAgentHelper, index);
             if (loadResourceAgentHelper == null)
             {
                 Log.Error("Can not create load resource agent helper.");
