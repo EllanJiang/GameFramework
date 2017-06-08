@@ -27,12 +27,15 @@ namespace UnityGameFramework.Editor
 
             FsmComponent t = (FsmComponent)target;
 
-            EditorGUILayout.LabelField("FSM Count", t.Count.ToString());
-
-            FsmBase[] fsms = t.GetAllFsms();
-            foreach (FsmBase fsm in fsms)
+            if (PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
-                DrawFsm(fsm);
+                EditorGUILayout.LabelField("FSM Count", t.Count.ToString());
+
+                FsmBase[] fsms = t.GetAllFsms();
+                foreach (FsmBase fsm in fsms)
+                {
+                    DrawFsm(fsm);
+                }
             }
 
             Repaint();

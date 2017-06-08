@@ -28,7 +28,7 @@ namespace UnityGameFramework.Editor
 
             EditorGUILayout.PropertyField(m_Skin);
 
-            if (EditorApplication.isPlaying)
+            if (EditorApplication.isPlaying && PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
                 bool activeWindow = EditorGUILayout.Toggle("Active Window", t.ActiveWindow);
                 if (activeWindow != t.ActiveWindow)

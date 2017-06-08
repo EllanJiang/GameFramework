@@ -54,7 +54,7 @@ namespace UnityGameFramework.Editor
 
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
             {
-                if (EditorApplication.isPlaying)
+                if (EditorApplication.isPlaying && PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
                 {
                     EditorGUILayout.EnumPopup("Resource Mode", t.ResourceMode);
                 }
@@ -231,7 +231,7 @@ namespace UnityGameFramework.Editor
             }
             EditorGUI.EndDisabledGroup();
 
-            if (EditorApplication.isPlaying)
+            if (EditorApplication.isPlaying && PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
                 EditorGUILayout.LabelField("Read Only Path", t.ReadOnlyPath.ToString());
                 EditorGUILayout.LabelField("Read Write Path", t.ReadWritePath.ToString());

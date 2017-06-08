@@ -103,7 +103,7 @@ namespace UnityGameFramework.Editor
             }
             EditorGUI.EndDisabledGroup();
 
-            if (EditorApplication.isPlaying)
+            if (EditorApplication.isPlaying && PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
                 EditorGUILayout.LabelField("UI Group Count", t.UIGroupCount.ToString());
             }

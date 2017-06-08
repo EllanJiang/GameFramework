@@ -50,7 +50,7 @@ namespace UnityGameFramework.Editor
                 }
             }
 
-            if (EditorApplication.isPlaying)
+            if (EditorApplication.isPlaying && PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
                 EditorGUILayout.LabelField("Total Agent Count", t.TotalAgentCount.ToString());
                 EditorGUILayout.LabelField("Free Agent Count", t.FreeAgentCount.ToString());
