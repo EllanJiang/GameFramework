@@ -238,7 +238,7 @@ namespace GameFramework.Resource
                         binaryWriter.Write(m_ResourceManager.m_ReadWriteResourceInfos.Count);
                         foreach (KeyValuePair<ResourceName, ReadWriteResourceInfo> i in m_ResourceManager.m_ReadWriteResourceInfos)
                         {
-                            byte[] nameBytes = Utility.Encryption.GetXorBytes(Utility.Converter.GetBytesFromString(i.Key.Name), encryptCode);
+                            byte[] nameBytes = Utility.Encryption.GetXorBytes(Utility.Converter.GetBytes(i.Key.Name), encryptCode);
                             binaryWriter.Write((byte)nameBytes.Length);
                             binaryWriter.Write(nameBytes);
 
@@ -248,7 +248,7 @@ namespace GameFramework.Resource
                             }
                             else
                             {
-                                byte[] variantBytes = Utility.Encryption.GetXorBytes(Utility.Converter.GetBytesFromString(i.Key.Variant), encryptCode);
+                                byte[] variantBytes = Utility.Encryption.GetXorBytes(Utility.Converter.GetBytes(i.Key.Variant), encryptCode);
                                 binaryWriter.Write((byte)variantBytes.Length);
                                 binaryWriter.Write(variantBytes);
                             }
@@ -374,7 +374,7 @@ namespace GameFramework.Resource
 
                 if (!zip)
                 {
-                    byte[] hashBytes = Utility.Converter.GetBytesFromInt(updateInfo.HashCode);
+                    byte[] hashBytes = Utility.Converter.GetBytes(updateInfo.HashCode);
                     if (updateInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt)
                     {
                         bytes = Utility.Encryption.GetQuickXorBytes(bytes, hashBytes);
@@ -385,7 +385,7 @@ namespace GameFramework.Resource
                     }
                 }
 
-                int hashCode = Utility.Converter.GetIntFromBytes(Utility.Verifier.GetCrc32(bytes));
+                int hashCode = Utility.Converter.GetInt32(Utility.Verifier.GetCrc32(bytes));
                 if (updateInfo.ZipHashCode != hashCode)
                 {
                     string errorMessage = string.Format("Zip hash code error, need '{0}', downloaded '{1}'.", updateInfo.ZipHashCode.ToString("X8"), hashCode.ToString("X8"));

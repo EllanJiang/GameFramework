@@ -98,7 +98,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_UnityWebRequest = UnityWebRequest.Post(webRequestUri, Utility.Converter.GetStringFromBytes(postData));
+            m_UnityWebRequest = UnityWebRequest.Post(webRequestUri, Utility.Converter.GetString(postData));
             m_UnityWebRequest.Send();
         }
 

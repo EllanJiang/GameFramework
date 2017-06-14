@@ -452,9 +452,9 @@ namespace GameFramework.Resource
                 switch ((LoadType)loadType)
                 {
                     case LoadType.LoadFromMemoryAndQuickDecrypt:
-                        return Utility.Encryption.GetQuickXorBytes(bytes, Utility.Converter.GetBytesFromInt(hashCode));
+                        return Utility.Encryption.GetQuickXorBytes(bytes, Utility.Converter.GetBytes(hashCode));
                     case LoadType.LoadFromMemoryAndDecrypt:
-                        return Utility.Encryption.GetXorBytes(bytes, Utility.Converter.GetBytesFromInt(hashCode));
+                        return Utility.Encryption.GetXorBytes(bytes, Utility.Converter.GetBytes(hashCode));
                     default:
                         return bytes;
                 }

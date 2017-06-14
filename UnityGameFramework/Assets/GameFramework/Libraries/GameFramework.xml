@@ -14114,6 +14114,11 @@
             类型转换相关的实用函数。
             </summary>
         </member>
+        <member name="P:GameFramework.Utility.Converter.IsLittleEndian">
+            <summary>
+            获取数据在此计算机结构中存储时的字节顺序。
+            </summary>
+        </member>
         <member name="P:GameFramework.Utility.Converter.ScreenDpi">
             <summary>
             获取或设置屏幕每英寸点数。
@@ -14147,41 +14152,239 @@
             <param name="inches">英寸。</param>
             <returns>像素。</returns>
         </member>
-        <member name="M:GameFramework.Utility.Converter.GetBytesFromInt(System.Int32)">
+        <member name="M:GameFramework.Utility.Converter.GetBytes(System.Boolean)">
+            <summary>
+            以字节数组的形式返回指定的布尔值。
+            </summary>
+            <param name="value">要转换的布尔值。</param>
+            <returns>长度为 1 的字节数组。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBoolean(System.Byte[])">
+            <summary>
+            返回由字节数组中首字节转换来的布尔值。
+            </summary>
+            <param name="value">字节数组。</param>
+            <returns>如果 value 中的首字节非零，则为 true，否则为 false。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBoolean(System.Byte[],System.Int32)">
+            <summary>
+            返回由字节数组中指定位置的一个字节转换来的布尔值。
+            </summary>
+            <param name="value">字节数组。</param>
+            <param name="startIndex">value 内的起始位置。</param>
+            <returns>如果 value 中指定位置的字节非零，则为 true，否则为 false。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytes(System.Char)">
+            <summary>
+            以字节数组的形式返回指定的 Unicode 字符值。
+            </summary>
+            <param name="value">要转换的字符。</param>
+            <returns>长度为 2 的字节数组。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetChar(System.Byte[])">
+            <summary>
+            返回由字节数组中前两个字节转换来的 Unicode 字符。
+            </summary>
+            <param name="value">字节数组。</param>
+            <returns>由两个字节构成的字符。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetChar(System.Byte[],System.Int32)">
+            <summary>
+            返回由字节数组中指定位置的两个字节转换来的 Unicode 字符。
+            </summary>
+            <param name="value">字节数组。</param>
+            <param name="startIndex">value 内的起始位置。</param>
+            <returns>由两个字节构成的字符。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytes(System.Int16)">
+            <summary>
+            以字节数组的形式返回指定的 16 位有符号整数值。
+            </summary>
+            <param name="value">要转换的数字。</param>
+            <returns>长度为 2 的字节数组。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetInt16(System.Byte[])">
+            <summary>
+            返回由字节数组中前两个字节转换来的 16 位有符号整数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <returns>由两个字节构成的 16 位有符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetInt16(System.Byte[],System.Int32)">
+            <summary>
+            返回由字节数组中指定位置的两个字节转换来的 16 位有符号整数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <param name="startIndex">value 内的起始位置。</param>
+            <returns>由两个字节构成的 16 位有符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytes(System.UInt16)">
+            <summary>
+            以字节数组的形式返回指定的 16 位无符号整数值。
+            </summary>
+            <param name="value">要转换的数字。</param>
+            <returns>长度为 2 的字节数组。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetUInt16(System.Byte[])">
+            <summary>
+            返回由字节数组中前两个字节转换来的 16 位无符号整数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <returns>由两个字节构成的 16 位无符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetUInt16(System.Byte[],System.Int32)">
+            <summary>
+            返回由字节数组中指定位置的两个字节转换来的 16 位无符号整数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <param name="startIndex">value 内的起始位置。</param>
+            <returns>由两个字节构成的 16 位无符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytes(System.Int32)">
             <summary>
             以字节数组的形式返回指定的 32 位有符号整数值。
             </summary>
-            <param name="int32">要转换的数字。</param>
+            <param name="value">要转换的数字。</param>
             <returns>长度为 4 的字节数组。</returns>
         </member>
-        <member name="M:GameFramework.Utility.Converter.GetIntFromBytes(System.Byte[])">
+        <member name="M:GameFramework.Utility.Converter.GetInt32(System.Byte[])">
+            <summary>
+            返回由字节数组中前四个字节转换来的 32 位有符号整数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <returns>由四个字节构成的 32 位有符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetInt32(System.Byte[],System.Int32)">
             <summary>
             返回由字节数组中指定位置的四个字节转换来的 32 位有符号整数。
             </summary>
-            <param name="bytes">字节数组。</param>
-            <returns>由四个字节构成、从 startIndex 开始的 32 位有符号整数。</returns>
+            <param name="value">字节数组。</param>
+            <param name="startIndex">value 内的起始位置。</param>
+            <returns>由四个字节构成的 32 位有符号整数。</returns>
         </member>
-        <member name="M:GameFramework.Utility.Converter.GetIntFromBytes(System.Byte[],System.Int32)">
+        <member name="M:GameFramework.Utility.Converter.GetBytes(System.UInt32)">
             <summary>
-            返回由字节数组中指定位置的四个字节转换来的 32 位有符号整数。
+            以字节数组的形式返回指定的 32 位无符号整数值。
             </summary>
-            <param name="bytes">字节数组。</param>
-            <param name="startIndex">bytes 内的起始位置。</param>
-            <returns>由四个字节构成、从 startIndex 开始的 32 位有符号整数。</returns>
+            <param name="value">要转换的数字。</param>
+            <returns>长度为 4 的字节数组。</returns>
         </member>
-        <member name="M:GameFramework.Utility.Converter.GetStringFromBytes(System.Byte[])">
+        <member name="M:GameFramework.Utility.Converter.GetUInt32(System.Byte[])">
             <summary>
-            将 UTF-8 字节流转换为字符串。
+            返回由字节数组中前四个字节转换来的 32 位无符号整数。
             </summary>
-            <param name="bytes">要转换的字节流。</param>
-            <returns>转化后的字符串。</returns>
+            <param name="value">字节数组。</param>
+            <returns>由四个字节构成的 32 位无符号整数。</returns>
         </member>
-        <member name="M:GameFramework.Utility.Converter.GetBytesFromString(System.String)">
+        <member name="M:GameFramework.Utility.Converter.GetUInt32(System.Byte[],System.Int32)">
             <summary>
-            将字符串转换为 UTF-8 字节流。
+            返回由字节数组中指定位置的四个字节转换来的 32 位无符号整数。
             </summary>
-            <param name="str">要转换的字符串。</param>
-            <returns>转换后的 UTF-8 字节流。</returns>
+            <param name="value">字节数组。</param>
+            <param name="startIndex">value 内的起始位置。</param>
+            <returns>由四个字节构成的 32 位无符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytes(System.Int64)">
+            <summary>
+            以字节数组的形式返回指定的 64 位有符号整数值。
+            </summary>
+            <param name="value">要转换的数字。</param>
+            <returns>长度为 8 的字节数组。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetInt64(System.Byte[])">
+            <summary>
+            返回由字节数组中前八个字节转换来的 64 位有符号整数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <returns>由八个字节构成的 64 位有符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetInt64(System.Byte[],System.Int32)">
+            <summary>
+            返回由字节数组中指定位置的八个字节转换来的 64 位有符号整数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <param name="startIndex">value 内的起始位置。</param>
+            <returns>由八个字节构成的 64 位有符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytes(System.UInt64)">
+            <summary>
+            以字节数组的形式返回指定的 64 位无符号整数值。
+            </summary>
+            <param name="value">要转换的数字。</param>
+            <returns>长度为 8 的字节数组。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetUInt64(System.Byte[])">
+            <summary>
+            返回由字节数组中前八个字节转换来的 64 位无符号整数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <returns>由八个字节构成的 64 位无符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetUInt64(System.Byte[],System.Int32)">
+            <summary>
+            返回由字节数组中指定位置的八个字节转换来的 64 位无符号整数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <param name="startIndex">value 内的起始位置。</param>
+            <returns>由八个字节构成的 64 位无符号整数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytes(System.Single)">
+            <summary>
+            以字节数组的形式返回指定的单精度浮点值。
+            </summary>
+            <param name="value">要转换的数字。</param>
+            <returns>长度为 4 的字节数组。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetSingle(System.Byte[])">
+            <summary>
+            返回由字节数组中前四个字节转换来的单精度浮点数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <returns>由四个字节构成的单精度浮点数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetSingle(System.Byte[],System.Int32)">
+            <summary>
+            返回由字节数组中指定位置的四个字节转换来的单精度浮点数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <param name="startIndex">value 内的起始位置。</param>
+            <returns>由四个字节构成的单精度浮点数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytes(System.Double)">
+            <summary>
+            以字节数组的形式返回指定的双精度浮点值。
+            </summary>
+            <param name="value">要转换的数字。</param>
+            <returns>长度为 8 的字节数组。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetDouble(System.Byte[])">
+            <summary>
+            返回由字节数组中前八个字节转换来的双精度浮点数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <returns>由八个字节构成的双精度浮点数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetDouble(System.Byte[],System.Int32)">
+            <summary>
+            返回由字节数组中指定位置的八个字节转换来的双精度浮点数。
+            </summary>
+            <param name="value">字节数组。</param>
+            <param name="startIndex">value 内的起始位置。</param>
+            <returns>由八个字节构成的双精度浮点数。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetBytes(System.String)">
+            <summary>
+            以 UTF-8 字节数组的形式返回指定的字符串。
+            </summary>
+            <param name="value">要转换的字符串。</param>
+            <returns>UTF-8 字节数组。</returns>
+        </member>
+        <member name="M:GameFramework.Utility.Converter.GetString(System.Byte[])">
+            <summary>
+            返回由 UTF-8 字节数组转换来的字符串。
+            </summary>
+            <param name="value">UTF-8 字节数组。</param>
+            <returns>字符串。</returns>
         </member>
         <member name="T:GameFramework.Utility.Encryption">
             <summary>
