@@ -98,9 +98,9 @@ namespace UnityGameFramework.Runtime
                 {
                     long sampleSize = 0L;
 #if UNITY_5_6_OR_NEWER
-                    Profiler.GetRuntimeMemorySizeLong(samples[i]);
+                    sampleSize = Profiler.GetRuntimeMemorySizeLong(samples[i]);
 #else
-                    Profiler.GetRuntimeMemorySize(samples[i]);
+                    sampleSize = Profiler.GetRuntimeMemorySize(samples[i]);
 #endif
                     m_SampleSize += sampleSize;
                     m_Samples.Add(new Sample(samples[i].name, samples[i].GetType().Name, sampleSize));
