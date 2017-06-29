@@ -591,7 +591,19 @@ namespace GameFramework.Network
                     }
 
                     packetLength = length - m_PacketHeaderLength;
-                    Utility.Converter.GetBytes(packetLength).CopyTo(packetBuffer, 0);
+                    if (m_PacketHeaderLength == 4)
+                    {
+                        Utility.Converter.GetBytes(packetLength).CopyTo(packetBuffer, 0);
+                    }
+                    else if (m_PacketHeaderLength == 2)
+                    {
+                        Utility.Converter.GetBytes((ushort)packetLength).CopyTo(packetBuffer, 0);
+                    }
+                    else
+                    {
+                        packetBuffer[0] = (byte)packetLength;
+                    }
+
                     Send(packetBuffer, 0, length, userData);
                 }
                 catch (Exception exception)
