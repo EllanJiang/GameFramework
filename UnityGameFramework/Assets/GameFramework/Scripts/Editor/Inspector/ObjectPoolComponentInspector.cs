@@ -31,12 +31,15 @@ namespace UnityGameFramework.Editor
 
             ObjectPoolComponent t = (ObjectPoolComponent)target;
 
-            EditorGUILayout.LabelField("Object Pool Count", t.Count.ToString());
-
-            ObjectPoolBase[] objectPools = t.GetAllObjectPools(true);
-            foreach (ObjectPoolBase objectPool in objectPools)
+            if (PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
-                DrawObjectPool(objectPool);
+                EditorGUILayout.LabelField("Object Pool Count", t.Count.ToString());
+
+                ObjectPoolBase[] objectPools = t.GetAllObjectPools(true);
+                foreach (ObjectPoolBase objectPool in objectPools)
+                {
+                    DrawObjectPool(objectPool);
+                }
             }
 
             Repaint();

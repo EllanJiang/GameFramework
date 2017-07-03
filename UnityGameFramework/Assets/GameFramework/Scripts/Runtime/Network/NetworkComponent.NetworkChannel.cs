@@ -149,6 +149,7 @@ namespace UnityGameFramework.Runtime
                     return;
                 }
 
+                m_Name = networkChannel.Name;
                 m_NetworkChannel = networkChannel;
                 m_NetworkChannel.ResetHeartBeatElapseSecondsWhenReceivePacket = m_ResetHeartBeatElapseSecondsWhenReceivePacket;
                 m_NetworkChannel.HeartBeatInterval = m_HeartBeatInterval;

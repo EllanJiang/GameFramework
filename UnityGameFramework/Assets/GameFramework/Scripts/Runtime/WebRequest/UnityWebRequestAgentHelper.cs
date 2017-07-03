@@ -13,6 +13,7 @@ using UnityEngine.Networking;
 #else
 using UnityEngine.Experimental.Networking;
 #endif
+using Utility = GameFramework.Utility;
 
 namespace UnityGameFramework.Runtime
 {
@@ -97,7 +98,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_UnityWebRequest = UnityWebRequest.Post(webRequestUri, Utility.Converter.GetStringFromBytes(postData));
+            m_UnityWebRequest = UnityWebRequest.Post(webRequestUri, Utility.Converter.GetString(postData));
             m_UnityWebRequest.Send();
         }
 

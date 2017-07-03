@@ -26,7 +26,10 @@ namespace UnityGameFramework.Editor
 
             DataNodeComponent t = (DataNodeComponent)target;
 
-            DrawDataNode(t.Root);
+            if (PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
+            {
+                DrawDataNode(t.Root);
+            }
 
             Repaint();
         }

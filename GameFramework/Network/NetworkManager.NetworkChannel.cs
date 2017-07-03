@@ -591,7 +591,19 @@ namespace GameFramework.Network
                     }
 
                     packetLength = length - m_PacketHeaderLength;
-                    Utility.Converter.GetBytesFromInt(packetLength).CopyTo(packetBuffer, 0);
+                    if (m_PacketHeaderLength == 4)
+                    {
+                        Utility.Converter.GetBytes(packetLength).CopyTo(packetBuffer, 0);
+                    }
+                    else if (m_PacketHeaderLength == 2)
+                    {
+                        Utility.Converter.GetBytes((ushort)packetLength).CopyTo(packetBuffer, 0);
+                    }
+                    else
+                    {
+                        packetBuffer[0] = (byte)packetLength;
+                    }
+
                     Send(packetBuffer, 0, length, userData);
                 }
                 catch (Exception exception)
@@ -643,9 +655,9 @@ namespace GameFramework.Network
                     m_Socket = null;
                 }
 
-                if (packetHeaderLength <= 0)
+                if (packetHeaderLength != 1 || packetHeaderLength != 2 || packetHeaderLength != 4)
                 {
-                    throw new GameFrameworkException("Packet header length is invalid.");
+                    throw new GameFrameworkException("Packet header length is invalid, you can only use 1, 2 or 4.");
                 }
 
                 if (maxPacketLength <= 0)
@@ -706,7 +718,7 @@ namespace GameFramework.Network
 
                 if (m_ReceiveState.Length == m_PacketHeaderLength)
                 {
-                    int packetLength = Utility.Converter.GetIntFromBytes(m_ReceiveState.GetBuffer());
+                    int packetLength = m_PacketHeaderLength == 4 ? Utility.Converter.GetInt32(m_ReceiveState.GetBuffer()) : (m_PacketHeaderLength == 2 ? Utility.Converter.GetUInt16(m_ReceiveState.GetBuffer()) : m_ReceiveState.GetBuffer()[0]);
                     if (packetLength <= 0)
                     {
                         string errorMessage = string.Format("Packet length '{0}' is invalid.", packetLength.ToString());

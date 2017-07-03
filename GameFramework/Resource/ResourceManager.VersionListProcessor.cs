@@ -109,7 +109,7 @@ namespace GameFramework.Resource
                         if (listVersion == 0)
                         {
                             byte[] encryptBytes = binaryReader.ReadBytes(4);
-                            applicableGameVersion = Utility.Converter.GetStringFromBytes(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
+                            applicableGameVersion = Utility.Converter.GetString(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
                             internalResourceVersion = binaryReader.ReadInt32();
                         }
                         else
@@ -169,7 +169,7 @@ namespace GameFramework.Resource
 
             private void OnDownloadSuccess(object sender, DownloadSuccessEventArgs e)
             {
-                VersionListProcessor versionListProcessor = (VersionListProcessor)e.UserData;
+                VersionListProcessor versionListProcessor = e.UserData as VersionListProcessor;
                 if (versionListProcessor == null || versionListProcessor != this)
                 {
                     return;
@@ -183,7 +183,7 @@ namespace GameFramework.Resource
                     return;
                 }
 
-                int hashCode = Utility.Converter.GetIntFromBytes(Utility.Verifier.GetCrc32(bytes));
+                int hashCode = Utility.Converter.GetInt32(Utility.Verifier.GetCrc32(bytes));
                 if (m_VersionListZipHashCode != hashCode)
                 {
                     string errorMessage = string.Format("Latest version list zip hash code error, need '{0}', downloaded '{1}'.", m_VersionListZipHashCode.ToString("X8"), hashCode.ToString("X8"));
@@ -226,7 +226,7 @@ namespace GameFramework.Resource
 
             private void OnDownloadFailure(object sender, DownloadFailureEventArgs e)
             {
-                VersionListProcessor versionListProcessor = (VersionListProcessor)e.UserData;
+                VersionListProcessor versionListProcessor = e.UserData as VersionListProcessor;
                 if (versionListProcessor == null || versionListProcessor != this)
                 {
                     return;

@@ -47,7 +47,7 @@ namespace GameFramework
             /// <returns>序列化后的 JSON 流。</returns>
             public static byte[] ToJsonData(object obj)
             {
-                return Converter.GetBytesFromString(ToJson(obj));
+                return Converter.GetBytes(ToJson(obj));
             }
 
             /// <summary>
@@ -74,7 +74,7 @@ namespace GameFramework
             /// <returns>反序列化后的对象。</returns>
             public static T ToObject<T>(byte[] jsonData)
             {
-                return ToObject<T>(Converter.GetStringFromBytes(jsonData));
+                return ToObject<T>(Converter.GetString(jsonData));
             }
         }
     }

@@ -7,6 +7,7 @@
 
 using GameFramework;
 using GameFramework.Network;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -28,7 +29,7 @@ namespace UnityGameFramework.Runtime
         private NetworkHelperBase m_CustomNetworkHelper = null;
 
         [SerializeField]
-        private NetworkChannel[] m_NetworkChannels = null;
+        private List<NetworkChannel> m_NetworkChannels = null;
 
         /// <summary>
         /// 获取网络频道数量。
@@ -86,9 +87,9 @@ namespace UnityGameFramework.Runtime
 
             m_NetworkManager.SetNetworkHelper(networkHelper);
 
-            for (int i = 0; i < m_NetworkChannels.Length; i++)
+            for (int i = 0; i < m_NetworkChannels.Count; i++)
             {
-                m_NetworkChannels[i].SetNetworkChannel(CreateNetworkChannel(m_NetworkChannels[i].Name));
+                m_NetworkChannels[i].SetNetworkChannel(m_NetworkManager.CreateNetworkChannel(m_NetworkChannels[i].Name));
             }
         }
 
@@ -128,7 +129,10 @@ namespace UnityGameFramework.Runtime
         /// <returns>要创建的网络频道。</returns>
         public INetworkChannel CreateNetworkChannel(string name)
         {
-            return m_NetworkManager.CreateNetworkChannel(name);
+            INetworkChannel networkChannel = m_NetworkManager.CreateNetworkChannel(name);
+            m_NetworkChannels.Add(new NetworkChannel());
+            m_NetworkChannels[m_NetworkChannels.Count - 1].SetNetworkChannel(networkChannel);
+            return networkChannel;
         }
 
         /// <summary>
@@ -154,7 +158,7 @@ namespace UnityGameFramework.Runtime
                 name = string.Empty;
             }
 
-            for (int i = 0; i < m_NetworkChannels.Length; i++)
+            for (int i = 0; i < m_NetworkChannels.Count; i++)
             {
                 if (m_NetworkChannels[i].Name == name)
                 {
@@ -188,7 +192,7 @@ namespace UnityGameFramework.Runtime
                 name = string.Empty;
             }
 
-            for (int i = 0; i < m_NetworkChannels.Length; i++)
+            for (int i = 0; i < m_NetworkChannels.Count; i++)
             {
                 if (m_NetworkChannels[i].Name == name)
                 {
