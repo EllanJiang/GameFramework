@@ -202,7 +202,7 @@ namespace GameFramework
 
             if ((m_EventPoolMode & EventPoolMode.AllowNoHandler) == 0)
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not allow no handler.", e.Id));
+                throw new GameFrameworkException(string.Format("Event '{0}' not allow no handler.", e.Id.ToString()));
             }
         }
     }
