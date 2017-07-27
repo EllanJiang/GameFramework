@@ -655,7 +655,7 @@ namespace GameFramework.Network
                     m_Socket = null;
                 }
 
-                if (packetHeaderLength != 1 || packetHeaderLength != 2 || packetHeaderLength != 4)
+                if (packetHeaderLength != 1 && packetHeaderLength != 2 && packetHeaderLength != 4)
                 {
                     throw new GameFrameworkException("Packet header length is invalid, you can only use 1, 2 or 4.");
                 }
