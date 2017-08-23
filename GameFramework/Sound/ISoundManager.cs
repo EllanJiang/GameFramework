@@ -154,14 +154,16 @@ namespace GameFramework.Sound
         /// 停止播放声音。
         /// </summary>
         /// <param name="serialId">要停止播放声音的序列编号。</param>
-        void StopSound(int serialId);
+        /// <returns>是否停止播放声音成功。</returns>
+        bool StopSound(int serialId);
 
         /// <summary>
         /// 停止播放声音。
         /// </summary>
         /// <param name="serialId">要停止播放声音的序列编号。</param>
         /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
-        void StopSound(int serialId, float fadeOutSeconds);
+        /// <returns>是否停止播放声音成功。</returns>
+        bool StopSound(int serialId, float fadeOutSeconds);
 
         /// <summary>
         /// 停止所有已加载的声音。
