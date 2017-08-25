@@ -126,7 +126,7 @@
     <Compile Include="Localization\LoadDictionaryUpdateEventArgs.cs" />
     <Compile Include="Localization\LocalizationManager.cs" />
     <Compile Include="Network\INetworkChannel.cs" />
-    <Compile Include="Network\INetworkHelper.cs" />
+    <Compile Include="Network\INetworkChannelHelper.cs" />
     <Compile Include="Network\INetworkManager.cs" />
     <Compile Include="Network\IPacketHandler.cs" />
     <Compile Include="Network\NetworkClosedEventArgs.cs" />

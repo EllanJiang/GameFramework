@@ -219,13 +219,13 @@ namespace GameFramework.Network
         /// 创建网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
-        /// <param name="networkHelper">网络辅助器。</param>
+        /// <param name="networkChannelHelper">网络频道辅助器。</param>
         /// <returns>要创建的网络频道。</returns>
-        public INetworkChannel CreateNetworkChannel(string name, INetworkHelper networkHelper)
+        public INetworkChannel CreateNetworkChannel(string name, INetworkChannelHelper networkChannelHelper)
         {
-            if (networkHelper == null)
+            if (networkChannelHelper == null)
             {
-                throw new GameFrameworkException("Network helper is invalid.");
+                throw new GameFrameworkException("Network channel helper is invalid.");
             }
 
             if (HasNetworkChannel(name))
@@ -233,7 +233,7 @@ namespace GameFramework.Network
                 throw new GameFrameworkException(string.Format("Already exist network channel '{0}'.", name ?? string.Empty));
             }
 
-            NetworkChannel networkChannel = new NetworkChannel(name, networkHelper);
+            NetworkChannel networkChannel = new NetworkChannel(name, networkChannelHelper);
             networkChannel.NetworkChannelConnected += OnNetworkChannelConnected;
             networkChannel.NetworkChannelClosed += OnNetworkChannelClosed;
             networkChannel.NetworkChannelSended += OnNetworkChannelSended;

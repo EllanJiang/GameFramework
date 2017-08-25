@@ -25,7 +25,7 @@ namespace GameFramework.Network
 
             private readonly string m_Name;
             private readonly EventPool<Packet> m_EventPool;
-            private readonly INetworkHelper m_NetworkHelper;
+            private readonly INetworkChannelHelper m_NetworkChannelHelper;
             private NetworkType m_NetworkType;
             private int m_PacketHeaderLength;
             private int m_MaxPacketLength;
@@ -48,12 +48,12 @@ namespace GameFramework.Network
             /// 初始化网络频道的新实例。
             /// </summary>
             /// <param name="name">网络频道名称。</param>
-            /// <param name="networkHelper">网络辅助器。</param>
-            public NetworkChannel(string name, INetworkHelper networkHelper)
+            /// <param name="networkChannelHelper">网络频道辅助器。</param>
+            public NetworkChannel(string name, INetworkChannelHelper networkChannelHelper)
             {
                 m_Name = name ?? string.Empty;
                 m_EventPool = new EventPool<Packet>(EventPoolMode.Default);
-                m_NetworkHelper = networkHelper;
+                m_NetworkChannelHelper = networkChannelHelper;
                 m_NetworkType = NetworkType.Unknown;
                 m_PacketHeaderLength = DefaultPacketHeaderLength;
                 m_MaxPacketLength = DefaultMaxPacketLength;
@@ -331,7 +331,7 @@ namespace GameFramework.Network
                         }
                     }
 
-                    if (sendHeartBeat && m_NetworkHelper.SendHeartBeat(this))
+                    if (sendHeartBeat && m_NetworkChannelHelper.SendHeartBeat())
                     {
                         if (missHeartBeatCount > 0 && NetworkChannelMissHeartBeat != null)
                         {
@@ -612,7 +612,7 @@ namespace GameFramework.Network
                     using (MemoryStream memoryStream = new MemoryStream(packetBuffer, true))
                     {
                         memoryStream.Seek(m_PacketHeaderLength, SeekOrigin.Begin);
-                        m_NetworkHelper.Serialize(this, memoryStream, packet);
+                        m_NetworkChannelHelper.Serialize(memoryStream, packet);
                         length = (int)memoryStream.Position;
                     }
 
@@ -785,9 +785,9 @@ namespace GameFramework.Network
                     object customErrorData = null;
                     using (MemoryStream memoryStream = new MemoryStream(m_ReceiveState.GetBuffer(), m_PacketHeaderLength, packetLength, false))
                     {
-                        lock (m_NetworkHelper)
+                        lock (m_NetworkChannelHelper)
                         {
-                            packet = m_NetworkHelper.Deserialize(this, memoryStream, out customErrorData);
+                            packet = m_NetworkChannelHelper.Deserialize(memoryStream, out customErrorData);
                         }
                     }
 
