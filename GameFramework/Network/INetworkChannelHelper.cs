@@ -15,25 +15,41 @@ namespace GameFramework.Network
     public interface INetworkChannelHelper
     {
         /// <summary>
-        /// 发送心跳协议包。
+        /// 获取消息包头长度。
         /// </summary>
-        /// <returns>是否发送心跳协议包成功。</returns>
+        int PacketHeaderLength
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 发送心跳消息包。
+        /// </summary>
+        /// <returns>是否发送心跳消息包成功。</returns>
         bool SendHeartBeat();
 
         /// <summary>
-        /// 序列化协议包。
+        /// 序列化消息包。
         /// </summary>
-        /// <typeparam name="T">协议包类型。</typeparam>
-        /// <param name="destination">要序列化的目标流。</param>
-        /// <param name="packet">要序列化的协议包。</param>
-        void Serialize<T>(Stream destination, T packet) where T : Packet;
+        /// <typeparam name="T">消息包类型。</typeparam>
+        /// <param name="packet">要序列化的消息包。</param>
+        /// <returns>序列化后的消息包字节流。</returns>
+        byte[] Serialize<T>(T packet) where T : Packet;
 
         /// <summary>
-        /// 反序列化协议包。
+        /// 反序列消息包头。
         /// </summary>
         /// <param name="source">要反序列化的来源流。</param>
         /// <param name="customErrorData">用户自定义错误数据。</param>
-        /// <returns>反序列化后的协议包。</returns>
-        Packet Deserialize(Stream source, out object customErrorData);
+        /// <returns></returns>
+        PacketHeader DeserializePacketHeader(Stream source, out object customErrorData);
+
+        /// <summary>
+        /// 反序列化消息包。
+        /// </summary>
+        /// <param name="source">要反序列化的来源流。</param>
+        /// <param name="customErrorData">用户自定义错误数据。</param>
+        /// <returns>反序列化后的消息包。</returns>
+        Packet DeserializePacket(Stream source, out object customErrorData);
     }
 }

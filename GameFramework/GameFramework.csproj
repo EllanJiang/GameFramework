@@ -143,6 +143,7 @@
     <Compile Include="Network\NetworkSendPacketEventArgs.cs" />
     <Compile Include="Network\NetworkType.cs" />
     <Compile Include="Network\Packet.cs" />
+    <Compile Include="Network\PacketHeader.cs" />
     <Compile Include="ObjectPool\IObjectPool.cs" />
     <Compile Include="ObjectPool\IObjectPoolManager.cs" />
     <Compile Include="ObjectPool\ObjectBase.cs" />
