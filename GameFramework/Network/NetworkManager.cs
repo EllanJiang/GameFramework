@@ -57,17 +57,11 @@ namespace GameFramework.Network
         {
             add
             {
-                lock (m_NetworkConnectedEventHandler)
-                {
-                    m_NetworkConnectedEventHandler += value;
-                }
+                m_NetworkConnectedEventHandler += value;
             }
             remove
             {
-                lock (m_NetworkConnectedEventHandler)
-                {
-                    m_NetworkConnectedEventHandler -= value;
-                }
+                m_NetworkConnectedEventHandler -= value;
             }
         }
 
@@ -78,17 +72,11 @@ namespace GameFramework.Network
         {
             add
             {
-                lock (m_NetworkClosedEventHandler)
-                {
-                    m_NetworkClosedEventHandler += value;
-                }
+                m_NetworkClosedEventHandler += value;
             }
             remove
             {
-                lock (m_NetworkClosedEventHandler)
-                {
-                    m_NetworkClosedEventHandler -= value;
-                }
+                m_NetworkClosedEventHandler -= value;
             }
         }
 
@@ -99,17 +87,11 @@ namespace GameFramework.Network
         {
             add
             {
-                lock (m_NetworkSendPacketEventHandler)
-                {
-                    m_NetworkSendPacketEventHandler += value;
-                }
+                m_NetworkSendPacketEventHandler += value;
             }
             remove
             {
-                lock (m_NetworkSendPacketEventHandler)
-                {
-                    m_NetworkSendPacketEventHandler -= value;
-                }
+                m_NetworkSendPacketEventHandler -= value;
             }
         }
 
@@ -120,17 +102,11 @@ namespace GameFramework.Network
         {
             add
             {
-                lock (m_NetworkMissHeartBeatEventHandler)
-                {
-                    m_NetworkMissHeartBeatEventHandler += value;
-                }
+                m_NetworkMissHeartBeatEventHandler += value;
             }
             remove
             {
-                lock (m_NetworkMissHeartBeatEventHandler)
-                {
-                    m_NetworkMissHeartBeatEventHandler -= value;
-                }
+                m_NetworkMissHeartBeatEventHandler -= value;
             }
         }
 
@@ -141,17 +117,11 @@ namespace GameFramework.Network
         {
             add
             {
-                lock (m_NetworkErrorEventHandler)
-                {
-                    m_NetworkErrorEventHandler += value;
-                }
+                m_NetworkErrorEventHandler += value;
             }
             remove
             {
-                lock (m_NetworkErrorEventHandler)
-                {
-                    m_NetworkErrorEventHandler -= value;
-                }
+                m_NetworkErrorEventHandler -= value;
             }
         }
 
@@ -162,17 +132,11 @@ namespace GameFramework.Network
         {
             add
             {
-                lock (m_NetworkCustomErrorEventHandler)
-                {
-                    m_NetworkCustomErrorEventHandler += value;
-                }
+                m_NetworkCustomErrorEventHandler += value;
             }
             remove
             {
-                lock (m_NetworkCustomErrorEventHandler)
-                {
-                    m_NetworkCustomErrorEventHandler -= value;
-                }
+                m_NetworkCustomErrorEventHandler -= value;
             }
         }
 
