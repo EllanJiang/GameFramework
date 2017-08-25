@@ -16,8 +16,6 @@ namespace GameFramework.Network
     internal sealed partial class NetworkManager : GameFrameworkModule, INetworkManager
     {
         private readonly Dictionary<string, NetworkChannel> m_NetworkChannels;
-        private readonly EventPool<Packet> m_EventPool;
-        private INetworkHelper m_NetworkHelper;
 
         private EventHandler<NetworkConnectedEventArgs> m_NetworkConnectedEventHandler;
         private EventHandler<NetworkClosedEventArgs> m_NetworkClosedEventHandler;
@@ -32,8 +30,6 @@ namespace GameFramework.Network
         public NetworkManager()
         {
             m_NetworkChannels = new Dictionary<string, NetworkChannel>();
-            m_EventPool = new EventPool<Packet>(EventPoolMode.Default);
-            m_NetworkHelper = null;
 
             m_NetworkConnectedEventHandler = null;
             m_NetworkClosedEventHandler = null;
@@ -155,8 +151,6 @@ namespace GameFramework.Network
             {
                 networkChannel.Value.Update(elapseSeconds, realElapseSeconds);
             }
-
-            m_EventPool.Update(elapseSeconds, realElapseSeconds);
         }
 
         /// <summary>
@@ -167,32 +161,16 @@ namespace GameFramework.Network
             foreach (KeyValuePair<string, NetworkChannel> networkChannel in m_NetworkChannels)
             {
                 NetworkChannel nc = networkChannel.Value;
-                nc.Close();
                 nc.NetworkChannelConnected -= OnNetworkChannelConnected;
                 nc.NetworkChannelClosed -= OnNetworkChannelClosed;
                 nc.NetworkChannelSended -= OnNetworkChannelSended;
-                nc.NetworkChannelReceived -= OnNetworkChannelReceived;
                 nc.NetworkChannelMissHeartBeat -= OnNetworkChannelMissHeartBeat;
                 nc.NetworkChannelError -= OnNetworkChannelError;
                 nc.NetworkChannelCustomError -= OnNetworkChannelCustomError;
+                nc.Shutdown();
             }
 
             m_NetworkChannels.Clear();
-            m_EventPool.Shutdown();
-        }
-
-        /// <summary>
-        /// 设置网络辅助器。
-        /// </summary>
-        /// <param name="networkHelper">网络辅助器。</param>
-        public void SetNetworkHelper(INetworkHelper networkHelper)
-        {
-            if (networkHelper == null)
-            {
-                throw new GameFrameworkException("Network helper is invalid.");
-            }
-
-            m_NetworkHelper = networkHelper;
         }
 
         /// <summary>
@@ -241,12 +219,13 @@ namespace GameFramework.Network
         /// 创建网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
+        /// <param name="networkHelper">网络辅助器。</param>
         /// <returns>要创建的网络频道。</returns>
-        public INetworkChannel CreateNetworkChannel(string name)
+        public INetworkChannel CreateNetworkChannel(string name, INetworkHelper networkHelper)
         {
-            if (m_NetworkHelper == null)
+            if (networkHelper == null)
             {
-                throw new GameFrameworkException("You must set network helper first.");
+                throw new GameFrameworkException("Network helper is invalid.");
             }
 
             if (HasNetworkChannel(name))
@@ -254,11 +233,10 @@ namespace GameFramework.Network
                 throw new GameFrameworkException(string.Format("Already exist network channel '{0}'.", name ?? string.Empty));
             }
 
-            NetworkChannel networkChannel = new NetworkChannel(name, m_NetworkHelper);
+            NetworkChannel networkChannel = new NetworkChannel(name, networkHelper);
             networkChannel.NetworkChannelConnected += OnNetworkChannelConnected;
             networkChannel.NetworkChannelClosed += OnNetworkChannelClosed;
             networkChannel.NetworkChannelSended += OnNetworkChannelSended;
-            networkChannel.NetworkChannelReceived += OnNetworkChannelReceived;
             networkChannel.NetworkChannelMissHeartBeat += OnNetworkChannelMissHeartBeat;
             networkChannel.NetworkChannelError += OnNetworkChannelError;
             networkChannel.NetworkChannelCustomError += OnNetworkChannelCustomError;
@@ -276,32 +254,17 @@ namespace GameFramework.Network
             NetworkChannel networkChannel = null;
             if (m_NetworkChannels.TryGetValue(name ?? string.Empty, out networkChannel))
             {
-                networkChannel.Close();
                 networkChannel.NetworkChannelConnected -= OnNetworkChannelConnected;
                 networkChannel.NetworkChannelClosed -= OnNetworkChannelClosed;
                 networkChannel.NetworkChannelSended -= OnNetworkChannelSended;
-                networkChannel.NetworkChannelReceived -= OnNetworkChannelReceived;
                 networkChannel.NetworkChannelMissHeartBeat -= OnNetworkChannelMissHeartBeat;
                 networkChannel.NetworkChannelError -= OnNetworkChannelError;
                 networkChannel.NetworkChannelCustomError -= OnNetworkChannelCustomError;
+                networkChannel.Shutdown();
                 return m_NetworkChannels.Remove(name);
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// 注册网络消息包处理函数。
-        /// </summary>
-        /// <param name="handler">要注册的网络消息包处理函数。</param>
-        public void RegisterHandler(IPacketHandler handler)
-        {
-            if (handler == null)
-            {
-                throw new GameFrameworkException("Packet handler is invalid.");
-            }
-
-            m_EventPool.Subscribe(handler.Id, handler.Handle);
         }
 
         private void OnNetworkChannelConnected(NetworkChannel networkChannel, object userData)
@@ -335,11 +298,6 @@ namespace GameFramework.Network
                     m_NetworkSendPacketEventHandler(this, new NetworkSendPacketEventArgs(networkChannel, bytesSent, userData));
                 }
             }
-        }
-
-        private void OnNetworkChannelReceived(NetworkChannel networkChannel, Packet packet)
-        {
-            m_EventPool.Fire(networkChannel, packet);
         }
 
         private void OnNetworkChannelMissHeartBeat(NetworkChannel networkChannel, int missHeartBeatCount)

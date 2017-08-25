@@ -123,6 +123,12 @@ namespace GameFramework.Network
         }
 
         /// <summary>
+        /// 注册网络消息包处理函数。
+        /// </summary>
+        /// <param name="handler">要注册的网络消息包处理函数。</param>
+        void RegisterHandler(IPacketHandler handler);
+
+        /// <summary>
         /// 连接到远程主机。
         /// </summary>
         /// <param name="ipAddress">远程主机的 IP 地址。</param>

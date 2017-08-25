@@ -66,12 +66,19 @@ namespace GameFramework
         /// </summary>
         public void Shutdown()
         {
+            Clear();
+            m_EventHandlers.Clear();
+        }
+
+        /// <summary>
+        /// 清理事件。
+        /// </summary>
+        public void Clear()
+        {
             lock (m_Events)
             {
                 m_Events.Clear();
             }
-
-            m_EventHandlers.Clear();
         }
 
         /// <summary>

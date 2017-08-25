@@ -24,6 +24,7 @@ namespace GameFramework.Network
             private const float DefaultHeartBeatInterval = 30f;
 
             private readonly string m_Name;
+            private readonly EventPool<Packet> m_EventPool;
             private readonly INetworkHelper m_NetworkHelper;
             private NetworkType m_NetworkType;
             private int m_PacketHeaderLength;
@@ -39,7 +40,6 @@ namespace GameFramework.Network
             public GameFrameworkAction<NetworkChannel, object> NetworkChannelConnected;
             public GameFrameworkAction<NetworkChannel> NetworkChannelClosed;
             public GameFrameworkAction<NetworkChannel, int, object> NetworkChannelSended;
-            public GameFrameworkAction<NetworkChannel, Packet> NetworkChannelReceived;
             public GameFrameworkAction<NetworkChannel, int> NetworkChannelMissHeartBeat;
             public GameFrameworkAction<NetworkChannel, NetworkErrorCode, string> NetworkChannelError;
             public GameFrameworkAction<NetworkChannel, object> NetworkChannelCustomError;
@@ -52,6 +52,7 @@ namespace GameFramework.Network
             public NetworkChannel(string name, INetworkHelper networkHelper)
             {
                 m_Name = name ?? string.Empty;
+                m_EventPool = new EventPool<Packet>(EventPoolMode.Default);
                 m_NetworkHelper = networkHelper;
                 m_NetworkType = NetworkType.Unknown;
                 m_PacketHeaderLength = DefaultPacketHeaderLength;
@@ -67,7 +68,6 @@ namespace GameFramework.Network
                 NetworkChannelConnected = null;
                 NetworkChannelClosed = null;
                 NetworkChannelSended = null;
-                NetworkChannelReceived = null;
                 NetworkChannelMissHeartBeat = null;
                 NetworkChannelError = null;
                 NetworkChannelCustomError = null;
@@ -313,33 +313,57 @@ namespace GameFramework.Network
                     return;
                 }
 
-                if (m_HeartBeatInterval < 0f)
-                {
-                    return;
-                }
+                m_EventPool.Update(elapseSeconds, realElapseSeconds);
 
-                bool sendHeartBeat = false;
-                int missHeartBeatCount = 0;
-                lock (m_HeartBeatState)
+                if (m_HeartBeatInterval > 0f)
                 {
-                    m_HeartBeatState.HeartBeatElapseSeconds += realElapseSeconds;
-                    if (m_HeartBeatState.HeartBeatElapseSeconds >= m_HeartBeatInterval)
+                    bool sendHeartBeat = false;
+                    int missHeartBeatCount = 0;
+                    lock (m_HeartBeatState)
                     {
-                        sendHeartBeat = true;
-                        missHeartBeatCount = m_HeartBeatState.MissHeartBeatCount;
-                        m_HeartBeatState.HeartBeatElapseSeconds = 0f;
-                        m_HeartBeatState.MissHeartBeatCount++;
+                        m_HeartBeatState.HeartBeatElapseSeconds += realElapseSeconds;
+                        if (m_HeartBeatState.HeartBeatElapseSeconds >= m_HeartBeatInterval)
+                        {
+                            sendHeartBeat = true;
+                            missHeartBeatCount = m_HeartBeatState.MissHeartBeatCount;
+                            m_HeartBeatState.HeartBeatElapseSeconds = 0f;
+                            m_HeartBeatState.MissHeartBeatCount++;
+                        }
                     }
-                }
 
-                if (sendHeartBeat && m_NetworkHelper.SendHeartBeat(this))
-                {
-                    if (missHeartBeatCount > 0 && NetworkChannelMissHeartBeat != null)
+                    if (sendHeartBeat && m_NetworkHelper.SendHeartBeat(this))
                     {
-                        NetworkChannelMissHeartBeat(this, missHeartBeatCount);
+                        if (missHeartBeatCount > 0 && NetworkChannelMissHeartBeat != null)
+                        {
+                            NetworkChannelMissHeartBeat(this, missHeartBeatCount);
+                        }
                     }
                 }
             }
+
+            /// <summary>
+            /// 关闭网络频道。
+            /// </summary>
+            public void Shutdown()
+            {
+                Close();
+                m_EventPool.Shutdown();
+            }
+
+            /// <summary>
+            /// 注册网络消息包处理函数。
+            /// </summary>
+            /// <param name="handler">要注册的网络消息包处理函数。</param>
+            public void RegisterHandler(IPacketHandler handler)
+            {
+                if (handler == null)
+                {
+                    throw new GameFrameworkException("Packet handler is invalid.");
+                }
+
+                m_EventPool.Subscribe(handler.Id, handler.Handle);
+            }
+
 
             /// <summary>
             /// 连接到远程主机。
@@ -446,6 +470,8 @@ namespace GameFramework.Network
                 {
                     return;
                 }
+
+                m_EventPool.Clear();
 
                 m_Active = false;
                 try
@@ -775,10 +801,7 @@ namespace GameFramework.Network
                     }
                     else
                     {
-                        if (NetworkChannelReceived != null)
-                        {
-                            NetworkChannelReceived(this, packet);
-                        }
+                        m_EventPool.Fire(this, packet);
                     }
                 }
                 catch (Exception exception)
