@@ -113,7 +113,7 @@ namespace GameFramework.Network
                 {
                     if (m_Socket == null)
                     {
-                        throw new GameFrameworkException("You must initialize network channel first.");
+                        throw new GameFrameworkException("You must connect first.");
                     }
 
                     IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.LocalEndPoint;
@@ -135,7 +135,7 @@ namespace GameFramework.Network
                 {
                     if (m_Socket == null)
                     {
-                        throw new GameFrameworkException("You must initialize network channel first.");
+                        throw new GameFrameworkException("You must connect first.");
                     }
 
                     IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.LocalEndPoint;
@@ -157,7 +157,7 @@ namespace GameFramework.Network
                 {
                     if (m_Socket == null)
                     {
-                        throw new GameFrameworkException("You must initialize network channel first.");
+                        throw new GameFrameworkException("You must connect first.");
                     }
 
                     IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.RemoteEndPoint;
@@ -179,7 +179,7 @@ namespace GameFramework.Network
                 {
                     if (m_Socket == null)
                     {
-                        throw new GameFrameworkException("You must initialize network channel first.");
+                        throw new GameFrameworkException("You must connect first.");
                     }
 
                     IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.RemoteEndPoint;
@@ -231,7 +231,7 @@ namespace GameFramework.Network
                 {
                     if (m_Socket == null)
                     {
-                        throw new GameFrameworkException("You must initialize network channel first.");
+                        throw new GameFrameworkException("You must connect first.");
                     }
 
                     return m_Socket.ReceiveBufferSize;
@@ -240,7 +240,7 @@ namespace GameFramework.Network
                 {
                     if (m_Socket == null)
                     {
-                        throw new GameFrameworkException("You must initialize network channel first.");
+                        throw new GameFrameworkException("You must connect first.");
                     }
 
                     m_Socket.ReceiveBufferSize = value;
@@ -256,7 +256,7 @@ namespace GameFramework.Network
                 {
                     if (m_Socket == null)
                     {
-                        throw new GameFrameworkException("You must initialize network channel first.");
+                        throw new GameFrameworkException("You must connect first.");
                     }
 
                     return m_Socket.SendBufferSize;
@@ -265,7 +265,7 @@ namespace GameFramework.Network
                 {
                     if (m_Socket == null)
                     {
-                        throw new GameFrameworkException("You must initialize network channel first.");
+                        throw new GameFrameworkException("You must connect first.");
                     }
 
                     m_Socket.SendBufferSize = value;
@@ -482,7 +482,7 @@ namespace GameFramework.Network
             {
                 if (m_Socket == null)
                 {
-                    string errorMessage = "You must initialize network channel first.";
+                    string errorMessage = "You must connect first.";
                     if (NetworkChannelError != null)
                     {
                         NetworkChannelError(this, NetworkErrorCode.SocketError, errorMessage);
