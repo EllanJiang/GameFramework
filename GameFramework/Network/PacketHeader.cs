@@ -5,12 +5,19 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-namespace GameFramework
+namespace GameFramework.Network
 {
     /// <summary>
-    /// 日志回调函数。
+    /// 网络消息包头基类。
     /// </summary>
-    /// <param name="level">日志等级。</param>
-    /// <param name="message">日志内容。</param>
-    public delegate void LogCallback(LogLevel level, object message);
+    public abstract class PacketHeader
+    {
+        /// <summary>
+        /// 获取网络消息包长度。
+        /// </summary>
+        public int PacketLength
+        {
+            get;
+        }
+    }
 }

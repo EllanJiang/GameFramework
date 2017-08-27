@@ -66,12 +66,19 @@ namespace GameFramework
         /// </summary>
         public void Shutdown()
         {
+            Clear();
+            m_EventHandlers.Clear();
+        }
+
+        /// <summary>
+        /// 清理事件。
+        /// </summary>
+        public void Clear()
+        {
             lock (m_Events)
             {
                 m_Events.Clear();
             }
-
-            m_EventHandlers.Clear();
         }
 
         /// <summary>
@@ -202,7 +209,7 @@ namespace GameFramework
 
             if ((m_EventPoolMode & EventPoolMode.AllowNoHandler) == 0)
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not allow no handler.", e.Id));
+                throw new GameFrameworkException(string.Format("Event '{0}' not allow no handler.", e.Id.ToString()));
             }
         }
     }

@@ -399,9 +399,10 @@ namespace GameFramework.Sound
         /// 停止播放声音。
         /// </summary>
         /// <param name="serialId">要停止播放声音的序列编号。</param>
-        public void StopSound(int serialId)
+        /// <returns>是否停止播放声音成功。</returns>
+        public bool StopSound(int serialId)
         {
-            StopSound(serialId, Constant.DefaultFadeOutSeconds);
+            return StopSound(serialId, Constant.DefaultFadeOutSeconds);
         }
 
         /// <summary>
@@ -409,23 +410,24 @@ namespace GameFramework.Sound
         /// </summary>
         /// <param name="serialId">要停止播放声音的序列编号。</param>
         /// <param name="fadeOutSeconds">声音淡出时间，以秒为单位。</param>
-        public void StopSound(int serialId, float fadeOutSeconds)
+        /// <returns>是否停止播放声音成功。</returns>
+        public bool StopSound(int serialId, float fadeOutSeconds)
         {
             if (IsLoadingSound(serialId))
             {
                 m_SoundsToReleaseOnLoad.Add(serialId);
-                return;
+                return true;
             }
 
             foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
                 if (soundGroup.Value.StopSound(serialId, fadeOutSeconds))
                 {
-                    return;
+                    return true;
                 }
             }
 
-            throw new GameFrameworkException(string.Format("Can not find sound '{0}'.", serialId.ToString()));
+            return false;
         }
 
         /// <summary>

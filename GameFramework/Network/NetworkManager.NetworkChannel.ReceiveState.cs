@@ -5,6 +5,8 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System.IO;
+
 namespace GameFramework.Network
 {
     internal partial class NetworkManager
@@ -13,61 +15,62 @@ namespace GameFramework.Network
         {
             private sealed class ReceiveState
             {
-                private readonly byte[] m_Buffer;
-                private int m_Length;
-                private int m_ReceivedLength;
+                private const int DefaultBufferLength = 1024 * 64;
+                private readonly MemoryStream m_Stream;
+                private int m_TargetLength;
+                private bool m_IsPacket;
 
-                public ReceiveState(int bufferSize)
+                public ReceiveState()
                 {
-                    if (bufferSize <= 0)
-                    {
-                        throw new GameFrameworkException("Buffer size is invalid.");
-                    }
-
-                    m_Buffer = new byte[bufferSize];
+                    m_Stream = new MemoryStream(DefaultBufferLength);
+                    m_TargetLength = 0;
+                    m_IsPacket = false;
                 }
 
-                public int BufferSize
+                public MemoryStream Stream
                 {
                     get
                     {
-                        return m_Buffer.Length;
+                        return m_Stream;
                     }
                 }
 
-                public int Length
+                public int TargetLength
                 {
                     get
                     {
-                        return m_Length;
-                    }
-                    set
-                    {
-                        m_Length = value;
+                        return m_TargetLength;
                     }
                 }
 
-                public int ReceivedLength
+                public bool IsPacket
                 {
                     get
                     {
-                        return m_ReceivedLength;
+                        return m_IsPacket;
                     }
-                    set
+                }
+
+                public void PrepareForPacketHeader(int packetHeaderLength)
+                {
+                    Reset(packetHeaderLength, false);
+                }
+
+                public void PrepareForPacket(int packetLength)
+                {
+                    Reset(packetLength, true);
+                }
+
+                private void Reset(int targetLength, bool isPacket)
+                {
+                    if (targetLength < 0)
                     {
-                        m_ReceivedLength = value;
+                        throw new GameFrameworkException("Target length is invalid.");
                     }
-                }
 
-                public void Reset(int packetHeaderLength)
-                {
-                    Length = packetHeaderLength;
-                    ReceivedLength = 0;
-                }
-
-                public byte[] GetBuffer()
-                {
-                    return m_Buffer;
+                    m_Stream.SetLength(0L);
+                    m_TargetLength = targetLength;
+                    m_IsPacket = isPacket;
                 }
             }
         }

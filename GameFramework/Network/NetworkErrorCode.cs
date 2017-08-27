@@ -13,9 +13,14 @@ namespace GameFramework.Network
     public enum NetworkErrorCode
     {
         /// <summary>
-        /// 状态错误。
+        /// 地址族错误。
         /// </summary>
-        StatusError,
+        AddressFamilyError,
+
+        /// <summary>
+        /// Socket 错误。
+        /// </summary>
+        SocketError,
 
         /// <summary>
         /// 序列化错误。
@@ -23,9 +28,14 @@ namespace GameFramework.Network
         SerializeError,
 
         /// <summary>
-        /// 反序列化错误。
+        /// 反序列化消息包头错误。
         /// </summary>
-        DeserializeError,
+        DeserializePacketHeaderError,
+
+        /// <summary>
+        /// 反序列化消息包错误。
+        /// </summary>
+        DeserializePacketError,
 
         /// <summary>
         /// 连接错误。
@@ -41,20 +51,5 @@ namespace GameFramework.Network
         /// 接收错误。
         /// </summary>
         ReceiveError,
-
-        /// <summary>
-        /// 消息包头错误。
-        /// </summary>
-        HeaderError,
-
-        /// <summary>
-        /// 消息包长度错误。
-        /// </summary>
-        OutOfRangeError,
-
-        /// <summary>
-        /// 消息包流错误。
-        /// </summary>
-        StreamError,
     }
 }

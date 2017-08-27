@@ -53,12 +53,6 @@ namespace GameFramework.Network
         event EventHandler<NetworkCustomErrorEventArgs> NetworkCustomError;
 
         /// <summary>
-        /// 设置网络辅助器。
-        /// </summary>
-        /// <param name="networkHelper">网络辅助器。</param>
-        void SetNetworkHelper(INetworkHelper networkHelper);
-
-        /// <summary>
         /// 检查是否存在网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
@@ -82,8 +76,9 @@ namespace GameFramework.Network
         /// 创建网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
+        /// <param name="networkChannelHelper">网络频道辅助器。</param>
         /// <returns>要创建的网络频道。</returns>
-        INetworkChannel CreateNetworkChannel(string name);
+        INetworkChannel CreateNetworkChannel(string name, INetworkChannelHelper networkChannelHelper);
 
         /// <summary>
         /// 销毁网络频道。
@@ -91,11 +86,5 @@ namespace GameFramework.Network
         /// <param name="name">网络频道名称。</param>
         /// <returns>是否销毁网络频道成功。</returns>
         bool DestroyNetworkChannel(string name);
-
-        /// <summary>
-        /// 注册网络消息包处理函数。
-        /// </summary>
-        /// <param name="handler">要注册的网络消息包处理函数。</param>
-        void RegisterHandler(IPacketHandler handler);
     }
 }

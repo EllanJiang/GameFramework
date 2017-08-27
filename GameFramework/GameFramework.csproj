@@ -49,7 +49,7 @@
     <Compile Include="Base\GameFrameworkFunc.cs" />
     <Compile Include="Base\GameFrameworkModule.cs" />
     <Compile Include="Base\Log\Log.cs" />
-    <Compile Include="Base\Log\LogCallback.cs" />
+    <Compile Include="Base\Log\Log.ILogHelper.cs" />
     <Compile Include="Base\Log\LogLevel.cs" />
     <Compile Include="Base\TaskPool\ITask.cs" />
     <Compile Include="Base\TaskPool\ITaskAgent.cs" />
@@ -126,7 +126,7 @@
     <Compile Include="Localization\LoadDictionaryUpdateEventArgs.cs" />
     <Compile Include="Localization\LocalizationManager.cs" />
     <Compile Include="Network\INetworkChannel.cs" />
-    <Compile Include="Network\INetworkHelper.cs" />
+    <Compile Include="Network\INetworkChannelHelper.cs" />
     <Compile Include="Network\INetworkManager.cs" />
     <Compile Include="Network\IPacketHandler.cs" />
     <Compile Include="Network\NetworkClosedEventArgs.cs" />
@@ -143,6 +143,7 @@
     <Compile Include="Network\NetworkSendPacketEventArgs.cs" />
     <Compile Include="Network\NetworkType.cs" />
     <Compile Include="Network\Packet.cs" />
+    <Compile Include="Network\PacketHeader.cs" />
     <Compile Include="ObjectPool\IObjectPool.cs" />
     <Compile Include="ObjectPool\IObjectPoolManager.cs" />
     <Compile Include="ObjectPool\ObjectBase.cs" />
