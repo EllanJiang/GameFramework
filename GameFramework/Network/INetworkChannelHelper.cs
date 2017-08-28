@@ -23,6 +23,12 @@ namespace GameFramework.Network
         }
 
         /// <summary>
+        /// 初始化网络频道辅助器。
+        /// </summary>
+        /// <param name="networkChannel">网络频道。</param>
+        void Initialize(INetworkChannel networkChannel);
+
+        /// <summary>
         /// 发送心跳消息包。
         /// </summary>
         /// <returns>是否发送心跳消息包成功。</returns>
