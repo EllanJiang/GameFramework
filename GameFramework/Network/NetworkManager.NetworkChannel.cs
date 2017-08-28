@@ -64,6 +64,8 @@ namespace GameFramework.Network
                 NetworkChannelMissHeartBeat = null;
                 NetworkChannelError = null;
                 NetworkChannelCustomError = null;
+
+                networkChannelHelper.Initialize(this);
             }
 
             /// <summary>
@@ -319,6 +321,7 @@ namespace GameFramework.Network
             {
                 Close();
                 m_EventPool.Shutdown();
+                m_NetworkChannelHelper.Shutdown();
             }
 
             /// <summary>

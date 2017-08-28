@@ -29,6 +29,11 @@ namespace GameFramework.Network
         void Initialize(INetworkChannel networkChannel);
 
         /// <summary>
+        /// 关闭并清理网络频道辅助器。
+        /// </summary>
+        void Shutdown();
+
+        /// <summary>
         /// 发送心跳消息包。
         /// </summary>
         /// <returns>是否发送心跳消息包成功。</returns>

@@ -246,7 +246,6 @@ namespace GameFramework.Network
             networkChannel.NetworkChannelError += OnNetworkChannelError;
             networkChannel.NetworkChannelCustomError += OnNetworkChannelCustomError;
             m_NetworkChannels.Add(name, networkChannel);
-            networkChannelHelper.Initialize(networkChannel);
             return networkChannel;
         }
 
