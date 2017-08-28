@@ -8,14 +8,14 @@
 namespace GameFramework.Network
 {
     /// <summary>
-    /// 网络消息包头基类。
+    /// 网络消息包头接口。
     /// </summary>
-    public abstract class PacketHeader
+    public interface IPacketHeader
     {
         /// <summary>
         /// 获取网络消息包长度。
         /// </summary>
-        public int PacketLength
+        int PacketLength
         {
             get;
         }

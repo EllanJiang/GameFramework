@@ -129,6 +129,7 @@
     <Compile Include="Network\INetworkChannelHelper.cs" />
     <Compile Include="Network\INetworkManager.cs" />
     <Compile Include="Network\IPacketHandler.cs" />
+    <Compile Include="Network\IPacketHeader.cs" />
     <Compile Include="Network\NetworkClosedEventArgs.cs" />
     <Compile Include="Network\NetworkConnectedEventArgs.cs" />
     <Compile Include="Network\NetworkCustomErrorEventArgs.cs" />
@@ -143,7 +144,6 @@
     <Compile Include="Network\NetworkSendPacketEventArgs.cs" />
     <Compile Include="Network\NetworkType.cs" />
     <Compile Include="Network\Packet.cs" />
-    <Compile Include="Network\PacketHeader.cs" />
     <Compile Include="ObjectPool\IObjectPool.cs" />
     <Compile Include="ObjectPool\IObjectPoolManager.cs" />
     <Compile Include="ObjectPool\ObjectBase.cs" />

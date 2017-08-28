@@ -626,7 +626,7 @@ namespace GameFramework.Network
                 try
                 {
                     object customErrorData = null;
-                    PacketHeader packetHeader = m_NetworkChannelHelper.DeserializePacketHeader(m_ReceiveState.Stream, out customErrorData);
+                    IPacketHeader packetHeader = m_NetworkChannelHelper.DeserializePacketHeader(m_ReceiveState.Stream, out customErrorData);
 
                     if (NetworkChannelCustomError != null)
                     {

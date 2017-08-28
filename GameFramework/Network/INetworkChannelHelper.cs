@@ -53,7 +53,7 @@ namespace GameFramework.Network
         /// <param name="source">要反序列化的来源流。</param>
         /// <param name="customErrorData">用户自定义错误数据。</param>
         /// <returns></returns>
-        PacketHeader DeserializePacketHeader(Stream source, out object customErrorData);
+        IPacketHeader DeserializePacketHeader(Stream source, out object customErrorData);
 
         /// <summary>
         /// 反序列化消息包。
