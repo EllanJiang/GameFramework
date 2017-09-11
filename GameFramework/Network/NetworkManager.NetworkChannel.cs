@@ -805,8 +805,8 @@ namespace GameFramework.Network
                     return;
                 }
 
-                m_ReceiveState.Stream.Position += bytesReceived;
-                if (m_ReceiveState.Stream.Position < m_ReceiveState.TargetLength)
+                m_ReceiveState.Stream.SetLength(m_ReceiveState.Stream.Length + bytesReceived);
+                if (m_ReceiveState.Stream.Length < m_ReceiveState.TargetLength)
                 {
                     Receive();
                     return;
