@@ -606,7 +606,7 @@ namespace GameFramework.Network
             {
                 try
                 {
-                    m_Socket.BeginReceive(m_ReceiveState.Stream.GetBuffer(), (int)m_ReceiveState.Stream.Position, m_ReceiveState.TargetLength - (int)m_ReceiveState.Stream.Position, SocketFlags.None, ReceiveCallback, m_Socket);
+                    m_Socket.BeginReceive(m_ReceiveState.Stream.GetBuffer(), (int)m_ReceiveState.Stream.Position, (int)(m_ReceiveState.Stream.Length - m_ReceiveState.Stream.Position), SocketFlags.None, ReceiveCallback, m_Socket);
                 }
                 catch (Exception exception)
                 {
@@ -805,14 +805,15 @@ namespace GameFramework.Network
                     return;
                 }
 
-                m_ReceiveState.Stream.SetLength(m_ReceiveState.Stream.Length + bytesReceived);
-                if (m_ReceiveState.Stream.Length < m_ReceiveState.TargetLength)
+                m_ReceiveState.Stream.Position += bytesReceived;
+                if (m_ReceiveState.Stream.Position < m_ReceiveState.Stream.Length)
                 {
                     Receive();
                     return;
                 }
 
                 bool processSuccess = false;
+                m_ReceiveState.Stream.Position = 0L;
                 if (m_ReceiveState.IsPacket)
                 {
                     processSuccess = ProcessPacket();
