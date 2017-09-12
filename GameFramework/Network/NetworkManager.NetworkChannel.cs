@@ -812,8 +812,9 @@ namespace GameFramework.Network
                     return;
                 }
 
-                bool processSuccess = false;
                 m_ReceiveState.Stream.Position = 0L;
+
+                bool processSuccess = false;
                 if (m_ReceiveState.IsPacket)
                 {
                     processSuccess = ProcessPacket();
