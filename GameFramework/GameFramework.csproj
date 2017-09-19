@@ -206,6 +206,7 @@
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadSceneTask.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.ResourceObject.cs" />
     <Compile Include="Resource\ResourceManager.ResourceName.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceNameComparer.cs" />
     <Compile Include="Resource\ResourceManager.ResourceUpdater.cs" />
     <Compile Include="Resource\ResourceManager.ResourceUpdater.UpdateInfo.cs" />
     <Compile Include="Resource\ResourceManager.VersionListProcessor.cs" />

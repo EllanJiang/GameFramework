@@ -16,7 +16,7 @@ namespace GameFramework
             /// <summary>
             /// CRC32 算法。
             /// </summary>
-            private class Crc32 : HashAlgorithm
+            private sealed class Crc32 : HashAlgorithm
             {
                 /// <summary>
                 /// 默认多项式。
