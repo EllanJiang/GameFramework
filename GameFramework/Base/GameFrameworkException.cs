@@ -14,7 +14,7 @@ namespace GameFramework
     /// 游戏框架异常类。
     /// </summary>
     [Serializable]
-    public sealed class GameFrameworkException : Exception
+    public class GameFrameworkException : Exception
     {
         /// <summary>
         /// 初始化游戏框架异常类的新实例。
