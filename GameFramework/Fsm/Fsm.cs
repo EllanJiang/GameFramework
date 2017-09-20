@@ -321,6 +321,17 @@ namespace GameFramework.Fsm
         /// <summary>
         /// 获取有限状态机数据。
         /// </summary>
+        /// <typeparam name="TData">要获取的有限状态机数据的类型。</typeparam>
+        /// <param name="name">有限状态机数据名称。</param>
+        /// <returns>要获取的有限状态机数据。</returns>
+        public TData GetData<TData>(string name) where TData : Variable
+        {
+            return (TData)GetData(name);
+        }
+
+        /// <summary>
+        /// 获取有限状态机数据。
+        /// </summary>
         /// <param name="name">有限状态机数据名称。</param>
         /// <returns>要获取的有限状态机数据。</returns>
         public Variable GetData(string name)
@@ -340,22 +351,12 @@ namespace GameFramework.Fsm
         }
 
         /// <summary>
-        /// 获取有限状态机数据。
-        /// </summary>
-        /// <typeparam name="TData">要获取的有限状态机数据的类型。</typeparam>
-        /// <param name="name">有限状态机数据名称。</param>
-        /// <returns>要获取的有限状态机数据。</returns>
-        public TData GetData<TData>(string name) where TData : Variable
-        {
-            return (TData)GetData(name);
-        }
-
-        /// <summary>
         /// 设置有限状态机数据。
         /// </summary>
+        /// <typeparam name="TData">要设置的有限状态机数据的类型。</typeparam>
         /// <param name="name">有限状态机数据名称。</param>
         /// <param name="data">要设置的有限状态机数据。</param>
-        public void SetData(string name, Variable data)
+        public void SetData<TData>(string name, TData data) where TData : Variable
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -368,10 +369,9 @@ namespace GameFramework.Fsm
         /// <summary>
         /// 设置有限状态机数据。
         /// </summary>
-        /// <typeparam name="TData">要设置的有限状态机数据的类型。</typeparam>
         /// <param name="name">有限状态机数据名称。</param>
         /// <param name="data">要设置的有限状态机数据。</param>
-        public void SetData<TData>(string name, TData data) where TData : Variable
+        public void SetData(string name, Variable data)
         {
             if (string.IsNullOrEmpty(name))
             {

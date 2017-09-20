@@ -106,22 +106,22 @@ namespace GameFramework.Fsm
         /// <summary>
         /// 检查是否存在有限状态机。
         /// </summary>
+        /// <param name="ownerType">有限状态机持有者类型。</param>
+        /// <returns>是否存在有限状态机。</returns>
+        public bool HasFsm(Type ownerType)
+        {
+            return HasFsm(ownerType, string.Empty);
+        }
+
+        /// <summary>
+        /// 检查是否存在有限状态机。
+        /// </summary>
         /// <typeparam name="T">有限状态机持有者类型。</typeparam>
         /// <param name="name">有限状态机名称。</param>
         /// <returns>是否存在有限状态机。</returns>
         public bool HasFsm<T>(string name) where T : class
         {
             return m_Fsms.ContainsKey(Utility.Text.GetFullName<T>(name));
-        }
-
-        /// <summary>
-        /// 检查是否存在有限状态机。
-        /// </summary>
-        /// <param name="ownerType">有限状态机持有者类型。</param>
-        /// <returns>是否存在有限状态机。</returns>
-        public bool HasFsm(Type ownerType)
-        {
-            return HasFsm(ownerType, string.Empty);
         }
 
         /// <summary>
@@ -148,6 +148,16 @@ namespace GameFramework.Fsm
         /// <summary>
         /// 获取有限状态机。
         /// </summary>
+        /// <param name="ownerType">有限状态机持有者类型。</param>
+        /// <returns>要获取的有限状态机。</returns>
+        public FsmBase GetFsm(Type ownerType)
+        {
+            return GetFsm(ownerType, string.Empty);
+        }
+
+        /// <summary>
+        /// 获取有限状态机。
+        /// </summary>
         /// <typeparam name="T">有限状态机持有者类型。</typeparam>
         /// <param name="name">有限状态机名称。</param>
         /// <returns>要获取的有限状态机。</returns>
@@ -160,16 +170,6 @@ namespace GameFramework.Fsm
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// 获取有限状态机。
-        /// </summary>
-        /// <param name="ownerType">有限状态机持有者类型。</param>
-        /// <returns>要获取的有限状态机。</returns>
-        public FsmBase GetFsm(Type ownerType)
-        {
-            return GetFsm(ownerType, string.Empty);
         }
 
         /// <summary>
@@ -250,6 +250,16 @@ namespace GameFramework.Fsm
         /// <summary>
         /// 销毁有限状态机。
         /// </summary>
+        /// <param name="ownerType">有限状态机持有者类型。</param>
+        /// <returns>是否销毁有限状态机成功。</returns>
+        public bool DestroyFsm(Type ownerType)
+        {
+            return DestroyFsm(ownerType, string.Empty);
+        }
+
+        /// <summary>
+        /// 销毁有限状态机。
+        /// </summary>
         /// <typeparam name="T">有限状态机持有者类型。</typeparam>
         /// <param name="name">要销毁的有限状态机名称。</param>
         /// <returns>是否销毁有限状态机成功。</returns>
@@ -264,16 +274,6 @@ namespace GameFramework.Fsm
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// 销毁有限状态机。
-        /// </summary>
-        /// <param name="ownerType">有限状态机持有者类型。</param>
-        /// <returns>是否销毁有限状态机成功。</returns>
-        public bool DestroyFsm(Type ownerType)
-        {
-            return DestroyFsm(ownerType, string.Empty);
         }
 
         /// <summary>

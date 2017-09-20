@@ -5,6 +5,8 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
+
 namespace GameFramework
 {
     public static partial class Utility
@@ -67,6 +69,27 @@ namespace GameFramework
             }
 
             /// <summary>
+            /// 将 JSON 字符串反序列化为对象。
+            /// </summary>
+            /// <param name="type">对象类型。</param>
+            /// <param name="json">要反序列化的 JSON 字符串。</param>
+            /// <returns>反序列化后的对象。</returns>
+            public static object ToObject(Type type, string json)
+            {
+                if (s_JsonHelper == null)
+                {
+                    throw new GameFrameworkException("JSON helper is invalid.");
+                }
+
+                if (type == null)
+                {
+                    throw new GameFrameworkException("Type is invalid.");
+                }
+
+                return s_JsonHelper.ToObject(type, json);
+            }
+
+            /// <summary>
             /// 将 JSON 流反序列化为对象。
             /// </summary>
             /// <typeparam name="T">对象类型。</typeparam>
@@ -75,6 +98,17 @@ namespace GameFramework
             public static T ToObject<T>(byte[] jsonData)
             {
                 return ToObject<T>(Converter.GetString(jsonData));
+            }
+
+            /// <summary>
+            /// 将 JSON 字符串反序列化为对象。
+            /// </summary>
+            /// <param name="type">对象类型。</param>
+            /// <param name="jsonData">要反序列化的 JSON 流。</param>
+            /// <returns>反序列化后的对象。</returns>
+            public static object ToObject(Type type, byte[] jsonData)
+            {
+                return ToObject(type, Converter.GetString(jsonData));
             }
         }
     }

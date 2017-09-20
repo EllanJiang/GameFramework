@@ -5,6 +5,8 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
+
 namespace GameFramework.Setting
 {
     /// <summary>
@@ -227,6 +229,17 @@ namespace GameFramework.Setting
         /// <summary>
         /// 从指定配置项中读取对象。
         /// </summary>
+        /// <param name="type">要读取对象的类型。</param>
+        /// <param name="key">要获取配置项的名称。</param>
+        /// <returns></returns>
+        public object GetObject(Type type, string key)
+        {
+            return m_SettingHelper.GetObject(type, key);
+        }
+
+        /// <summary>
+        /// 从指定配置项中读取对象。
+        /// </summary>
         /// <typeparam name="T">要读取对象的类型。</typeparam>
         /// <param name="key">要获取配置项的名称。</param>
         /// <param name="defaultObj">当指定的配置项不存在时，返回此默认对象。</param>
@@ -237,12 +250,34 @@ namespace GameFramework.Setting
         }
 
         /// <summary>
+        /// 从指定配置项中读取对象。
+        /// </summary>
+        /// <param name="type">要读取对象的类型。</param>
+        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="defaultObj">当指定的配置项不存在时，返回此默认对象。</param>
+        /// <returns></returns>
+        public object GetObject(Type type, string key, object defaultObj)
+        {
+            return m_SettingHelper.GetObject(type, key, defaultObj);
+        }
+
+        /// <summary>
         /// 向指定配置项写入对象。
         /// </summary>
         /// <typeparam name="T">要写入对象的类型。</typeparam>
         /// <param name="key">要写入配置项的名称。</param>
         /// <param name="obj">要写入的对象。</param>
         public void SetObject<T>(string key, T obj)
+        {
+            m_SettingHelper.SetObject(key, obj);
+        }
+
+        /// <summary>
+        /// 向指定配置项写入对象。
+        /// </summary>
+        /// <param name="key">要写入配置项的名称。</param>
+        /// <param name="obj">要写入的对象。</param>
+        public void SetObject(string key, object obj)
         {
             m_SettingHelper.SetObject(key, obj);
         }

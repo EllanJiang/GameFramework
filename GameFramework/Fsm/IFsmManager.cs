@@ -32,17 +32,17 @@ namespace GameFramework.Fsm
         /// <summary>
         /// 检查是否存在有限状态机。
         /// </summary>
-        /// <typeparam name="T">有限状态机持有者类型。</typeparam>
-        /// <param name="name">有限状态机名称。</param>
+        /// <param name="ownerType">有限状态机持有者类型。</param>
         /// <returns>是否存在有限状态机。</returns>
-        bool HasFsm<T>(string name) where T : class;
+        bool HasFsm(Type ownerType);
 
         /// <summary>
         /// 检查是否存在有限状态机。
         /// </summary>
-        /// <param name="ownerType">有限状态机持有者类型。</param>
+        /// <typeparam name="T">有限状态机持有者类型。</typeparam>
+        /// <param name="name">有限状态机名称。</param>
         /// <returns>是否存在有限状态机。</returns>
-        bool HasFsm(Type ownerType);
+        bool HasFsm<T>(string name) where T : class;
 
         /// <summary>
         /// 检查是否存在有限状态机。
@@ -62,17 +62,17 @@ namespace GameFramework.Fsm
         /// <summary>
         /// 获取有限状态机。
         /// </summary>
-        /// <typeparam name="T">有限状态机持有者类型。</typeparam>
-        /// <param name="name">有限状态机名称。</param>
+        /// <param name="ownerType">有限状态机持有者类型。</param>
         /// <returns>要获取的有限状态机。</returns>
-        IFsm<T> GetFsm<T>(string name) where T : class;
+        FsmBase GetFsm(Type ownerType);
 
         /// <summary>
         /// 获取有限状态机。
         /// </summary>
-        /// <param name="ownerType">有限状态机持有者类型。</param>
+        /// <typeparam name="T">有限状态机持有者类型。</typeparam>
+        /// <param name="name">有限状态机名称。</param>
         /// <returns>要获取的有限状态机。</returns>
-        FsmBase GetFsm(Type ownerType);
+        IFsm<T> GetFsm<T>(string name) where T : class;
 
         /// <summary>
         /// 获取有限状态机。
@@ -117,17 +117,17 @@ namespace GameFramework.Fsm
         /// <summary>
         /// 销毁有限状态机。
         /// </summary>
-        /// <typeparam name="T">有限状态机持有者类型。</typeparam>
-        /// <param name="name">要销毁的有限状态机名称。</param>
+        /// <param name="ownerType">有限状态机持有者类型。</param>
         /// <returns>是否销毁有限状态机成功。</returns>
-        bool DestroyFsm<T>(string name) where T : class;
+        bool DestroyFsm(Type ownerType);
 
         /// <summary>
         /// 销毁有限状态机。
         /// </summary>
-        /// <param name="ownerType">有限状态机持有者类型。</param>
+        /// <typeparam name="T">有限状态机持有者类型。</typeparam>
+        /// <param name="name">要销毁的有限状态机名称。</param>
         /// <returns>是否销毁有限状态机成功。</returns>
-        bool DestroyFsm(Type ownerType);
+        bool DestroyFsm<T>(string name) where T : class;
 
         /// <summary>
         /// 销毁有限状态机。

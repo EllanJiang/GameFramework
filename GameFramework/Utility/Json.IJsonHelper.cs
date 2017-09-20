@@ -5,6 +5,8 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
+
 namespace GameFramework
 {
     public static partial class Utility
@@ -30,6 +32,14 @@ namespace GameFramework
                 /// <param name="json">要反序列化的 JSON 字符串。</param>
                 /// <returns>反序列化后的对象。</returns>
                 T ToObject<T>(string json);
+
+                /// <summary>
+                ///
+                /// </summary>
+                /// <param name="type"></param>
+                /// <param name="json"></param>
+                /// <returns></returns>
+                object ToObject(Type type, string json);
             }
         }
     }
