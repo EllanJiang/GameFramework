@@ -201,7 +201,20 @@ namespace GameFramework.Fsm
         /// <typeparam name="TState">要开始的有限状态机状态类型。</typeparam>
         public void Start<TState>() where TState : FsmState<T>
         {
-            Start(typeof(TState));
+            if (IsRunning)
+            {
+                throw new GameFrameworkException("FSM is running, can not start again.");
+            }
+
+            FsmState<T> state = GetState<TState>();
+            if (state == null)
+            {
+                throw new GameFrameworkException(string.Format("FSM '{0}' can not start state '{1}' which is not exist.", Utility.Text.GetFullName<T>(Name), typeof(TState).FullName));
+            }
+
+            m_CurrentStateTime = 0f;
+            m_CurrentState = state;
+            m_CurrentState.OnEnter(this);
         }
 
         /// <summary>
@@ -213,6 +226,16 @@ namespace GameFramework.Fsm
             if (IsRunning)
             {
                 throw new GameFrameworkException("FSM is running, can not start again.");
+            }
+
+            if (stateType == null)
+            {
+                throw new GameFrameworkException("State type is invalid.");
+            }
+
+            if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
+            {
+                throw new GameFrameworkException(string.Format("State type '{0}' is invalid.", stateType.FullName));
             }
 
             FsmState<T> state = GetState(stateType);
@@ -233,7 +256,7 @@ namespace GameFramework.Fsm
         /// <returns>是否存在有限状态机状态。</returns>
         public bool HasState<TState>() where TState : FsmState<T>
         {
-            return HasState(typeof(TState));
+            return m_States.ContainsKey(typeof(TState).FullName);
         }
 
         /// <summary>
@@ -243,6 +266,16 @@ namespace GameFramework.Fsm
         /// <returns>是否存在有限状态机状态。</returns>
         public bool HasState(Type stateType)
         {
+            if (stateType == null)
+            {
+                throw new GameFrameworkException("State type is invalid.");
+            }
+
+            if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
+            {
+                throw new GameFrameworkException(string.Format("State type '{0}' is invalid.", stateType.FullName));
+            }
+
             return m_States.ContainsKey(stateType.FullName);
         }
 
@@ -253,7 +286,13 @@ namespace GameFramework.Fsm
         /// <returns>要获取的有限状态机状态。</returns>
         public TState GetState<TState>() where TState : FsmState<T>
         {
-            return (TState)GetState(typeof(TState));
+            FsmState<T> state = null;
+            if (m_States.TryGetValue(typeof(TState).FullName, out state))
+            {
+                return (TState)state;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -263,6 +302,16 @@ namespace GameFramework.Fsm
         /// <returns>要获取的有限状态机状态。</returns>
         public FsmState<T> GetState(Type stateType)
         {
+            if (stateType == null)
+            {
+                throw new GameFrameworkException("State type is invalid.");
+            }
+
+            if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
+            {
+                throw new GameFrameworkException(string.Format("State type '{0}' is invalid.", stateType.FullName));
+            }
+
             FsmState<T> state = null;
             if (m_States.TryGetValue(stateType.FullName, out state))
             {

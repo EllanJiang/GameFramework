@@ -110,6 +110,11 @@ namespace GameFramework.Fsm
         /// <returns>是否存在有限状态机。</returns>
         public bool HasFsm(Type ownerType)
         {
+            if (ownerType == null)
+            {
+                throw new GameFrameworkException("Owner type is invalid.");
+            }
+
             return InternalHasFsm(Utility.Text.GetFullName(ownerType, string.Empty));
         }
 
@@ -132,6 +137,11 @@ namespace GameFramework.Fsm
         /// <returns>是否存在有限状态机。</returns>
         public bool HasFsm(Type ownerType, string name)
         {
+            if (ownerType == null)
+            {
+                throw new GameFrameworkException("Owner type is invalid.");
+            }
+
             return InternalHasFsm(Utility.Text.GetFullName(ownerType, name));
         }
 
@@ -152,6 +162,11 @@ namespace GameFramework.Fsm
         /// <returns>要获取的有限状态机。</returns>
         public FsmBase GetFsm(Type ownerType)
         {
+            if (ownerType == null)
+            {
+                throw new GameFrameworkException("Owner type is invalid.");
+            }
+
             return InternelGetFsm(Utility.Text.GetFullName(ownerType, string.Empty));
         }
 
@@ -174,6 +189,11 @@ namespace GameFramework.Fsm
         /// <returns>要获取的有限状态机。</returns>
         public FsmBase GetFsm(Type ownerType, string name)
         {
+            if (ownerType == null)
+            {
+                throw new GameFrameworkException("Owner type is invalid.");
+            }
+
             return InternelGetFsm(Utility.Text.GetFullName(ownerType, name));
         }
 
@@ -242,6 +262,11 @@ namespace GameFramework.Fsm
         /// <returns>是否销毁有限状态机成功。</returns>
         public bool DestroyFsm(Type ownerType)
         {
+            if (ownerType == null)
+            {
+                throw new GameFrameworkException("Owner type is invalid.");
+            }
+
             return InternalDestroyFsm(Utility.Text.GetFullName(ownerType, string.Empty));
         }
 
@@ -264,6 +289,11 @@ namespace GameFramework.Fsm
         /// <returns>是否销毁有限状态机成功。</returns>
         public bool DestroyFsm(Type ownerType, string name)
         {
+            if (ownerType == null)
+            {
+                throw new GameFrameworkException("Owner type is invalid.");
+            }
+
             return InternalDestroyFsm(Utility.Text.GetFullName(ownerType, name));
         }
 

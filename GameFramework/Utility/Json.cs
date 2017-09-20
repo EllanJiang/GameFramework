@@ -83,7 +83,7 @@ namespace GameFramework
 
                 if (objectType == null)
                 {
-                    throw new GameFrameworkException("Type is invalid.");
+                    throw new GameFrameworkException("Object type is invalid.");
                 }
 
                 return s_JsonHelper.ToObject(objectType, json);

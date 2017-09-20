@@ -234,6 +234,11 @@ namespace GameFramework.Setting
         /// <returns></returns>
         public object GetObject(Type objectType, string key)
         {
+            if (objectType == null)
+            {
+                throw new GameFrameworkException("Object type is invalid.");
+            }
+
             return m_SettingHelper.GetObject(objectType, key);
         }
 
@@ -258,6 +263,11 @@ namespace GameFramework.Setting
         /// <returns></returns>
         public object GetObject(Type objectType, string key, object defaultObj)
         {
+            if (objectType == null)
+            {
+                throw new GameFrameworkException("Object type is invalid.");
+            }
+
             return m_SettingHelper.GetObject(objectType, key, defaultObj);
         }
 
