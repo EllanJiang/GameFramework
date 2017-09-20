@@ -353,6 +353,21 @@ namespace GameFramework.Fsm
         /// <summary>
         /// 设置有限状态机数据。
         /// </summary>
+        /// <param name="name">有限状态机数据名称。</param>
+        /// <param name="data">要设置的有限状态机数据。</param>
+        public void SetData(string name, Variable data)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new GameFrameworkException("Data name is invalid.");
+            }
+
+            m_Datas[name] = data;
+        }
+
+        /// <summary>
+        /// 设置有限状态机数据。
+        /// </summary>
         /// <typeparam name="TData">要设置的有限状态机数据的类型。</typeparam>
         /// <param name="name">有限状态机数据名称。</param>
         /// <param name="data">要设置的有限状态机数据。</param>

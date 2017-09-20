@@ -12,7 +12,6 @@ namespace GameFramework
         /// <summary>
         /// 性能分析相关的实用函数。
         /// </summary>
-        [DontProfile]
         public static partial class Profiler
         {
             private static IProfilerHelper s_ProfilerHelper = null;

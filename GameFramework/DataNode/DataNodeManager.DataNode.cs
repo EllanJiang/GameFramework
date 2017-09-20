@@ -107,6 +107,15 @@ namespace GameFramework.DataNode
             /// <summary>
             /// 设置数据结点的数据。
             /// </summary>
+            /// <param name="data">要设置的数据。</param>
+            public void SetData(Variable data)
+            {
+                m_Data = data;
+            }
+
+            /// <summary>
+            /// 设置数据结点的数据。
+            /// </summary>
             /// <typeparam name="T">要设置的数据类型。</typeparam>
             /// <param name="data">要设置的数据。</param>
             public void SetData<T>(T data) where T : Variable
