@@ -157,45 +157,6 @@ namespace GameFramework.Fsm
         }
 
         /// <summary>
-        /// 有限状态机轮询。
-        /// </summary>
-        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
-        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
-        internal override void Update(float elapseSeconds, float realElapseSeconds)
-        {
-            if (m_CurrentState == null)
-            {
-                return;
-            }
-
-            m_CurrentStateTime += elapseSeconds;
-            m_CurrentState.OnUpdate(this, elapseSeconds, realElapseSeconds);
-        }
-
-        /// <summary>
-        /// 关闭并清理有限状态机。
-        /// </summary>
-        internal override void Shutdown()
-        {
-            if (m_CurrentState != null)
-            {
-                m_CurrentState.OnLeave(this, true);
-                m_CurrentState = null;
-                m_CurrentStateTime = 0f;
-            }
-
-            foreach (KeyValuePair<string, FsmState<T>> state in m_States)
-            {
-                state.Value.OnDestroy(this);
-            }
-
-            m_States.Clear();
-            m_Datas.Clear();
-
-            m_IsDestroyed = true;
-        }
-
-        /// <summary>
         /// 开始有限状态机。
         /// </summary>
         /// <typeparam name="TState">要开始的有限状态机状态类型。</typeparam>
@@ -443,6 +404,45 @@ namespace GameFramework.Fsm
             }
 
             return m_Datas.Remove(name);
+        }
+
+        /// <summary>
+        /// 有限状态机轮询。
+        /// </summary>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
+        internal override void Update(float elapseSeconds, float realElapseSeconds)
+        {
+            if (m_CurrentState == null)
+            {
+                return;
+            }
+
+            m_CurrentStateTime += elapseSeconds;
+            m_CurrentState.OnUpdate(this, elapseSeconds, realElapseSeconds);
+        }
+
+        /// <summary>
+        /// 关闭并清理有限状态机。
+        /// </summary>
+        internal override void Shutdown()
+        {
+            if (m_CurrentState != null)
+            {
+                m_CurrentState.OnLeave(this, true);
+                m_CurrentState = null;
+                m_CurrentStateTime = 0f;
+            }
+
+            foreach (KeyValuePair<string, FsmState<T>> state in m_States)
+            {
+                state.Value.OnDestroy(this);
+            }
+
+            m_States.Clear();
+            m_Datas.Clear();
+
+            m_IsDestroyed = true;
         }
 
         /// <summary>
