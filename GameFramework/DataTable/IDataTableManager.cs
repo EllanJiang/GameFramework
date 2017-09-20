@@ -78,9 +78,9 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 是否存在数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataTableType">数据表行的类型。</param>
         /// <returns>是否存在数据表。</returns>
-        bool HasDataTable(Type type);
+        bool HasDataTable(Type dataTableType);
 
         /// <summary>
         /// 是否存在数据表。
@@ -93,10 +93,10 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 是否存在数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataTableType">数据表行的类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否存在数据表。</returns>
-        bool HasDataTable(Type type, string name);
+        bool HasDataTable(Type dataTableType, string name);
 
         /// <summary>
         /// 获取数据表。
@@ -108,9 +108,9 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 获取数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataTableType">数据表行的类型。</param>
         /// <returns>要获取的数据表。</returns>
-        DataTableBase GetDataTable(Type type);
+        DataTableBase GetDataTable(Type dataTableType);
 
         /// <summary>
         /// 获取数据表。
@@ -123,10 +123,10 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 获取数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataTableType">数据表行的类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>要获取的数据表。</returns>
-        DataTableBase GetDataTable(Type type, string name);
+        DataTableBase GetDataTable(Type dataTableType, string name);
 
         /// <summary>
         /// 获取所有数据表。
@@ -161,9 +161,9 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 销毁数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataTableType">数据表行的类型。</param>
         /// <returns>是否销毁数据表成功。</returns>
-        bool DestroyDataTable(Type type);
+        bool DestroyDataTable(Type dataTableType);
 
         /// <summary>
         /// 销毁数据表。
@@ -176,9 +176,9 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 销毁数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataTableType">数据表行的类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否销毁数据表成功。</returns>
-        bool DestroyDataTable(Type type, string name);
+        bool DestroyDataTable(Type dataTableType, string name);
     }
 }

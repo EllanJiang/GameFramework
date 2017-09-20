@@ -142,10 +142,10 @@ namespace GameFramework.Setting
         /// <summary>
         /// 从指定配置项中读取对象。
         /// </summary>
-        /// <param name="type">要读取对象的类型。</param>
+        /// <param name="objectType">要读取对象的类型。</param>
         /// <param name="key">要获取配置项的名称。</param>
         /// <returns></returns>
-        object GetObject(Type type, string key);
+        object GetObject(Type objectType, string key);
 
         /// <summary>
         /// 从指定配置项中读取对象。
@@ -159,11 +159,11 @@ namespace GameFramework.Setting
         /// <summary>
         /// 从指定配置项中读取对象。
         /// </summary>
-        /// <param name="type">要读取对象的类型。</param>
+        /// <param name="objectType">要读取对象的类型。</param>
         /// <param name="key">要获取配置项的名称。</param>
         /// <param name="defaultObj">当指定的配置项不存在时，返回此默认对象。</param>
         /// <returns></returns>
-        object GetObject(Type type, string key, object defaultObj);
+        object GetObject(Type objectType, string key, object defaultObj);
 
         /// <summary>
         /// 向指定配置项写入对象。

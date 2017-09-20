@@ -204,11 +204,11 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 是否存在数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataTableType">数据表行的类型。</param>
         /// <returns>是否存在数据表。</returns>
-        public bool HasDataTable(Type type)
+        public bool HasDataTable(Type dataTableType)
         {
-            return InternalHasDataTable(Utility.Text.GetFullName(type, string.Empty));
+            return InternalHasDataTable(Utility.Text.GetFullName(dataTableType, string.Empty));
         }
 
         /// <summary>
@@ -225,12 +225,12 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 是否存在数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataTableType">数据表行的类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否存在数据表。</returns>
-        public bool HasDataTable(Type type, string name)
+        public bool HasDataTable(Type dataTableType, string name)
         {
-            return InternalHasDataTable(Utility.Text.GetFullName(type, name));
+            return InternalHasDataTable(Utility.Text.GetFullName(dataTableType, name));
         }
 
         /// <summary>
@@ -246,11 +246,11 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 获取数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataTableType">数据表行的类型。</param>
         /// <returns>要获取的数据表。</returns>
-        public DataTableBase GetDataTable(Type type)
+        public DataTableBase GetDataTable(Type dataTableType)
         {
-            return InternelGetDataTable(Utility.Text.GetFullName(type, string.Empty));
+            return InternelGetDataTable(Utility.Text.GetFullName(dataTableType, string.Empty));
         }
 
         /// <summary>
@@ -267,12 +267,12 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 获取数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataTableType">数据表行的类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>要获取的数据表。</returns>
-        public DataTableBase GetDataTable(Type type, string name)
+        public DataTableBase GetDataTable(Type dataTableType, string name)
         {
-            return InternelGetDataTable(Utility.Text.GetFullName(type, name));
+            return InternelGetDataTable(Utility.Text.GetFullName(dataTableType, name));
         }
 
         /// <summary>
@@ -339,11 +339,11 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 销毁数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataTableType">数据表行的类型。</param>
         /// <returns>是否销毁数据表成功。</returns>
-        public bool DestroyDataTable(Type type)
+        public bool DestroyDataTable(Type dataTableType)
         {
-            return InternalDestroyDataTable(Utility.Text.GetFullName(type, string.Empty));
+            return InternalDestroyDataTable(Utility.Text.GetFullName(dataTableType, string.Empty));
         }
 
         /// <summary>
@@ -359,12 +359,12 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 销毁数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataTableType">数据表行的类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否销毁数据表成功。</returns>
-        public bool DestroyDataTable(Type type, string name)
+        public bool DestroyDataTable(Type dataTableType, string name)
         {
-            return InternalDestroyDataTable(Utility.Text.GetFullName(type, name));
+            return InternalDestroyDataTable(Utility.Text.GetFullName(dataTableType, name));
         }
 
         private bool InternalHasDataTable(string fullName)
