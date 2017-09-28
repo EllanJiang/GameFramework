@@ -204,7 +204,7 @@ namespace GameFramework.Resource
 
                 if (bytes == null || bytes.Length <= 0)
                 {
-                    throw new GameFrameworkException("Version list is invalid.");
+                    throw new GameFrameworkException(string.Format("Version list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
                 }
 
                 MemoryStream memoryStream = null;
