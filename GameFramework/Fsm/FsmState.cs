@@ -143,6 +143,16 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException("FSM is invalid.");
             }
 
+            if (stateType == null)
+            {
+                throw new GameFrameworkException("State type is invalid.");
+            }
+
+            if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
+            {
+                throw new GameFrameworkException(string.Format("State type '{0}' is invalid.", stateType.FullName));
+            }
+
             fsmImplement.ChangeState(stateType);
         }
 

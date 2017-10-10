@@ -45,12 +45,6 @@ namespace GameFramework.DataNode
         }
 
         /// <summary>
-        /// 获取数据结点的数据。
-        /// </summary>
-        /// <returns>数据结点数据。</returns>
-        Variable GetData();
-
-        /// <summary>
         /// 根据类型获取数据结点的数据。
         /// </summary>
         /// <typeparam name="T">要获取的数据类型。</typeparam>
@@ -58,11 +52,23 @@ namespace GameFramework.DataNode
         T GetData<T>() where T : Variable;
 
         /// <summary>
+        /// 获取数据结点的数据。
+        /// </summary>
+        /// <returns>数据结点数据。</returns>
+        Variable GetData();
+
+        /// <summary>
         /// 设置数据结点的数据。
         /// </summary>
         /// <typeparam name="T">要设置的数据类型。</typeparam>
         /// <param name="data">要设置的数据。</param>
         void SetData<T>(T data) where T : Variable;
+
+        /// <summary>
+        /// 设置数据结点的数据。
+        /// </summary>
+        /// <param name="data">要设置的数据。</param>
+        void SetData(Variable data);
 
         /// <summary>
         /// 根据索引获取子数据结点。

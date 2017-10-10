@@ -61,11 +61,12 @@ namespace GameFramework.Resource
         /// </summary>
         public ResourceManager()
         {
+            ResourceNameComparer resourceNameComparer = new ResourceNameComparer();
             m_AssetInfos = new Dictionary<string, AssetInfo>();
             m_AssetDependencyInfos = new Dictionary<string, AssetDependencyInfo>();
-            m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>();
+            m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>(resourceNameComparer);
             m_ResourceGroups = new Dictionary<string, ResourceGroup>();
-            m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>();
+            m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>(resourceNameComparer);
 
             m_ResourceIniter = null;
             m_VersionListProcessor = null;

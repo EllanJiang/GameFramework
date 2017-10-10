@@ -55,6 +55,11 @@ namespace GameFramework
             /// <returns>完整名称。</returns>
             public static string GetFullName(Type type, string name)
             {
+                if (type == null)
+                {
+                    throw new GameFrameworkException("Type is invalid.");
+                }
+
                 string typeName = type.FullName;
                 return string.IsNullOrEmpty(name) ? typeName : string.Format("{0}.{1}", typeName, name);
             }

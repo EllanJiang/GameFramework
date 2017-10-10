@@ -59,33 +59,6 @@ namespace GameFramework.DataNode
         }
 
         /// <summary>
-        /// 获取数据结点的数据。
-        /// </summary>
-        /// <param name="path">相对于 node 的查找路径。</param>
-        /// <returns>数据结点的数据。</returns>
-        public Variable GetData(string path)
-        {
-            return GetData(path, null);
-        }
-
-        /// <summary>
-        /// 获取数据结点的数据。
-        /// </summary>
-        /// <param name="path">相对于 node 的查找路径。</param>
-        /// <param name="node">查找起始结点。</param>
-        /// <returns>数据结点的数据。</returns>
-        public Variable GetData(string path, IDataNode node)
-        {
-            IDataNode current = GetNode(path, node);
-            if (current == null)
-            {
-                throw new GameFrameworkException(string.Format("Data node is not exist, path '{0}', node '{1}'.", path, (node != null ? node.FullName : string.Empty)));
-            }
-
-            return current.GetData();
-        }
-
-        /// <summary>
         /// 根据类型获取数据结点的数据。
         /// </summary>
         /// <typeparam name="T">要获取的数据类型。</typeparam>
@@ -94,6 +67,16 @@ namespace GameFramework.DataNode
         public T GetData<T>(string path) where T : Variable
         {
             return GetData<T>(path, null);
+        }
+
+        /// <summary>
+        /// 获取数据结点的数据。
+        /// </summary>
+        /// <param name="path">相对于 node 的查找路径。</param>
+        /// <returns>数据结点的数据。</returns>
+        public Variable GetData(string path)
+        {
+            return GetData(path, null);
         }
 
         /// <summary>
@@ -115,6 +98,23 @@ namespace GameFramework.DataNode
         }
 
         /// <summary>
+        /// 获取数据结点的数据。
+        /// </summary>
+        /// <param name="path">相对于 node 的查找路径。</param>
+        /// <param name="node">查找起始结点。</param>
+        /// <returns>数据结点的数据。</returns>
+        public Variable GetData(string path, IDataNode node)
+        {
+            IDataNode current = GetNode(path, node);
+            if (current == null)
+            {
+                throw new GameFrameworkException(string.Format("Data node is not exist, path '{0}', node '{1}'.", path, (node != null ? node.FullName : string.Empty)));
+            }
+
+            return current.GetData();
+        }
+
+        /// <summary>
         /// 设置数据结点的数据。
         /// </summary>
         /// <typeparam name="T">要设置的数据类型。</typeparam>
@@ -128,11 +128,33 @@ namespace GameFramework.DataNode
         /// <summary>
         /// 设置数据结点的数据。
         /// </summary>
+        /// <param name="path">相对于 node 的查找路径。</param>
+        /// <param name="data">要设置的数据。</param>
+        public void SetData(string path, Variable data)
+        {
+            SetData(path, data, null);
+        }
+
+        /// <summary>
+        /// 设置数据结点的数据。
+        /// </summary>
         /// <typeparam name="T">要设置的数据类型。</typeparam>
         /// <param name="path">相对于 node 的查找路径。</param>
         /// <param name="data">要设置的数据。</param>
         /// <param name="node">查找起始结点。</param>
         public void SetData<T>(string path, T data, IDataNode node) where T : Variable
+        {
+            IDataNode current = GetOrAddNode(path, node);
+            current.SetData(data);
+        }
+
+        /// <summary>
+        /// 设置数据结点的数据。
+        /// </summary>
+        /// <param name="path">相对于 node 的查找路径。</param>
+        /// <param name="data">要设置的数据。</param>
+        /// <param name="node">查找起始结点。</param>
+        public void SetData(string path, Variable data, IDataNode node)
         {
             IDataNode current = GetOrAddNode(path, node);
             current.SetData(data);

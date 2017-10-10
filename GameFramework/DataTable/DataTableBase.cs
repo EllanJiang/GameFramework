@@ -62,6 +62,12 @@ namespace GameFramework.DataTable
         }
 
         /// <summary>
+        /// 增加数据表行。
+        /// </summary>
+        /// <param name="dataRowText">要解析的数据表行文本。</param>
+        internal abstract void AddDataRow(string dataRowText);
+
+        /// <summary>
         /// 关闭并清理数据表。
         /// </summary>
         internal abstract void Shutdown();

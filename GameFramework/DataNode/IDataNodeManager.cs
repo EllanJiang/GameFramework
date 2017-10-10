@@ -21,27 +21,19 @@ namespace GameFramework.DataNode
         }
 
         /// <summary>
-        /// 获取数据结点的数据。
-        /// </summary>
-        /// <param name="path">相对于 node 的查找路径。</param>
-        /// <returns>数据结点的数据。</returns>
-        Variable GetData(string path);
-
-        /// <summary>
-        /// 获取数据结点的数据。
-        /// </summary>
-        /// <param name="path">相对于 node 的查找路径。</param>
-        /// <param name="node">查找起始结点。</param>
-        /// <returns>数据结点的数据。</returns>
-        Variable GetData(string path, IDataNode node);
-
-        /// <summary>
         /// 根据类型获取数据结点的数据。
         /// </summary>
         /// <typeparam name="T">要获取的数据类型。</typeparam>
         /// <param name="path">相对于 node 的查找路径。</param>
         /// <returns>指定类型的数据。</returns>
         T GetData<T>(string path) where T : Variable;
+
+        /// <summary>
+        /// 获取数据结点的数据。
+        /// </summary>
+        /// <param name="path">相对于 node 的查找路径。</param>
+        /// <returns>数据结点的数据。</returns>
+        Variable GetData(string path);
 
         /// <summary>
         /// 根据类型获取数据结点的数据。
@@ -51,6 +43,14 @@ namespace GameFramework.DataNode
         /// <param name="node">查找起始结点。</param>
         /// <returns>指定类型的数据。</returns>
         T GetData<T>(string path, IDataNode node) where T : Variable;
+
+        /// <summary>
+        /// 获取数据结点的数据。
+        /// </summary>
+        /// <param name="path">相对于 node 的查找路径。</param>
+        /// <param name="node">查找起始结点。</param>
+        /// <returns>数据结点的数据。</returns>
+        Variable GetData(string path, IDataNode node);
 
         /// <summary>
         /// 设置数据结点的数据。
@@ -63,11 +63,26 @@ namespace GameFramework.DataNode
         /// <summary>
         /// 设置数据结点的数据。
         /// </summary>
+        /// <param name="path">相对于 node 的查找路径。</param>
+        /// <param name="data">要设置的数据。</param>
+        void SetData(string path, Variable data);
+
+        /// <summary>
+        /// 设置数据结点的数据。
+        /// </summary>
         /// <typeparam name="T">要设置的数据类型。</typeparam>
         /// <param name="path">相对于 node 的查找路径。</param>
         /// <param name="data">要设置的数据。</param>
         /// <param name="node">查找起始结点。</param>
         void SetData<T>(string path, T data, IDataNode node) where T : Variable;
+
+        /// <summary>
+        /// 设置数据结点的数据。
+        /// </summary>
+        /// <param name="path">相对于 node 的查找路径。</param>
+        /// <param name="data">要设置的数据。</param>
+        /// <param name="node">查找起始结点。</param>
+        void SetData(string path, Variable data, IDataNode node);
 
         /// <summary>
         /// 获取数据结点。

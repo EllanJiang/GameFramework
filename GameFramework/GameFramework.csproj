@@ -206,6 +206,7 @@
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadSceneTask.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.ResourceObject.cs" />
     <Compile Include="Resource\ResourceManager.ResourceName.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceNameComparer.cs" />
     <Compile Include="Resource\ResourceManager.ResourceUpdater.cs" />
     <Compile Include="Resource\ResourceManager.ResourceUpdater.UpdateInfo.cs" />
     <Compile Include="Resource\ResourceManager.VersionListProcessor.cs" />
@@ -266,7 +267,6 @@
     <Compile Include="UI\UIManager.UIGroup.UIFormInfo.cs" />
     <Compile Include="Utility\Assembly.cs" />
     <Compile Include="Utility\Converter.cs" />
-    <Compile Include="Utility\DontProfileAttribute.cs" />
     <Compile Include="Utility\Encryption.cs" />
     <Compile Include="Utility\Json.cs" />
     <Compile Include="Utility\Json.IJsonHelper.cs" />

@@ -157,51 +157,25 @@ namespace GameFramework.Fsm
         }
 
         /// <summary>
-        /// 有限状态机轮询。
-        /// </summary>
-        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
-        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
-        internal override void Update(float elapseSeconds, float realElapseSeconds)
-        {
-            if (m_CurrentState == null)
-            {
-                return;
-            }
-
-            m_CurrentStateTime += elapseSeconds;
-            m_CurrentState.OnUpdate(this, elapseSeconds, realElapseSeconds);
-        }
-
-        /// <summary>
-        /// 关闭并清理有限状态机。
-        /// </summary>
-        internal override void Shutdown()
-        {
-            if (m_CurrentState != null)
-            {
-                m_CurrentState.OnLeave(this, true);
-                m_CurrentState = null;
-                m_CurrentStateTime = 0f;
-            }
-
-            foreach (KeyValuePair<string, FsmState<T>> state in m_States)
-            {
-                state.Value.OnDestroy(this);
-            }
-
-            m_States.Clear();
-            m_Datas.Clear();
-
-            m_IsDestroyed = true;
-        }
-
-        /// <summary>
         /// 开始有限状态机。
         /// </summary>
         /// <typeparam name="TState">要开始的有限状态机状态类型。</typeparam>
         public void Start<TState>() where TState : FsmState<T>
         {
-            Start(typeof(TState));
+            if (IsRunning)
+            {
+                throw new GameFrameworkException("FSM is running, can not start again.");
+            }
+
+            FsmState<T> state = GetState<TState>();
+            if (state == null)
+            {
+                throw new GameFrameworkException(string.Format("FSM '{0}' can not start state '{1}' which is not exist.", Utility.Text.GetFullName<T>(Name), typeof(TState).FullName));
+            }
+
+            m_CurrentStateTime = 0f;
+            m_CurrentState = state;
+            m_CurrentState.OnEnter(this);
         }
 
         /// <summary>
@@ -213,6 +187,16 @@ namespace GameFramework.Fsm
             if (IsRunning)
             {
                 throw new GameFrameworkException("FSM is running, can not start again.");
+            }
+
+            if (stateType == null)
+            {
+                throw new GameFrameworkException("State type is invalid.");
+            }
+
+            if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
+            {
+                throw new GameFrameworkException(string.Format("State type '{0}' is invalid.", stateType.FullName));
             }
 
             FsmState<T> state = GetState(stateType);
@@ -233,7 +217,7 @@ namespace GameFramework.Fsm
         /// <returns>是否存在有限状态机状态。</returns>
         public bool HasState<TState>() where TState : FsmState<T>
         {
-            return HasState(typeof(TState));
+            return m_States.ContainsKey(typeof(TState).FullName);
         }
 
         /// <summary>
@@ -243,6 +227,16 @@ namespace GameFramework.Fsm
         /// <returns>是否存在有限状态机状态。</returns>
         public bool HasState(Type stateType)
         {
+            if (stateType == null)
+            {
+                throw new GameFrameworkException("State type is invalid.");
+            }
+
+            if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
+            {
+                throw new GameFrameworkException(string.Format("State type '{0}' is invalid.", stateType.FullName));
+            }
+
             return m_States.ContainsKey(stateType.FullName);
         }
 
@@ -253,7 +247,13 @@ namespace GameFramework.Fsm
         /// <returns>要获取的有限状态机状态。</returns>
         public TState GetState<TState>() where TState : FsmState<T>
         {
-            return (TState)GetState(typeof(TState));
+            FsmState<T> state = null;
+            if (m_States.TryGetValue(typeof(TState).FullName, out state))
+            {
+                return (TState)state;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -263,6 +263,16 @@ namespace GameFramework.Fsm
         /// <returns>要获取的有限状态机状态。</returns>
         public FsmState<T> GetState(Type stateType)
         {
+            if (stateType == null)
+            {
+                throw new GameFrameworkException("State type is invalid.");
+            }
+
+            if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
+            {
+                throw new GameFrameworkException(string.Format("State type '{0}' is invalid.", stateType.FullName));
+            }
+
             FsmState<T> state = null;
             if (m_States.TryGetValue(stateType.FullName, out state))
             {
@@ -321,6 +331,17 @@ namespace GameFramework.Fsm
         /// <summary>
         /// 获取有限状态机数据。
         /// </summary>
+        /// <typeparam name="TData">要获取的有限状态机数据的类型。</typeparam>
+        /// <param name="name">有限状态机数据名称。</param>
+        /// <returns>要获取的有限状态机数据。</returns>
+        public TData GetData<TData>(string name) where TData : Variable
+        {
+            return (TData)GetData(name);
+        }
+
+        /// <summary>
+        /// 获取有限状态机数据。
+        /// </summary>
         /// <param name="name">有限状态机数据名称。</param>
         /// <returns>要获取的有限状态机数据。</returns>
         public Variable GetData(string name)
@@ -340,23 +361,27 @@ namespace GameFramework.Fsm
         }
 
         /// <summary>
-        /// 获取有限状态机数据。
-        /// </summary>
-        /// <typeparam name="TData">要获取的有限状态机数据的类型。</typeparam>
-        /// <param name="name">有限状态机数据名称。</param>
-        /// <returns>要获取的有限状态机数据。</returns>
-        public TData GetData<TData>(string name) where TData : Variable
-        {
-            return (TData)GetData(name);
-        }
-
-        /// <summary>
         /// 设置有限状态机数据。
         /// </summary>
         /// <typeparam name="TData">要设置的有限状态机数据的类型。</typeparam>
         /// <param name="name">有限状态机数据名称。</param>
         /// <param name="data">要设置的有限状态机数据。</param>
         public void SetData<TData>(string name, TData data) where TData : Variable
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new GameFrameworkException("Data name is invalid.");
+            }
+
+            m_Datas[name] = data;
+        }
+
+        /// <summary>
+        /// 设置有限状态机数据。
+        /// </summary>
+        /// <param name="name">有限状态机数据名称。</param>
+        /// <param name="data">要设置的有限状态机数据。</param>
+        public void SetData(string name, Variable data)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -379,6 +404,45 @@ namespace GameFramework.Fsm
             }
 
             return m_Datas.Remove(name);
+        }
+
+        /// <summary>
+        /// 有限状态机轮询。
+        /// </summary>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
+        internal override void Update(float elapseSeconds, float realElapseSeconds)
+        {
+            if (m_CurrentState == null)
+            {
+                return;
+            }
+
+            m_CurrentStateTime += elapseSeconds;
+            m_CurrentState.OnUpdate(this, elapseSeconds, realElapseSeconds);
+        }
+
+        /// <summary>
+        /// 关闭并清理有限状态机。
+        /// </summary>
+        internal override void Shutdown()
+        {
+            if (m_CurrentState != null)
+            {
+                m_CurrentState.OnLeave(this, true);
+                m_CurrentState = null;
+                m_CurrentStateTime = 0f;
+            }
+
+            foreach (KeyValuePair<string, FsmState<T>> state in m_States)
+            {
+                state.Value.OnDestroy(this);
+            }
+
+            m_States.Clear();
+            m_Datas.Clear();
+
+            m_IsDestroyed = true;
         }
 
         /// <summary>

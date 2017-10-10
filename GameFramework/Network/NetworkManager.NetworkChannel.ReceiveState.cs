@@ -17,13 +17,11 @@ namespace GameFramework.Network
             {
                 private const int DefaultBufferLength = 1024 * 64;
                 private readonly MemoryStream m_Stream;
-                private int m_TargetLength;
                 private bool m_IsPacket;
 
                 public ReceiveState()
                 {
                     m_Stream = new MemoryStream(DefaultBufferLength);
-                    m_TargetLength = 0;
                     m_IsPacket = false;
                 }
 
@@ -32,14 +30,6 @@ namespace GameFramework.Network
                     get
                     {
                         return m_Stream;
-                    }
-                }
-
-                public int TargetLength
-                {
-                    get
-                    {
-                        return m_TargetLength;
                     }
                 }
 
@@ -68,8 +58,8 @@ namespace GameFramework.Network
                         throw new GameFrameworkException("Target length is invalid.");
                     }
 
-                    m_Stream.SetLength(0L);
-                    m_TargetLength = targetLength;
+                    m_Stream.Position = 0L;
+                    m_Stream.SetLength(targetLength);
                     m_IsPacket = isPacket;
                 }
             }

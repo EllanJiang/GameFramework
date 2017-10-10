@@ -93,14 +93,6 @@ namespace GameFramework.DataTable
             }
 
             /// <summary>
-            /// 关闭并清理数据表。
-            /// </summary>
-            internal override void Shutdown()
-            {
-                m_DataSet.Clear();
-            }
-
-            /// <summary>
             /// 检查是否存在数据表行。
             /// </summary>
             /// <param name="id">数据表行的编号。</param>
@@ -172,45 +164,6 @@ namespace GameFramework.DataTable
                 }
 
                 return null;
-            }
-
-            /// <summary>
-            /// 增加数据表行。
-            /// </summary>
-            /// <param name="dataRowText">要解析的数据表行文本。</param>
-            public void AddDataRow(string dataRowText)
-            {
-                T dataRow = new T();
-                try
-                {
-                    dataRow.ParseDataRow(dataRowText);
-                }
-                catch (Exception exception)
-                {
-                    if (exception is GameFrameworkException)
-                    {
-                        throw;
-                    }
-
-                    throw new GameFrameworkException(string.Format("Can not parse data table '{0}' at '{1}' with exception '{2}'.", Utility.Text.GetFullName<T>(Name), dataRowText, exception.ToString()), exception);
-                }
-
-                if (HasDataRow(dataRow.Id))
-                {
-                    throw new GameFrameworkException(string.Format("Already exist '{0}' in data table '{1}'.", dataRow.Id.ToString(), Utility.Text.GetFullName<T>(Name)));
-                }
-
-                m_DataSet.Add(dataRow.Id, dataRow);
-
-                if (m_MinIdDataRow == null || m_MinIdDataRow.Id > dataRow.Id)
-                {
-                    m_MinIdDataRow = dataRow;
-                }
-
-                if (m_MaxIdDataRow == null || m_MaxIdDataRow.Id < dataRow.Id)
-                {
-                    m_MaxIdDataRow = dataRow;
-                }
             }
 
             /// <summary>
@@ -320,6 +273,53 @@ namespace GameFramework.DataTable
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return m_DataSet.Values.GetEnumerator();
+            }
+
+            /// <summary>
+            /// 关闭并清理数据表。
+            /// </summary>
+            internal override void Shutdown()
+            {
+                m_DataSet.Clear();
+            }
+
+            /// <summary>
+            /// 增加数据表行。
+            /// </summary>
+            /// <param name="dataRowText">要解析的数据表行文本。</param>
+            internal override void AddDataRow(string dataRowText)
+            {
+                T dataRow = new T();
+                try
+                {
+                    dataRow.ParseDataRow(dataRowText);
+                }
+                catch (Exception exception)
+                {
+                    if (exception is GameFrameworkException)
+                    {
+                        throw;
+                    }
+
+                    throw new GameFrameworkException(string.Format("Can not parse data table '{0}' at '{1}' with exception '{2}'.", Utility.Text.GetFullName<T>(Name), dataRowText, exception.ToString()), exception);
+                }
+
+                if (HasDataRow(dataRow.Id))
+                {
+                    throw new GameFrameworkException(string.Format("Already exist '{0}' in data table '{1}'.", dataRow.Id.ToString(), Utility.Text.GetFullName<T>(Name)));
+                }
+
+                m_DataSet.Add(dataRow.Id, dataRow);
+
+                if (m_MinIdDataRow == null || m_MinIdDataRow.Id > dataRow.Id)
+                {
+                    m_MinIdDataRow = dataRow;
+                }
+
+                if (m_MaxIdDataRow == null || m_MaxIdDataRow.Id < dataRow.Id)
+                {
+                    m_MaxIdDataRow = dataRow;
+                }
             }
         }
     }

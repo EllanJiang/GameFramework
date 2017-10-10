@@ -204,11 +204,21 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 是否存在数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataRowType">数据表行的类型。</param>
         /// <returns>是否存在数据表。</returns>
-        public bool HasDataTable(Type type)
+        public bool HasDataTable(Type dataRowType)
         {
-            return InternalHasDataTable(Utility.Text.GetFullName(type, string.Empty));
+            if (dataRowType == null)
+            {
+                throw new GameFrameworkException("Data row type is invalid.");
+            }
+
+            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
+            {
+                throw new GameFrameworkException(string.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
+            }
+
+            return InternalHasDataTable(Utility.Text.GetFullName(dataRowType, string.Empty));
         }
 
         /// <summary>
@@ -225,12 +235,22 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 是否存在数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataRowType">数据表行的类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否存在数据表。</returns>
-        public bool HasDataTable(Type type, string name)
+        public bool HasDataTable(Type dataRowType, string name)
         {
-            return InternalHasDataTable(Utility.Text.GetFullName(type, name));
+            if (dataRowType == null)
+            {
+                throw new GameFrameworkException("Data row type is invalid.");
+            }
+
+            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
+            {
+                throw new GameFrameworkException(string.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
+            }
+
+            return InternalHasDataTable(Utility.Text.GetFullName(dataRowType, name));
         }
 
         /// <summary>
@@ -246,11 +266,21 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 获取数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataRowType">数据表行的类型。</param>
         /// <returns>要获取的数据表。</returns>
-        public DataTableBase GetDataTable(Type type)
+        public DataTableBase GetDataTable(Type dataRowType)
         {
-            return InternelGetDataTable(Utility.Text.GetFullName(type, string.Empty));
+            if (dataRowType == null)
+            {
+                throw new GameFrameworkException("Data row type is invalid.");
+            }
+
+            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
+            {
+                throw new GameFrameworkException(string.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
+            }
+
+            return InternelGetDataTable(Utility.Text.GetFullName(dataRowType, string.Empty));
         }
 
         /// <summary>
@@ -267,12 +297,22 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 获取数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataRowType">数据表行的类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>要获取的数据表。</returns>
-        public DataTableBase GetDataTable(Type type, string name)
+        public DataTableBase GetDataTable(Type dataRowType, string name)
         {
-            return InternelGetDataTable(Utility.Text.GetFullName(type, name));
+            if (dataRowType == null)
+            {
+                throw new GameFrameworkException("Data row type is invalid.");
+            }
+
+            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
+            {
+                throw new GameFrameworkException(string.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
+            }
+
+            return InternelGetDataTable(Utility.Text.GetFullName(dataRowType, name));
         }
 
         /// <summary>
@@ -305,6 +345,17 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 创建数据表。
         /// </summary>
+        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="text">要解析的数据表文本。</param>
+        /// <returns>要创建的数据表。</returns>
+        public DataTableBase CreateDataTable(Type dataRowType, string text)
+        {
+            return CreateDataTable(dataRowType, string.Empty, text);
+        }
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
         /// <typeparam name="T">数据表行的类型。</typeparam>
         /// <param name="name">数据表名称。</param>
         /// <param name="text">要解析的数据表文本。</param>
@@ -316,14 +367,50 @@ namespace GameFramework.DataTable
                 throw new GameFrameworkException(string.Format("Already exist data table '{0}'.", Utility.Text.GetFullName<T>(name)));
             }
 
-            string[] dataRowTexts = m_DataTableHelper.SplitToDataRows(text);
             DataTable<T> dataTable = new DataTable<T>(name);
+            string[] dataRowTexts = m_DataTableHelper.SplitToDataRows(text);
             foreach (string dataRowText in dataRowTexts)
             {
                 dataTable.AddDataRow(dataRowText);
             }
 
             m_DataTables.Add(Utility.Text.GetFullName<T>(name), dataTable);
+            return dataTable;
+        }
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="name">数据表名称。</param>
+        /// <param name="text">要解析的数据表文本。</param>
+        /// <returns>要创建的数据表。</returns>
+        public DataTableBase CreateDataTable(Type dataRowType, string name, string text)
+        {
+            if (dataRowType == null)
+            {
+                throw new GameFrameworkException("Data row type is invalid.");
+            }
+
+            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
+            {
+                throw new GameFrameworkException(string.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
+            }
+
+            if (HasDataTable(dataRowType, name))
+            {
+                throw new GameFrameworkException(string.Format("Already exist data table '{0}'.", Utility.Text.GetFullName(dataRowType, name)));
+            }
+
+            Type dataTableType = typeof(DataTable<>).MakeGenericType(dataRowType);
+            DataTableBase dataTable = (DataTableBase)Activator.CreateInstance(dataTableType, name);
+            string[] dataRowTexts = m_DataTableHelper.SplitToDataRows(text);
+            foreach (string dataRowText in dataRowTexts)
+            {
+                dataTable.AddDataRow(dataRowText);
+            }
+
+            m_DataTables.Add(Utility.Text.GetFullName(dataRowType, name), dataTable);
             return dataTable;
         }
 
@@ -339,11 +426,21 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 销毁数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataRowType">数据表行的类型。</param>
         /// <returns>是否销毁数据表成功。</returns>
-        public bool DestroyDataTable(Type type)
+        public bool DestroyDataTable(Type dataRowType)
         {
-            return InternalDestroyDataTable(Utility.Text.GetFullName(type, string.Empty));
+            if (dataRowType == null)
+            {
+                throw new GameFrameworkException("Data row type is invalid.");
+            }
+
+            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
+            {
+                throw new GameFrameworkException(string.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
+            }
+
+            return InternalDestroyDataTable(Utility.Text.GetFullName(dataRowType, string.Empty));
         }
 
         /// <summary>
@@ -359,12 +456,22 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 销毁数据表。
         /// </summary>
-        /// <param name="type">数据表行的类型。</param>
+        /// <param name="dataRowType">数据表行的类型。</param>
         /// <param name="name">数据表名称。</param>
         /// <returns>是否销毁数据表成功。</returns>
-        public bool DestroyDataTable(Type type, string name)
+        public bool DestroyDataTable(Type dataRowType, string name)
         {
-            return InternalDestroyDataTable(Utility.Text.GetFullName(type, name));
+            if (dataRowType == null)
+            {
+                throw new GameFrameworkException("Data row type is invalid.");
+            }
+
+            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
+            {
+                throw new GameFrameworkException(string.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
+            }
+
+            return InternalDestroyDataTable(Utility.Text.GetFullName(dataRowType, name));
         }
 
         private bool InternalHasDataTable(string fullName)

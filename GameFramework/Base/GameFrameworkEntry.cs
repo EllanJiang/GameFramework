@@ -15,7 +15,7 @@ namespace GameFramework
     /// </summary>
     public static class GameFrameworkEntry
     {
-        private const string GameFrameworkVersion = "3.0.6";
+        private const string GameFrameworkVersion = "3.0.7";
         private static readonly LinkedList<GameFrameworkModule> s_GameFrameworkModules = new LinkedList<GameFrameworkModule>();
 
         /// <summary>

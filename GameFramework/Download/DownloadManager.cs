@@ -29,7 +29,7 @@ namespace GameFramework.Download
         public DownloadManager()
         {
             m_TaskPool = new TaskPool<DownloadTask>();
-            m_DownloadCounter = new DownloadCounter(1f, 10f);
+            m_DownloadCounter = new DownloadCounter(1f, 30f);
             m_FlushSize = 1024 * 1024;
             m_Timeout = 30f;
             m_DownloadStartEventHandler = null;
