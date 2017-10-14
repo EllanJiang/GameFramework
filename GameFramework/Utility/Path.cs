@@ -65,7 +65,7 @@ namespace GameFramework
                     return null;
                 }
 
-                return combinePath.Contains("://") ? combinePath : "file://" + combinePath;
+                return combinePath.Contains("://") ? combinePath : ("file:///" + combinePath).Replace("file:////", "file:///");
             }
 
             /// <summary>
