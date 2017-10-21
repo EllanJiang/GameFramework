@@ -57,6 +57,14 @@ namespace GameFramework.Setting
         }
 
         /// <summary>
+        /// 加载配置。
+        /// </summary>
+        public void Load()
+        {
+            m_SettingHelper.Load();
+        }
+
+        /// <summary>
         /// 保存配置。
         /// </summary>
         public void Save()

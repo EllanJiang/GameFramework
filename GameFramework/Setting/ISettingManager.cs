@@ -21,6 +21,11 @@ namespace GameFramework.Setting
         void SetSettingHelper(ISettingHelper settingHelper);
 
         /// <summary>
+        /// 加载配置。
+        /// </summary>
+        void Load();
+
+        /// <summary>
         /// 保存配置。
         /// </summary>
         void Save();
