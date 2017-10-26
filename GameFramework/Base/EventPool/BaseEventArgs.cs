@@ -10,7 +10,7 @@ namespace GameFramework
     /// <summary>
     /// 事件基类。
     /// </summary>
-    public abstract class BaseEventArgs : GameFrameworkEventArgs
+    public abstract class BaseEventArgs : GameFrameworkEventArgs, IReference
     {
         /// <summary>
         /// 获取类型编号。
@@ -19,5 +19,10 @@ namespace GameFramework
         {
             get;
         }
+
+        /// <summary>
+        /// 清理引用。
+        /// </summary>
+        public abstract void Clear();
     }
 }

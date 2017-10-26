@@ -8,14 +8,17 @@ namespace GameFramework
     /// </summary>
     public static class ReferencePool
     {
-        private readonly static IDictionary<string, Queue<IReference>> s_ReferencePool = new Dictionary<string, Queue<IReference>>();
+        private static readonly IDictionary<string, Queue<IReference>> s_ReferencePool = new Dictionary<string, Queue<IReference>>();
 
         /// <summary>
         /// 清除所有引用池。
         /// </summary>
         public static void ClearAll()
         {
-            s_ReferencePool.Clear();
+            lock (s_ReferencePool)
+            {
+                s_ReferencePool.Clear();
+            }
         }
 
         /// <summary>
@@ -24,7 +27,10 @@ namespace GameFramework
         /// <typeparam name="T">引用类型。</typeparam>
         public static void Clear<T>() where T : class, IReference
         {
-            GetReferencePool(typeof(T).FullName).Clear();
+            lock (s_ReferencePool)
+            {
+                GetReferencePool(typeof(T).FullName).Clear();
+            }
         }
 
         /// <summary>
@@ -48,7 +54,10 @@ namespace GameFramework
                 throw new GameFrameworkException(string.Format("Reference type '{0}' is invalid.", referenceType.FullName));
             }
 
-            GetReferencePool(referenceType.FullName).Clear();
+            lock (s_ReferencePool)
+            {
+                GetReferencePool(referenceType.FullName).Clear();
+            }
         }
 
         /// <summary>
@@ -58,7 +67,10 @@ namespace GameFramework
         /// <returns>引用池中引用的数量。</returns>
         public static int Count<T>()
         {
-            return GetReferencePool(typeof(T).FullName).Count;
+            lock (s_ReferencePool)
+            {
+                return GetReferencePool(typeof(T).FullName).Count;
+            }
         }
 
         /// <summary>
@@ -83,7 +95,10 @@ namespace GameFramework
                 throw new GameFrameworkException(string.Format("Reference type '{0}' is invalid.", referenceType.FullName));
             }
 
-            return GetReferencePool(referenceType.FullName).Count;
+            lock (s_ReferencePool)
+            {
+                return GetReferencePool(referenceType.FullName).Count;
+            }
         }
 
         /// <summary>
@@ -92,15 +107,16 @@ namespace GameFramework
         /// <typeparam name="T">引用类型。</typeparam>
         public static T Acquire<T>() where T : class, IReference, new()
         {
-            Queue<IReference> referencePool = GetReferencePool(typeof(T).FullName);
-            if (referencePool.Count > 0)
+            lock (s_ReferencePool)
             {
-                return (T)referencePool.Dequeue();
+                Queue<IReference> referencePool = GetReferencePool(typeof(T).FullName);
+                if (referencePool.Count > 0)
+                {
+                    return (T)referencePool.Dequeue();
+                }
             }
-            else
-            {
-                return new T();
-            }
+
+            return new T();
         }
 
         /// <summary>
@@ -125,15 +141,16 @@ namespace GameFramework
                 throw new GameFrameworkException(string.Format("Reference type '{0}' is invalid.", referenceType.FullName));
             }
 
-            Queue<IReference> referencePool = GetReferencePool(referenceType.FullName);
-            if (referencePool.Count > 0)
+            lock (s_ReferencePool)
             {
-                return referencePool.Dequeue();
+                Queue<IReference> referencePool = GetReferencePool(referenceType.FullName);
+                if (referencePool.Count > 0)
+                {
+                    return referencePool.Dequeue();
+                }
             }
-            else
-            {
-                return (IReference)Activator.CreateInstance(referenceType);
-            }
+
+            return (IReference)Activator.CreateInstance(referenceType);
         }
 
         /// <summary>
@@ -149,7 +166,10 @@ namespace GameFramework
             }
 
             reference.Clear();
-            GetReferencePool(typeof(T).FullName).Enqueue(reference);
+            lock (s_ReferencePool)
+            {
+                GetReferencePool(typeof(T).FullName).Enqueue(reference);
+            }
         }
 
         /// <summary>
@@ -181,7 +201,10 @@ namespace GameFramework
             }
 
             reference.Clear();
-            GetReferencePool(referenceType.FullName).Enqueue(reference);
+            lock (s_ReferencePool)
+            {
+                GetReferencePool(referenceType.FullName).Enqueue(reference);
+            }
         }
 
         /// <summary>
@@ -191,10 +214,13 @@ namespace GameFramework
         /// <param name="count">追加数量。</param>
         public static void Add<T>(int count) where T : class, IReference, new()
         {
-            Queue<IReference> referencePool = GetReferencePool(typeof(T).FullName);
-            while (count-- > 0)
+            lock (s_ReferencePool)
             {
-                referencePool.Enqueue(new T());
+                Queue<IReference> referencePool = GetReferencePool(typeof(T).FullName);
+                while (count-- > 0)
+                {
+                    referencePool.Enqueue(new T());
+                }
             }
         }
 
@@ -220,10 +246,13 @@ namespace GameFramework
                 throw new GameFrameworkException(string.Format("Reference type '{0}' is invalid.", referenceType.FullName));
             }
 
-            Queue<IReference> referencePool = GetReferencePool(referenceType.FullName);
-            while (count-- > 0)
+            lock (s_ReferencePool)
             {
-                referencePool.Enqueue((IReference)Activator.CreateInstance(referenceType));
+                Queue<IReference> referencePool = GetReferencePool(referenceType.FullName);
+                while (count-- > 0)
+                {
+                    referencePool.Enqueue((IReference)Activator.CreateInstance(referenceType));
+                }
             }
         }
 
@@ -234,15 +263,18 @@ namespace GameFramework
         /// <param name="count">移除数量。</param>
         public static void Remove<T>(int count) where T : class, IReference
         {
-            Queue<IReference> referencePool = GetReferencePool(typeof(T).FullName);
-            if (referencePool.Count < count)
+            lock (s_ReferencePool)
             {
-                count = referencePool.Count;
-            }
+                Queue<IReference> referencePool = GetReferencePool(typeof(T).FullName);
+                if (referencePool.Count < count)
+                {
+                    count = referencePool.Count;
+                }
 
-            while (count-- > 0)
-            {
-                referencePool.Dequeue();
+                while (count-- > 0)
+                {
+                    referencePool.Dequeue();
+                }
             }
         }
 
@@ -268,15 +300,18 @@ namespace GameFramework
                 throw new GameFrameworkException(string.Format("Reference type '{0}' is invalid.", referenceType.FullName));
             }
 
-            Queue<IReference> referencePool = GetReferencePool(referenceType.FullName);
-            if (referencePool.Count < count)
+            lock (s_ReferencePool)
             {
-                count = referencePool.Count;
-            }
+                Queue<IReference> referencePool = GetReferencePool(referenceType.FullName);
+                if (referencePool.Count < count)
+                {
+                    count = referencePool.Count;
+                }
 
-            while (count-- > 0)
-            {
-                referencePool.Dequeue();
+                while (count-- > 0)
+                {
+                    referencePool.Dequeue();
+                }
             }
         }
 
