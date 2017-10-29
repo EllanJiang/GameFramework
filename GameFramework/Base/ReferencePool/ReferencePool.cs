@@ -61,6 +61,18 @@ namespace GameFramework
         }
 
         /// <summary>
+        /// 获取引用池的数量。
+        /// </summary>
+        /// <returns>引用池的数量。</returns>
+        public static int Count()
+        {
+            lock (s_ReferencePool)
+            {
+                return s_ReferencePool.Count;
+            }
+        }
+
+        /// <summary>
         /// 获取引用池中引用的数量。
         /// </summary>
         /// <typeparam name="T">引用类型。</typeparam>
