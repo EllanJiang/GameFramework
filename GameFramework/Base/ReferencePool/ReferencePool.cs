@@ -158,7 +158,7 @@ namespace GameFramework
         /// </summary>
         /// <typeparam name="T">引用类型。</typeparam>
         /// <param name="reference">引用。</param>
-        public static void Return<T>(T reference) where T : class, IReference
+        public static void Release<T>(T reference) where T : class, IReference
         {
             if (reference == null)
             {
@@ -177,7 +177,7 @@ namespace GameFramework
         /// </summary>
         /// <param name="referenceType">引用类型。</param>
         /// <param name="reference">引用。</param>
-        public static void Return(Type referenceType, IReference reference)
+        public static void Release(Type referenceType, IReference reference)
         {
             if (referenceType == null)
             {
