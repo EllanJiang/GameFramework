@@ -51,6 +51,8 @@
     <Compile Include="Base\Log\Log.cs" />
     <Compile Include="Base\Log\Log.ILogHelper.cs" />
     <Compile Include="Base\Log\LogLevel.cs" />
+    <Compile Include="Base\ReferencePool\IReference.cs" />
+    <Compile Include="Base\ReferencePool\ReferencePool.cs" />
     <Compile Include="Base\TaskPool\ITask.cs" />
     <Compile Include="Base\TaskPool\ITaskAgent.cs" />
     <Compile Include="Base\TaskPool\TaskPool.cs" />

@@ -15,9 +15,16 @@ namespace GameFramework.Setting
     public interface ISettingHelper
     {
         /// <summary>
+        /// 加载配置。
+        /// </summary>
+        /// <returns>是否加载配置成功。</returns>
+        bool Load();
+
+        /// <summary>
         /// 保存配置。
         /// </summary>
-        void Save();
+        /// <returns>是否保存配置成功。</returns>
+        bool Save();
 
         /// <summary>
         /// 检查是否存在指定配置项。

@@ -20,8 +20,8 @@ namespace GameFramework.Resource
             /// </summary>
             private sealed partial class LoadResourceAgent : ITaskAgent<LoadResourceTaskBase>
             {
-                private readonly static HashSet<string> s_LoadingAssetNames = new HashSet<string>();
-                private readonly static HashSet<string> s_LoadingResourceNames = new HashSet<string>();
+                private static readonly HashSet<string> s_LoadingAssetNames = new HashSet<string>();
+                private static readonly HashSet<string> s_LoadingResourceNames = new HashSet<string>();
 
                 private readonly ILoadResourceAgentHelper m_Helper;
                 private readonly IResourceHelper m_ResourceHelper;

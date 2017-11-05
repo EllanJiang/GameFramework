@@ -57,11 +57,21 @@ namespace GameFramework.Setting
         }
 
         /// <summary>
+        /// 加载配置。
+        /// </summary>
+        /// <returns>是否加载配置成功。</returns>
+        public bool Load()
+        {
+            return m_SettingHelper.Load();
+        }
+
+        /// <summary>
         /// 保存配置。
         /// </summary>
-        public void Save()
+        /// <returns>是否保存配置成功。</returns>
+        public bool Save()
         {
-            m_SettingHelper.Save();
+            return m_SettingHelper.Save();
         }
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace GameFramework
     /// </summary>
     public static class GameFrameworkEntry
     {
-        private const string GameFrameworkVersion = "3.0.7";
+        private const string GameFrameworkVersion = "3.0.8";
         private static readonly LinkedList<GameFrameworkModule> s_GameFrameworkModules = new LinkedList<GameFrameworkModule>();
 
         /// <summary>
@@ -53,6 +53,8 @@ namespace GameFramework
             }
 
             s_GameFrameworkModules.Clear();
+            ReferencePool.ClearAll();
+            Log.SetLogHelper(null);
         }
 
         /// <summary>
