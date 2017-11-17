@@ -283,6 +283,22 @@ namespace GameFramework.Fsm
         }
 
         /// <summary>
+        /// 获取有限状态机的所有状态。
+        /// </summary>
+        /// <returns>有限状态机的所有状态。</returns>
+        public FsmState<T>[] GetAllStates()
+        {
+            int index = 0;
+            FsmState<T>[] allStates = new FsmState<T>[m_States.Count];
+            foreach (KeyValuePair<string, FsmState<T>> state in m_States)
+            {
+                allStates[index++] = state.Value;
+            }
+
+            return allStates;
+        }
+
+        /// <summary>
         /// 抛出有限状态机事件。
         /// </summary>
         /// <param name="sender">事件源。</param>

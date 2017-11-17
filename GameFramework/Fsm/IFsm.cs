@@ -112,6 +112,12 @@ namespace GameFramework.Fsm
         FsmState<T> GetState(Type stateType);
 
         /// <summary>
+        /// 获取有限状态机的所有状态。
+        /// </summary>
+        /// <returns>有限状态机的所有状态。</returns>
+        FsmState<T>[] GetAllStates();
+
+        /// <summary>
         /// 抛出有限状态机事件。
         /// </summary>
         /// <param name="sender">事件源。</param>
