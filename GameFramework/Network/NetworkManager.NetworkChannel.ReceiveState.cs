@@ -15,7 +15,7 @@ namespace GameFramework.Network
         {
             private sealed class ReceiveState
             {
-                private const int DefaultBufferLength = 1024 * 64;
+                private const int DefaultBufferLength = 1024 * 8;
                 private readonly MemoryStream m_Stream;
                 private IPacketHeader m_PacketHeader;
 

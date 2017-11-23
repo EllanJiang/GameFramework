@@ -628,7 +628,7 @@ namespace GameFramework.Network
                     object customErrorData = null;
                     IPacketHeader packetHeader = m_NetworkChannelHelper.DeserializePacketHeader(m_ReceiveState.Stream, out customErrorData);
 
-                    if (NetworkChannelCustomError != null)
+                    if (customErrorData != null && NetworkChannelCustomError != null)
                     {
                         NetworkChannelCustomError(this, customErrorData);
                     }
@@ -678,7 +678,7 @@ namespace GameFramework.Network
                     object customErrorData = null;
                     Packet packet = m_NetworkChannelHelper.DeserializePacket(m_ReceiveState.PacketHeader, m_ReceiveState.Stream, out customErrorData);
 
-                    if (NetworkChannelCustomError != null)
+                    if (customErrorData != null && NetworkChannelCustomError != null)
                     {
                         NetworkChannelCustomError(this, customErrorData);
                     }
