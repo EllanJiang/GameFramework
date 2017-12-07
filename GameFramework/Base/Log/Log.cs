@@ -34,7 +34,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Debug, message);
@@ -49,7 +49,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Debug, message);
@@ -65,7 +65,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Debug, string.Format(format, arg0));
@@ -82,7 +82,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Debug, string.Format(format, arg0, arg1));
@@ -100,7 +100,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Debug, string.Format(format, arg0, arg1, arg2));
@@ -116,7 +116,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Debug, string.Format(format, args));
@@ -130,7 +130,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Info, message);
@@ -144,7 +144,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Info, message);
@@ -159,7 +159,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Info, string.Format(format, arg0));
@@ -175,7 +175,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Info, string.Format(format, arg0, arg1));
@@ -192,7 +192,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Info, string.Format(format, arg0, arg1, arg2));
@@ -207,7 +207,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Info, string.Format(format, args));
@@ -221,7 +221,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Warning, message);
@@ -235,7 +235,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Warning, message);
@@ -250,7 +250,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Warning, string.Format(format, arg0));
@@ -266,7 +266,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Warning, string.Format(format, arg0, arg1));
@@ -283,7 +283,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Warning, string.Format(format, arg0, arg1, arg2));
@@ -298,7 +298,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Warning, string.Format(format, args));
@@ -312,7 +312,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Error, message);
@@ -326,7 +326,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Error, message);
@@ -341,7 +341,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Error, string.Format(format, arg0));
@@ -357,7 +357,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Error, string.Format(format, arg0, arg1));
@@ -374,7 +374,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Error, string.Format(format, arg0, arg1, arg2));
@@ -389,7 +389,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Error, string.Format(format, args));
@@ -403,7 +403,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Fatal, message);
@@ -417,7 +417,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Fatal, message);
@@ -432,7 +432,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Fatal, string.Format(format, arg0));
@@ -448,7 +448,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Fatal, string.Format(format, arg0, arg1));
@@ -465,7 +465,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Fatal, string.Format(format, arg0, arg1, arg2));
@@ -480,7 +480,7 @@ namespace GameFramework
         {
             if (s_LogHelper == null)
             {
-                throw new GameFrameworkException("Log helper is invalid.");
+                return;
             }
 
             s_LogHelper.Log(LogLevel.Fatal, string.Format(format, args));
