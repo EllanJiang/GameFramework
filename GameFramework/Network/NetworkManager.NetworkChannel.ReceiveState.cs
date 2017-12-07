@@ -15,14 +15,14 @@ namespace GameFramework.Network
         {
             private sealed class ReceiveState
             {
-                private const int DefaultBufferLength = 1024 * 64;
+                private const int DefaultBufferLength = 1024 * 8;
                 private readonly MemoryStream m_Stream;
-                private bool m_IsPacket;
+                private IPacketHeader m_PacketHeader;
 
                 public ReceiveState()
                 {
                     m_Stream = new MemoryStream(DefaultBufferLength);
-                    m_IsPacket = false;
+                    m_PacketHeader = null;
                 }
 
                 public MemoryStream Stream
@@ -33,25 +33,30 @@ namespace GameFramework.Network
                     }
                 }
 
-                public bool IsPacket
+                public IPacketHeader PacketHeader
                 {
                     get
                     {
-                        return m_IsPacket;
+                        return m_PacketHeader;
                     }
                 }
 
                 public void PrepareForPacketHeader(int packetHeaderLength)
                 {
-                    Reset(packetHeaderLength, false);
+                    Reset(packetHeaderLength, null);
                 }
 
-                public void PrepareForPacket(int packetLength)
+                public void PrepareForPacket(IPacketHeader packetHeader)
                 {
-                    Reset(packetLength, true);
+                    if (packetHeader == null)
+                    {
+                        throw new GameFrameworkException("Packet header is invalid.");
+                    }
+
+                    Reset(packetHeader.PacketLength, packetHeader);
                 }
 
-                private void Reset(int targetLength, bool isPacket)
+                private void Reset(int targetLength, IPacketHeader packetHeader)
                 {
                     if (targetLength < 0)
                     {
@@ -60,7 +65,7 @@ namespace GameFramework.Network
 
                     m_Stream.Position = 0L;
                     m_Stream.SetLength(targetLength);
-                    m_IsPacket = isPacket;
+                    m_PacketHeader = packetHeader;
                 }
             }
         }

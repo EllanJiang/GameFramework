@@ -628,7 +628,7 @@ namespace GameFramework.Network
                     object customErrorData = null;
                     IPacketHeader packetHeader = m_NetworkChannelHelper.DeserializePacketHeader(m_ReceiveState.Stream, out customErrorData);
 
-                    if (NetworkChannelCustomError != null)
+                    if (customErrorData != null && NetworkChannelCustomError != null)
                     {
                         NetworkChannelCustomError(this, customErrorData);
                     }
@@ -645,13 +645,10 @@ namespace GameFramework.Network
                         throw new GameFrameworkException(errorMessage);
                     }
 
-                    if (packetHeader.PacketLength > 0)
+                    m_ReceiveState.PrepareForPacket(packetHeader);
+                    if (packetHeader.PacketLength <= 0)
                     {
-                        m_ReceiveState.PrepareForPacket(packetHeader.PacketLength);
-                    }
-                    else
-                    {
-                        m_ReceiveState.PrepareForPacketHeader(m_NetworkChannelHelper.PacketHeaderLength);
+                        ProcessPacket();
                     }
                 }
                 catch (Exception exception)
@@ -679,9 +676,9 @@ namespace GameFramework.Network
                 try
                 {
                     object customErrorData = null;
-                    Packet packet = m_NetworkChannelHelper.DeserializePacket(m_ReceiveState.Stream, out customErrorData);
+                    Packet packet = m_NetworkChannelHelper.DeserializePacket(m_ReceiveState.PacketHeader, m_ReceiveState.Stream, out customErrorData);
 
-                    if (NetworkChannelCustomError != null)
+                    if (customErrorData != null && NetworkChannelCustomError != null)
                     {
                         NetworkChannelCustomError(this, customErrorData);
                     }
@@ -815,7 +812,7 @@ namespace GameFramework.Network
                 m_ReceiveState.Stream.Position = 0L;
 
                 bool processSuccess = false;
-                if (m_ReceiveState.IsPacket)
+                if (m_ReceiveState.PacketHeader != null)
                 {
                     processSuccess = ProcessPacket();
                 }
