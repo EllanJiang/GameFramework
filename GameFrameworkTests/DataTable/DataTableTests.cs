@@ -1,10 +1,18 @@
-﻿using GameFramework.DataTable;
+﻿//------------------------------------------------------------
+// Game Framework v3.x
+// Copyright © 2013-2017 Jiang Yin. All rights reserved.
+// Homepage: http://gameframework.cn/
+// Feedback: mailto:jiangyin@gameframework.cn
+//------------------------------------------------------------
+
+using GameFramework;
+using GameFramework.DataTable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GameFramework.UnitTest.DataTable
+namespace GameFrameworkTests.DataTable
 {
     [TestClass]
-    public class DataTableUnitTest
+    public sealed class DataTableTests
     {
         private IDataTableManager m_DataTableManager = null;
 
