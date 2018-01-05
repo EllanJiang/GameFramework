@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
 // Game Framework v3.x
-// Copyright © 2013-2017 Jiang Yin. All rights reserved.
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -15,7 +15,7 @@ namespace GameFramework
     /// </summary>
     public static class GameFrameworkEntry
     {
-        private const string GameFrameworkVersion = "3.0.9";
+        private const string GameFrameworkVersion = "3.1.0";
         private static readonly LinkedList<GameFrameworkModule> s_GameFrameworkModules = new LinkedList<GameFrameworkModule>();
 
         /// <summary>
