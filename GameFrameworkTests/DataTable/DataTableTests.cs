@@ -21,8 +21,6 @@ namespace GameFrameworkTests.DataTable
         {
             m_DataTableManager = GameFrameworkEntry.GetModule<IDataTableManager>();
             Assert.IsNotNull(m_DataTableManager);
-
-            m_DataTableManager.SetResourceManager(null);
         }
 
         [TestCleanup]
