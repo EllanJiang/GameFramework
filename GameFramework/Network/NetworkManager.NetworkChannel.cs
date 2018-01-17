@@ -417,29 +417,32 @@ namespace GameFramework.Network
             /// </summary>
             public void Close()
             {
-                if (m_Socket == null)
+                lock (this)
                 {
-                    return;
-                }
-
-                m_EventPool.Clear();
-
-                m_Active = false;
-                try
-                {
-                    m_Socket.Shutdown(SocketShutdown.Both);
-                }
-                catch
-                {
-                }
-                finally
-                {
-                    m_Socket.Close();
-                    m_Socket = null;
-
-                    if (NetworkChannelClosed != null)
+                    if (m_Socket == null)
                     {
-                        NetworkChannelClosed(this);
+                        return;
+                    }
+
+                    m_EventPool.Clear();
+
+                    m_Active = false;
+                    try
+                    {
+                        m_Socket.Shutdown(SocketShutdown.Both);
+                    }
+                    catch
+                    {
+                    }
+                    finally
+                    {
+                        m_Socket.Close();
+                        m_Socket = null;
+
+                        if (NetworkChannelClosed != null)
+                        {
+                            NetworkChannelClosed(this);
+                        }
                     }
                 }
             }
