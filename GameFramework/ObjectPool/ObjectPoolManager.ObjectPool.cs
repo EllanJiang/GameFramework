@@ -285,7 +285,7 @@ namespace GameFramework.ObjectPool
 
                 foreach (Object<T> obj in m_Objects)
                 {
-                    if (ReferenceEquals(obj.Peek().Target, target))
+                    if (obj.Peek().Target == target)
                     {
                         Log.Debug("Object pool '{0}' unspawn '{1}'.", Utility.Text.GetFullName<T>(Name), obj.Peek().Name);
                         obj.Unspawn();
@@ -326,7 +326,7 @@ namespace GameFramework.ObjectPool
 
                 foreach (Object<T> obj in m_Objects)
                 {
-                    if (ReferenceEquals(obj.Peek().Target, target))
+                    if (obj.Peek().Target == target)
                     {
                         Log.Debug("Object pool '{0}' set locked '{1}' to '{2}.", Utility.Text.GetFullName<T>(Name), obj.Peek().Name, locked.ToString());
                         obj.Locked = locked;
@@ -366,7 +366,7 @@ namespace GameFramework.ObjectPool
 
                 foreach (Object<T> obj in m_Objects)
                 {
-                    if (ReferenceEquals(obj.Peek().Target, target))
+                    if (obj.Peek().Target == target)
                     {
                         Log.Debug("Object pool '{0}' set priority '{1}' to '{2}.", Utility.Text.GetFullName<T>(Name), obj.Peek().Name, priority.ToString());
                         obj.Priority = priority;
