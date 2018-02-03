@@ -203,7 +203,7 @@ namespace GameFramework
                 if (handlers != null)
                 {
                     handlers(sender, e);
-                    ReferencePool.Release(e);
+                    ReferencePool.Release(e.GetType(), e);
                     return;
                 }
             }
