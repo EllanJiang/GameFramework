@@ -35,7 +35,7 @@ namespace GameFramework
                 referencePoolInfos = new ReferencePoolInfo[s_ReferenceCollections.Count];
                 foreach (KeyValuePair<string, ReferenceCollection> referenceCollection in s_ReferenceCollections)
                 {
-                    referencePoolInfos[index++] = new ReferencePoolInfo(referenceCollection.Key, referenceCollection.Value.UnusedReferenceCount, referenceCollection.Value.UsingReferenceCount, referenceCollection.Value.AddReferenceCount, referenceCollection.Value.RemoveReferenceCount);
+                    referencePoolInfos[index++] = new ReferencePoolInfo(referenceCollection.Key, referenceCollection.Value.UnusedReferenceCount, referenceCollection.Value.UsingReferenceCount, referenceCollection.Value.AcquireReferenceCount, referenceCollection.Value.ReleaseReferenceCount, referenceCollection.Value.AddReferenceCount, referenceCollection.Value.RemoveReferenceCount);
                 }
             }
 

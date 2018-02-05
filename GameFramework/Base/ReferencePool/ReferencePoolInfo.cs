@@ -15,6 +15,8 @@ namespace GameFramework
         private readonly string m_TypeName;
         private readonly int m_UnusedReferenceCount;
         private readonly int m_UsingReferenceCount;
+        private readonly int m_AcquireReferenceCount;
+        private readonly int m_ReleaseReferenceCount;
         private readonly int m_AddReferenceCount;
         private readonly int m_RemoveReferenceCount;
 
@@ -24,13 +26,17 @@ namespace GameFramework
         /// <param name="typeName">引用池类型名称。</param>
         /// <param name="unusedReferenceCount">未使用引用数量。</param>
         /// <param name="usingReferenceCount">正在使用引用数量。</param>
-        /// <param name="addReferenceCount">已增加引用数量。</param>
-        /// <param name="removeReferenceCount">已移除引用数量。</param>
-        public ReferencePoolInfo(string typeName, int unusedReferenceCount, int usingReferenceCount, int addReferenceCount, int removeReferenceCount)
+        /// <param name="acquireReferenceCount">获取引用数量。</param>
+        /// <param name="releaseReferenceCount">归还引用数量。</param>
+        /// <param name="addReferenceCount">增加引用数量。</param>
+        /// <param name="removeReferenceCount">移除引用数量。</param>
+        public ReferencePoolInfo(string typeName, int unusedReferenceCount, int usingReferenceCount, int acquireReferenceCount, int releaseReferenceCount, int addReferenceCount, int removeReferenceCount)
         {
             m_TypeName = typeName;
             m_UnusedReferenceCount = unusedReferenceCount;
             m_UsingReferenceCount = usingReferenceCount;
+            m_AcquireReferenceCount = acquireReferenceCount;
+            m_ReleaseReferenceCount = releaseReferenceCount;
             m_AddReferenceCount = addReferenceCount;
             m_RemoveReferenceCount = removeReferenceCount;
         }
@@ -69,7 +75,29 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 获取已增加引用数量。
+        /// 获取获取引用数量。
+        /// </summary>
+        public int AcquireReferenceCount
+        {
+            get
+            {
+                return m_AcquireReferenceCount;
+            }
+        }
+
+        /// <summary>
+        /// 获取归还引用数量。
+        /// </summary>
+        public int ReleaseReferenceCount
+        {
+            get
+            {
+                return m_ReleaseReferenceCount;
+            }
+        }
+
+        /// <summary>
+        /// 获取增加引用数量。
         /// </summary>
         public int AddReferenceCount
         {
@@ -80,7 +108,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 获取已移除引用数量。
+        /// 获取移除引用数量。
         /// </summary>
         public int RemoveReferenceCount
         {
