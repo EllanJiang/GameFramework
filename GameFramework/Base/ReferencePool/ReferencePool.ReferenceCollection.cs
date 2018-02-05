@@ -9,6 +9,8 @@ namespace GameFramework
         {
             private readonly Queue<IReference> m_References;
             private int m_UsingReferenceCount;
+            private int m_AcquireReferenceCount;
+            private int m_ReleaseReferenceCount;
             private int m_AddReferenceCount;
             private int m_RemoveReferenceCount;
 
@@ -16,6 +18,8 @@ namespace GameFramework
             {
                 m_References = new Queue<IReference>();
                 m_UsingReferenceCount = 0;
+                m_AcquireReferenceCount = 0;
+                m_ReleaseReferenceCount = 0;
                 m_AddReferenceCount = 0;
                 m_RemoveReferenceCount = 0;
             }
@@ -33,6 +37,22 @@ namespace GameFramework
                 get
                 {
                     return m_UsingReferenceCount;
+                }
+            }
+
+            public int AcquireReferenceCount
+            {
+                get
+                {
+                    return m_AcquireReferenceCount;
+                }
+            }
+
+            public int ReleaseReferenceCount
+            {
+                get
+                {
+                    return m_ReleaseReferenceCount;
                 }
             }
 
@@ -55,6 +75,7 @@ namespace GameFramework
             public T Acquire<T>() where T : class, IReference, new()
             {
                 m_UsingReferenceCount++;
+                m_AcquireReferenceCount++;
                 lock (m_References)
                 {
                     if (m_References.Count > 0)
@@ -70,6 +91,7 @@ namespace GameFramework
             public IReference Acquire(Type referenceType)
             {
                 m_UsingReferenceCount++;
+                m_AcquireReferenceCount++;
                 lock (m_References)
                 {
                     if (m_References.Count > 0)
@@ -90,6 +112,7 @@ namespace GameFramework
                     m_References.Enqueue(reference);
                 }
 
+                m_ReleaseReferenceCount++;
                 m_UsingReferenceCount--;
             }
 
@@ -101,6 +124,7 @@ namespace GameFramework
                     m_References.Enqueue(reference);
                 }
 
+                m_ReleaseReferenceCount++;
                 m_UsingReferenceCount--;
             }
 
