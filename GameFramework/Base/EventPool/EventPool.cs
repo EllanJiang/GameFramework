@@ -203,12 +203,11 @@ namespace GameFramework
                 if (handlers != null)
                 {
                     handlers(sender, e);
-                    ReferencePool.Release(e);
-                    return;
                 }
             }
 
-            if ((m_EventPoolMode & EventPoolMode.AllowNoHandler) == 0)
+            ReferencePool.Release(e.GetType(), e);
+            if (handlers == null && (m_EventPoolMode & EventPoolMode.AllowNoHandler) == 0)
             {
                 throw new GameFrameworkException(string.Format("Event '{0}' not allow no handler.", e.Id.ToString()));
             }

@@ -19,13 +19,14 @@ namespace GameFramework.Entity
     {
         private readonly Dictionary<int, EntityInfo> m_EntityInfos;
         private readonly Dictionary<string, EntityGroup> m_EntityGroups;
-        private readonly List<int> m_EntitiesBeingLoaded;
+        private readonly Dictionary<int, int> m_EntitiesBeingLoaded;
         private readonly HashSet<int> m_EntitiesToReleaseOnLoad;
         private readonly LinkedList<EntityInfo> m_RecycleQueue;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
         private IObjectPoolManager m_ObjectPoolManager;
         private IResourceManager m_ResourceManager;
         private IEntityHelper m_EntityHelper;
+        private int m_Serial;
         private EventHandler<ShowEntitySuccessEventArgs> m_ShowEntitySuccessEventHandler;
         private EventHandler<ShowEntityFailureEventArgs> m_ShowEntityFailureEventHandler;
         private EventHandler<ShowEntityUpdateEventArgs> m_ShowEntityUpdateEventHandler;
@@ -39,13 +40,14 @@ namespace GameFramework.Entity
         {
             m_EntityInfos = new Dictionary<int, EntityInfo>();
             m_EntityGroups = new Dictionary<string, EntityGroup>();
-            m_EntitiesBeingLoaded = new List<int>();
+            m_EntitiesBeingLoaded = new Dictionary<int, int>();
             m_EntitiesToReleaseOnLoad = new HashSet<int>();
             m_RecycleQueue = new LinkedList<EntityInfo>();
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadEntitySuccessCallback, LoadEntityFailureCallback, LoadEntityUpdateCallback, LoadEntityDependencyAssetCallback);
             m_ObjectPoolManager = null;
             m_ResourceManager = null;
             m_EntityHelper = null;
+            m_Serial = 0;
             m_ShowEntitySuccessEventHandler = null;
             m_ShowEntityFailureEventHandler = null;
             m_ShowEntityUpdateEventHandler = null;
@@ -441,7 +443,14 @@ namespace GameFramework.Entity
         /// <returns>所有正在加载实体的编号。</returns>
         public int[] GetAllLoadingEntityIds()
         {
-            return m_EntitiesBeingLoaded.ToArray();
+            int index = 0;
+            int[] entitiesBeingLoaded = new int[m_EntitiesBeingLoaded.Count];
+            foreach (KeyValuePair<int, int> entityBeingLoaded in m_EntitiesBeingLoaded)
+            {
+                entitiesBeingLoaded[index++] = entityBeingLoaded.Key;
+            }
+
+            return entitiesBeingLoaded;
         }
 
         /// <summary>
@@ -451,7 +460,7 @@ namespace GameFramework.Entity
         /// <returns>是否正在加载实体。</returns>
         public bool IsLoadingEntity(int entityId)
         {
-            return m_EntitiesBeingLoaded.Contains(entityId);
+            return m_EntitiesBeingLoaded.ContainsKey(entityId);
         }
 
         /// <summary>
@@ -514,6 +523,11 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException(string.Format("Entity id '{0}' is already exist.", entityId.ToString()));
             }
 
+            if (IsLoadingEntity(entityId))
+            {
+                throw new GameFrameworkException(string.Format("Entity '{0}' is already being loaded.", entityId.ToString()));
+            }
+
             EntityGroup entityGroup = (EntityGroup)GetEntityGroup(entityGroupName);
             if (entityGroup == null)
             {
@@ -523,13 +537,9 @@ namespace GameFramework.Entity
             EntityInstanceObject entityInstanceObject = entityGroup.SpawnEntityInstanceObject(entityAssetName);
             if (entityInstanceObject == null)
             {
-                if (m_EntitiesBeingLoaded.Contains(entityId))
-                {
-                    throw new GameFrameworkException(string.Format("Entity '{0}' is already being loaded.", entityId.ToString()));
-                }
-
-                m_EntitiesBeingLoaded.Add(entityId);
-                m_ResourceManager.LoadAsset(entityAssetName, m_LoadAssetCallbacks, new ShowEntityInfo(entityId, entityGroup, userData));
+                int serialId = m_Serial++;
+                m_EntitiesBeingLoaded.Add(entityId, serialId);
+                m_ResourceManager.LoadAsset(entityAssetName, m_LoadAssetCallbacks, new ShowEntityInfo(serialId, entityId, entityGroup, userData));
                 return;
             }
 
@@ -554,7 +564,14 @@ namespace GameFramework.Entity
         {
             if (IsLoadingEntity(entityId))
             {
-                m_EntitiesToReleaseOnLoad.Add(entityId);
+                int serialId = 0;
+                if (!m_EntitiesBeingLoaded.TryGetValue(entityId, out serialId))
+                {
+                    throw new GameFrameworkException(string.Format("Can not find entity '{0}'.", entityId.ToString()));
+                }
+
+                m_EntitiesToReleaseOnLoad.Add(serialId);
+                m_EntitiesBeingLoaded.Remove(entityId);
                 return;
             }
 
@@ -620,10 +637,12 @@ namespace GameFramework.Entity
         /// </summary>
         public void HideAllLoadingEntities()
         {
-            foreach (int entityId in m_EntitiesBeingLoaded)
+            foreach (KeyValuePair<int, int> entityBeingLoaded in m_EntitiesBeingLoaded)
             {
-                m_EntitiesToReleaseOnLoad.Add(entityId);
+                m_EntitiesToReleaseOnLoad.Add(entityBeingLoaded.Value);
             }
+
+            m_EntitiesBeingLoaded.Clear();
         }
 
         /// <summary>
@@ -1076,10 +1095,10 @@ namespace GameFramework.Entity
             }
 
             m_EntitiesBeingLoaded.Remove(showEntityInfo.EntityId);
-            if (m_EntitiesToReleaseOnLoad.Contains(showEntityInfo.EntityId))
+            if (m_EntitiesToReleaseOnLoad.Contains(showEntityInfo.SerialId))
             {
-                Log.Debug("Release entity '{0}' on loading success.", showEntityInfo.EntityId.ToString());
-                m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.EntityId);
+                Log.Debug("Release entity '{0}' (serial id '{1}') on loading success.", showEntityInfo.EntityId.ToString(), showEntityInfo.SerialId.ToString());
+                m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.SerialId);
                 m_EntityHelper.ReleaseEntity(entityAsset, null);
                 return;
             }
@@ -1099,7 +1118,7 @@ namespace GameFramework.Entity
             }
 
             m_EntitiesBeingLoaded.Remove(showEntityInfo.EntityId);
-            m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.EntityId);
+            m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.SerialId);
             string appendErrorMessage = string.Format("Load entity failure, asset name '{0}', status '{1}', error message '{2}'.", entityAssetName, status.ToString(), errorMessage);
             if (m_ShowEntityFailureEventHandler != null)
             {

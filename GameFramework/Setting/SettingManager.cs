@@ -77,229 +77,329 @@ namespace GameFramework.Setting
         /// <summary>
         /// 检查是否存在指定配置项。
         /// </summary>
-        /// <param name="key">要检查配置项的名称。</param>
+        /// <param name="settingName">要检查配置项的名称。</param>
         /// <returns>指定的配置项是否存在。</returns>
-        public bool HasKey(string key)
+        public bool HasSetting(string settingName)
         {
-            return m_SettingHelper.HasKey(key);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.HasSetting(settingName);
         }
 
         /// <summary>
         /// 移除指定配置项。
         /// </summary>
-        /// <param name="key">要移除配置项的名称。</param>
-        public void RemoveKey(string key)
+        /// <param name="settingName">要移除配置项的名称。</param>
+        public void RemoveSetting(string settingName)
         {
-            m_SettingHelper.RemoveKey(key);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            m_SettingHelper.RemoveSetting(settingName);
         }
 
         /// <summary>
         /// 清空所有配置项。
         /// </summary>
-        public void RemoveAllKeys()
+        public void RemoveAllSettings()
         {
-            m_SettingHelper.RemoveAllKeys();
+            m_SettingHelper.RemoveAllSettings();
         }
 
         /// <summary>
         /// 从指定配置项中读取布尔值。
         /// </summary>
-        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="settingName">要获取配置项的名称。</param>
         /// <returns>读取的布尔值。</returns>
-        public bool GetBool(string key)
+        public bool GetBool(string settingName)
         {
-            return m_SettingHelper.GetBool(key);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.GetBool(settingName);
         }
 
         /// <summary>
         /// 从指定配置项中读取布尔值。
         /// </summary>
-        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="settingName">要获取配置项的名称。</param>
         /// <param name="defaultValue">当指定的配置项不存在时，返回此默认值。</param>
         /// <returns>读取的布尔值。</returns>
-        public bool GetBool(string key, bool defaultValue)
+        public bool GetBool(string settingName, bool defaultValue)
         {
-            return m_SettingHelper.GetBool(key, defaultValue);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.GetBool(settingName, defaultValue);
         }
 
         /// <summary>
         /// 向指定配置项写入布尔值。
         /// </summary>
-        /// <param name="key">要写入配置项的名称。</param>
+        /// <param name="settingName">要写入配置项的名称。</param>
         /// <param name="value">要写入的布尔值。</param>
-        public void SetBool(string key, bool value)
+        public void SetBool(string settingName, bool value)
         {
-            m_SettingHelper.SetBool(key, value);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            m_SettingHelper.SetBool(settingName, value);
         }
 
         /// <summary>
         /// 从指定配置项中读取整数值。
         /// </summary>
-        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="settingName">要获取配置项的名称。</param>
         /// <returns>读取的整数值。</returns>
-        public int GetInt(string key)
+        public int GetInt(string settingName)
         {
-            return m_SettingHelper.GetInt(key);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.GetInt(settingName);
         }
 
         /// <summary>
         /// 从指定配置项中读取整数值。
         /// </summary>
-        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="settingName">要获取配置项的名称。</param>
         /// <param name="defaultValue">当指定的配置项不存在时，返回此默认值。</param>
         /// <returns>读取的整数值。</returns>
-        public int GetInt(string key, int defaultValue)
+        public int GetInt(string settingName, int defaultValue)
         {
-            return m_SettingHelper.GetInt(key, defaultValue);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.GetInt(settingName, defaultValue);
         }
 
         /// <summary>
         /// 向指定配置项写入整数值。
         /// </summary>
-        /// <param name="key">要写入配置项的名称。</param>
+        /// <param name="settingName">要写入配置项的名称。</param>
         /// <param name="value">要写入的整数值。</param>
-        public void SetInt(string key, int value)
+        public void SetInt(string settingName, int value)
         {
-            m_SettingHelper.SetInt(key, value);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            m_SettingHelper.SetInt(settingName, value);
         }
 
         /// <summary>
         /// 从指定配置项中读取浮点数值。
         /// </summary>
-        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="settingName">要获取配置项的名称。</param>
         /// <returns>读取的浮点数值。</returns>
-        public float GetFloat(string key)
+        public float GetFloat(string settingName)
         {
-            return m_SettingHelper.GetFloat(key);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.GetFloat(settingName);
         }
 
         /// <summary>
         /// 从指定配置项中读取浮点数值。
         /// </summary>
-        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="settingName">要获取配置项的名称。</param>
         /// <param name="defaultValue">当指定的配置项不存在时，返回此默认值。</param>
         /// <returns>读取的浮点数值。</returns>
-        public float GetFloat(string key, float defaultValue)
+        public float GetFloat(string settingName, float defaultValue)
         {
-            return m_SettingHelper.GetFloat(key, defaultValue);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.GetFloat(settingName, defaultValue);
         }
 
         /// <summary>
         /// 向指定配置项写入浮点数值。
         /// </summary>
-        /// <param name="key">要写入配置项的名称。</param>
+        /// <param name="settingName">要写入配置项的名称。</param>
         /// <param name="value">要写入的浮点数值。</param>
-        public void SetFloat(string key, float value)
+        public void SetFloat(string settingName, float value)
         {
-            m_SettingHelper.SetFloat(key, value);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            m_SettingHelper.SetFloat(settingName, value);
         }
 
         /// <summary>
         /// 从指定配置项中读取字符串值。
         /// </summary>
-        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="settingName">要获取配置项的名称。</param>
         /// <returns>读取的字符串值。</returns>
-        public string GetString(string key)
+        public string GetString(string settingName)
         {
-            return m_SettingHelper.GetString(key);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.GetString(settingName);
         }
 
         /// <summary>
         /// 从指定配置项中读取字符串值。
         /// </summary>
-        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="settingName">要获取配置项的名称。</param>
         /// <param name="defaultValue">当指定的配置项不存在时，返回此默认值。</param>
         /// <returns>读取的字符串值。</returns>
-        public string GetString(string key, string defaultValue)
+        public string GetString(string settingName, string defaultValue)
         {
-            return m_SettingHelper.GetString(key, defaultValue);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.GetString(settingName, defaultValue);
         }
 
         /// <summary>
         /// 向指定配置项写入字符串值。
         /// </summary>
-        /// <param name="key">要写入配置项的名称。</param>
+        /// <param name="settingName">要写入配置项的名称。</param>
         /// <param name="value">要写入的字符串值。</param>
-        public void SetString(string key, string value)
+        public void SetString(string settingName, string value)
         {
-            m_SettingHelper.SetString(key, value);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            m_SettingHelper.SetString(settingName, value);
         }
 
         /// <summary>
         /// 从指定配置项中读取对象。
         /// </summary>
         /// <typeparam name="T">要读取对象的类型。</typeparam>
-        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="settingName">要获取配置项的名称。</param>
         /// <returns>读取的对象。</returns>
-        public T GetObject<T>(string key)
+        public T GetObject<T>(string settingName)
         {
-            return m_SettingHelper.GetObject<T>(key);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.GetObject<T>(settingName);
         }
 
         /// <summary>
         /// 从指定配置项中读取对象。
         /// </summary>
         /// <param name="objectType">要读取对象的类型。</param>
-        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="settingName">要获取配置项的名称。</param>
         /// <returns></returns>
-        public object GetObject(Type objectType, string key)
+        public object GetObject(Type objectType, string settingName)
         {
             if (objectType == null)
             {
                 throw new GameFrameworkException("Object type is invalid.");
             }
 
-            return m_SettingHelper.GetObject(objectType, key);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.GetObject(objectType, settingName);
         }
 
         /// <summary>
         /// 从指定配置项中读取对象。
         /// </summary>
         /// <typeparam name="T">要读取对象的类型。</typeparam>
-        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="settingName">要获取配置项的名称。</param>
         /// <param name="defaultObj">当指定的配置项不存在时，返回此默认对象。</param>
         /// <returns>读取的对象。</returns>
-        public T GetObject<T>(string key, T defaultObj)
+        public T GetObject<T>(string settingName, T defaultObj)
         {
-            return m_SettingHelper.GetObject(key, defaultObj);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.GetObject(settingName, defaultObj);
         }
 
         /// <summary>
         /// 从指定配置项中读取对象。
         /// </summary>
         /// <param name="objectType">要读取对象的类型。</param>
-        /// <param name="key">要获取配置项的名称。</param>
+        /// <param name="settingName">要获取配置项的名称。</param>
         /// <param name="defaultObj">当指定的配置项不存在时，返回此默认对象。</param>
         /// <returns></returns>
-        public object GetObject(Type objectType, string key, object defaultObj)
+        public object GetObject(Type objectType, string settingName, object defaultObj)
         {
             if (objectType == null)
             {
                 throw new GameFrameworkException("Object type is invalid.");
             }
 
-            return m_SettingHelper.GetObject(objectType, key, defaultObj);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            return m_SettingHelper.GetObject(objectType, settingName, defaultObj);
         }
 
         /// <summary>
         /// 向指定配置项写入对象。
         /// </summary>
         /// <typeparam name="T">要写入对象的类型。</typeparam>
-        /// <param name="key">要写入配置项的名称。</param>
+        /// <param name="settingName">要写入配置项的名称。</param>
         /// <param name="obj">要写入的对象。</param>
-        public void SetObject<T>(string key, T obj)
+        public void SetObject<T>(string settingName, T obj)
         {
-            m_SettingHelper.SetObject(key, obj);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            m_SettingHelper.SetObject(settingName, obj);
         }
 
         /// <summary>
         /// 向指定配置项写入对象。
         /// </summary>
-        /// <param name="key">要写入配置项的名称。</param>
+        /// <param name="settingName">要写入配置项的名称。</param>
         /// <param name="obj">要写入的对象。</param>
-        public void SetObject(string key, object obj)
+        public void SetObject(string settingName, object obj)
         {
-            m_SettingHelper.SetObject(key, obj);
+            if (string.IsNullOrEmpty(settingName))
+            {
+                throw new GameFrameworkException("Setting name is invalid.");
+            }
+
+            m_SettingHelper.SetObject(settingName, obj);
         }
     }
 }
