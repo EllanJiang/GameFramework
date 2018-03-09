@@ -10,7 +10,7 @@ using System;
 namespace GameFramework.Setting
 {
     /// <summary>
-    /// 配置管理器辅助器接口。
+    /// 配置辅助器接口。
     /// </summary>
     public interface ISettingHelper
     {
