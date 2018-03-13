@@ -615,10 +615,6 @@ namespace GameFramework.Network
 
                     throw;
                 }
-                finally
-                {
-                    ReferencePool.Release(packet.GetType(), packet);
-                }
 
                 if (packetBytes == null || packetBytes.Length <= 0)
                 {

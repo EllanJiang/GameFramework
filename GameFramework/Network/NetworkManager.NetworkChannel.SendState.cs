@@ -28,7 +28,7 @@ namespace GameFramework.Network
                 {
                     get
                     {
-                        return m_PacketBytes == null;
+                        return m_PacketBytes == null && m_Offset == 0 && m_Length == 0;
                     }
                 }
 
