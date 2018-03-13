@@ -148,12 +148,12 @@
     <Compile Include="Network\NetworkErrorCode.cs" />
     <Compile Include="Network\NetworkErrorEventArgs.cs" />
     <Compile Include="Network\NetworkManager.cs" />
+    <Compile Include="Network\NetworkManager.NetworkChannel.ConnectState.cs" />
     <Compile Include="Network\NetworkManager.NetworkChannel.cs" />
     <Compile Include="Network\NetworkManager.NetworkChannel.HeartBeatState.cs" />
     <Compile Include="Network\NetworkManager.NetworkChannel.ReceiveState.cs" />
-    <Compile Include="Network\NetworkManager.NetworkChannel.SocketUserData.cs" />
+    <Compile Include="Network\NetworkManager.NetworkChannel.SendState.cs" />
     <Compile Include="Network\NetworkMissHeartBeatEventArgs.cs" />
-    <Compile Include="Network\NetworkSendPacketEventArgs.cs" />
     <Compile Include="Network\NetworkType.cs" />
     <Compile Include="Network\Packet.cs" />
     <Compile Include="ObjectPool\IObjectPool.cs" />

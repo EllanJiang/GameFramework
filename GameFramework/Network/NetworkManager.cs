@@ -19,7 +19,6 @@ namespace GameFramework.Network
 
         private EventHandler<NetworkConnectedEventArgs> m_NetworkConnectedEventHandler;
         private EventHandler<NetworkClosedEventArgs> m_NetworkClosedEventHandler;
-        private EventHandler<NetworkSendPacketEventArgs> m_NetworkSendPacketEventHandler;
         private EventHandler<NetworkMissHeartBeatEventArgs> m_NetworkMissHeartBeatEventHandler;
         private EventHandler<NetworkErrorEventArgs> m_NetworkErrorEventHandler;
         private EventHandler<NetworkCustomErrorEventArgs> m_NetworkCustomErrorEventHandler;
@@ -33,7 +32,6 @@ namespace GameFramework.Network
 
             m_NetworkConnectedEventHandler = null;
             m_NetworkClosedEventHandler = null;
-            m_NetworkSendPacketEventHandler = null;
             m_NetworkMissHeartBeatEventHandler = null;
             m_NetworkErrorEventHandler = null;
             m_NetworkCustomErrorEventHandler = null;
@@ -77,21 +75,6 @@ namespace GameFramework.Network
             remove
             {
                 m_NetworkClosedEventHandler -= value;
-            }
-        }
-
-        /// <summary>
-        /// 发送网络消息包事件。
-        /// </summary>
-        public event EventHandler<NetworkSendPacketEventArgs> NetworkSendPacket
-        {
-            add
-            {
-                m_NetworkSendPacketEventHandler += value;
-            }
-            remove
-            {
-                m_NetworkSendPacketEventHandler -= value;
             }
         }
 
@@ -163,7 +146,6 @@ namespace GameFramework.Network
                 NetworkChannel nc = networkChannel.Value;
                 nc.NetworkChannelConnected -= OnNetworkChannelConnected;
                 nc.NetworkChannelClosed -= OnNetworkChannelClosed;
-                nc.NetworkChannelSended -= OnNetworkChannelSended;
                 nc.NetworkChannelMissHeartBeat -= OnNetworkChannelMissHeartBeat;
                 nc.NetworkChannelError -= OnNetworkChannelError;
                 nc.NetworkChannelCustomError -= OnNetworkChannelCustomError;
@@ -241,7 +223,6 @@ namespace GameFramework.Network
             NetworkChannel networkChannel = new NetworkChannel(name, networkChannelHelper);
             networkChannel.NetworkChannelConnected += OnNetworkChannelConnected;
             networkChannel.NetworkChannelClosed += OnNetworkChannelClosed;
-            networkChannel.NetworkChannelSended += OnNetworkChannelSended;
             networkChannel.NetworkChannelMissHeartBeat += OnNetworkChannelMissHeartBeat;
             networkChannel.NetworkChannelError += OnNetworkChannelError;
             networkChannel.NetworkChannelCustomError += OnNetworkChannelCustomError;
@@ -261,7 +242,6 @@ namespace GameFramework.Network
             {
                 networkChannel.NetworkChannelConnected -= OnNetworkChannelConnected;
                 networkChannel.NetworkChannelClosed -= OnNetworkChannelClosed;
-                networkChannel.NetworkChannelSended -= OnNetworkChannelSended;
                 networkChannel.NetworkChannelMissHeartBeat -= OnNetworkChannelMissHeartBeat;
                 networkChannel.NetworkChannelError -= OnNetworkChannelError;
                 networkChannel.NetworkChannelCustomError -= OnNetworkChannelCustomError;
@@ -290,17 +270,6 @@ namespace GameFramework.Network
                 lock (m_NetworkClosedEventHandler)
                 {
                     m_NetworkClosedEventHandler(this, new NetworkClosedEventArgs(networkChannel));
-                }
-            }
-        }
-
-        private void OnNetworkChannelSended(NetworkChannel networkChannel, int bytesSent, object userData)
-        {
-            if (m_NetworkSendPacketEventHandler != null)
-            {
-                lock (m_NetworkSendPacketEventHandler)
-                {
-                    m_NetworkSendPacketEventHandler(this, new NetworkSendPacketEventArgs(networkChannel, bytesSent, userData));
                 }
             }
         }

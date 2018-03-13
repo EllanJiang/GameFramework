@@ -33,11 +33,6 @@ namespace GameFramework.Network
         event EventHandler<NetworkClosedEventArgs> NetworkClosed;
 
         /// <summary>
-        /// 发送网络消息包事件。
-        /// </summary>
-        event EventHandler<NetworkSendPacketEventArgs> NetworkSendPacket;
-
-        /// <summary>
         /// 网络心跳包丢失事件。
         /// </summary>
         event EventHandler<NetworkMissHeartBeatEventArgs> NetworkMissHeartBeat;
