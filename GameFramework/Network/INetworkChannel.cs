@@ -5,6 +5,7 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
 using System.Net;
 
 namespace GameFramework.Network
@@ -127,6 +128,12 @@ namespace GameFramework.Network
         /// </summary>
         /// <param name="handler">要注册的网络消息包处理函数。</param>
         void RegisterHandler(IPacketHandler handler);
+
+        /// <summary>
+        /// 设置默认事件处理函数。
+        /// </summary>
+        /// <param name="handler">要设置的默认事件处理函数。</param>
+        void SetDefaultHandler(EventHandler<Packet> handler);
 
         /// <summary>
         /// 连接到远程主机。

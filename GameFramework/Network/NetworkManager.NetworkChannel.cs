@@ -365,6 +365,15 @@ namespace GameFramework.Network
             }
 
             /// <summary>
+            /// 设置默认事件处理函数。
+            /// </summary>
+            /// <param name="handler">要设置的默认事件处理函数。</param>
+            public void SetDefaultHandler(EventHandler<Packet> handler)
+            {
+                m_ReceivePacketPool.SetDefaultHandler(handler);
+            }
+
+            /// <summary>
             /// 连接到远程主机。
             /// </summary>
             /// <param name="ipAddress">远程主机的 IP 地址。</param>
