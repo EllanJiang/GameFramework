@@ -209,8 +209,9 @@ namespace GameFramework
         /// <param name="e">事件参数。</param>
         private void HandleEvent(object sender, T e)
         {
+            int eventId = e.Id;
             EventHandler<T> handlers = null;
-            if (m_EventHandlers.TryGetValue(e.Id, out handlers))
+            if (m_EventHandlers.TryGetValue(eventId, out handlers))
             {
                 if (handlers != null)
                 {
@@ -227,7 +228,7 @@ namespace GameFramework
             ReferencePool.Release(e.GetType(), e);
             if (handlers == null && (m_EventPoolMode & EventPoolMode.AllowNoHandler) == 0)
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not allow no handler.", e.Id.ToString()));
+                throw new GameFrameworkException(string.Format("Event '{0}' not allow no handler.", eventId.ToString()));
             }
         }
     }
