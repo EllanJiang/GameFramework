@@ -160,18 +160,45 @@ namespace GameFramework.Debugger
                 {
                     return InternalGetDebuggerWindow(path);
                 }
-                else
-                {
-                    string debuggerWindowGroupName = path.Substring(0, pos);
-                    string leftPath = path.Substring(pos + 1);
-                    DebuggerWindowGroup debuggerWindowGroup = (DebuggerWindowGroup)InternalGetDebuggerWindow(debuggerWindowGroupName);
-                    if (debuggerWindowGroup == null)
-                    {
-                        return null;
-                    }
 
-                    return debuggerWindowGroup.GetDebuggerWindow(leftPath);
+                string debuggerWindowGroupName = path.Substring(0, pos);
+                string leftPath = path.Substring(pos + 1);
+                DebuggerWindowGroup debuggerWindowGroup = (DebuggerWindowGroup)InternalGetDebuggerWindow(debuggerWindowGroupName);
+                if (debuggerWindowGroup == null)
+                {
+                    return null;
                 }
+
+                return debuggerWindowGroup.GetDebuggerWindow(leftPath);
+            }
+
+            /// <summary>
+            /// 选中调试窗口。
+            /// </summary>
+            /// <param name="path">调试窗口路径。</param>
+            /// <returns>是否成功选中调试窗口。</returns>
+            public bool SelectDebuggerWindow(string path)
+            {
+                if (string.IsNullOrEmpty(path))
+                {
+                    return false;
+                }
+
+                int pos = path.IndexOf('/');
+                if (pos < 0 || pos >= path.Length - 1)
+                {
+                    return InternalSelectDebuggerWindow(path);
+                }
+
+                string debuggerWindowGroupName = path.Substring(0, pos);
+                string leftPath = path.Substring(pos + 1);
+                DebuggerWindowGroup debuggerWindowGroup = (DebuggerWindowGroup)InternalGetDebuggerWindow(debuggerWindowGroupName);
+                if (debuggerWindowGroup == null || !InternalSelectDebuggerWindow(debuggerWindowGroupName))
+                {
+                    return false;
+                }
+
+                return debuggerWindowGroup.SelectDebuggerWindow(leftPath);
             }
 
             /// <summary>
@@ -229,6 +256,20 @@ namespace GameFramework.Debugger
                 }
 
                 return null;
+            }
+
+            private bool InternalSelectDebuggerWindow(string name)
+            {
+                for (int i = 0; i < m_DebuggerWindows.Count; i++)
+                {
+                    if (m_DebuggerWindows[i].Key == name)
+                    {
+                        m_SelectedIndex = i;
+                        return true;
+                    }
+                }
+
+                return false;
             }
         }
     }

@@ -43,5 +43,12 @@ namespace GameFramework.Debugger
         /// <param name="path">调试窗口路径。</param>
         /// <returns>要获取的调试窗口。</returns>
         IDebuggerWindow GetDebuggerWindow(string path);
+
+        /// <summary>
+        /// 选中调试窗口。
+        /// </summary>
+        /// <param name="path">调试窗口路径。</param>
+        /// <returns>是否成功选中调试窗口。</returns>
+        bool SelectDebuggerWindow(string path);
     }
 }
