@@ -958,48 +958,6 @@ namespace GameFramework.Entity
         }
 
         /// <summary>
-        /// 设置实体实例是否被加锁。
-        /// </summary>
-        /// <param name="entity">实体。</param>
-        /// <param name="locked">实体实例是否被加锁。</param>
-        public void SetInstanceLocked(IEntity entity, bool locked)
-        {
-            if (entity == null)
-            {
-                throw new GameFrameworkException("Entity is invalid.");
-            }
-
-            EntityGroup entityGroup = (EntityGroup)entity.EntityGroup;
-            if (entityGroup == null)
-            {
-                throw new GameFrameworkException("Entity group is invalid.");
-            }
-
-            entityGroup.SetInstanceLocked(entity, locked);
-        }
-
-        /// <summary>
-        /// 设置实体实例的优先级。
-        /// </summary>
-        /// <param name="entity">实体。</param>
-        /// <param name="priority">实体实例优先级。</param>
-        public void SetInstancePriority(IEntity entity, int priority)
-        {
-            if (entity == null)
-            {
-                throw new GameFrameworkException("Entity is invalid.");
-            }
-
-            EntityGroup entityGroup = (EntityGroup)entity.EntityGroup;
-            if (entityGroup == null)
-            {
-                throw new GameFrameworkException("Entity group is invalid.");
-            }
-
-            entityGroup.SetInstancePriority(entity, priority);
-        }
-
-        /// <summary>
         /// 获取实体信息。
         /// </summary>
         /// <param name="entityId">实体编号。</param>

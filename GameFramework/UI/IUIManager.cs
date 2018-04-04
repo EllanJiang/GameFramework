@@ -300,17 +300,17 @@ namespace GameFramework.UI
         void RefocusUIForm(IUIForm uiForm, object userData);
 
         /// <summary>
-        /// 设置界面是否被加锁。
+        /// 设置界面实例是否被加锁。
         /// </summary>
-        /// <param name="uiForm">要设置是否被加锁的界面。</param>
-        /// <param name="locked">界面是否被加锁。</param>
-        void SetUIFormLocked(IUIForm uiForm, bool locked);
+        /// <param name="uiFormInstance">要设置是否被加锁的界面实例。</param>
+        /// <param name="locked">界面实例是否被加锁。</param>
+        void SetUIFormInstanceLocked(object uiFormInstance, bool locked);
 
         /// <summary>
-        /// 设置界面的优先级。
+        /// 设置界面实例的优先级。
         /// </summary>
-        /// <param name="uiForm">要设置优先级的界面。</param>
-        /// <param name="priority">界面优先级。</param>
-        void SetUIFormPriority(IUIForm uiForm, int priority);
+        /// <param name="uiFormInstance">要设置优先级的界面实例。</param>
+        /// <param name="priority">界面实例优先级。</param>
+        void SetUIFormInstancePriority(object uiFormInstance, int priority);
     }
 }

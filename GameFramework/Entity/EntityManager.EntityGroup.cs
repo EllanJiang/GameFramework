@@ -314,14 +314,24 @@ namespace GameFramework.Entity
                 m_InstancePool.Unspawn(entity.Handle);
             }
 
-            public void SetInstanceLocked(IEntity entity, bool locked)
+            public void SetEntityInstanceLocked(object entityInstance, bool locked)
             {
-                m_InstancePool.SetLocked(entity.Handle, locked);
+                if (entityInstance == null)
+                {
+                    throw new GameFrameworkException("Entity instance is invalid.");
+                }
+
+                m_InstancePool.SetLocked(entityInstance, locked);
             }
 
-            public void SetInstancePriority(IEntity entity, int priority)
+            public void SetEntityInstancePriority(object entityInstance, int priority)
             {
-                m_InstancePool.SetPriority(entity, priority);
+                if (entityInstance == null)
+                {
+                    throw new GameFrameworkException("Entity instance is invalid.");
+                }
+
+                m_InstancePool.SetPriority(entityInstance, priority);
             }
         }
     }

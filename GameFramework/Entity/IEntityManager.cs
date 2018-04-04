@@ -366,19 +366,5 @@ namespace GameFramework.Entity
         /// <param name="parentEntity">被解除的父实体。</param>
         /// <param name="userData">用户自定义数据。</param>
         void DetachChildEntities(IEntity parentEntity, object userData);
-
-        /// <summary>
-        /// 设置实体实例是否被加锁。
-        /// </summary>
-        /// <param name="entity">实体。</param>
-        /// <param name="locked">实体实例是否被加锁。</param>
-        void SetInstanceLocked(IEntity entity, bool locked);
-
-        /// <summary>
-        /// 设置实体实例的优先级。
-        /// </summary>
-        /// <param name="entity">实体。</param>
-        /// <param name="priority">实体实例优先级。</param>
-        void SetInstancePriority(IEntity entity, int priority);
     }
 }
