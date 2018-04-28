@@ -18,6 +18,7 @@ namespace GameFramework.UI
         {
             private readonly string m_Name;
             private int m_Depth;
+            private bool m_Pause;
             private readonly IUIGroupHelper m_UIGroupHelper;
             private readonly LinkedList<UIFormInfo> m_UIFormInfos;
 
@@ -40,6 +41,7 @@ namespace GameFramework.UI
                 }
 
                 m_Name = name;
+                m_Pause = false;
                 m_UIGroupHelper = uiGroupHelper;
                 m_UIFormInfos = new LinkedList<UIFormInfo>();
                 Depth = depth;
@@ -74,6 +76,27 @@ namespace GameFramework.UI
 
                     m_Depth = value;
                     m_UIGroupHelper.SetDepth(m_Depth);
+                    Refresh();
+                }
+            }
+
+            /// <summary>
+            /// 获取或设置界面组是否暂停。
+            /// </summary>
+            public bool Pause
+            {
+                get
+                {
+                    return m_Pause;
+                }
+                set
+                {
+                    if (m_Pause == value)
+                    {
+                        return;
+                    }
+
+                    m_Pause = value;
                     Refresh();
                 }
             }
@@ -313,7 +336,7 @@ namespace GameFramework.UI
             public void Refresh()
             {
                 LinkedListNode<UIFormInfo> current = m_UIFormInfos.First;
-                bool pause = false;
+                bool pause = m_Pause;
                 bool cover = false;
                 int depth = UIFormCount;
                 while (current != null)
