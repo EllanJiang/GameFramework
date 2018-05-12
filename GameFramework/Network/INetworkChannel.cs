@@ -5,6 +5,7 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
 using System.Net;
 
 namespace GameFramework.Network
@@ -71,6 +72,22 @@ namespace GameFramework.Network
         }
 
         /// <summary>
+        /// 要发送的消息包数量。
+        /// </summary>
+        int SendPacketCount
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 已接收未处理的消息包数量。
+        /// </summary>
+        int ReceivePacketCount
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取或设置当收到消息包时是否重置心跳流逝时间。
         /// </summary>
         bool ResetHeartBeatElapseSecondsWhenReceivePacket
@@ -113,6 +130,12 @@ namespace GameFramework.Network
         void RegisterHandler(IPacketHandler handler);
 
         /// <summary>
+        /// 设置默认事件处理函数。
+        /// </summary>
+        /// <param name="handler">要设置的默认事件处理函数。</param>
+        void SetDefaultHandler(EventHandler<Packet> handler);
+
+        /// <summary>
         /// 连接到远程主机。
         /// </summary>
         /// <param name="ipAddress">远程主机的 IP 地址。</param>
@@ -135,46 +158,8 @@ namespace GameFramework.Network
         /// <summary>
         /// 向远程主机发送消息包。
         /// </summary>
-        /// <param name="buffer">消息包流。</param>
-        void Send(byte[] buffer);
-
-        /// <summary>
-        /// 向远程主机发送消息包。
-        /// </summary>
-        /// <param name="buffer">消息包流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        void Send(byte[] buffer, object userData);
-
-        /// <summary>
-        /// 向远程主机发送消息包。
-        /// </summary>
-        /// <param name="buffer">消息包流。</param>
-        /// <param name="offset">要发送消息包的偏移。</param>
-        /// <param name="size">要发送消息包的长度。</param>
-        void Send(byte[] buffer, int offset, int size);
-
-        /// <summary>
-        /// 向远程主机发送消息包。
-        /// </summary>
-        /// <param name="buffer">消息包流。</param>
-        /// <param name="offset">要发送消息包的偏移。</param>
-        /// <param name="size">要发送消息包的长度。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        void Send(byte[] buffer, int offset, int size, object userData);
-
-        /// <summary>
-        /// 向远程主机发送消息包。
-        /// </summary>
         /// <typeparam name="T">消息包类型。</typeparam>
         /// <param name="packet">要发送的消息包。</param>
         void Send<T>(T packet) where T : Packet;
-
-        /// <summary>
-        /// 向远程主机发送消息包。
-        /// </summary>
-        /// <typeparam name="T">消息包类型。</typeparam>
-        /// <param name="packet">要发送的消息包。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        void Send<T>(T packet, object userData) where T : Packet;
     }
 }

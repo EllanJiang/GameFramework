@@ -117,5 +117,15 @@ namespace GameFramework.Debugger
         {
             return m_DebuggerWindowRoot.GetDebuggerWindow(path);
         }
+
+        /// <summary>
+        /// 选中调试窗口。
+        /// </summary>
+        /// <param name="path">调试窗口路径。</param>
+        /// <returns>是否成功选中调试窗口。</returns>
+        public bool SelectDebuggerWindow(string path)
+        {
+            return m_DebuggerWindowRoot.SelectDebuggerWindow(path);
+        }
     }
 }

@@ -15,9 +15,9 @@ namespace GameFramework.Setting
     public interface ISettingManager
     {
         /// <summary>
-        /// 设置配置管理器辅助器。
+        /// 设置配置辅助器。
         /// </summary>
-        /// <param name="settingHelper">配置管理器辅助器。</param>
+        /// <param name="settingHelper">配置辅助器。</param>
         void SetSettingHelper(ISettingHelper settingHelper);
 
         /// <summary>

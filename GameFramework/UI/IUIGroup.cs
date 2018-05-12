@@ -30,6 +30,15 @@ namespace GameFramework.UI
         }
 
         /// <summary>
+        /// 获取或设置界面组是否暂停。
+        /// </summary>
+        bool Pause
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 获取界面组中界面数量。
         /// </summary>
         int UIFormCount

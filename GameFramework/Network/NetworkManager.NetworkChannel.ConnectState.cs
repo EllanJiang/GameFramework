@@ -13,12 +13,12 @@ namespace GameFramework.Network
     {
         private partial class NetworkChannel
         {
-            private sealed class SocketUserData
+            private sealed class ConnectState
             {
                 private readonly Socket m_Socket;
                 private readonly object m_UserData;
 
-                public SocketUserData(Socket socket, object userData)
+                public ConnectState(Socket socket, object userData)
                 {
                     m_Socket = socket;
                     m_UserData = userData;

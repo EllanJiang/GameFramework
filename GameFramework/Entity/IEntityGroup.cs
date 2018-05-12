@@ -112,5 +112,19 @@ namespace GameFramework.Entity
         /// </summary>
         /// <returns>实体组中的所有实体。</returns>
         IEntity[] GetAllEntities();
+
+        /// <summary>
+        /// 设置实体实例是否被加锁。
+        /// </summary>
+        /// <param name="entityInstance">实体实例。</param>
+        /// <param name="locked">实体实例是否被加锁。</param>
+        void SetEntityInstanceLocked(object entityInstance, bool locked);
+
+        /// <summary>
+        /// 设置实体实例的优先级。
+        /// </summary>
+        /// <param name="entityInstance">实体实例。</param>
+        /// <param name="priority">实体实例优先级。</param>
+        void SetEntityInstancePriority(object entityInstance, int priority);
     }
 }

@@ -19,6 +19,7 @@ namespace GameFramework
         private readonly Dictionary<int, EventHandler<T>> m_EventHandlers;
         private readonly Queue<Event> m_Events;
         private readonly EventPoolMode m_EventPoolMode;
+        private EventHandler<T> m_DefaultHandler;
 
         /// <summary>
         /// 初始化事件池的新实例。
@@ -29,6 +30,7 @@ namespace GameFramework
             m_EventHandlers = new Dictionary<int, EventHandler<T>>();
             m_Events = new Queue<Event>();
             m_EventPoolMode = mode;
+            m_DefaultHandler = null;
         }
 
         /// <summary>
@@ -68,6 +70,7 @@ namespace GameFramework
         {
             Clear();
             m_EventHandlers.Clear();
+            m_DefaultHandler = null;
         }
 
         /// <summary>
@@ -167,6 +170,15 @@ namespace GameFramework
         }
 
         /// <summary>
+        /// 设置默认事件处理函数。
+        /// </summary>
+        /// <param name="handler">要设置的默认事件处理函数。</param>
+        public void SetDefaultHandler(EventHandler<T> handler)
+        {
+            m_DefaultHandler = handler;
+        }
+
+        /// <summary>
         /// 抛出事件，这个操作是线程安全的，即使不在主线程中抛出，也可保证在主线程中回调事件处理函数，但事件会在抛出后的下一帧分发。
         /// </summary>
         /// <param name="sender">事件源。</param>
@@ -197,8 +209,9 @@ namespace GameFramework
         /// <param name="e">事件参数。</param>
         private void HandleEvent(object sender, T e)
         {
+            int eventId = e.Id;
             EventHandler<T> handlers = null;
-            if (m_EventHandlers.TryGetValue(e.Id, out handlers))
+            if (m_EventHandlers.TryGetValue(eventId, out handlers))
             {
                 if (handlers != null)
                 {
@@ -206,10 +219,16 @@ namespace GameFramework
                 }
             }
 
+            if (handlers == null && m_DefaultHandler != null)
+            {
+                handlers = m_DefaultHandler;
+                handlers(sender, e);
+            }
+
             ReferencePool.Release(e.GetType(), e);
             if (handlers == null && (m_EventPoolMode & EventPoolMode.AllowNoHandler) == 0)
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not allow no handler.", e.Id.ToString()));
+                throw new GameFrameworkException(string.Format("Event '{0}' not allow no handler.", eventId.ToString()));
             }
         }
     }

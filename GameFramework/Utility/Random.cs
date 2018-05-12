@@ -14,7 +14,16 @@ namespace GameFramework
         /// </summary>
         public static class Random
         {
-            private static readonly System.Random s_Random = new System.Random();
+            private static System.Random s_Random = new System.Random();
+
+            /// <summary>
+            /// 设置随机数种子。
+            /// </summary>
+            /// <param name="seed">随机数种子。</param>
+            public static void SetSeed(int seed)
+            {
+                s_Random = new System.Random(seed);
+            }
 
             /// <summary>
             /// 返回非负随机数。
