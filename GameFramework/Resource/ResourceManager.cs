@@ -928,6 +928,21 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 检查资源是否存在。
+        /// </summary>
+        /// <param name="assetName">要检查的资源。</param>
+        /// <returns>资源是否存在。</returns>
+        public bool ExistAsset(string assetName)
+        {
+            if (string.IsNullOrEmpty(assetName))
+            {
+                throw new GameFrameworkException("Asset name is invalid.");
+            }
+
+            return m_ResourceLoader.ExistAsset(assetName);
+        }
+
+        /// <summary>
         /// 异步加载资源。
         /// </summary>
         /// <param name="assetName">要加载资源的名称。</param>

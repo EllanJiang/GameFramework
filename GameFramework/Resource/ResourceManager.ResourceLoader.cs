@@ -249,6 +249,21 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
+            /// 检查资源是否存在。
+            /// </summary>
+            /// <param name="assetName">要检查的资源。</param>
+            /// <returns>资源是否存在。</returns>
+            public bool ExistAsset(string assetName)
+            {
+                if (string.IsNullOrEmpty(assetName))
+                {
+                    return false;
+                }
+
+                return m_ResourceManager.GetAssetInfo(assetName).HasValue;
+            }
+
+            /// <summary>
             /// 异步加载资源。
             /// </summary>
             /// <param name="assetName">要加载资源的名称。</param>
@@ -437,13 +452,12 @@ namespace GameFramework.Resource
                 resourceChildName = assetName.Substring(childNamePosition + 1);
 
                 AssetDependencyInfo? assetDependencyInfo = m_ResourceManager.GetAssetDependencyInfo(assetName);
-                if (!assetDependencyInfo.HasValue)
+                if (assetDependencyInfo.HasValue)
                 {
-                    return true;
+                    dependencyAssetNames = assetDependencyInfo.Value.GetDependencyAssetNames();
+                    scatteredDependencyAssetNames = assetDependencyInfo.Value.GetScatteredDependencyAssetNames();
                 }
 
-                dependencyAssetNames = assetDependencyInfo.Value.GetDependencyAssetNames();
-                scatteredDependencyAssetNames = assetDependencyInfo.Value.GetScatteredDependencyAssetNames();
                 return true;
             }
 
