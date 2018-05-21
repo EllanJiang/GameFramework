@@ -15,12 +15,12 @@ namespace GameFramework.Resource
         /// <summary>
         /// 读取资源包。
         /// </summary>
-        ReadBundle,
+        ReadResource,
 
         /// <summary>
         /// 加载资源包。
         /// </summary>
-        LoadBundle,
+        LoadResource,
 
         /// <summary>
         /// 加载资源。

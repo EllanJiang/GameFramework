@@ -22,24 +22,24 @@ namespace GameFramework.Resource
                 private bool m_Done;
                 private readonly string m_AssetName;
                 private readonly ResourceInfo m_ResourceInfo;
+                private readonly string m_ResourceChildName;
                 private readonly string[] m_DependencyAssetNames;
                 private readonly string[] m_ScatteredDependencyAssetNames;
-                private readonly string m_ResourceChildName;
                 private readonly object m_UserData;
                 private readonly List<object> m_DependencyAssets;
                 private object m_Resource;
                 private DateTime m_StartTime;
                 private int m_TotalDependencyAssetCount;
 
-                public LoadResourceTaskBase(string assetName, ResourceInfo resourceInfo, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, string resourceChildName, object userData)
+                public LoadResourceTaskBase(string assetName, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, object userData)
                 {
                     m_SerialId = s_Serial++;
                     m_Done = false;
                     m_AssetName = assetName;
                     m_ResourceInfo = resourceInfo;
+                    m_ResourceChildName = resourceChildName;
                     m_DependencyAssetNames = dependencyAssetNames;
                     m_ScatteredDependencyAssetNames = scatteredDependencyAssetNames;
-                    m_ResourceChildName = resourceChildName;
                     m_UserData = userData;
                     m_DependencyAssets = new List<object>();
                     m_Resource = null;
@@ -83,19 +83,19 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public object Resource
-                {
-                    get
-                    {
-                        return m_Resource;
-                    }
-                }
-
                 public string ResourceChildName
                 {
                     get
                     {
                         return m_ResourceChildName;
+                    }
+                }
+
+                public object Resource
+                {
+                    get
+                    {
+                        return m_Resource;
                     }
                 }
 
