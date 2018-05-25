@@ -725,6 +725,11 @@ namespace GameFramework.Entity
         /// <param name="userData">用户自定义数据。</param>
         public void AttachEntity(int childEntityId, int parentEntityId, object userData)
         {
+            if (childEntityId == parentEntityId)
+            {
+                throw new GameFrameworkException(string.Format("Can not attach entity when child entity id equals to parent entity id '{0}'.", parentEntityId.ToString()));
+            }
+
             EntityInfo childEntityInfo = GetEntityInfo(childEntityId);
             if (childEntityInfo == null)
             {
