@@ -471,7 +471,7 @@ namespace GameFramework.ObjectPool
                 LinkedListNode<Object<T>> current = m_Objects.First;
                 while (current != null)
                 {
-                    if (current.Value.IsInUse || current.Value.Locked)
+                    if (current.Value.IsInUse || current.Value.Locked || !current.Value.CustomCanReleaseFlag)
                     {
                         current = current.Next;
                         continue;
@@ -533,7 +533,7 @@ namespace GameFramework.ObjectPool
 
                 foreach (Object<T> obj in m_Objects)
                 {
-                    if (obj.IsInUse || obj.Locked)
+                    if (obj.IsInUse || obj.Locked || !obj.CustomCanReleaseFlag)
                     {
                         continue;
                     }

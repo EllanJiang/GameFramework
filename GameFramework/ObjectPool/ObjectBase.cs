@@ -139,6 +139,17 @@ namespace GameFramework.ObjectPool
         }
 
         /// <summary>
+        /// 获取自定义释放检查标记。
+        /// </summary>
+        public virtual bool CustomCanReleaseFlag
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
         /// 获取对象上次使用时间。
         /// </summary>
         public DateTime LastUseTime

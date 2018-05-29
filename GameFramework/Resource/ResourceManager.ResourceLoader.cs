@@ -19,6 +19,7 @@ namespace GameFramework.Resource
         {
             private readonly ResourceManager m_ResourceManager;
             private readonly TaskPool<LoadResourceTaskBase> m_TaskPool;
+            private readonly Dictionary<object, int> m_DependencyCount;
             private readonly Dictionary<string, object> m_SceneToAssetMap;
             private IObjectPool<AssetObject> m_AssetPool;
             private IObjectPool<ResourceObject> m_ResourcePool;
@@ -31,6 +32,7 @@ namespace GameFramework.Resource
             {
                 m_ResourceManager = resourceManager;
                 m_TaskPool = new TaskPool<LoadResourceTaskBase>();
+                m_DependencyCount = new Dictionary<object, int>();
                 m_SceneToAssetMap = new Dictionary<string, object>();
                 m_AssetPool = null;
                 m_ResourcePool = null;
@@ -216,6 +218,7 @@ namespace GameFramework.Resource
             public void Shutdown()
             {
                 m_TaskPool.Shutdown();
+                m_DependencyCount.Clear();
                 m_SceneToAssetMap.Clear();
             }
 

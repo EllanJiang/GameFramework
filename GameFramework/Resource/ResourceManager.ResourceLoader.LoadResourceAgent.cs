@@ -420,7 +420,7 @@ namespace GameFramework.Resource
 
                     if (assetObject == null)
                     {
-                        assetObject = new AssetObject(m_Task.AssetName, e.Asset, m_Task.GetDependencyAssets(), m_Task.Resource, m_AssetPool, m_ResourcePool, m_ResourceHelper);
+                        assetObject = new AssetObject(m_Task.AssetName, e.Asset, m_Task.GetDependencyAssets(), m_Task.Resource, m_AssetPool, m_ResourcePool, m_ResourceHelper, m_ResourceLoader.m_DependencyCount);
                         m_AssetPool.Register(assetObject, true);
                     }
 
