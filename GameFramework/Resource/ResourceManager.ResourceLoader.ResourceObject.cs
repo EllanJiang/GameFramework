@@ -31,7 +31,7 @@ namespace GameFramework.Resource
                     m_ResourceHelper = resourceHelper;
                 }
 
-                protected internal override void Release()
+                protected internal override void Release(bool isShutdown)
                 {
                     m_ResourceHelper.Release(Target);
                 }

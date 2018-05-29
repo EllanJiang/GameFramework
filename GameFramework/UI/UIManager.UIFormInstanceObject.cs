@@ -36,7 +36,7 @@ namespace GameFramework.UI
                 m_UIFormHelper = uiFormHelper;
             }
 
-            protected internal override void Release()
+            protected internal override void Release(bool isShutdown)
             {
                 m_UIFormHelper.ReleaseUIForm(m_UIFormAsset, Target);
             }

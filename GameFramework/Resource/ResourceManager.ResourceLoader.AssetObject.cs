@@ -99,24 +99,27 @@ namespace GameFramework.Resource
                     }
                 }
 
-                protected internal override void Release()
+                protected internal override void Release(bool isShutdown)
                 {
-                    int targetReferenceCount = 0;
-                    if (m_DependencyCount.TryGetValue(Target, out targetReferenceCount) && targetReferenceCount > 0)
+                    if (!isShutdown)
                     {
-                        throw new GameFrameworkException(string.Format("Target '{0}' dependency asset reference count is '{1}' larger than 0.", Name, targetReferenceCount.ToString()));
-                    }
-
-                    foreach (object dependencyAsset in m_DependencyAssets)
-                    {
-                        int referenceCount = 0;
-                        if (m_DependencyCount.TryGetValue(dependencyAsset, out referenceCount))
+                        int targetReferenceCount = 0;
+                        if (m_DependencyCount.TryGetValue(Target, out targetReferenceCount) && targetReferenceCount > 0)
                         {
-                            m_DependencyCount[dependencyAsset] = referenceCount - 1;
+                            throw new GameFrameworkException(string.Format("Target '{0}' dependency asset reference count is '{1}' larger than 0.", Name, targetReferenceCount.ToString()));
                         }
-                        else
+
+                        foreach (object dependencyAsset in m_DependencyAssets)
                         {
-                            throw new GameFrameworkException(string.Format("Dependency asset reference count is invalid, owner is '{0}'.", Name));
+                            int referenceCount = 0;
+                            if (m_DependencyCount.TryGetValue(dependencyAsset, out referenceCount))
+                            {
+                                m_DependencyCount[dependencyAsset] = referenceCount - 1;
+                            }
+                            else
+                            {
+                                throw new GameFrameworkException(string.Format("Target '{0}' dependency asset reference count is invalid.", Name));
+                            }
                         }
                     }
 

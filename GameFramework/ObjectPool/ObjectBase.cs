@@ -183,6 +183,7 @@ namespace GameFramework.ObjectPool
         /// <summary>
         /// 释放对象。
         /// </summary>
-        protected internal abstract void Release();
+        /// <param name="isShutdown">是否是关闭对象池时触发。</param>
+        protected internal abstract void Release(bool isShutdown);
     }
 }
