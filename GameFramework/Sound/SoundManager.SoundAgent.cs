@@ -254,6 +254,21 @@ namespace GameFramework.Sound
             }
 
             /// <summary>
+            /// 获取或设置声音多普勒等级。
+            /// </summary>
+            public float DopplerLevel
+            {
+                get
+                {
+                    return m_SoundAgentHelper.DopplerLevel;
+                }
+                set
+                {
+                    m_SoundAgentHelper.DopplerLevel = value;
+                }
+            }
+
+            /// <summary>
             /// 获取声音代理辅助器。
             /// </summary>
             public ISoundAgentHelper Helper
@@ -364,6 +379,7 @@ namespace GameFramework.Sound
                 PanStereo = Constant.DefaultPanStereo;
                 SpatialBlend = Constant.DefaultSpatialBlend;
                 MaxDistance = Constant.DefaultMaxDistance;
+                DopplerLevel = Constant.DefaultDopplerLevel;
                 m_SoundAgentHelper.Reset();
             }
 

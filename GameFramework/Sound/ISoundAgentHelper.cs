@@ -104,6 +104,15 @@ namespace GameFramework.Sound
         }
 
         /// <summary>
+        /// 获取或设置声音多普勒等级。
+        /// </summary>
+        float DopplerLevel
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 重置声音代理事件。
         /// </summary>
         event EventHandler<ResetSoundAgentEventArgs> ResetSoundAgent;

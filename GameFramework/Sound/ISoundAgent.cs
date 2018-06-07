@@ -134,6 +134,15 @@ namespace GameFramework.Sound
         }
 
         /// <summary>
+        /// 获取或设置声音多普勒等级。
+        /// </summary>
+        float DopplerLevel
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 获取声音代理辅助器。
         /// </summary>
         ISoundAgentHelper Helper
