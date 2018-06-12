@@ -486,7 +486,19 @@ namespace GameFramework.Entity
         /// <param name="entityGroupName">实体组名称。</param>
         public void ShowEntity(int entityId, string entityAssetName, string entityGroupName)
         {
-            ShowEntity(entityId, entityAssetName, entityGroupName, null);
+            ShowEntity(entityId, entityAssetName, entityGroupName, Constant.DefaultPriority, null);
+        }
+
+        /// <summary>
+        /// 显示实体。
+        /// </summary>
+        /// <param name="entityId">实体编号。</param>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <param name="entityGroupName">实体组名称。</param>
+        /// <param name="priority">加载实体资源的优先级。</param>
+        public void ShowEntity(int entityId, string entityAssetName, string entityGroupName, int priority)
+        {
+            ShowEntity(entityId, entityAssetName, entityGroupName, priority, null);
         }
 
         /// <summary>
@@ -497,6 +509,19 @@ namespace GameFramework.Entity
         /// <param name="entityGroupName">实体组名称。</param>
         /// <param name="userData">用户自定义数据。</param>
         public void ShowEntity(int entityId, string entityAssetName, string entityGroupName, object userData)
+        {
+            ShowEntity(entityId, entityAssetName, entityGroupName, Constant.DefaultPriority, userData);
+        }
+
+        /// <summary>
+        /// 显示实体。
+        /// </summary>
+        /// <param name="entityId">实体编号。</param>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <param name="entityGroupName">实体组名称。</param>
+        /// <param name="priority">加载实体资源的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void ShowEntity(int entityId, string entityAssetName, string entityGroupName, int priority, object userData)
         {
             if (m_ResourceManager == null)
             {
@@ -539,7 +564,7 @@ namespace GameFramework.Entity
             {
                 int serialId = m_Serial++;
                 m_EntitiesBeingLoaded.Add(entityId, serialId);
-                m_ResourceManager.LoadAsset(entityAssetName, m_LoadAssetCallbacks, new ShowEntityInfo(serialId, entityId, entityGroup, userData));
+                m_ResourceManager.LoadAsset(entityAssetName, priority, m_LoadAssetCallbacks, new ShowEntityInfo(serialId, entityId, entityGroup, userData));
                 return;
             }
 

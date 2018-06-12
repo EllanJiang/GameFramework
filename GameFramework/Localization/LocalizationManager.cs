@@ -201,7 +201,17 @@ namespace GameFramework.Localization
         /// <param name="dictionaryAssetName">字典资源名称。</param>
         public void LoadDictionary(string dictionaryAssetName)
         {
-            LoadDictionary(dictionaryAssetName, null);
+            LoadDictionary(dictionaryAssetName, Constant.DefaultPriority, null);
+        }
+
+        /// <summary>
+        /// 加载字典。
+        /// </summary>
+        /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="priority">加载字典资源的优先级。</param>
+        public void LoadDictionary(string dictionaryAssetName, int priority)
+        {
+            LoadDictionary(dictionaryAssetName, priority, null);
         }
 
         /// <summary>
@@ -210,6 +220,17 @@ namespace GameFramework.Localization
         /// <param name="dictionaryAssetName">字典资源名称。</param>
         /// <param name="userData">用户自定义数据。</param>
         public void LoadDictionary(string dictionaryAssetName, object userData)
+        {
+            LoadDictionary(dictionaryAssetName, Constant.DefaultPriority, userData);
+        }
+
+        /// <summary>
+        /// 加载字典。
+        /// </summary>
+        /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="priority">加载字典资源的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void LoadDictionary(string dictionaryAssetName, int priority, object userData)
         {
             if (m_ResourceManager == null)
             {
@@ -221,7 +242,7 @@ namespace GameFramework.Localization
                 throw new GameFrameworkException("You must set localization helper first.");
             }
 
-            m_ResourceManager.LoadAsset(dictionaryAssetName, m_LoadAssetCallbacks, userData);
+            m_ResourceManager.LoadAsset(dictionaryAssetName, priority, m_LoadAssetCallbacks, userData);
         }
 
         /// <summary>

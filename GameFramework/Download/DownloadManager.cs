@@ -238,7 +238,19 @@ namespace GameFramework.Download
         /// <returns>新增下载任务的序列编号。</returns>
         public int AddDownload(string downloadPath, string downloadUri)
         {
-            return AddDownload(downloadPath, downloadUri, null);
+            return AddDownload(downloadPath, downloadUri, Constant.DefaultPriority, null);
+        }
+
+        /// <summary>
+        /// 增加下载任务。
+        /// </summary>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">原始下载地址。</param>
+        /// <param name="priority">下载任务的优先级。</param>
+        /// <returns>新增下载任务的序列编号。</returns>
+        public int AddDownload(string downloadPath, string downloadUri, int priority)
+        {
+            return AddDownload(downloadPath, downloadUri, priority, null);
         }
 
         /// <summary>
@@ -249,6 +261,19 @@ namespace GameFramework.Download
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>新增下载任务的序列编号。</returns>
         public int AddDownload(string downloadPath, string downloadUri, object userData)
+        {
+            return AddDownload(downloadPath, downloadUri, Constant.DefaultPriority, userData);
+        }
+
+        /// <summary>
+        /// 增加下载任务。
+        /// </summary>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">原始下载地址。</param>
+        /// <param name="priority">下载任务的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>新增下载任务的序列编号。</returns>
+        public int AddDownload(string downloadPath, string downloadUri, int priority, object userData)
         {
             if (string.IsNullOrEmpty(downloadPath))
             {
@@ -265,7 +290,7 @@ namespace GameFramework.Download
                 throw new GameFrameworkException("You must add download agent first.");
             }
 
-            DownloadTask downloadTask = new DownloadTask(downloadPath, downloadUri, m_FlushSize, m_Timeout, userData);
+            DownloadTask downloadTask = new DownloadTask(downloadPath, downloadUri, priority, m_FlushSize, m_Timeout, userData);
             m_TaskPool.AddTask(downloadTask);
 
             return downloadTask.SerialId;

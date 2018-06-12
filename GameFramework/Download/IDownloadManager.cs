@@ -111,9 +111,28 @@ namespace GameFramework.Download
         /// </summary>
         /// <param name="downloadPath">下载后存放路径。</param>
         /// <param name="downloadUri">原始下载地址。</param>
+        /// <param name="priority">下载任务的优先级。</param>
+        /// <returns>新增下载任务的序列编号。</returns>
+        int AddDownload(string downloadPath, string downloadUri, int priority);
+
+        /// <summary>
+        /// 增加下载任务。
+        /// </summary>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">原始下载地址。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>新增下载任务的序列编号。</returns>
         int AddDownload(string downloadPath, string downloadUri, object userData);
+
+        /// <summary>
+        /// 增加下载任务。
+        /// </summary>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">原始下载地址。</param>
+        /// <param name="priority">下载任务的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>新增下载任务的序列编号。</returns>
+        int AddDownload(string downloadPath, string downloadUri, int priority, object userData);
 
         /// <summary>
         /// 移除下载任务。

@@ -15,8 +15,8 @@ namespace GameFramework.Resource
             {
                 private readonly LoadResourceTaskBase m_MainTask;
 
-                public LoadDependencyAssetTask(string assetName, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, LoadResourceTaskBase mainTask, object userData)
-                    : base(assetName, resourceInfo, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, userData)
+                public LoadDependencyAssetTask(string assetName, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, LoadResourceTaskBase mainTask, object userData)
+                    : base(assetName, priority, resourceInfo, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, userData)
                 {
                     m_MainTask = mainTask;
                     m_MainTask.TotalDependencyAssetCount++;

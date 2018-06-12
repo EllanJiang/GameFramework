@@ -19,6 +19,7 @@ namespace GameFramework.Resource
                 private static int s_Serial = 0;
 
                 private readonly int m_SerialId;
+                private readonly int m_Priority;
                 private bool m_Done;
                 private readonly string m_AssetName;
                 private readonly ResourceInfo m_ResourceInfo;
@@ -31,9 +32,10 @@ namespace GameFramework.Resource
                 private DateTime m_StartTime;
                 private int m_TotalDependencyAssetCount;
 
-                public LoadResourceTaskBase(string assetName, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, object userData)
+                public LoadResourceTaskBase(string assetName, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, object userData)
                 {
                     m_SerialId = s_Serial++;
+                    m_Priority = priority;
                     m_Done = false;
                     m_AssetName = assetName;
                     m_ResourceInfo = resourceInfo;
@@ -52,6 +54,14 @@ namespace GameFramework.Resource
                     get
                     {
                         return m_SerialId;
+                    }
+                }
+
+                public int Priority
+                {
+                    get
+                    {
+                        return m_Priority;
                     }
                 }
 

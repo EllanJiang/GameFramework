@@ -17,6 +17,7 @@ namespace GameFramework.WebRequest
             private static int s_Serial = 0;
 
             private readonly int m_SerialId;
+            private readonly int m_Priority;
             private bool m_Done;
             private WebRequestTaskStatus m_Status;
             private readonly string m_WebRequestUri;
@@ -29,11 +30,13 @@ namespace GameFramework.WebRequest
             /// </summary>
             /// <param name="webRequestUri">要发送的远程地址。</param>
             /// <param name="postData">要发送的数据流。</param>
+            /// <param name="priority">Web 请求任务的优先级。</param>
             /// <param name="timeout">下载超时时长，以秒为单位。</param>
             /// <param name="userData">用户自定义数据。</param>
-            public WebRequestTask(string webRequestUri, byte[] postData, float timeout, object userData)
+            public WebRequestTask(string webRequestUri, byte[] postData, int priority, float timeout, object userData)
             {
                 m_SerialId = s_Serial++;
+                m_Priority = priority;
                 m_Done = false;
                 m_Status = WebRequestTaskStatus.Todo;
                 m_WebRequestUri = webRequestUri;
@@ -50,6 +53,17 @@ namespace GameFramework.WebRequest
                 get
                 {
                     return m_SerialId;
+                }
+            }
+
+            /// <summary>
+            /// 获取 Web 请求任务的优先级。
+            /// </summary>
+            public int Priority
+            {
+                get
+                {
+                    return m_Priority;
                 }
             }
 
