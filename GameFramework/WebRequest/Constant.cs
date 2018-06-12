@@ -13,7 +13,7 @@ namespace GameFramework.WebRequest
     internal static class Constant
     {
         /// <summary>
-        /// 默认 Web 请求优先级。
+        /// 默认 Web 请求任务优先级。
         /// </summary>
         internal const int DefaultPriority = 0;
     }

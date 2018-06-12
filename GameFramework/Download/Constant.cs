@@ -13,7 +13,7 @@ namespace GameFramework.Download
     internal static class Constant
     {
         /// <summary>
-        /// 默认下载优先级。
+        /// 默认下载任务优先级。
         /// </summary>
         internal const int DefaultPriority = 0;
     }
