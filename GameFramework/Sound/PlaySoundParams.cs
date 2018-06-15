@@ -22,6 +22,7 @@ namespace GameFramework.Sound
         private float m_PanStereo;
         private float m_SpatialBlend;
         private float m_MaxDistance;
+        private float m_DopplerLevel;
 
         /// <summary>
         /// 初始化播放声音参数的新实例。
@@ -38,6 +39,7 @@ namespace GameFramework.Sound
             m_PanStereo = Constant.DefaultPanStereo;
             m_SpatialBlend = Constant.DefaultSpatialBlend;
             m_MaxDistance = Constant.DefaultMaxDistance;
+            m_DopplerLevel = Constant.DefaultDopplerLevel;
         }
 
         /// <summary>
@@ -187,6 +189,21 @@ namespace GameFramework.Sound
             set
             {
                 m_MaxDistance = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置声音多普勒等级。
+        /// </summary>
+        public float DopplerLevel
+        {
+            get
+            {
+                return m_DopplerLevel;
+            }
+            set
+            {
+                m_DopplerLevel = value;
             }
         }
     }

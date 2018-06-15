@@ -450,7 +450,7 @@ namespace GameFramework.ObjectPool
                         }
 
                         m_Objects.Remove(obj);
-                        obj.Release();
+                        obj.Release(false);
                         Log.Debug("Object pool '{0}' release '{1}'.", Utility.Text.GetFullName<T>(Name), toReleaseObject.Name);
                         found = true;
                         break;
@@ -471,7 +471,7 @@ namespace GameFramework.ObjectPool
                 LinkedListNode<Object<T>> current = m_Objects.First;
                 while (current != null)
                 {
-                    if (current.Value.IsInUse || current.Value.Locked)
+                    if (current.Value.IsInUse || current.Value.Locked || !current.Value.CustomCanReleaseFlag)
                     {
                         current = current.Next;
                         continue;
@@ -479,7 +479,7 @@ namespace GameFramework.ObjectPool
 
                     LinkedListNode<Object<T>> next = current.Next;
                     m_Objects.Remove(current);
-                    current.Value.Release();
+                    current.Value.Release(false);
                     Log.Debug("Object pool '{0}' release '{1}'.", Utility.Text.GetFullName<T>(Name), current.Value.Name);
                     current = next;
                 }
@@ -521,7 +521,7 @@ namespace GameFramework.ObjectPool
                 {
                     LinkedListNode<Object<T>> next = current.Next;
                     m_Objects.Remove(current);
-                    current.Value.Release();
+                    current.Value.Release(true);
                     Log.Debug("Object pool '{0}' release '{1}'.", Utility.Text.GetFullName<T>(Name), current.Value.Name);
                     current = next;
                 }
@@ -533,7 +533,7 @@ namespace GameFramework.ObjectPool
 
                 foreach (Object<T> obj in m_Objects)
                 {
-                    if (obj.IsInUse || obj.Locked)
+                    if (obj.IsInUse || obj.Locked || !obj.CustomCanReleaseFlag)
                     {
                         continue;
                     }

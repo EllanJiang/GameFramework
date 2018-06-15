@@ -221,6 +221,15 @@ namespace GameFramework.UI
         /// </summary>
         /// <param name="uiFormAssetName">界面资源名称。</param>
         /// <param name="uiGroupName">界面组名称。</param>
+        /// <param name="priority">加载界面资源的优先级。</param>
+        /// <returns>界面的序列编号。</returns>
+        int OpenUIForm(string uiFormAssetName, string uiGroupName, int priority);
+
+        /// <summary>
+        /// 打开界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="uiGroupName">界面组名称。</param>
         /// <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
         /// <returns>界面的序列编号。</returns>
         int OpenUIForm(string uiFormAssetName, string uiGroupName, bool pauseCoveredUIForm);
@@ -239,10 +248,41 @@ namespace GameFramework.UI
         /// </summary>
         /// <param name="uiFormAssetName">界面资源名称。</param>
         /// <param name="uiGroupName">界面组名称。</param>
+        /// <param name="priority">加载界面资源的优先级。</param>
+        /// <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
+        /// <returns>界面的序列编号。</returns>
+        int OpenUIForm(string uiFormAssetName, string uiGroupName, int priority, bool pauseCoveredUIForm);
+
+        /// <summary>
+        /// 打开界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="uiGroupName">界面组名称。</param>
+        /// <param name="priority">加载界面资源的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>界面的序列编号。</returns>
+        int OpenUIForm(string uiFormAssetName, string uiGroupName, int priority, object userData);
+
+        /// <summary>
+        /// 打开界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="uiGroupName">界面组名称。</param>
         /// <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>界面的序列编号。</returns>
         int OpenUIForm(string uiFormAssetName, string uiGroupName, bool pauseCoveredUIForm, object userData);
+
+        /// <summary>
+        /// 打开界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="uiGroupName">界面组名称。</param>
+        /// <param name="priority">加载界面资源的优先级。</param>
+        /// <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>界面的序列编号。</returns>
+        int OpenUIForm(string uiFormAssetName, string uiGroupName, int priority, bool pauseCoveredUIForm, object userData);
 
         /// <summary>
         /// 关闭界面。

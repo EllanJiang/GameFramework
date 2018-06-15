@@ -23,5 +23,6 @@ namespace GameFramework.Sound
         internal const float DefaultPanStereo = 0f;
         internal const float DefaultSpatialBlend = 0f;
         internal const float DefaultMaxDistance = 100f;
+        internal const float DefaultDopplerLevel = 1f;
     }
 }

@@ -199,6 +199,7 @@ namespace GameFramework.Sound
                 candidateAgent.PanStereo = playSoundParams.PanStereo;
                 candidateAgent.SpatialBlend = playSoundParams.SpatialBlend;
                 candidateAgent.MaxDistance = playSoundParams.MaxDistance;
+                candidateAgent.DopplerLevel = playSoundParams.DopplerLevel;
                 candidateAgent.Play(playSoundParams.FadeInSeconds);
                 return candidateAgent;
             }

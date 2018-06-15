@@ -17,6 +17,7 @@ namespace GameFramework.Download
             private static int s_Serial = 0;
 
             private readonly int m_SerialId;
+            private readonly int m_Priority;
             private bool m_Done;
             private DownloadTaskStatus m_Status;
             private readonly string m_DownloadPath;
@@ -30,12 +31,14 @@ namespace GameFramework.Download
             /// </summary>
             /// <param name="downloadPath">下载后存放路径。</param>
             /// <param name="downloadUri">原始下载地址。</param>
+            /// <param name="priority">下载任务的优先级。</param>
             /// <param name="flushSize">将缓冲区写入磁盘的临界大小。</param>
             /// <param name="timeout">下载超时时长，以秒为单位。</param>
             /// <param name="userData">用户自定义数据。</param>
-            public DownloadTask(string downloadPath, string downloadUri, int flushSize, float timeout, object userData)
+            public DownloadTask(string downloadPath, string downloadUri, int priority, int flushSize, float timeout, object userData)
             {
                 m_SerialId = s_Serial++;
+                m_Priority = priority;
                 m_Done = false;
                 m_Status = DownloadTaskStatus.Todo;
                 m_DownloadPath = downloadPath;
@@ -53,6 +56,17 @@ namespace GameFramework.Download
                 get
                 {
                     return m_SerialId;
+                }
+            }
+
+            /// <summary>
+            /// 获取下载任务的优先级。
+            /// </summary>
+            public int Priority
+            {
+                get
+                {
+                    return m_Priority;
                 }
             }
 
@@ -111,7 +125,7 @@ namespace GameFramework.Download
             /// <summary>
             /// 获取将缓冲区写入磁盘的临界大小。
             /// </summary>
-            public long FlushSize
+            public int FlushSize
             {
                 get
                 {

@@ -88,6 +88,7 @@
     <Compile Include="Debugger\IDebuggerManager.cs" />
     <Compile Include="Debugger\IDebuggerWindow.cs" />
     <Compile Include="Debugger\IDebuggerWindowGroup.cs" />
+    <Compile Include="Download\Constant.cs" />
     <Compile Include="Download\DownloadAgentHelperCompleteEventArgs.cs" />
     <Compile Include="Download\DownloadAgentHelperErrorEventArgs.cs" />
     <Compile Include="Download\DownloadAgentHelperUpdateEventArgs.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="Procedure\ProcedureManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource\CheckVersionListResult.cs" />
+    <Compile Include="Resource\Constant.cs" />
     <Compile Include="Resource\DecryptResourceCallback.cs" />
     <Compile Include="Resource\ILoadResourceAgentHelper.cs" />
     <Compile Include="Resource\IResourceHelper.cs" />
@@ -293,6 +295,7 @@
     <Compile Include="Utility\Verifier.cs" />
     <Compile Include="Utility\Zip.cs" />
     <Compile Include="Utility\Zip.IZipHelper.cs" />
+    <Compile Include="WebRequest\Constant.cs" />
     <Compile Include="WebRequest\IWebRequestAgentHelper.cs" />
     <Compile Include="WebRequest\IWebRequestManager.cs" />
     <Compile Include="WebRequest\WebRequestAgentHelperCompleteEventArgs.cs" />

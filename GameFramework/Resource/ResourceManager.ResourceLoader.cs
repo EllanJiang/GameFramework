@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using GameFramework.ObjectPool;
+using System;
 using System.Collections.Generic;
 
 namespace GameFramework.Resource
@@ -19,6 +20,7 @@ namespace GameFramework.Resource
         {
             private readonly ResourceManager m_ResourceManager;
             private readonly TaskPool<LoadResourceTaskBase> m_TaskPool;
+            private readonly Dictionary<object, int> m_DependencyCount;
             private readonly Dictionary<string, object> m_SceneToAssetMap;
             private IObjectPool<AssetObject> m_AssetPool;
             private IObjectPool<ResourceObject> m_ResourcePool;
@@ -31,6 +33,7 @@ namespace GameFramework.Resource
             {
                 m_ResourceManager = resourceManager;
                 m_TaskPool = new TaskPool<LoadResourceTaskBase>();
+                m_DependencyCount = new Dictionary<object, int>();
                 m_SceneToAssetMap = new Dictionary<string, object>();
                 m_AssetPool = null;
                 m_ResourcePool = null;
@@ -216,6 +219,7 @@ namespace GameFramework.Resource
             public void Shutdown()
             {
                 m_TaskPool.Shutdown();
+                m_DependencyCount.Clear();
                 m_SceneToAssetMap.Clear();
             }
 
@@ -249,19 +253,36 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
+            /// 检查资源是否存在。
+            /// </summary>
+            /// <param name="assetName">要检查的资源。</param>
+            /// <returns>资源是否存在。</returns>
+            public bool ExistAsset(string assetName)
+            {
+                if (string.IsNullOrEmpty(assetName))
+                {
+                    return false;
+                }
+
+                return m_ResourceManager.GetAssetInfo(assetName).HasValue;
+            }
+
+            /// <summary>
             /// 异步加载资源。
             /// </summary>
             /// <param name="assetName">要加载资源的名称。</param>
+            /// <param name="assetType">要加载资源的类型。</param>
+            /// <param name="priority">加载资源的优先级。</param>
             /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
             /// <param name="userData">用户自定义数据。</param>
-            public void LoadAsset(string assetName, LoadAssetCallbacks loadAssetCallbacks, object userData)
+            public void LoadAsset(string assetName, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
             {
                 ResourceInfo? resourceInfo = null;
+                string resourceChildName = null;
                 string[] dependencyAssetNames = null;
                 string[] scatteredDependencyAssetNames = null;
-                string resourceChildName = null;
 
-                if (!CheckAsset(assetName, out resourceInfo, out dependencyAssetNames, out scatteredDependencyAssetNames, out resourceChildName))
+                if (!CheckAsset(assetName, out resourceInfo, out resourceChildName, out dependencyAssetNames, out scatteredDependencyAssetNames))
                 {
                     string errorMessage = string.Format("Can not load asset '{0}'.", assetName);
                     if (loadAssetCallbacks.LoadAssetFailureCallback != null)
@@ -273,10 +294,10 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(errorMessage);
                 }
 
-                LoadAssetTask mainTask = new LoadAssetTask(assetName, resourceInfo.Value, dependencyAssetNames, scatteredDependencyAssetNames, resourceChildName, loadAssetCallbacks, userData);
+                LoadAssetTask mainTask = new LoadAssetTask(assetName, assetType, priority, resourceInfo.Value, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, loadAssetCallbacks, userData);
                 foreach (string dependencyAssetName in dependencyAssetNames)
                 {
-                    if (!LoadDependencyAsset(dependencyAssetName, mainTask, userData))
+                    if (!LoadDependencyAsset(dependencyAssetName, priority, mainTask, userData))
                     {
                         string errorMessage = string.Format("Can not load dependency asset '{0}' when load asset '{1}'.", dependencyAssetName, assetName);
                         if (loadAssetCallbacks.LoadAssetFailureCallback != null)
@@ -305,16 +326,17 @@ namespace GameFramework.Resource
             /// 异步加载场景。
             /// </summary>
             /// <param name="sceneAssetName">要加载场景资源的名称。</param>
+            /// <param name="priority">加载场景资源的优先级。</param>
             /// <param name="loadSceneCallbacks">加载场景回调函数集。</param>
             /// <param name="userData">用户自定义数据。</param>
-            public void LoadScene(string sceneAssetName, LoadSceneCallbacks loadSceneCallbacks, object userData)
+            public void LoadScene(string sceneAssetName, int priority, LoadSceneCallbacks loadSceneCallbacks, object userData)
             {
                 ResourceInfo? resourceInfo = null;
+                string resourceChildName = null;
                 string[] dependencyAssetNames = null;
                 string[] scatteredDependencyAssetNames = null;
-                string resourceChildName = null;
 
-                if (!CheckAsset(sceneAssetName, out resourceInfo, out dependencyAssetNames, out scatteredDependencyAssetNames, out resourceChildName))
+                if (!CheckAsset(sceneAssetName, out resourceInfo, out resourceChildName, out dependencyAssetNames, out scatteredDependencyAssetNames))
                 {
                     string errorMessage = string.Format("Can not load scene '{0}'.", sceneAssetName);
                     if (loadSceneCallbacks.LoadSceneFailureCallback != null)
@@ -326,10 +348,10 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(errorMessage);
                 }
 
-                LoadSceneTask mainTask = new LoadSceneTask(sceneAssetName, resourceInfo.Value, dependencyAssetNames, scatteredDependencyAssetNames, resourceChildName, loadSceneCallbacks, userData);
+                LoadSceneTask mainTask = new LoadSceneTask(sceneAssetName, priority, resourceInfo.Value, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, loadSceneCallbacks, userData);
                 foreach (string dependencyAssetName in dependencyAssetNames)
                 {
-                    if (!LoadDependencyAsset(dependencyAssetName, mainTask, userData))
+                    if (!LoadDependencyAsset(dependencyAssetName, priority, mainTask, userData))
                     {
                         string errorMessage = string.Format("Can not load dependency asset '{0}' when load scene '{1}'.", dependencyAssetName, sceneAssetName);
                         if (loadSceneCallbacks.LoadSceneFailureCallback != null)
@@ -372,7 +394,7 @@ namespace GameFramework.Resource
                 m_ResourceManager.m_ResourceHelper.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
             }
 
-            private bool LoadDependencyAsset(string assetName, LoadResourceTaskBase mainTask, object userData)
+            private bool LoadDependencyAsset(string assetName, int priority, LoadResourceTaskBase mainTask, object userData)
             {
                 if (mainTask == null)
                 {
@@ -380,20 +402,20 @@ namespace GameFramework.Resource
                 }
 
                 ResourceInfo? resourceInfo = null;
+                string resourceChildName = null;
                 string[] dependencyAssetNames = null;
                 string[] scatteredDependencyAssetNames = null;
-                string resourceChildName = null;
 
-                if (!CheckAsset(assetName, out resourceInfo, out dependencyAssetNames, out scatteredDependencyAssetNames, out resourceChildName))
+                if (!CheckAsset(assetName, out resourceInfo, out resourceChildName, out dependencyAssetNames, out scatteredDependencyAssetNames))
                 {
                     Log.Debug("Can not load asset '{0}'.", assetName);
                     return false;
                 }
 
-                LoadDependencyAssetTask dependencyTask = new LoadDependencyAssetTask(assetName, resourceInfo.Value, dependencyAssetNames, scatteredDependencyAssetNames, resourceChildName, mainTask, userData);
+                LoadDependencyAssetTask dependencyTask = new LoadDependencyAssetTask(assetName, priority, resourceInfo.Value, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, mainTask, userData);
                 foreach (string dependencyAssetName in dependencyAssetNames)
                 {
-                    if (!LoadDependencyAsset(dependencyAssetName, dependencyTask, userData))
+                    if (!LoadDependencyAsset(dependencyAssetName, priority, dependencyTask, userData))
                     {
                         Log.Debug("Can not load dependency asset '{0}' when load dependency asset '{1}'.", dependencyAssetName, assetName);
                         return false;
@@ -404,12 +426,12 @@ namespace GameFramework.Resource
                 return true;
             }
 
-            private bool CheckAsset(string assetName, out ResourceInfo? resourceInfo, out string[] dependencyAssetNames, out string[] scatteredDependencyAssetNames, out string resourceChildName)
+            private bool CheckAsset(string assetName, out ResourceInfo? resourceInfo, out string resourceChildName, out string[] dependencyAssetNames, out string[] scatteredDependencyAssetNames)
             {
                 resourceInfo = null;
+                resourceChildName = null;
                 dependencyAssetNames = null;
                 scatteredDependencyAssetNames = null;
-                resourceChildName = null;
 
                 if (string.IsNullOrEmpty(assetName))
                 {
@@ -437,13 +459,12 @@ namespace GameFramework.Resource
                 resourceChildName = assetName.Substring(childNamePosition + 1);
 
                 AssetDependencyInfo? assetDependencyInfo = m_ResourceManager.GetAssetDependencyInfo(assetName);
-                if (!assetDependencyInfo.HasValue)
+                if (assetDependencyInfo.HasValue)
                 {
-                    return true;
+                    dependencyAssetNames = assetDependencyInfo.Value.GetDependencyAssetNames();
+                    scatteredDependencyAssetNames = assetDependencyInfo.Value.GetScatteredDependencyAssetNames();
                 }
 
-                dependencyAssetNames = assetDependencyInfo.Value.GetDependencyAssetNames();
-                scatteredDependencyAssetNames = assetDependencyInfo.Value.GetScatteredDependencyAssetNames();
                 return true;
             }
 

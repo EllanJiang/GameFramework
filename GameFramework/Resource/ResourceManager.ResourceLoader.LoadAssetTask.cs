@@ -5,6 +5,8 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
+
 namespace GameFramework.Resource
 {
     internal partial class ResourceManager
@@ -15,8 +17,8 @@ namespace GameFramework.Resource
             {
                 private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
 
-                public LoadAssetTask(string assetName, ResourceInfo resourceInfo, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, string resourceChildName, LoadAssetCallbacks loadAssetCallbacks, object userData)
-                    : base(assetName, resourceInfo, dependencyAssetNames, scatteredDependencyAssetNames, resourceChildName, userData)
+                public LoadAssetTask(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
+                    : base(assetName, assetType, priority, resourceInfo, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, userData)
                 {
                     m_LoadAssetCallbacks = loadAssetCallbacks;
                 }

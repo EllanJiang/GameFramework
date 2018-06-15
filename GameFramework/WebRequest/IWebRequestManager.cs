@@ -95,6 +95,14 @@ namespace GameFramework.WebRequest
         /// 增加 Web 请求任务。
         /// </summary>
         /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="priority">Web 请求任务的优先级。</param>
+        /// <returns>新增 Web 请求任务的序列编号。</returns>
+        int AddWebRequest(string webRequestUri, int priority);
+
+        /// <summary>
+        /// 增加 Web 请求任务。
+        /// </summary>
+        /// <param name="webRequestUri">Web 请求地址。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         int AddWebRequest(string webRequestUri, object userData);
@@ -104,9 +112,37 @@ namespace GameFramework.WebRequest
         /// </summary>
         /// <param name="webRequestUri">Web 请求地址。</param>
         /// <param name="postData">要发送的数据流。</param>
+        /// <param name="priority">Web 请求任务的优先级。</param>
+        /// <returns>新增 Web 请求任务的序列编号。</returns>
+        int AddWebRequest(string webRequestUri, byte[] postData, int priority);
+
+        /// <summary>
+        /// 增加 Web 请求任务。
+        /// </summary>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="postData">要发送的数据流。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         int AddWebRequest(string webRequestUri, byte[] postData, object userData);
+
+        /// <summary>
+        /// 增加 Web 请求任务。
+        /// </summary>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="priority">Web 请求任务的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>新增 Web 请求任务的序列编号。</returns>
+        int AddWebRequest(string webRequestUri, int priority, object userData);
+
+        /// <summary>
+        /// 增加 Web 请求任务。
+        /// </summary>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="postData">要发送的数据流。</param>
+        /// <param name="priority">Web 请求任务的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>新增 Web 请求任务的序列编号。</returns>
+        int AddWebRequest(string webRequestUri, byte[] postData, int priority, object userData);
 
         /// <summary>
         /// 移除 Web 请求任务。

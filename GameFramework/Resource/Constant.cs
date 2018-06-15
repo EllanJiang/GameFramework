@@ -8,28 +8,13 @@
 namespace GameFramework.Resource
 {
     /// <summary>
-    /// 加载资源进度类型。
+    /// 资源相关常量。
     /// </summary>
-    public enum LoadResourceProgress
+    internal static class Constant
     {
         /// <summary>
-        /// 读取资源包。
+        /// 默认资源加载优先级。
         /// </summary>
-        ReadResource,
-
-        /// <summary>
-        /// 加载资源包。
-        /// </summary>
-        LoadResource,
-
-        /// <summary>
-        /// 加载资源。
-        /// </summary>
-        LoadAsset,
-
-        /// <summary>
-        /// 加载场景。
-        /// </summary>
-        LoadScene,
+        internal const int DefaultPriority = 0;
     }
 }

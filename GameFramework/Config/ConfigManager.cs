@@ -163,7 +163,17 @@ namespace GameFramework.Config
         /// <param name="configAssetName">配置资源名称。</param>
         public void LoadConfig(string configAssetName)
         {
-            LoadConfig(configAssetName, null);
+            LoadConfig(configAssetName, Constant.DefaultPriority, null);
+        }
+
+        /// <summary>
+        /// 加载配置。
+        /// </summary>
+        /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="priority">加载配置资源的优先级。</param>
+        public void LoadConfig(string configAssetName, int priority)
+        {
+            LoadConfig(configAssetName, priority, null);
         }
 
         /// <summary>
@@ -172,6 +182,17 @@ namespace GameFramework.Config
         /// <param name="configAssetName">配置资源名称。</param>
         /// <param name="userData">用户自定义数据。</param>
         public void LoadConfig(string configAssetName, object userData)
+        {
+            LoadConfig(configAssetName, Constant.DefaultPriority, userData);
+        }
+
+        /// <summary>
+        /// 加载配置。
+        /// </summary>
+        /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="priority">加载配置资源的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void LoadConfig(string configAssetName, int priority, object userData)
         {
             if (m_ResourceManager == null)
             {
@@ -183,7 +204,7 @@ namespace GameFramework.Config
                 throw new GameFrameworkException("You must set config helper first.");
             }
 
-            m_ResourceManager.LoadAsset(configAssetName, m_LoadAssetCallbacks, userData);
+            m_ResourceManager.LoadAsset(configAssetName, priority, m_LoadAssetCallbacks, userData);
         }
 
         /// <summary>

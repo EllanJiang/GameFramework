@@ -928,6 +928,21 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 检查资源是否存在。
+        /// </summary>
+        /// <param name="assetName">要检查的资源。</param>
+        /// <returns>资源是否存在。</returns>
+        public bool ExistAsset(string assetName)
+        {
+            if (string.IsNullOrEmpty(assetName))
+            {
+                throw new GameFrameworkException("Asset name is invalid.");
+            }
+
+            return m_ResourceLoader.ExistAsset(assetName);
+        }
+
+        /// <summary>
         /// 异步加载资源。
         /// </summary>
         /// <param name="assetName">要加载资源的名称。</param>
@@ -944,7 +959,49 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("Load asset callbacks is invalid.");
             }
 
-            m_ResourceLoader.LoadAsset(assetName, loadAssetCallbacks, null);
+            m_ResourceLoader.LoadAsset(assetName, null, Constant.DefaultPriority, loadAssetCallbacks, null);
+        }
+
+        /// <summary>
+        /// 异步加载资源。
+        /// </summary>
+        /// <param name="assetName">要加载资源的名称。</param>
+        /// <param name="assetType">要加载资源的类型。</param>
+        /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
+        public void LoadAsset(string assetName, Type assetType, LoadAssetCallbacks loadAssetCallbacks)
+        {
+            if (string.IsNullOrEmpty(assetName))
+            {
+                throw new GameFrameworkException("Asset name is invalid.");
+            }
+
+            if (loadAssetCallbacks == null)
+            {
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
+            }
+
+            m_ResourceLoader.LoadAsset(assetName, assetType, Constant.DefaultPriority, loadAssetCallbacks, null);
+        }
+
+        /// <summary>
+        /// 异步加载资源。
+        /// </summary>
+        /// <param name="assetName">要加载资源的名称。</param>
+        /// <param name="priority">加载资源的优先级。</param>
+        /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
+        public void LoadAsset(string assetName, int priority, LoadAssetCallbacks loadAssetCallbacks)
+        {
+            if (string.IsNullOrEmpty(assetName))
+            {
+                throw new GameFrameworkException("Asset name is invalid.");
+            }
+
+            if (loadAssetCallbacks == null)
+            {
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
+            }
+
+            m_ResourceLoader.LoadAsset(assetName, null, priority, loadAssetCallbacks, null);
         }
 
         /// <summary>
@@ -965,7 +1022,96 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("Load asset callbacks is invalid.");
             }
 
-            m_ResourceLoader.LoadAsset(assetName, loadAssetCallbacks, userData);
+            m_ResourceLoader.LoadAsset(assetName, null, Constant.DefaultPriority, loadAssetCallbacks, userData);
+        }
+
+        /// <summary>
+        /// 异步加载资源。
+        /// </summary>
+        /// <param name="assetName">要加载资源的名称。</param>
+        /// <param name="assetType">要加载资源的类型。</param>
+        /// <param name="priority">加载资源的优先级。</param>
+        /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
+        public void LoadAsset(string assetName, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks)
+        {
+            if (string.IsNullOrEmpty(assetName))
+            {
+                throw new GameFrameworkException("Asset name is invalid.");
+            }
+
+            if (loadAssetCallbacks == null)
+            {
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
+            }
+
+            m_ResourceLoader.LoadAsset(assetName, assetType, priority, loadAssetCallbacks, null);
+        }
+
+        /// <summary>
+        /// 异步加载资源。
+        /// </summary>
+        /// <param name="assetName">要加载资源的名称。</param>
+        /// <param name="assetType">要加载资源的类型。</param>
+        /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void LoadAsset(string assetName, Type assetType, LoadAssetCallbacks loadAssetCallbacks, object userData)
+        {
+            if (string.IsNullOrEmpty(assetName))
+            {
+                throw new GameFrameworkException("Asset name is invalid.");
+            }
+
+            if (loadAssetCallbacks == null)
+            {
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
+            }
+
+            m_ResourceLoader.LoadAsset(assetName, assetType, Constant.DefaultPriority, loadAssetCallbacks, userData);
+        }
+
+        /// <summary>
+        /// 异步加载资源。
+        /// </summary>
+        /// <param name="assetName">要加载资源的名称。</param>
+        /// <param name="priority">加载资源的优先级。</param>
+        /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void LoadAsset(string assetName, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
+        {
+            if (string.IsNullOrEmpty(assetName))
+            {
+                throw new GameFrameworkException("Asset name is invalid.");
+            }
+
+            if (loadAssetCallbacks == null)
+            {
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
+            }
+
+            m_ResourceLoader.LoadAsset(assetName, null, priority, loadAssetCallbacks, userData);
+        }
+
+        /// <summary>
+        /// 异步加载资源。
+        /// </summary>
+        /// <param name="assetName">要加载资源的名称。</param>
+        /// <param name="assetType">要加载资源的类型。</param>
+        /// <param name="priority">加载资源的优先级。</param>
+        /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void LoadAsset(string assetName, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
+        {
+            if (string.IsNullOrEmpty(assetName))
+            {
+                throw new GameFrameworkException("Asset name is invalid.");
+            }
+
+            if (loadAssetCallbacks == null)
+            {
+                throw new GameFrameworkException("Load asset callbacks is invalid.");
+            }
+
+            m_ResourceLoader.LoadAsset(assetName, assetType, priority, loadAssetCallbacks, userData);
         }
 
         /// <summary>
@@ -1004,7 +1150,28 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("Load scene callbacks is invalid.");
             }
 
-            m_ResourceLoader.LoadScene(sceneAssetName, loadSceneCallbacks, null);
+            m_ResourceLoader.LoadScene(sceneAssetName, Constant.DefaultPriority, loadSceneCallbacks, null);
+        }
+
+        /// <summary>
+        /// 异步加载场景。
+        /// </summary>
+        /// <param name="sceneAssetName">要加载场景资源的名称。</param>
+        /// <param name="priority">加载场景资源的优先级。</param>
+        /// <param name="loadSceneCallbacks">加载场景回调函数集。</param>
+        public void LoadScene(string sceneAssetName, int priority, LoadSceneCallbacks loadSceneCallbacks)
+        {
+            if (string.IsNullOrEmpty(sceneAssetName))
+            {
+                throw new GameFrameworkException("Scene asset name is invalid.");
+            }
+
+            if (loadSceneCallbacks == null)
+            {
+                throw new GameFrameworkException("Load scene callbacks is invalid.");
+            }
+
+            m_ResourceLoader.LoadScene(sceneAssetName, priority, loadSceneCallbacks, null);
         }
 
         /// <summary>
@@ -1025,7 +1192,29 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("Load scene callbacks is invalid.");
             }
 
-            m_ResourceLoader.LoadScene(sceneAssetName, loadSceneCallbacks, userData);
+            m_ResourceLoader.LoadScene(sceneAssetName, Constant.DefaultPriority, loadSceneCallbacks, userData);
+        }
+
+        /// <summary>
+        /// 异步加载场景。
+        /// </summary>
+        /// <param name="sceneAssetName">要加载场景资源的名称。</param>
+        /// <param name="priority">加载场景资源的优先级。</param>
+        /// <param name="loadSceneCallbacks">加载场景回调函数集。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void LoadScene(string sceneAssetName, int priority, LoadSceneCallbacks loadSceneCallbacks, object userData)
+        {
+            if (string.IsNullOrEmpty(sceneAssetName))
+            {
+                throw new GameFrameworkException("Scene asset name is invalid.");
+            }
+
+            if (loadSceneCallbacks == null)
+            {
+                throw new GameFrameworkException("Load scene callbacks is invalid.");
+            }
+
+            m_ResourceLoader.LoadScene(sceneAssetName, priority, loadSceneCallbacks, userData);
         }
 
         /// <summary>

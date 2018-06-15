@@ -21,6 +21,14 @@ namespace GameFramework
         }
 
         /// <summary>
+        /// 获取任务的优先级。
+        /// </summary>
+        int Priority
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取任务是否完成。
         /// </summary>
         bool Done

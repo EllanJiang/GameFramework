@@ -36,7 +36,7 @@ namespace GameFramework.Entity
                 m_EntityHelper = entityHelper;
             }
 
-            protected internal override void Release()
+            protected internal override void Release(bool isShutdown)
             {
                 m_EntityHelper.ReleaseEntity(m_EntityAsset, Target);
             }

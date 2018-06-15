@@ -19,27 +19,31 @@ namespace GameFramework.Resource
                 private static int s_Serial = 0;
 
                 private readonly int m_SerialId;
+                private readonly int m_Priority;
                 private bool m_Done;
                 private readonly string m_AssetName;
+                private readonly Type m_AssetType;
                 private readonly ResourceInfo m_ResourceInfo;
+                private readonly string m_ResourceChildName;
                 private readonly string[] m_DependencyAssetNames;
                 private readonly string[] m_ScatteredDependencyAssetNames;
-                private readonly string m_ResourceChildName;
                 private readonly object m_UserData;
                 private readonly List<object> m_DependencyAssets;
                 private object m_Resource;
                 private DateTime m_StartTime;
                 private int m_TotalDependencyAssetCount;
 
-                public LoadResourceTaskBase(string assetName, ResourceInfo resourceInfo, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, string resourceChildName, object userData)
+                public LoadResourceTaskBase(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, object userData)
                 {
                     m_SerialId = s_Serial++;
+                    m_Priority = priority;
                     m_Done = false;
                     m_AssetName = assetName;
+                    m_AssetType = assetType;
                     m_ResourceInfo = resourceInfo;
+                    m_ResourceChildName = resourceChildName;
                     m_DependencyAssetNames = dependencyAssetNames;
                     m_ScatteredDependencyAssetNames = scatteredDependencyAssetNames;
-                    m_ResourceChildName = resourceChildName;
                     m_UserData = userData;
                     m_DependencyAssets = new List<object>();
                     m_Resource = null;
@@ -52,6 +56,14 @@ namespace GameFramework.Resource
                     get
                     {
                         return m_SerialId;
+                    }
+                }
+
+                public int Priority
+                {
+                    get
+                    {
+                        return m_Priority;
                     }
                 }
 
@@ -75,6 +87,14 @@ namespace GameFramework.Resource
                     }
                 }
 
+                public Type AssetType
+                {
+                    get
+                    {
+                        return m_AssetType;
+                    }
+                }
+
                 public ResourceInfo ResourceInfo
                 {
                     get
@@ -83,19 +103,19 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public object Resource
-                {
-                    get
-                    {
-                        return m_Resource;
-                    }
-                }
-
                 public string ResourceChildName
                 {
                     get
                     {
                         return m_ResourceChildName;
+                    }
+                }
+
+                public object Resource
+                {
+                    get
+                    {
+                        return m_Resource;
                     }
                 }
 
@@ -162,7 +182,7 @@ namespace GameFramework.Resource
                 public void LoadMain(LoadResourceAgent agent, object resource)
                 {
                     m_Resource = resource;
-                    agent.Helper.LoadAsset(resource, ResourceChildName, IsScene);
+                    agent.Helper.LoadAsset(resource, ResourceChildName, AssetType, IsScene);
                 }
 
                 public virtual void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)

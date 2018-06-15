@@ -82,6 +82,17 @@ namespace GameFramework.ObjectPool
             }
 
             /// <summary>
+            /// 获取自定义释放检查标记。
+            /// </summary>
+            public bool CustomCanReleaseFlag
+            {
+                get
+                {
+                    return m_Object.CustomCanReleaseFlag;
+                }
+            }
+
+            /// <summary>
             /// 获取对象上次使用时间。
             /// </summary>
             public DateTime LastUseTime
@@ -152,9 +163,10 @@ namespace GameFramework.ObjectPool
             /// <summary>
             /// 释放对象。
             /// </summary>
-            public void Release()
+            /// <param name="isShutdown">是否是关闭对象池时触发。</param>
+            public void Release(bool isShutdown)
             {
-                m_Object.Release();
+                m_Object.Release(isShutdown);
             }
         }
     }
