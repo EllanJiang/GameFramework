@@ -22,6 +22,7 @@ namespace GameFramework.Resource
                 private readonly int m_Priority;
                 private bool m_Done;
                 private readonly string m_AssetName;
+                private readonly Type m_AssetType;
                 private readonly ResourceInfo m_ResourceInfo;
                 private readonly string m_ResourceChildName;
                 private readonly string[] m_DependencyAssetNames;
@@ -32,12 +33,13 @@ namespace GameFramework.Resource
                 private DateTime m_StartTime;
                 private int m_TotalDependencyAssetCount;
 
-                public LoadResourceTaskBase(string assetName, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, object userData)
+                public LoadResourceTaskBase(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, object userData)
                 {
                     m_SerialId = s_Serial++;
                     m_Priority = priority;
                     m_Done = false;
                     m_AssetName = assetName;
+                    m_AssetType = assetType;
                     m_ResourceInfo = resourceInfo;
                     m_ResourceChildName = resourceChildName;
                     m_DependencyAssetNames = dependencyAssetNames;
@@ -82,6 +84,14 @@ namespace GameFramework.Resource
                     get
                     {
                         return m_AssetName;
+                    }
+                }
+
+                public Type AssetType
+                {
+                    get
+                    {
+                        return m_AssetType;
                     }
                 }
 
@@ -172,7 +182,7 @@ namespace GameFramework.Resource
                 public void LoadMain(LoadResourceAgent agent, object resource)
                 {
                     m_Resource = resource;
-                    agent.Helper.LoadAsset(resource, ResourceChildName, IsScene);
+                    agent.Helper.LoadAsset(resource, ResourceChildName, AssetType, IsScene);
                 }
 
                 public virtual void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)

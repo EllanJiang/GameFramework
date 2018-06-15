@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using GameFramework.ObjectPool;
+using System;
 using System.Collections.Generic;
 
 namespace GameFramework.Resource
@@ -270,10 +271,11 @@ namespace GameFramework.Resource
             /// 异步加载资源。
             /// </summary>
             /// <param name="assetName">要加载资源的名称。</param>
+            /// <param name="assetType">要加载资源的类型。</param>
             /// <param name="priority">加载资源的优先级。</param>
             /// <param name="loadAssetCallbacks">加载资源回调函数集。</param>
             /// <param name="userData">用户自定义数据。</param>
-            public void LoadAsset(string assetName, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
+            public void LoadAsset(string assetName, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
             {
                 ResourceInfo? resourceInfo = null;
                 string resourceChildName = null;
@@ -292,7 +294,7 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(errorMessage);
                 }
 
-                LoadAssetTask mainTask = new LoadAssetTask(assetName, priority, resourceInfo.Value, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, loadAssetCallbacks, userData);
+                LoadAssetTask mainTask = new LoadAssetTask(assetName, assetType, priority, resourceInfo.Value, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, loadAssetCallbacks, userData);
                 foreach (string dependencyAssetName in dependencyAssetNames)
                 {
                     if (!LoadDependencyAsset(dependencyAssetName, priority, mainTask, userData))
