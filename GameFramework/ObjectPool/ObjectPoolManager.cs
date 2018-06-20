@@ -244,7 +244,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>() where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, DefaultCapacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(string.Empty, false, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, DefaultCapacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, string.Empty, false, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, false, DefaultCapacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(name, false, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name)
         {
-            return InternalCreateObjectPool(objectType, name, false, DefaultCapacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, name, false, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(int capacity) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, capacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(string.Empty, false, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -298,7 +298,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, int capacity)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, capacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, string.Empty, false, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(float expireTime) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, DefaultCapacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(string.Empty, false, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, float expireTime)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, DefaultCapacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, string.Empty, false, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, int capacity) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, false, capacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(name, false, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, int capacity)
         {
-            return InternalCreateObjectPool(objectType, name, false, capacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, name, false, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, float expireTime) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, false, DefaultCapacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(name, false, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -368,7 +368,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, float expireTime)
         {
-            return InternalCreateObjectPool(objectType, name, false, DefaultCapacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, name, false, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -380,7 +380,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(int capacity, float expireTime) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, capacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(string.Empty, false, expireTime, capacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -392,7 +392,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, int capacity, float expireTime)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, capacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, string.Empty, false, expireTime, capacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -404,7 +404,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(int capacity, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, capacity, DefaultExpireTime, priority);
+            return InternalCreateObjectPool<T>(string.Empty, false, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
 
         /// <summary>
@@ -416,7 +416,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, int capacity, int priority)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, capacity, DefaultExpireTime, priority);
+            return InternalCreateObjectPool(objectType, string.Empty, false, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(float expireTime, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, DefaultCapacity, expireTime, priority);
+            return InternalCreateObjectPool<T>(string.Empty, false, expireTime, DefaultCapacity, expireTime, priority);
         }
 
         /// <summary>
@@ -440,7 +440,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, float expireTime, int priority)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, DefaultCapacity, expireTime, priority);
+            return InternalCreateObjectPool(objectType, string.Empty, false, expireTime, DefaultCapacity, expireTime, priority);
         }
 
         /// <summary>
@@ -453,7 +453,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, int capacity, float expireTime) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, false, capacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(name, false, expireTime, capacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -466,7 +466,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, int capacity, float expireTime)
         {
-            return InternalCreateObjectPool(objectType, name, false, capacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, name, false, expireTime, capacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -479,7 +479,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, int capacity, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, false, capacity, DefaultExpireTime, priority);
+            return InternalCreateObjectPool<T>(name, false, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
 
         /// <summary>
@@ -492,7 +492,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, int capacity, int priority)
         {
-            return InternalCreateObjectPool(objectType, name, false, capacity, DefaultExpireTime, priority);
+            return InternalCreateObjectPool(objectType, name, false, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
 
         /// <summary>
@@ -505,7 +505,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, float expireTime, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, false, DefaultCapacity, expireTime, priority);
+            return InternalCreateObjectPool<T>(name, false, expireTime, DefaultCapacity, expireTime, priority);
         }
 
         /// <summary>
@@ -518,7 +518,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, float expireTime, int priority)
         {
-            return InternalCreateObjectPool(objectType, name, false, DefaultCapacity, expireTime, priority);
+            return InternalCreateObjectPool(objectType, name, false, expireTime, DefaultCapacity, expireTime, priority);
         }
 
         /// <summary>
@@ -531,7 +531,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(int capacity, float expireTime, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, false, capacity, expireTime, priority);
+            return InternalCreateObjectPool<T>(string.Empty, false, expireTime, capacity, expireTime, priority);
         }
 
         /// <summary>
@@ -544,7 +544,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, int capacity, float expireTime, int priority)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, false, capacity, expireTime, priority);
+            return InternalCreateObjectPool(objectType, string.Empty, false, expireTime, capacity, expireTime, priority);
         }
 
         /// <summary>
@@ -558,7 +558,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, int capacity, float expireTime, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, false, capacity, expireTime, priority);
+            return InternalCreateObjectPool<T>(name, false, expireTime, capacity, expireTime, priority);
         }
 
         /// <summary>
@@ -572,7 +572,37 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许单次获取的对象池。</returns>
         public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, int capacity, float expireTime, int priority)
         {
-            return InternalCreateObjectPool(objectType, name, false, capacity, expireTime, priority);
+            return InternalCreateObjectPool(objectType, name, false, expireTime, capacity, expireTime, priority);
+        }
+
+        /// <summary>
+        /// 创建允许单次获取的对象池。
+        /// </summary>
+        /// <typeparam name="T">对象类型。</typeparam>
+        /// <param name="name">对象池名称。</param>
+        /// <param name="autoReleaseInterval">对象池自动释放可释放对象的间隔秒数。</param>
+        /// <param name="capacity">对象池的容量。</param>
+        /// <param name="expireTime">对象池对象过期秒数。</param>
+        /// <param name="priority">对象池的优先级。</param>
+        /// <returns>要创建的允许单次获取的对象池。</returns>
+        public IObjectPool<T> CreateSingleSpawnObjectPool<T>(string name, float autoReleaseInterval, int capacity, float expireTime, int priority) where T : ObjectBase
+        {
+            return InternalCreateObjectPool<T>(name, false, autoReleaseInterval, capacity, expireTime, priority);
+        }
+
+        /// <summary>
+        /// 创建允许单次获取的对象池。
+        /// </summary>
+        /// <param name="objectType">对象类型。</param>
+        /// <param name="name">对象池名称。</param>
+        /// <param name="autoReleaseInterval">对象池自动释放可释放对象的间隔秒数。</param>
+        /// <param name="capacity">对象池的容量。</param>
+        /// <param name="expireTime">对象池对象过期秒数。</param>
+        /// <param name="priority">对象池的优先级。</param>
+        /// <returns>要创建的允许单次获取的对象池。</returns>
+        public ObjectPoolBase CreateSingleSpawnObjectPool(Type objectType, string name, float autoReleaseInterval, int capacity, float expireTime, int priority)
+        {
+            return InternalCreateObjectPool(objectType, name, false, autoReleaseInterval, capacity, expireTime, priority);
         }
 
         /// <summary>
@@ -582,7 +612,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>() where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, DefaultCapacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(string.Empty, true, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -592,7 +622,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, DefaultCapacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, string.Empty, true, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -603,7 +633,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, true, DefaultCapacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(name, true, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -614,7 +644,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name)
         {
-            return InternalCreateObjectPool(objectType, name, true, DefaultCapacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, name, true, DefaultExpireTime, DefaultCapacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -625,7 +655,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(int capacity) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, capacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(string.Empty, true, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -636,7 +666,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, int capacity)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, capacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, string.Empty, true, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -647,7 +677,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(float expireTime) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, DefaultCapacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(string.Empty, true, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -658,7 +688,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, float expireTime)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, DefaultCapacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, string.Empty, true, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -670,7 +700,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, int capacity) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, true, capacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(name, true, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -682,7 +712,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, int capacity)
         {
-            return InternalCreateObjectPool(objectType, name, true, capacity, DefaultExpireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, name, true, DefaultExpireTime, capacity, DefaultExpireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -694,7 +724,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, float expireTime) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, true, DefaultCapacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(name, true, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -706,7 +736,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, float expireTime)
         {
-            return InternalCreateObjectPool(objectType, name, true, DefaultCapacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, name, true, expireTime, DefaultCapacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -718,7 +748,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(int capacity, float expireTime) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, capacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(string.Empty, true, expireTime, capacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -730,7 +760,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, int capacity, float expireTime)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, capacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, string.Empty, true, expireTime, capacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -742,7 +772,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(int capacity, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, capacity, DefaultExpireTime, priority);
+            return InternalCreateObjectPool<T>(string.Empty, true, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
 
         /// <summary>
@@ -754,7 +784,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, int capacity, int priority)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, capacity, DefaultExpireTime, priority);
+            return InternalCreateObjectPool(objectType, string.Empty, true, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
 
         /// <summary>
@@ -766,7 +796,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(float expireTime, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, DefaultCapacity, expireTime, priority);
+            return InternalCreateObjectPool<T>(string.Empty, true, expireTime, DefaultCapacity, expireTime, priority);
         }
 
         /// <summary>
@@ -778,7 +808,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, float expireTime, int priority)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, DefaultCapacity, expireTime, priority);
+            return InternalCreateObjectPool(objectType, string.Empty, true, expireTime, DefaultCapacity, expireTime, priority);
         }
 
         /// <summary>
@@ -791,7 +821,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, int capacity, float expireTime) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, true, capacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool<T>(name, true, expireTime, capacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -804,7 +834,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, int capacity, float expireTime)
         {
-            return InternalCreateObjectPool(objectType, name, true, capacity, expireTime, DefaultPriority);
+            return InternalCreateObjectPool(objectType, name, true, expireTime, capacity, expireTime, DefaultPriority);
         }
 
         /// <summary>
@@ -817,7 +847,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, int capacity, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, true, capacity, DefaultExpireTime, priority);
+            return InternalCreateObjectPool<T>(name, true, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
 
         /// <summary>
@@ -830,7 +860,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, int capacity, int priority)
         {
-            return InternalCreateObjectPool(objectType, name, true, capacity, DefaultExpireTime, priority);
+            return InternalCreateObjectPool(objectType, name, true, DefaultExpireTime, capacity, DefaultExpireTime, priority);
         }
 
         /// <summary>
@@ -843,7 +873,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, float expireTime, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, true, DefaultCapacity, expireTime, priority);
+            return InternalCreateObjectPool<T>(name, true, expireTime, DefaultCapacity, expireTime, priority);
         }
 
         /// <summary>
@@ -856,7 +886,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, float expireTime, int priority)
         {
-            return InternalCreateObjectPool(objectType, name, true, DefaultCapacity, expireTime, priority);
+            return InternalCreateObjectPool(objectType, name, true, expireTime, DefaultCapacity, expireTime, priority);
         }
 
         /// <summary>
@@ -869,7 +899,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(int capacity, float expireTime, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(string.Empty, true, capacity, expireTime, priority);
+            return InternalCreateObjectPool<T>(string.Empty, true, expireTime, capacity, expireTime, priority);
         }
 
         /// <summary>
@@ -882,7 +912,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, int capacity, float expireTime, int priority)
         {
-            return InternalCreateObjectPool(objectType, string.Empty, true, capacity, expireTime, priority);
+            return InternalCreateObjectPool(objectType, string.Empty, true, expireTime, capacity, expireTime, priority);
         }
 
         /// <summary>
@@ -896,7 +926,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, int capacity, float expireTime, int priority) where T : ObjectBase
         {
-            return InternalCreateObjectPool<T>(name, true, capacity, expireTime, priority);
+            return InternalCreateObjectPool<T>(name, true, expireTime, capacity, expireTime, priority);
         }
 
         /// <summary>
@@ -910,7 +940,37 @@ namespace GameFramework.ObjectPool
         /// <returns>要创建的允许多次获取的对象池。</returns>
         public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, int capacity, float expireTime, int priority)
         {
-            return InternalCreateObjectPool(objectType, name, true, capacity, expireTime, priority);
+            return InternalCreateObjectPool(objectType, name, true, expireTime, capacity, expireTime, priority);
+        }
+
+        /// <summary>
+        /// 创建允许多次获取的对象池。
+        /// </summary>
+        /// <typeparam name="T">对象类型。</typeparam>
+        /// <param name="name">对象池名称。</param>
+        /// <param name="autoReleaseInterval">对象池自动释放可释放对象的间隔秒数。</param>
+        /// <param name="capacity">对象池的容量。</param>
+        /// <param name="expireTime">对象池对象过期秒数。</param>
+        /// <param name="priority">对象池的优先级。</param>
+        /// <returns>要创建的允许多次获取的对象池。</returns>
+        public IObjectPool<T> CreateMultiSpawnObjectPool<T>(string name, float autoReleaseInterval, int capacity, float expireTime, int priority) where T : ObjectBase
+        {
+            return InternalCreateObjectPool<T>(name, true, autoReleaseInterval, capacity, expireTime, priority);
+        }
+
+        /// <summary>
+        /// 创建允许多次获取的对象池。
+        /// </summary>
+        /// <param name="objectType">对象类型。</param>
+        /// <param name="name">对象池名称。</param>
+        /// <param name="autoReleaseInterval">对象池自动释放可释放对象的间隔秒数。</param>
+        /// <param name="capacity">对象池的容量。</param>
+        /// <param name="expireTime">对象池对象过期秒数。</param>
+        /// <param name="priority">对象池的优先级。</param>
+        /// <returns>要创建的允许多次获取的对象池。</returns>
+        public ObjectPoolBase CreateMultiSpawnObjectPool(Type objectType, string name, float autoReleaseInterval, int capacity, float expireTime, int priority)
+        {
+            return InternalCreateObjectPool(objectType, name, true, autoReleaseInterval, capacity, expireTime, priority);
         }
 
         /// <summary>
@@ -1046,19 +1106,19 @@ namespace GameFramework.ObjectPool
             return null;
         }
 
-        private IObjectPool<T> InternalCreateObjectPool<T>(string name, bool allowMultiSpawn, int capacity, float expireTime, int priority) where T : ObjectBase
+        private IObjectPool<T> InternalCreateObjectPool<T>(string name, bool allowMultiSpawn, float autoReleaseInterval, int capacity, float expireTime, int priority) where T : ObjectBase
         {
             if (HasObjectPool<T>(name))
             {
                 throw new GameFrameworkException(string.Format("Already exist object pool '{0}'.", Utility.Text.GetFullName<T>(name)));
             }
 
-            ObjectPool<T> objectPool = new ObjectPool<T>(name, allowMultiSpawn, capacity, expireTime, priority);
+            ObjectPool<T> objectPool = new ObjectPool<T>(name, allowMultiSpawn, autoReleaseInterval, capacity, expireTime, priority);
             m_ObjectPools.Add(Utility.Text.GetFullName<T>(name), objectPool);
             return objectPool;
         }
 
-        private ObjectPoolBase InternalCreateObjectPool(Type objectType, string name, bool allowMultiSpawn, int capacity, float expireTime, int priority)
+        private ObjectPoolBase InternalCreateObjectPool(Type objectType, string name, bool allowMultiSpawn, float autoReleaseInterval, int capacity, float expireTime, int priority)
         {
             if (objectType == null)
             {
@@ -1076,7 +1136,7 @@ namespace GameFramework.ObjectPool
             }
 
             Type objectPoolType = typeof(ObjectPool<>).MakeGenericType(objectType);
-            ObjectPoolBase objectPool = (ObjectPoolBase)Activator.CreateInstance(objectPoolType, name, allowMultiSpawn, capacity, expireTime, priority);
+            ObjectPoolBase objectPool = (ObjectPoolBase)Activator.CreateInstance(objectPoolType, name, allowMultiSpawn, autoReleaseInterval, capacity, expireTime, priority);
             m_ObjectPools.Add(Utility.Text.GetFullName(objectType, name), objectPool);
             return objectPool;
         }
