@@ -767,6 +767,11 @@ namespace GameFramework.UI
             IUIForm[] uiForms = GetAllLoadedUIForms();
             foreach (IUIForm uiForm in uiForms)
             {
+                if (!HasUIForm(uiForm.SerialId))
+                {
+                    continue;
+                }
+
                 CloseUIForm(uiForm, userData);
             }
         }
