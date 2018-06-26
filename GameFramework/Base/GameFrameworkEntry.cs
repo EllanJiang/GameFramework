@@ -38,7 +38,9 @@ namespace GameFramework
         {
             foreach (GameFrameworkModule module in s_GameFrameworkModules)
             {
+                Utility.Profiler.BeginSample(module.GetType().FullName);
                 module.Update(elapseSeconds, realElapseSeconds);
+                Utility.Profiler.EndSample();
             }
         }
 
