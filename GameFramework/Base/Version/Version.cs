@@ -44,7 +44,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 获取游戏内部版本号。
+        /// 获取内部游戏版本号。
         /// </summary>
         public static int InternalGameVersion
         {
