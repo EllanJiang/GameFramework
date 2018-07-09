@@ -60,6 +60,8 @@
     <Compile Include="Base\TaskPool\TaskPool.cs" />
     <Compile Include="Base\Variable\GenericVariable.cs" />
     <Compile Include="Base\Variable\Variable.cs" />
+    <Compile Include="Base\Version\Version.cs" />
+    <Compile Include="Base\Version\Version.IVersionHelper.cs" />
     <Compile Include="Config\ConfigManager.ConfigData.cs" />
     <Compile Include="Config\ConfigManager.cs" />
     <Compile Include="Config\IConfigHelper.cs" />
