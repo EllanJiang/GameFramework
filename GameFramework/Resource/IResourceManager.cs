@@ -362,7 +362,7 @@ namespace GameFramework.Resource
         /// </summary>
         /// <param name="assetName">要检查的资源。</param>
         /// <returns>资源是否存在。</returns>
-        bool ExistAsset(string assetName);
+        bool HasAsset(string assetName);
 
         /// <summary>
         /// 异步加载资源。

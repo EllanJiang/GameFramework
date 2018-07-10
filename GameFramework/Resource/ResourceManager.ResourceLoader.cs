@@ -257,7 +257,7 @@ namespace GameFramework.Resource
             /// </summary>
             /// <param name="assetName">要检查的资源。</param>
             /// <returns>资源是否存在。</returns>
-            public bool ExistAsset(string assetName)
+            public bool HasAsset(string assetName)
             {
                 if (string.IsNullOrEmpty(assetName))
                 {
