@@ -7,6 +7,7 @@
 
 using GameFramework.Resource;
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.DataTable
 {
@@ -148,6 +149,12 @@ namespace GameFramework.DataTable
         /// </summary>
         /// <returns>所有数据表。</returns>
         DataTableBase[] GetAllDataTables();
+
+        /// <summary>
+        /// 获取所有数据表。
+        /// </summary>
+        /// <param name="results">所有数据表。</param>
+        void GetAllDataTables(List<DataTableBase> results);
 
         /// <summary>
         /// 创建数据表。

@@ -156,10 +156,9 @@ namespace GameFramework.DataTable
 
                 foreach (KeyValuePair<int, T> dataRow in m_DataSet)
                 {
-                    T dr = dataRow.Value;
-                    if (condition(dr))
+                    if (condition(dataRow.Value))
                     {
-                        return dr;
+                        return dataRow.Value;
                     }
                 }
 
@@ -173,13 +172,31 @@ namespace GameFramework.DataTable
             public T[] GetAllDataRows()
             {
                 int index = 0;
-                T[] allDataRows = new T[m_DataSet.Count];
+                T[] results = new T[m_DataSet.Count];
                 foreach (KeyValuePair<int, T> dataRow in m_DataSet)
                 {
-                    allDataRows[index++] = dataRow.Value;
+                    results[index++] = dataRow.Value;
                 }
 
-                return allDataRows;
+                return results;
+            }
+
+            /// <summary>
+            /// 获取所有数据表行。
+            /// </summary>
+            /// <param name="results">所有数据表行。</param>
+            public void GetAllDataRows(List<T> results)
+            {
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
+                {
+                    results.Add(dataRow.Value);
+                }
             }
 
             /// <summary>
@@ -197,14 +214,40 @@ namespace GameFramework.DataTable
                 List<T> results = new List<T>();
                 foreach (KeyValuePair<int, T> dataRow in m_DataSet)
                 {
-                    T dr = dataRow.Value;
-                    if (condition(dr))
+                    if (condition(dataRow.Value))
                     {
-                        results.Add(dr);
+                        results.Add(dataRow.Value);
                     }
                 }
 
                 return results.ToArray();
+            }
+
+            /// <summary>
+            /// 获取所有符合条件的数据表行。
+            /// </summary>
+            /// <param name="condition">要检查的条件。</param>
+            /// <param name="results">所有符合条件的数据表行。</param>
+            public void GetAllDataRows(Predicate<T> condition, List<T> results)
+            {
+                if (condition == null)
+                {
+                    throw new GameFrameworkException("Condition is invalid.");
+                }
+
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
+                {
+                    if (condition(dataRow.Value))
+                    {
+                        results.Add(dataRow.Value);
+                    }
+                }
             }
 
             /// <summary>
@@ -219,14 +262,40 @@ namespace GameFramework.DataTable
                     throw new GameFrameworkException("Comparison is invalid.");
                 }
 
-                List<T> allDataRows = new List<T>();
+                List<T> results = new List<T>();
                 foreach (KeyValuePair<int, T> dataRow in m_DataSet)
                 {
-                    allDataRows.Add(dataRow.Value);
+                    results.Add(dataRow.Value);
                 }
 
-                allDataRows.Sort(comparison);
-                return allDataRows.ToArray();
+                results.Sort(comparison);
+                return results.ToArray();
+            }
+
+            /// <summary>
+            /// 获取所有排序后的数据表行。
+            /// </summary>
+            /// <param name="comparison">要排序的条件。</param>
+            /// <param name="results">所有排序后的数据表行。</param>
+            public void GetAllDataRows(Comparison<T> comparison, List<T> results)
+            {
+                if (comparison == null)
+                {
+                    throw new GameFrameworkException("Comparison is invalid.");
+                }
+
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
+                {
+                    results.Add(dataRow.Value);
+                }
+
+                results.Sort(comparison);
             }
 
             /// <summary>
@@ -250,15 +319,49 @@ namespace GameFramework.DataTable
                 List<T> results = new List<T>();
                 foreach (KeyValuePair<int, T> dataRow in m_DataSet)
                 {
-                    T dr = dataRow.Value;
-                    if (condition(dr))
+                    if (condition(dataRow.Value))
                     {
-                        results.Add(dr);
+                        results.Add(dataRow.Value);
                     }
                 }
 
                 results.Sort(comparison);
                 return results.ToArray();
+            }
+
+            /// <summary>
+            /// 获取所有排序后的符合条件的数据表行。
+            /// </summary>
+            /// <param name="condition">要检查的条件。</param>
+            /// <param name="comparison">要排序的条件。</param>
+            /// <param name="results">所有排序后的符合条件的数据表行。</param>
+            public void GetAllDataRows(Predicate<T> condition, Comparison<T> comparison, List<T> results)
+            {
+                if (condition == null)
+                {
+                    throw new GameFrameworkException("Condition is invalid.");
+                }
+
+                if (comparison == null)
+                {
+                    throw new GameFrameworkException("Comparison is invalid.");
+                }
+
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
+                {
+                    if (condition(dataRow.Value))
+                    {
+                        results.Add(dataRow.Value);
+                    }
+                }
+
+                results.Sort(comparison);
             }
 
             /// <summary>

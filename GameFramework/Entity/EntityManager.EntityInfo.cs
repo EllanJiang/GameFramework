@@ -78,6 +78,25 @@ namespace GameFramework.Entity
                 return m_ChildEntities.ToArray();
             }
 
+            public void GetChildEntities(List<IEntity> results)
+            {
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                if (m_ChildEntities == null)
+                {
+                    return;
+                }
+
+                foreach (IEntity childEntity in m_ChildEntities)
+                {
+                    results.Add(childEntity);
+                }
+            }
+
             public void AddChildEntity(IEntity childEntity)
             {
                 if (m_ChildEntities == null)

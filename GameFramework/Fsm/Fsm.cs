@@ -289,13 +289,31 @@ namespace GameFramework.Fsm
         public FsmState<T>[] GetAllStates()
         {
             int index = 0;
-            FsmState<T>[] allStates = new FsmState<T>[m_States.Count];
+            FsmState<T>[] results = new FsmState<T>[m_States.Count];
             foreach (KeyValuePair<string, FsmState<T>> state in m_States)
             {
-                allStates[index++] = state.Value;
+                results[index++] = state.Value;
             }
 
-            return allStates;
+            return results;
+        }
+
+        /// <summary>
+        /// 获取有限状态机的所有状态。
+        /// </summary>
+        /// <param name="results">有限状态机的所有状态。</param>
+        public void GetAllStates(List<FsmState<T>> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<string, FsmState<T>> state in m_States)
+            {
+                results.Add(state.Value);
+            }
         }
 
         /// <summary>

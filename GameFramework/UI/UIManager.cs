@@ -323,13 +323,31 @@ namespace GameFramework.UI
         public IUIGroup[] GetAllUIGroups()
         {
             int index = 0;
-            IUIGroup[] uiGroups = new IUIGroup[m_UIGroups.Count];
+            IUIGroup[] results = new IUIGroup[m_UIGroups.Count];
             foreach (KeyValuePair<string, UIGroup> uiGroup in m_UIGroups)
             {
-                uiGroups[index++] = uiGroup.Value;
+                results[index++] = uiGroup.Value;
             }
 
-            return uiGroups;
+            return results;
+        }
+
+        /// <summary>
+        /// 获取所有界面组。
+        /// </summary>
+        /// <param name="results">所有界面组。</param>
+        public void GetAllUIGroups(List<IUIGroup> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<string, UIGroup> uiGroup in m_UIGroups)
+            {
+                results.Add(uiGroup.Value);
+            }
         }
 
         /// <summary>
@@ -468,13 +486,37 @@ namespace GameFramework.UI
                 throw new GameFrameworkException("UI form asset name is invalid.");
             }
 
-            List<IUIForm> uiForms = new List<IUIForm>();
+            List<IUIForm> results = new List<IUIForm>();
             foreach (KeyValuePair<string, UIGroup> uiGroup in m_UIGroups)
             {
-                uiForms.AddRange(uiGroup.Value.GetUIForms(uiFormAssetName));
+                results.AddRange(uiGroup.Value.GetUIForms(uiFormAssetName));
             }
 
-            return uiForms.ToArray();
+            return results.ToArray();
+        }
+
+        /// <summary>
+        /// 获取界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="results">要获取的界面。</param>
+        public void GetUIForms(string uiFormAssetName, List<IUIForm> results)
+        {
+            if (string.IsNullOrEmpty(uiFormAssetName))
+            {
+                throw new GameFrameworkException("UI form asset name is invalid.");
+            }
+
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<string, UIGroup> uiGroup in m_UIGroups)
+            {
+                uiGroup.Value.InternalGetUIForms(uiFormAssetName, results);
+            }
         }
 
         /// <summary>
@@ -483,13 +525,31 @@ namespace GameFramework.UI
         /// <returns>所有已加载的界面。</returns>
         public IUIForm[] GetAllLoadedUIForms()
         {
-            List<IUIForm> uiForms = new List<IUIForm>();
+            List<IUIForm> results = new List<IUIForm>();
             foreach (KeyValuePair<string, UIGroup> uiGroup in m_UIGroups)
             {
-                uiForms.AddRange(uiGroup.Value.GetAllUIForms());
+                results.AddRange(uiGroup.Value.GetAllUIForms());
             }
 
-            return uiForms.ToArray();
+            return results.ToArray();
+        }
+
+        /// <summary>
+        /// 获取所有已加载的界面。
+        /// </summary>
+        /// <param name="results">所有已加载的界面。</param>
+        public void GetAllLoadedUIForms(List<IUIForm> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<string, UIGroup> uiGroup in m_UIGroups)
+            {
+                uiGroup.Value.InternalGetAllUIForms(results);
+            }
         }
 
         /// <summary>
@@ -499,6 +559,21 @@ namespace GameFramework.UI
         public int[] GetAllLoadingUIFormSerialIds()
         {
             return m_UIFormsBeingLoaded.ToArray();
+        }
+
+        /// <summary>
+        /// 获取所有正在加载界面的序列编号。
+        /// </summary>
+        /// <param name="results">所有正在加载界面的序列编号。</param>
+        public void GetAllLoadingUIFormSerialIds(List<int> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            results.AddRange(m_UIFormsBeingLoaded);
         }
 
         /// <summary>

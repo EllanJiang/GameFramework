@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.Fsm
 {
@@ -116,6 +117,12 @@ namespace GameFramework.Fsm
         /// </summary>
         /// <returns>有限状态机的所有状态。</returns>
         FsmState<T>[] GetAllStates();
+
+        /// <summary>
+        /// 获取有限状态机的所有状态。
+        /// </summary>
+        /// <param name="results">有限状态机的所有状态。</param>
+        void GetAllStates(List<FsmState<T>> results);
 
         /// <summary>
         /// 抛出有限状态机事件。

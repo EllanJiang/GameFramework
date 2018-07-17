@@ -7,6 +7,7 @@
 
 using GameFramework.Resource;
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.Scene
 {
@@ -65,6 +66,12 @@ namespace GameFramework.Scene
         string[] GetLoadedSceneAssetNames();
 
         /// <summary>
+        /// 获取已加载场景的资源名称。
+        /// </summary>
+        /// <param name="results">已加载场景的资源名称。</param>
+        void GetLoadedSceneAssetNames(List<string> results);
+
+        /// <summary>
         /// 获取场景是否正在加载。
         /// </summary>
         /// <param name="sceneAssetName">场景资源名称。</param>
@@ -78,6 +85,12 @@ namespace GameFramework.Scene
         string[] GetLoadingSceneAssetNames();
 
         /// <summary>
+        /// 获取正在加载场景的资源名称。
+        /// </summary>
+        /// <param name="results">正在加载场景的资源名称。</param>
+        void GetLoadingSceneAssetNames(List<string> results);
+
+        /// <summary>
         /// 获取场景是否正在卸载。
         /// </summary>
         /// <param name="sceneAssetName">场景资源名称。</param>
@@ -89,6 +102,12 @@ namespace GameFramework.Scene
         /// </summary>
         /// <returns>正在卸载场景的资源名称。</returns>
         string[] GetUnloadingSceneAssetNames();
+
+        /// <summary>
+        /// 获取正在卸载场景的资源名称。
+        /// </summary>
+        /// <param name="results">正在卸载场景的资源名称。</param>
+        void GetUnloadingSceneAssetNames(List<string> results);
 
         /// <summary>
         /// 加载场景。

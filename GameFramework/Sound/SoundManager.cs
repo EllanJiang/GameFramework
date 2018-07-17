@@ -209,13 +209,31 @@ namespace GameFramework.Sound
         public ISoundGroup[] GetAllSoundGroups()
         {
             int index = 0;
-            ISoundGroup[] soundGroups = new ISoundGroup[m_SoundGroups.Count];
+            ISoundGroup[] results = new ISoundGroup[m_SoundGroups.Count];
             foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
             {
-                soundGroups[index++] = soundGroup.Value;
+                results[index++] = soundGroup.Value;
             }
 
-            return soundGroups;
+            return results;
+        }
+
+        /// <summary>
+        /// 获取所有声音组。
+        /// </summary>
+        /// <param name="results">所有声音组。</param>
+        public void GetAllSoundGroups(List<ISoundGroup> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<string, SoundGroup> soundGroup in m_SoundGroups)
+            {
+                results.Add(soundGroup.Value);
+            }
         }
 
         /// <summary>
@@ -292,6 +310,21 @@ namespace GameFramework.Sound
         public int[] GetAllLoadingSoundSerialIds()
         {
             return m_SoundsBeingLoaded.ToArray();
+        }
+
+        /// <summary>
+        /// 获取所有正在加载声音的序列编号。
+        /// </summary>
+        /// <param name="results">所有正在加载声音的序列编号。</param>
+        public void GetAllLoadingSoundSerialIds(List<int> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            results.AddRange(m_SoundsBeingLoaded);
         }
 
         /// <summary>

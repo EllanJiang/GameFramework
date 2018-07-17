@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.Fsm
 {
@@ -87,6 +88,12 @@ namespace GameFramework.Fsm
         /// </summary>
         /// <returns>所有有限状态机。</returns>
         FsmBase[] GetAllFsms();
+
+        /// <summary>
+        /// 获取所有有限状态机。
+        /// </summary>
+        /// <param name="results">所有有限状态机。</param>
+        void GetAllFsms(List<FsmBase> results);
 
         /// <summary>
         /// 创建有限状态机。

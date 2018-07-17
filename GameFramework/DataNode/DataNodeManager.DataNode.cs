@@ -201,6 +201,29 @@ namespace GameFramework.DataNode
             }
 
             /// <summary>
+            /// 获取所有子数据结点。
+            /// </summary>
+            /// <param name="results">所有子数据结点。</param>
+            public void GetAllChild(List<IDataNode> results)
+            {
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                if (m_Childs == null)
+                {
+                    return;
+                }
+
+                foreach (DataNode child in m_Childs)
+                {
+                    results.Add(child);
+                }
+            }
+
+            /// <summary>
             /// 根据索引移除子数据结点。
             /// </summary>
             /// <param name="index">子数据结点的索引位置。</param>

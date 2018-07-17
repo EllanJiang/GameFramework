@@ -204,13 +204,31 @@ namespace GameFramework.Fsm
         public FsmBase[] GetAllFsms()
         {
             int index = 0;
-            FsmBase[] fsms = new FsmBase[m_Fsms.Count];
+            FsmBase[] results = new FsmBase[m_Fsms.Count];
             foreach (KeyValuePair<string, FsmBase> fsm in m_Fsms)
             {
-                fsms[index++] = fsm.Value;
+                results[index++] = fsm.Value;
             }
 
-            return fsms;
+            return results;
+        }
+
+        /// <summary>
+        /// 获取所有有限状态机。
+        /// </summary>
+        /// <param name="results">所有有限状态机。</param>
+        public void GetAllFsms(List<FsmBase> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<string, FsmBase> fsm in m_Fsms)
+            {
+                results.Add(fsm.Value);
+            }
         }
 
         /// <summary>

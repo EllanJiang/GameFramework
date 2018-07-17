@@ -40,13 +40,31 @@ namespace GameFramework
             /// <returns>已加载的程序集中的所有类型。</returns>
             public static Type[] GetTypes()
             {
-                List<Type> allTypes = new List<Type>();
-                for (int i = 0; i < s_Assemblies.Length; i++)
+                List<Type> results = new List<Type>();
+                foreach (System.Reflection.Assembly assembly in s_Assemblies)
                 {
-                    allTypes.AddRange(s_Assemblies[i].GetTypes());
+                    results.AddRange(assembly.GetTypes());
                 }
 
-                return allTypes.ToArray();
+                return results.ToArray();
+            }
+
+            /// <summary>
+            /// 获取已加载的程序集中的所有类型。
+            /// </summary>
+            /// <param name="results">已加载的程序集中的所有类型。</param>
+            public static void GetTypes(List<Type> results)
+            {
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (System.Reflection.Assembly assembly in s_Assemblies)
+                {
+                    results.AddRange(assembly.GetTypes());
+                }
             }
 
             /// <summary>

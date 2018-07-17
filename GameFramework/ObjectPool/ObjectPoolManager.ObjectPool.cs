@@ -493,13 +493,13 @@ namespace GameFramework.ObjectPool
             public override ObjectInfo[] GetAllObjectInfos()
             {
                 int index = 0;
-                ObjectInfo[] objectInfos = new ObjectInfo[m_Objects.Count];
+                ObjectInfo[] results = new ObjectInfo[m_Objects.Count];
                 foreach (Object<T> obj in m_Objects)
                 {
-                    objectInfos[index++] = new ObjectInfo(obj.Name, obj.Locked, obj.Priority, obj.LastUseTime, obj.SpawnCount);
+                    results[index++] = new ObjectInfo(obj.Name, obj.Locked, obj.Priority, obj.LastUseTime, obj.SpawnCount);
                 }
 
-                return objectInfos;
+                return results;
             }
 
             internal override void Update(float elapseSeconds, float realElapseSeconds)

@@ -214,26 +214,64 @@ namespace GameFramework.ObjectPool
         /// <summary>
         /// 获取所有对象池。
         /// </summary>
+        /// <param name="results">所有对象池。</param>
+        public void GetAllObjectPools(List<ObjectPoolBase> results)
+        {
+            GetAllObjectPools(false, results);
+        }
+
+        /// <summary>
+        /// 获取所有对象池。
+        /// </summary>
         /// <param name="sort">是否根据对象池的优先级排序。</param>
         /// <returns>所有对象池。</returns>
         public ObjectPoolBase[] GetAllObjectPools(bool sort)
         {
             if (sort)
             {
-                List<ObjectPoolBase> objectPools = new List<ObjectPoolBase>(m_ObjectPools.Values);
-                objectPools.Sort(ObjectPoolComparer);
-                return objectPools.ToArray();
+                List<ObjectPoolBase> results = new List<ObjectPoolBase>();
+                foreach (KeyValuePair<string, ObjectPoolBase> objectPool in m_ObjectPools)
+                {
+                    results.Add(objectPool.Value);
+                }
+
+                results.Sort(ObjectPoolComparer);
+                return results.ToArray();
             }
             else
             {
                 int index = 0;
-                ObjectPoolBase[] objectPools = new ObjectPoolBase[m_ObjectPools.Count];
+                ObjectPoolBase[] results = new ObjectPoolBase[m_ObjectPools.Count];
                 foreach (KeyValuePair<string, ObjectPoolBase> objectPool in m_ObjectPools)
                 {
-                    objectPools[index++] = objectPool.Value;
+                    results[index++] = objectPool.Value;
                 }
 
-                return objectPools;
+                return results;
+            }
+        }
+
+        /// <summary>
+        /// 获取所有对象池。
+        /// </summary>
+        /// <param name="sort">是否根据对象池的优先级排序。</param>
+        /// <param name="results">所有对象池。</param>
+        public void GetAllObjectPools(bool sort, List<ObjectPoolBase> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<string, ObjectPoolBase> objectPool in m_ObjectPools)
+            {
+                results.Add(objectPool.Value);
+            }
+
+            if (sort)
+            {
+                results.Sort(ObjectPoolComparer);
             }
         }
 

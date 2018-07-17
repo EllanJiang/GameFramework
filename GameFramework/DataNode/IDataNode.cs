@@ -5,6 +5,8 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace GameFramework.DataNode
 {
     /// <summary>
@@ -96,6 +98,12 @@ namespace GameFramework.DataNode
         /// </summary>
         /// <returns>所有子数据结点。</returns>
         IDataNode[] GetAllChild();
+
+        /// <summary>
+        /// 获取所有子数据结点。
+        /// </summary>
+        /// <param name="results">所有子数据结点。</param>
+        void GetAllChild(List<IDataNode> results);
 
         /// <summary>
         /// 根据索引移除子数据结点。

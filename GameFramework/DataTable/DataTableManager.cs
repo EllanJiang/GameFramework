@@ -343,13 +343,31 @@ namespace GameFramework.DataTable
         public DataTableBase[] GetAllDataTables()
         {
             int index = 0;
-            DataTableBase[] dataTables = new DataTableBase[m_DataTables.Count];
+            DataTableBase[] results = new DataTableBase[m_DataTables.Count];
             foreach (KeyValuePair<string, DataTableBase> dataTable in m_DataTables)
             {
-                dataTables[index++] = dataTable.Value;
+                results[index++] = dataTable.Value;
             }
 
-            return dataTables;
+            return results;
+        }
+
+        /// <summary>
+        /// 获取所有数据表。
+        /// </summary>
+        /// <param name="results">所有数据表。</param>
+        public void GetAllDataTables(List<DataTableBase> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<string, DataTableBase> dataTable in m_DataTables)
+            {
+                results.Add(dataTable.Value);
+            }
         }
 
         /// <summary>

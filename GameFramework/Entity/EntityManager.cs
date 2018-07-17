@@ -279,13 +279,31 @@ namespace GameFramework.Entity
         public IEntityGroup[] GetAllEntityGroups()
         {
             int index = 0;
-            IEntityGroup[] entityGroups = new IEntityGroup[m_EntityGroups.Count];
+            IEntityGroup[] results = new IEntityGroup[m_EntityGroups.Count];
             foreach (KeyValuePair<string, EntityGroup> entityGroup in m_EntityGroups)
             {
-                entityGroups[index++] = entityGroup.Value;
+                results[index++] = entityGroup.Value;
             }
 
-            return entityGroups;
+            return results;
+        }
+
+        /// <summary>
+        /// 获取所有实体组。
+        /// </summary>
+        /// <param name="results">所有实体组。</param>
+        public void GetAllEntityGroups(List<IEntityGroup> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<string, EntityGroup> entityGroup in m_EntityGroups)
+            {
+                results.Add(entityGroup.Value);
+            }
         }
 
         /// <summary>
@@ -409,16 +427,43 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException("Entity asset name is invalid.");
             }
 
-            List<IEntity> entities = new List<IEntity>();
+            List<IEntity> results = new List<IEntity>();
             foreach (KeyValuePair<int, EntityInfo> entityInfo in m_EntityInfos)
             {
                 if (entityInfo.Value.Entity.EntityAssetName == entityAssetName)
                 {
-                    entities.Add(entityInfo.Value.Entity);
+                    results.Add(entityInfo.Value.Entity);
                 }
             }
 
-            return entities.ToArray();
+            return results.ToArray();
+        }
+
+        /// <summary>
+        /// 获取实体。
+        /// </summary>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <param name="results">要获取的实体。</param>
+        public void GetEntities(string entityAssetName, List<IEntity> results)
+        {
+            if (string.IsNullOrEmpty(entityAssetName))
+            {
+                throw new GameFrameworkException("Entity asset name is invalid.");
+            }
+
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<int, EntityInfo> entityInfo in m_EntityInfos)
+            {
+                if (entityInfo.Value.Entity.EntityAssetName == entityAssetName)
+                {
+                    results.Add(entityInfo.Value.Entity);
+                }
+            }
         }
 
         /// <summary>
@@ -428,13 +473,31 @@ namespace GameFramework.Entity
         public IEntity[] GetAllLoadedEntities()
         {
             int index = 0;
-            IEntity[] entities = new IEntity[m_EntityInfos.Count];
+            IEntity[] results = new IEntity[m_EntityInfos.Count];
             foreach (KeyValuePair<int, EntityInfo> entityInfo in m_EntityInfos)
             {
-                entities[index++] = entityInfo.Value.Entity;
+                results[index++] = entityInfo.Value.Entity;
             }
 
-            return entities;
+            return results;
+        }
+
+        /// <summary>
+        /// 获取所有已加载的实体。
+        /// </summary>
+        /// <param name="results">所有已加载的实体。</param>
+        public void GetAllLoadedEntities(List<IEntity> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<int, EntityInfo> entityInfo in m_EntityInfos)
+            {
+                results.Add(entityInfo.Value.Entity);
+            }
         }
 
         /// <summary>
@@ -444,13 +507,31 @@ namespace GameFramework.Entity
         public int[] GetAllLoadingEntityIds()
         {
             int index = 0;
-            int[] entitiesBeingLoaded = new int[m_EntitiesBeingLoaded.Count];
+            int[] results = new int[m_EntitiesBeingLoaded.Count];
             foreach (KeyValuePair<int, int> entityBeingLoaded in m_EntitiesBeingLoaded)
             {
-                entitiesBeingLoaded[index++] = entityBeingLoaded.Key;
+                results[index++] = entityBeingLoaded.Key;
             }
 
-            return entitiesBeingLoaded;
+            return results;
+        }
+
+        /// <summary>
+        /// 获取所有正在加载实体的编号。
+        /// </summary>
+        /// <param name="results">所有正在加载实体的编号。</param>
+        public void GetAllLoadingEntityIds(List<int> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<int, int> entityBeingLoaded in m_EntitiesBeingLoaded)
+            {
+                results.Add(entityBeingLoaded.Key);
+            }
         }
 
         /// <summary>
@@ -720,6 +801,22 @@ namespace GameFramework.Entity
         /// <summary>
         /// 获取子实体。
         /// </summary>
+        /// <param name="parentEntityId">要获取子实体的父实体的实体编号。</param>
+        /// <param name="results">子实体数组。</param>
+        public void GetChildEntities(int parentEntityId, List<IEntity> results)
+        {
+            EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
+            if (parentEntityInfo == null)
+            {
+                throw new GameFrameworkException(string.Format("Can not find parent entity '{0}'.", parentEntityId.ToString()));
+            }
+
+            parentEntityInfo.GetChildEntities(results);
+        }
+
+        /// <summary>
+        /// 获取子实体。
+        /// </summary>
         /// <param name="parentEntity">要获取子实体的父实体。</param>
         /// <returns>子实体数组。</returns>
         public IEntity[] GetChildEntities(IEntity parentEntity)
@@ -730,6 +827,21 @@ namespace GameFramework.Entity
             }
 
             return GetChildEntities(parentEntity.Id);
+        }
+
+        /// <summary>
+        /// 获取子实体。
+        /// </summary>
+        /// <param name="parentEntity">要获取子实体的父实体。</param>
+        /// <param name="results">子实体数组。</param>
+        public void GetChildEntities(IEntity parentEntity, List<IEntity> results)
+        {
+            if (parentEntity == null)
+            {
+                throw new GameFrameworkException("Parent entity is invalid.");
+            }
+
+            GetChildEntities(parentEntity.Id, results);
         }
 
         /// <summary>
