@@ -5,8 +5,6 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using System.Diagnostics;
-
 namespace GameFramework
 {
     public static partial class Utility
@@ -31,7 +29,6 @@ namespace GameFramework
             /// 开始采样。
             /// </summary>
             /// <param name="name">采样名称。</param>
-            [Conditional("DEBUG")]
             public static void BeginSample(string name)
             {
                 if (s_ProfilerHelper == null)
@@ -45,7 +42,6 @@ namespace GameFramework
             /// <summary>
             /// 结束采样。
             /// </summary>
-            [Conditional("DEBUG")]
             public static void EndSample()
             {
                 if (s_ProfilerHelper == null)
