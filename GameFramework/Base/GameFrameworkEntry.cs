@@ -24,12 +24,14 @@ namespace GameFramework
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         public static void Update(float elapseSeconds, float realElapseSeconds)
         {
+            Utility.Profiler.BeginSample("GameFramework.GameFrameworkEntry.Update");
             foreach (GameFrameworkModule module in s_GameFrameworkModules)
             {
-                Utility.Profiler.BeginSample(module.GetType().FullName);
+                Utility.Profiler.BeginSample(string.Format("GameFramework.GameFrameworkEntry.Update ({0})", module.GetType().FullName));
                 module.Update(elapseSeconds, realElapseSeconds);
                 Utility.Profiler.EndSample();
             }
+            Utility.Profiler.EndSample();
         }
 
         /// <summary>
