@@ -51,15 +51,13 @@ namespace GameFramework
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         public void Update(float elapseSeconds, float realElapseSeconds)
         {
-            while (m_Events.Count > 0)
+            lock (m_Events)
             {
-                Event e = null;
-                lock (m_Events)
+                while (m_Events.Count > 0)
                 {
-                    e = m_Events.Dequeue();
+                    Event e = m_Events.Dequeue();
+                    HandleEvent(e.Sender, e.EventArgs);
                 }
-
-                HandleEvent(e.Sender, e.EventArgs);
             }
         }
 
