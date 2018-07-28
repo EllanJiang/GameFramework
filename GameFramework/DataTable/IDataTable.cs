@@ -102,11 +102,24 @@ namespace GameFramework.DataTable
         T[] GetAllDataRows();
 
         /// <summary>
+        /// 获取所有数据表行。
+        /// </summary>
+        /// <param name="results">所有数据表行。</param>
+        void GetAllDataRows(List<T> results);
+
+        /// <summary>
         /// 获取所有符合条件的数据表行。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
         /// <returns>所有符合条件的数据表行。</returns>
         T[] GetAllDataRows(Predicate<T> condition);
+
+        /// <summary>
+        /// 获取所有符合条件的数据表行。
+        /// </summary>
+        /// <param name="condition">要检查的条件。</param>
+        /// <param name="results">所有符合条件的数据表行。</param>
+        void GetAllDataRows(Predicate<T> condition, List<T> results);
 
         /// <summary>
         /// 获取所有排序后的数据表行。
@@ -116,11 +129,26 @@ namespace GameFramework.DataTable
         T[] GetAllDataRows(Comparison<T> comparison);
 
         /// <summary>
+        /// 获取所有排序后的数据表行。
+        /// </summary>
+        /// <param name="comparison">要排序的条件。</param>
+        /// <param name="results">所有排序后的数据表行。</param>
+        void GetAllDataRows(Comparison<T> comparison, List<T> results);
+
+        /// <summary>
         /// 获取所有排序后的符合条件的数据表行。
         /// </summary>
         /// <param name="condition">要检查的条件。</param>
         /// <param name="comparison">要排序的条件。</param>
         /// <returns>所有排序后的符合条件的数据表行。</returns>
         T[] GetAllDataRows(Predicate<T> condition, Comparison<T> comparison);
+
+        /// <summary>
+        /// 获取所有排序后的符合条件的数据表行。
+        /// </summary>
+        /// <param name="condition">要检查的条件。</param>
+        /// <param name="comparison">要排序的条件。</param>
+        /// <param name="results">所有排序后的符合条件的数据表行。</param>
+        void GetAllDataRows(Predicate<T> condition, Comparison<T> comparison, List<T> results);
     }
 }

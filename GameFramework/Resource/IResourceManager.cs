@@ -57,7 +57,7 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取当前资源内部版本号。
+        /// 获取当前内部资源版本号。
         /// </summary>
         int InternalResourceVersion
         {
@@ -227,26 +227,6 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 资源初始化完成事件。
-        /// </summary>
-        event EventHandler<ResourceInitCompleteEventArgs> ResourceInitComplete;
-
-        /// <summary>
-        /// 版本资源列表更新成功事件。
-        /// </summary>
-        event EventHandler<VersionListUpdateSuccessEventArgs> VersionListUpdateSuccess;
-
-        /// <summary>
-        /// 版本资源列表更新失败事件。
-        /// </summary>
-        event EventHandler<VersionListUpdateFailureEventArgs> VersionListUpdateFailure;
-
-        /// <summary>
-        /// 资源检查完成事件。
-        /// </summary>
-        event EventHandler<ResourceCheckCompleteEventArgs> ResourceCheckComplete;
-
-        /// <summary>
         /// 资源更新开始事件。
         /// </summary>
         event EventHandler<ResourceUpdateStartEventArgs> ResourceUpdateStart;
@@ -265,11 +245,6 @@ namespace GameFramework.Resource
         /// 资源更新失败事件。
         /// </summary>
         event EventHandler<ResourceUpdateFailureEventArgs> ResourceUpdateFailure;
-
-        /// <summary>
-        /// 资源更新全部完成事件。
-        /// </summary>
-        event EventHandler<ResourceUpdateAllCompleteEventArgs> ResourceUpdateAllComplete;
 
         /// <summary>
         /// 设置资源只读区路径。
@@ -329,12 +304,13 @@ namespace GameFramework.Resource
         /// <summary>
         /// 使用单机模式并初始化资源。
         /// </summary>
-        void InitResources();
+        /// <param name="initResourcesCompleteCallback">使用单机模式并初始化资源完成的回调函数。</param>
+        void InitResources(InitResourcesCompleteCallback initResourcesCompleteCallback);
 
         /// <summary>
         /// 使用可更新模式并检查版本资源列表。
         /// </summary>
-        /// <param name="latestInternalResourceVersion">最新的资源内部版本号。</param>
+        /// <param name="latestInternalResourceVersion">最新的内部资源版本号。</param>
         /// <returns>检查版本资源列表结果。</returns>
         CheckVersionListResult CheckVersionList(int latestInternalResourceVersion);
 
@@ -345,24 +321,27 @@ namespace GameFramework.Resource
         /// <param name="versionListHashCode">版本资源列表哈希值。</param>
         /// <param name="versionListZipLength">版本资源列表压缩后大小。</param>
         /// <param name="versionListZipHashCode">版本资源列表压缩后哈希值。</param>
-        void UpdateVersionList(int versionListLength, int versionListHashCode, int versionListZipLength, int versionListZipHashCode);
+        /// <param name="updateVersionListCallbacks">版本资源列表更新回调函数集。</param>
+        void UpdateVersionList(int versionListLength, int versionListHashCode, int versionListZipLength, int versionListZipHashCode, UpdateVersionListCallbacks updateVersionListCallbacks);
 
         /// <summary>
         /// 使用可更新模式并检查资源。
         /// </summary>
-        void CheckResources();
+        /// <param name="checkResourcesCompleteCallback">使用可更新模式并检查资源完成的回调函数。</param>
+        void CheckResources(CheckResourcesCompleteCallback checkResourcesCompleteCallback);
 
         /// <summary>
         /// 使用可更新模式并更新资源。
         /// </summary>
-        void UpdateResources();
+        /// <param name="updateResourcesCompleteCallback">使用可更新模式并更新资源全部完成的回调函数。</param>
+        void UpdateResources(UpdateResourcesCompleteCallback updateResourcesCompleteCallback);
 
         /// <summary>
         /// 检查资源是否存在。
         /// </summary>
-        /// <param name="assetName">要检查的资源。</param>
+        /// <param name="assetName">要检查资源的名称。</param>
         /// <returns>资源是否存在。</returns>
-        bool ExistAsset(string assetName);
+        bool HasAsset(string assetName);
 
         /// <summary>
         /// 异步加载资源。

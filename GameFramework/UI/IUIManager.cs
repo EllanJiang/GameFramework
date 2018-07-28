@@ -8,6 +8,7 @@
 using GameFramework.ObjectPool;
 using GameFramework.Resource;
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.UI
 {
@@ -124,6 +125,12 @@ namespace GameFramework.UI
         IUIGroup[] GetAllUIGroups();
 
         /// <summary>
+        /// 获取所有界面组。
+        /// </summary>
+        /// <param name="results">所有界面组。</param>
+        void GetAllUIGroups(List<IUIGroup> results);
+
+        /// <summary>
         /// 增加界面组。
         /// </summary>
         /// <param name="uiGroupName">界面组名称。</param>
@@ -176,16 +183,35 @@ namespace GameFramework.UI
         IUIForm[] GetUIForms(string uiFormAssetName);
 
         /// <summary>
+        /// 获取界面。
+        /// </summary>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="results">要获取的界面。</param>
+        void GetUIForms(string uiFormAssetName, List<IUIForm> results);
+
+        /// <summary>
         /// 获取所有已加载的界面。
         /// </summary>
         /// <returns>所有已加载的界面。</returns>
         IUIForm[] GetAllLoadedUIForms();
 
         /// <summary>
+        /// 获取所有已加载的界面。
+        /// </summary>
+        /// <param name="results">所有已加载的界面。</param>
+        void GetAllLoadedUIForms(List<IUIForm> results);
+
+        /// <summary>
         /// 获取所有正在加载界面的序列编号。
         /// </summary>
         /// <returns>所有正在加载界面的序列编号。</returns>
         int[] GetAllLoadingUIFormSerialIds();
+
+        /// <summary>
+        /// 获取所有正在加载界面的序列编号。
+        /// </summary>
+        /// <param name="results">所有正在加载界面的序列编号。</param>
+        void GetAllLoadingUIFormSerialIds(List<int> results);
 
         /// <summary>
         /// 是否正在加载界面。

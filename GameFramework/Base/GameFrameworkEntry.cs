@@ -15,19 +15,7 @@ namespace GameFramework
     /// </summary>
     public static class GameFrameworkEntry
     {
-        private const string GameFrameworkVersion = "3.1.3";
         private static readonly LinkedList<GameFrameworkModule> s_GameFrameworkModules = new LinkedList<GameFrameworkModule>();
-
-        /// <summary>
-        /// 获取游戏框架版本号。
-        /// </summary>
-        public static string Version
-        {
-            get
-            {
-                return GameFrameworkVersion;
-            }
-        }
 
         /// <summary>
         /// 所有游戏框架模块轮询。

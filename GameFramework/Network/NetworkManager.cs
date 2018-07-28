@@ -188,13 +188,31 @@ namespace GameFramework.Network
         public INetworkChannel[] GetAllNetworkChannels()
         {
             int index = 0;
-            INetworkChannel[] networkChannels = new INetworkChannel[m_NetworkChannels.Count];
+            INetworkChannel[] results = new INetworkChannel[m_NetworkChannels.Count];
             foreach (KeyValuePair<string, NetworkChannel> networkChannel in m_NetworkChannels)
             {
-                networkChannels[index++] = networkChannel.Value;
+                results[index++] = networkChannel.Value;
             }
 
-            return networkChannels;
+            return results;
+        }
+
+        /// <summary>
+        /// 获取所有网络频道。
+        /// </summary>
+        /// <param name="results">所有网络频道。</param>
+        public void GetAllNetworkChannels(List<INetworkChannel> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<string, NetworkChannel> networkChannel in m_NetworkChannels)
+            {
+                results.Add(networkChannel.Value);
+            }
         }
 
         /// <summary>

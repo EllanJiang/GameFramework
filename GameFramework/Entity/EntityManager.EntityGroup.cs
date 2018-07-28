@@ -254,16 +254,43 @@ namespace GameFramework.Entity
                     throw new GameFrameworkException("Entity asset name is invalid.");
                 }
 
-                List<IEntity> entities = new List<IEntity>();
+                List<IEntity> results = new List<IEntity>();
                 foreach (IEntity entity in m_Entities)
                 {
                     if (entity.EntityAssetName == entityAssetName)
                     {
-                        entities.Add(entity);
+                        results.Add(entity);
                     }
                 }
 
-                return entities.ToArray();
+                return results.ToArray();
+            }
+
+            /// <summary>
+            /// 从实体组中获取实体。
+            /// </summary>
+            /// <param name="entityAssetName">实体资源名称。</param>
+            /// <param name="results">要获取的实体。</param>
+            public void GetEntities(string entityAssetName, List<IEntity> results)
+            {
+                if (string.IsNullOrEmpty(entityAssetName))
+                {
+                    throw new GameFrameworkException("Entity asset name is invalid.");
+                }
+
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (IEntity entity in m_Entities)
+                {
+                    if (entity.EntityAssetName == entityAssetName)
+                    {
+                        results.Add(entity);
+                    }
+                }
             }
 
             /// <summary>
@@ -272,13 +299,31 @@ namespace GameFramework.Entity
             /// <returns>实体组中的所有实体。</returns>
             public IEntity[] GetAllEntities()
             {
-                List<IEntity> entities = new List<IEntity>();
+                List<IEntity> results = new List<IEntity>();
                 foreach (IEntity entity in m_Entities)
                 {
-                    entities.Add(entity);
+                    results.Add(entity);
                 }
 
-                return entities.ToArray();
+                return results.ToArray();
+            }
+
+            /// <summary>
+            /// 从实体组中获取所有实体。
+            /// </summary>
+            /// <param name="results">实体组中的所有实体。</param>
+            public void GetAllEntities(List<IEntity> results)
+            {
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (IEntity entity in m_Entities)
+                {
+                    results.Add(entity);
+                }
             }
 
             /// <summary>

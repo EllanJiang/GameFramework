@@ -28,18 +28,18 @@ namespace GameFramework
         public static ReferencePoolInfo[] GetAllReferencePoolInfos()
         {
             int index = 0;
-            ReferencePoolInfo[] referencePoolInfos = null;
+            ReferencePoolInfo[] results = null;
 
             lock (s_ReferenceCollections)
             {
-                referencePoolInfos = new ReferencePoolInfo[s_ReferenceCollections.Count];
+                results = new ReferencePoolInfo[s_ReferenceCollections.Count];
                 foreach (KeyValuePair<string, ReferenceCollection> referenceCollection in s_ReferenceCollections)
                 {
-                    referencePoolInfos[index++] = new ReferencePoolInfo(referenceCollection.Key, referenceCollection.Value.UnusedReferenceCount, referenceCollection.Value.UsingReferenceCount, referenceCollection.Value.AcquireReferenceCount, referenceCollection.Value.ReleaseReferenceCount, referenceCollection.Value.AddReferenceCount, referenceCollection.Value.RemoveReferenceCount);
+                    results[index++] = new ReferencePoolInfo(referenceCollection.Key, referenceCollection.Value.UnusedReferenceCount, referenceCollection.Value.UsingReferenceCount, referenceCollection.Value.AcquireReferenceCount, referenceCollection.Value.ReleaseReferenceCount, referenceCollection.Value.AddReferenceCount, referenceCollection.Value.RemoveReferenceCount);
                 }
             }
 
-            return referencePoolInfos;
+            return results;
         }
 
         /// <summary>

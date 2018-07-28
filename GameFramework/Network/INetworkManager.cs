@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.Network
 {
@@ -66,6 +67,12 @@ namespace GameFramework.Network
         /// </summary>
         /// <returns>所有网络频道。</returns>
         INetworkChannel[] GetAllNetworkChannels();
+
+        /// <summary>
+        /// 获取所有网络频道。
+        /// </summary>
+        /// <param name="results">所有网络频道。</param>
+        void GetAllNetworkChannels(List<INetworkChannel> results);
 
         /// <summary>
         /// 创建网络频道。

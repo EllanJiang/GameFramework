@@ -8,6 +8,7 @@
 using GameFramework.ObjectPool;
 using GameFramework.Resource;
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.Entity
 {
@@ -96,6 +97,12 @@ namespace GameFramework.Entity
         IEntityGroup[] GetAllEntityGroups();
 
         /// <summary>
+        /// 获取所有实体组。
+        /// </summary>
+        /// <param name="results">所有实体组。</param>
+        void GetAllEntityGroups(List<IEntityGroup> results);
+
+        /// <summary>
         /// 增加实体组。
         /// </summary>
         /// <param name="entityGroupName">实体组名称。</param>
@@ -143,16 +150,35 @@ namespace GameFramework.Entity
         IEntity[] GetEntities(string entityAssetName);
 
         /// <summary>
+        /// 获取实体。
+        /// </summary>
+        /// <param name="entityAssetName">实体资源名称。</param>
+        /// <param name="results">要获取的实体。</param>
+        void GetEntities(string entityAssetName, List<IEntity> results);
+
+        /// <summary>
         /// 获取所有已加载的实体。
         /// </summary>
         /// <returns>所有已加载的实体。</returns>
         IEntity[] GetAllLoadedEntities();
 
         /// <summary>
+        /// 获取所有已加载的实体。
+        /// </summary>
+        /// <param name="results">所有已加载的实体。</param>
+        void GetAllLoadedEntities(List<IEntity> results);
+
+        /// <summary>
         /// 获取所有正在加载实体的编号。
         /// </summary>
         /// <returns>所有正在加载实体的编号。</returns>
         int[] GetAllLoadingEntityIds();
+
+        /// <summary>
+        /// 获取所有正在加载实体的编号。
+        /// </summary>
+        /// <param name="results">所有正在加载实体的编号。</param>
+        void GetAllLoadingEntityIds(List<int> results);
 
         /// <summary>
         /// 是否正在加载实体。
@@ -270,9 +296,23 @@ namespace GameFramework.Entity
         /// <summary>
         /// 获取子实体。
         /// </summary>
+        /// <param name="parentEntityId">要获取子实体的父实体的实体编号。</param>
+        /// <param name="results">子实体数组。</param>
+        void GetChildEntities(int parentEntityId, List<IEntity> results);
+
+        /// <summary>
+        /// 获取子实体。
+        /// </summary>
         /// <param name="parentEntity">要获取子实体的父实体。</param>
         /// <returns>子实体数组。</returns>
         IEntity[] GetChildEntities(IEntity parentEntity);
+
+        /// <summary>
+        /// 获取子实体。
+        /// </summary>
+        /// <param name="parentEntity">要获取子实体的父实体。</param>
+        /// <param name="results">子实体数组。</param>
+        void GetChildEntities(IEntity parentEntity, List<IEntity> results);
 
         /// <summary>
         /// 附加子实体。

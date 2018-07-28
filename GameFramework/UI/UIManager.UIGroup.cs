@@ -249,16 +249,43 @@ namespace GameFramework.UI
                     throw new GameFrameworkException("UI form asset name is invalid.");
                 }
 
-                List<IUIForm> uiForms = new List<IUIForm>();
+                List<IUIForm> results = new List<IUIForm>();
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
                 {
                     if (uiFormInfo.UIForm.UIFormAssetName == uiFormAssetName)
                     {
-                        uiForms.Add(uiFormInfo.UIForm);
+                        results.Add(uiFormInfo.UIForm);
                     }
                 }
 
-                return uiForms.ToArray();
+                return results.ToArray();
+            }
+
+            /// <summary>
+            /// 从界面组中获取界面。
+            /// </summary>
+            /// <param name="uiFormAssetName">界面资源名称。</param>
+            /// <param name="results">要获取的界面。</param>
+            public void GetUIForms(string uiFormAssetName, List<IUIForm> results)
+            {
+                if (string.IsNullOrEmpty(uiFormAssetName))
+                {
+                    throw new GameFrameworkException("UI form asset name is invalid.");
+                }
+
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
+                {
+                    if (uiFormInfo.UIForm.UIFormAssetName == uiFormAssetName)
+                    {
+                        results.Add(uiFormInfo.UIForm);
+                    }
+                }
             }
 
             /// <summary>
@@ -267,13 +294,31 @@ namespace GameFramework.UI
             /// <returns>界面组中的所有界面。</returns>
             public IUIForm[] GetAllUIForms()
             {
-                List<IUIForm> uiForms = new List<IUIForm>();
+                List<IUIForm> results = new List<IUIForm>();
                 foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
                 {
-                    uiForms.Add(uiFormInfo.UIForm);
+                    results.Add(uiFormInfo.UIForm);
                 }
 
-                return uiForms.ToArray();
+                return results.ToArray();
+            }
+
+            /// <summary>
+            /// 从界面组中获取所有界面。
+            /// </summary>
+            /// <param name="results">界面组中的所有界面。</param>
+            public void GetAllUIForms(List<IUIForm> results)
+            {
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
+                {
+                    results.Add(uiFormInfo.UIForm);
+                }
             }
 
             /// <summary>
@@ -391,6 +436,25 @@ namespace GameFramework.UI
                     }
 
                     current = next;
+                }
+            }
+
+            internal void InternalGetUIForms(string uiFormAssetName, List<IUIForm> results)
+            {
+                foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
+                {
+                    if (uiFormInfo.UIForm.UIFormAssetName == uiFormAssetName)
+                    {
+                        results.Add(uiFormInfo.UIForm);
+                    }
+                }
+            }
+
+            internal void InternalGetAllUIForms(List<IUIForm> results)
+            {
+                foreach (UIFormInfo uiFormInfo in m_UIFormInfos)
+                {
+                    results.Add(uiFormInfo.UIForm);
                 }
             }
 

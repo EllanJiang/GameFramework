@@ -7,6 +7,7 @@
 
 using GameFramework.Resource;
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.Sound
 {
@@ -76,6 +77,12 @@ namespace GameFramework.Sound
         ISoundGroup[] GetAllSoundGroups();
 
         /// <summary>
+        /// 获取所有声音组。
+        /// </summary>
+        /// <param name="results">所有声音组。</param>
+        void GetAllSoundGroups(List<ISoundGroup> results);
+
+        /// <summary>
         /// 增加声音组。
         /// </summary>
         /// <param name="soundGroupName">声音组名称。</param>
@@ -106,6 +113,12 @@ namespace GameFramework.Sound
         /// </summary>
         /// <returns>所有正在加载声音的序列编号。</returns>
         int[] GetAllLoadingSoundSerialIds();
+
+        /// <summary>
+        /// 获取所有正在加载声音的序列编号。
+        /// </summary>
+        /// <param name="results">所有正在加载声音的序列编号。</param>
+        void GetAllLoadingSoundSerialIds(List<int> results);
 
         /// <summary>
         /// 是否正在加载声音。
