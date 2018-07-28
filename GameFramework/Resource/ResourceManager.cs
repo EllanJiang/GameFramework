@@ -46,15 +46,14 @@ namespace GameFramework.Resource
         private string m_ApplicableGameVersion;
         private int m_InternalResourceVersion;
         private DecryptResourceCallback m_DecryptResourceCallback;
-        private EventHandler<ResourceInitCompleteEventArgs> m_ResourceInitCompleteEventHandler;
-        private EventHandler<VersionListUpdateSuccessEventArgs> m_VersionListUpdateSuccessEventHandler;
-        private EventHandler<VersionListUpdateFailureEventArgs> m_VersionListUpdateFailureEventHandler;
-        private EventHandler<ResourceCheckCompleteEventArgs> m_ResourceCheckCompleteEventHandler;
+        private InitResourcesCompleteCallback m_InitResourcesCompleteCallback;
+        private UpdateVersionListCallbacks m_UpdateVersionListCallbacks;
+        private CheckResourcesCompleteCallback m_CheckResourcesCompleteCallback;
+        private UpdateResourcesCompleteCallback m_UpdateResourcesCompleteCallback;
         private EventHandler<ResourceUpdateStartEventArgs> m_ResourceUpdateStartEventHandler;
         private EventHandler<ResourceUpdateChangedEventArgs> m_ResourceUpdateChangedEventHandler;
         private EventHandler<ResourceUpdateSuccessEventArgs> m_ResourceUpdateSuccessEventHandler;
         private EventHandler<ResourceUpdateFailureEventArgs> m_ResourceUpdateFailureEventHandler;
-        private EventHandler<ResourceUpdateAllCompleteEventArgs> m_ResourceUpdateAllCompleteEventHandler;
 
         /// <summary>
         /// 初始化资源管理器的新实例。
@@ -84,16 +83,15 @@ namespace GameFramework.Resource
             m_ApplicableGameVersion = null;
             m_InternalResourceVersion = 0;
             m_DecryptResourceCallback = null;
+            m_InitResourcesCompleteCallback = null;
+            m_UpdateVersionListCallbacks = null;
+            m_CheckResourcesCompleteCallback = null;
+            m_UpdateResourcesCompleteCallback = null;
 
-            m_ResourceInitCompleteEventHandler = null;
-            m_VersionListUpdateSuccessEventHandler = null;
-            m_VersionListUpdateFailureEventHandler = null;
-            m_ResourceCheckCompleteEventHandler = null;
             m_ResourceUpdateStartEventHandler = null;
             m_ResourceUpdateChangedEventHandler = null;
             m_ResourceUpdateSuccessEventHandler = null;
             m_ResourceUpdateFailureEventHandler = null;
-            m_ResourceUpdateAllCompleteEventHandler = null;
         }
 
         /// <summary>
@@ -429,66 +427,6 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 资源初始化完成事件。
-        /// </summary>
-        public event EventHandler<ResourceInitCompleteEventArgs> ResourceInitComplete
-        {
-            add
-            {
-                m_ResourceInitCompleteEventHandler += value;
-            }
-            remove
-            {
-                m_ResourceInitCompleteEventHandler -= value;
-            }
-        }
-
-        /// <summary>
-        /// 版本资源列表更新成功事件。
-        /// </summary>
-        public event EventHandler<VersionListUpdateSuccessEventArgs> VersionListUpdateSuccess
-        {
-            add
-            {
-                m_VersionListUpdateSuccessEventHandler += value;
-            }
-            remove
-            {
-                m_VersionListUpdateSuccessEventHandler -= value;
-            }
-        }
-
-        /// <summary>
-        /// 版本资源列表更新失败事件。
-        /// </summary>
-        public event EventHandler<VersionListUpdateFailureEventArgs> VersionListUpdateFailure
-        {
-            add
-            {
-                m_VersionListUpdateFailureEventHandler += value;
-            }
-            remove
-            {
-                m_VersionListUpdateFailureEventHandler -= value;
-            }
-        }
-
-        /// <summary>
-        /// 资源检查完成事件。
-        /// </summary>
-        public event EventHandler<ResourceCheckCompleteEventArgs> ResourceCheckComplete
-        {
-            add
-            {
-                m_ResourceCheckCompleteEventHandler += value;
-            }
-            remove
-            {
-                m_ResourceCheckCompleteEventHandler -= value;
-            }
-        }
-
-        /// <summary>
         /// 资源更新开始事件。
         /// </summary>
         public event EventHandler<ResourceUpdateStartEventArgs> ResourceUpdateStart
@@ -545,21 +483,6 @@ namespace GameFramework.Resource
             remove
             {
                 m_ResourceUpdateFailureEventHandler -= value;
-            }
-        }
-
-        /// <summary>
-        /// 资源更新全部完成事件。
-        /// </summary>
-        public event EventHandler<ResourceUpdateAllCompleteEventArgs> ResourceUpdateAllComplete
-        {
-            add
-            {
-                m_ResourceUpdateAllCompleteEventHandler += value;
-            }
-            remove
-            {
-                m_ResourceUpdateAllCompleteEventHandler -= value;
             }
         }
 
@@ -807,8 +730,14 @@ namespace GameFramework.Resource
         /// <summary>
         /// 使用单机模式并初始化资源。
         /// </summary>
-        public void InitResources()
+        /// <param name="initResourcesCompleteCallback">使用单机模式并初始化资源完成的回调函数。</param>
+        public void InitResources(InitResourcesCompleteCallback initResourcesCompleteCallback)
         {
+            if (initResourcesCompleteCallback == null)
+            {
+                throw new GameFrameworkException("Init resources complete callback is invalid.");
+            }
+
             if (m_ResourceMode == ResourceMode.Unspecified)
             {
                 throw new GameFrameworkException("You must set resource mode first.");
@@ -825,6 +754,7 @@ namespace GameFramework.Resource
             }
 
             m_RefuseSetCurrentVariant = true;
+            m_InitResourcesCompleteCallback = initResourcesCompleteCallback;
             m_ResourceIniter.InitResources(m_CurrentVariant);
         }
 
@@ -860,8 +790,14 @@ namespace GameFramework.Resource
         /// <param name="versionListHashCode">版本资源列表哈希值。</param>
         /// <param name="versionListZipLength">版本资源列表压缩后大小。</param>
         /// <param name="versionListZipHashCode">版本资源列表压缩后哈希值。</param>
-        public void UpdateVersionList(int versionListLength, int versionListHashCode, int versionListZipLength, int versionListZipHashCode)
+        /// <param name="updateVersionListCallbacks">版本资源列表更新回调函数集。</param>
+        public void UpdateVersionList(int versionListLength, int versionListHashCode, int versionListZipLength, int versionListZipHashCode, UpdateVersionListCallbacks updateVersionListCallbacks)
         {
+            if (updateVersionListCallbacks == null)
+            {
+                throw new GameFrameworkException("Update version list callbacks is invalid.");
+            }
+
             if (m_ResourceMode == ResourceMode.Unspecified)
             {
                 throw new GameFrameworkException("You must set resource mode first.");
@@ -877,14 +813,21 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("You can not use UpdateVersionList at this time.");
             }
 
+            m_UpdateVersionListCallbacks = updateVersionListCallbacks;
             m_VersionListProcessor.UpdateVersionList(versionListLength, versionListHashCode, versionListZipLength, versionListZipHashCode);
         }
 
         /// <summary>
         /// 使用可更新模式并检查资源。
         /// </summary>
-        public void CheckResources()
+        /// <param name="checkResourcesCompleteCallback">使用可更新模式并检查资源完成的回调函数。</param>
+        public void CheckResources(CheckResourcesCompleteCallback checkResourcesCompleteCallback)
         {
+            if (checkResourcesCompleteCallback == null)
+            {
+                throw new GameFrameworkException("Check resources complete callback is invalid.");
+            }
+
             if (m_ResourceMode == ResourceMode.Unspecified)
             {
                 throw new GameFrameworkException("You must set resource mode first.");
@@ -901,14 +844,21 @@ namespace GameFramework.Resource
             }
 
             m_RefuseSetCurrentVariant = true;
+            m_CheckResourcesCompleteCallback = checkResourcesCompleteCallback;
             m_ResourceChecker.CheckResources(m_CurrentVariant);
         }
 
         /// <summary>
         /// 使用可更新模式并更新资源。
         /// </summary>
-        public void UpdateResources()
+        /// <param name="updateResourcesCompleteCallback">使用可更新模式并更新资源全部完成的回调函数。</param>
+        public void UpdateResources(UpdateResourcesCompleteCallback updateResourcesCompleteCallback)
         {
+            if (updateResourcesCompleteCallback == null)
+            {
+                throw new GameFrameworkException("Update resources complete callback is invalid.");
+            }
+
             if (m_ResourceMode == ResourceMode.Unspecified)
             {
                 throw new GameFrameworkException("You must set resource mode first.");
@@ -924,6 +874,7 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("You can not use UpdateResources at this time.");
             }
 
+            m_UpdateResourcesCompleteCallback = updateResourcesCompleteCallback;
             m_ResourceUpdater.UpdateResources();
         }
 
@@ -1422,25 +1373,20 @@ namespace GameFramework.Resource
             m_ResourceIniter.Shutdown();
             m_ResourceIniter = null;
 
-            if (m_ResourceInitCompleteEventHandler != null)
-            {
-                m_ResourceInitCompleteEventHandler(this, new ResourceInitCompleteEventArgs());
-            }
+            m_InitResourcesCompleteCallback();
+            m_InitResourcesCompleteCallback = null;
         }
 
         private void OnVersionListProcessorUpdateSuccess(string downloadPath, string downloadUri)
         {
-            if (m_VersionListUpdateSuccessEventHandler != null)
-            {
-                m_VersionListUpdateSuccessEventHandler(this, new VersionListUpdateSuccessEventArgs(downloadPath, downloadUri));
-            }
+            m_UpdateVersionListCallbacks.UpdateVersionListSuccessCallback(downloadPath, downloadUri);
         }
 
         private void OnVersionListProcessorUpdateFailure(string downloadUri, string errorMessage)
         {
-            if (m_VersionListUpdateFailureEventHandler != null)
+            if (m_UpdateVersionListCallbacks.UpdateVersionListFailureCallback != null)
             {
-                m_VersionListUpdateFailureEventHandler(this, new VersionListUpdateFailureEventArgs(downloadUri, errorMessage));
+                m_UpdateVersionListCallbacks.UpdateVersionListFailureCallback(downloadUri, errorMessage);
             }
         }
 
@@ -1455,6 +1401,7 @@ namespace GameFramework.Resource
             m_VersionListProcessor.VersionListUpdateFailure -= OnVersionListProcessorUpdateFailure;
             m_VersionListProcessor.Shutdown();
             m_VersionListProcessor = null;
+            m_UpdateVersionListCallbacks = null;
 
             m_ResourceChecker.ResourceNeedUpdate -= OnCheckerResourceNeedUpdate;
             m_ResourceChecker.ResourceCheckComplete -= OnCheckerResourceCheckComplete;
@@ -1474,10 +1421,8 @@ namespace GameFramework.Resource
                 m_ResourceUpdater = null;
             }
 
-            if (m_ResourceCheckCompleteEventHandler != null)
-            {
-                m_ResourceCheckCompleteEventHandler(this, new ResourceCheckCompleteEventArgs(removedCount, updateCount, updateTotalLength, updateTotalZipLength));
-            }
+            m_CheckResourcesCompleteCallback(updateCount > 0, removedCount, updateCount, updateTotalLength, updateTotalZipLength);
+            m_CheckResourcesCompleteCallback = null;
         }
 
         private void OnUpdaterResourceUpdateStart(ResourceName resourceName, string downloadPath, string downloadUri, int currentLength, int zipLength, int retryCount)
@@ -1522,10 +1467,8 @@ namespace GameFramework.Resource
             m_ResourceUpdater.Shutdown();
             m_ResourceUpdater = null;
 
-            if (m_ResourceUpdateAllCompleteEventHandler != null)
-            {
-                m_ResourceUpdateAllCompleteEventHandler(this, new ResourceUpdateAllCompleteEventArgs());
-            }
+            m_UpdateResourcesCompleteCallback();
+            m_UpdateResourcesCompleteCallback = null;
         }
     }
 }

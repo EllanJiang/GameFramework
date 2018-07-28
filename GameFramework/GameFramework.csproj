@@ -172,10 +172,12 @@
     <Compile Include="Procedure\ProcedureBase.cs" />
     <Compile Include="Procedure\ProcedureManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource\CheckResourcesCompleteCallback.cs" />
     <Compile Include="Resource\CheckVersionListResult.cs" />
     <Compile Include="Resource\Constant.cs" />
     <Compile Include="Resource\DecryptResourceCallback.cs" />
     <Compile Include="Resource\ILoadResourceAgentHelper.cs" />
+    <Compile Include="Resource\InitResourcesCompleteCallback.cs" />
     <Compile Include="Resource\IResourceHelper.cs" />
     <Compile Include="Resource\IResourceManager.cs" />
     <Compile Include="Resource\LoadAssetCallbacks.cs" />
@@ -197,8 +199,6 @@
     <Compile Include="Resource\LoadSceneFailureCallback.cs" />
     <Compile Include="Resource\LoadSceneSuccessCallback.cs" />
     <Compile Include="Resource\LoadSceneUpdateCallback.cs" />
-    <Compile Include="Resource\ResourceCheckCompleteEventArgs.cs" />
-    <Compile Include="Resource\ResourceInitCompleteEventArgs.cs" />
     <Compile Include="Resource\ResourceManager.AssetDependencyInfo.cs" />
     <Compile Include="Resource\ResourceManager.AssetInfo.cs" />
     <Compile Include="Resource\ResourceManager.cs" />
@@ -227,7 +227,6 @@
     <Compile Include="Resource\ResourceManager.ResourceUpdater.UpdateInfo.cs" />
     <Compile Include="Resource\ResourceManager.VersionListProcessor.cs" />
     <Compile Include="Resource\ResourceMode.cs" />
-    <Compile Include="Resource\ResourceUpdateAllCompleteEventArgs.cs" />
     <Compile Include="Resource\ResourceUpdateChangedEventArgs.cs" />
     <Compile Include="Resource\ResourceUpdateFailureEventArgs.cs" />
     <Compile Include="Resource\ResourceUpdateStartEventArgs.cs" />
@@ -235,8 +234,10 @@
     <Compile Include="Resource\UnloadSceneCallbacks.cs" />
     <Compile Include="Resource\UnloadSceneFailureCallback.cs" />
     <Compile Include="Resource\UnloadSceneSuccessCallback.cs" />
-    <Compile Include="Resource\VersionListUpdateFailureEventArgs.cs" />
-    <Compile Include="Resource\VersionListUpdateSuccessEventArgs.cs" />
+    <Compile Include="Resource\UpdateResourcesCompleteCallback.cs" />
+    <Compile Include="Resource\UpdateVersionListCallbacks.cs" />
+    <Compile Include="Resource\UpdateVersionListFailureCallback.cs" />
+    <Compile Include="Resource\UpdateVersionListSuccessCallback.cs" />
     <Compile Include="Scene\ISceneManager.cs" />
     <Compile Include="Scene\LoadSceneDependencyAssetEventArgs.cs" />
     <Compile Include="Scene\LoadSceneFailureEventArgs.cs" />

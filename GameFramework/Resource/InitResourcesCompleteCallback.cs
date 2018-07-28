@@ -8,16 +8,7 @@
 namespace GameFramework.Resource
 {
     /// <summary>
-    /// 资源更新全部完成事件。
+    /// 使用单机模式并初始化资源完成的回调函数。
     /// </summary>
-    public sealed class ResourceUpdateAllCompleteEventArgs : GameFrameworkEventArgs
-    {
-        /// <summary>
-        /// 初始化资源更新全部完成事件的新实例。
-        /// </summary>
-        public ResourceUpdateAllCompleteEventArgs()
-        {
-
-        }
-    }
+    public delegate void InitResourcesCompleteCallback();
 }
