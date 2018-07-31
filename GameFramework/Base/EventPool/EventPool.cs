@@ -16,7 +16,7 @@ namespace GameFramework
     /// <typeparam name="T">事件类型。</typeparam>
     internal sealed partial class EventPool<T> where T : BaseEventArgs
     {
-        private readonly Dictionary<int, EventHandler<T>> m_EventHandlers;
+        private readonly Dictionary<int, LinkedList<EventHandler<T>>> m_EventHandlers;
         private readonly Queue<Event> m_Events;
         private readonly EventPoolMode m_EventPoolMode;
         private EventHandler<T> m_DefaultHandler;
@@ -27,16 +27,27 @@ namespace GameFramework
         /// <param name="mode">事件池模式。</param>
         public EventPool(EventPoolMode mode)
         {
-            m_EventHandlers = new Dictionary<int, EventHandler<T>>();
+            m_EventHandlers = new Dictionary<int, LinkedList<EventHandler<T>>>();
             m_Events = new Queue<Event>();
             m_EventPoolMode = mode;
             m_DefaultHandler = null;
         }
 
         /// <summary>
+        /// 获取事件处理函数的数量。
+        /// </summary>
+        public int EventHandlerCount
+        {
+            get
+            {
+                return m_EventHandlers.Count;
+            }
+        }
+
+        /// <summary>
         /// 获取事件数量。
         /// </summary>
-        public int Count
+        public int EventCount
         {
             get
             {
@@ -83,7 +94,23 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 检查订阅事件处理函数。
+        /// 获取事件处理函数的数量。
+        /// </summary>
+        /// <param name="id">事件类型编号。</param>
+        /// <returns>事件处理函数的数量。</returns>
+        public int Count(int id)
+        {
+            LinkedList<EventHandler<T>> handlers = null;
+            if (m_EventHandlers.TryGetValue(id, out handlers))
+            {
+                return handlers.Count;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// 检查是否存在事件处理函数。
         /// </summary>
         /// <param name="id">事件类型编号。</param>
         /// <param name="handler">要检查的事件处理函数。</param>
@@ -95,26 +122,13 @@ namespace GameFramework
                 throw new GameFrameworkException("Event handler is invalid.");
             }
 
-            EventHandler<T> handlers = null;
+            LinkedList<EventHandler<T>> handlers = null;
             if (!m_EventHandlers.TryGetValue(id, out handlers))
             {
                 return false;
             }
 
-            if (handlers == null)
-            {
-                return false;
-            }
-
-            foreach (EventHandler<T> i in handlers.GetInvocationList())
-            {
-                if (i == handler)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return handlers.Contains(handler);
         }
 
         /// <summary>
@@ -129,10 +143,12 @@ namespace GameFramework
                 throw new GameFrameworkException("Event handler is invalid.");
             }
 
-            EventHandler<T> eventHandler = null;
-            if (!m_EventHandlers.TryGetValue(id, out eventHandler) || eventHandler == null)
+            LinkedList<EventHandler<T>> handlers = null;
+            if (!m_EventHandlers.TryGetValue(id, out handlers))
             {
-                m_EventHandlers[id] = handler;
+                handlers = new LinkedList<EventHandler<T>>();
+                handlers.AddLast(handler);
+                m_EventHandlers.Add(id, handlers);
             }
             else if ((m_EventPoolMode & EventPoolMode.AllowMultiHandler) == 0)
             {
@@ -144,8 +160,7 @@ namespace GameFramework
             }
             else
             {
-                eventHandler += handler;
-                m_EventHandlers[id] = eventHandler;
+                handlers.AddLast(handler);
             }
         }
 
@@ -161,9 +176,15 @@ namespace GameFramework
                 throw new GameFrameworkException("Event handler is invalid.");
             }
 
-            if (m_EventHandlers.ContainsKey(id))
+            LinkedList<EventHandler<T>> handlers = null;
+            if (!m_EventHandlers.TryGetValue(id, out handlers))
             {
-                m_EventHandlers[id] -= handler;
+                throw new GameFrameworkException(string.Format("Event '{0}' not exists any handler.", id.ToString()));
+            }
+
+            if (!handlers.Remove(handler))
+            {
+                throw new GameFrameworkException(string.Format("Event '{0}' not exists specified handler.", id.ToString()));
             }
         }
 
@@ -208,23 +229,30 @@ namespace GameFramework
         private void HandleEvent(object sender, T e)
         {
             int eventId = e.Id;
-            EventHandler<T> handlers = null;
-            if (m_EventHandlers.TryGetValue(eventId, out handlers))
+            bool noHandlerException = false;
+            LinkedList<EventHandler<T>> handlers = null;
+            if (m_EventHandlers.TryGetValue(eventId, out handlers) && handlers.Count > 0)
             {
-                if (handlers != null)
+                LinkedListNode<EventHandler<T>> current = handlers.First;
+                while (current != null)
                 {
-                    handlers(sender, e);
+                    LinkedListNode<EventHandler<T>> next = current.Next;
+                    current.Value(sender, e);
+                    current = next;
                 }
             }
-
-            if (handlers == null && m_DefaultHandler != null)
+            else if (m_DefaultHandler != null)
             {
-                handlers = m_DefaultHandler;
-                handlers(sender, e);
+                m_DefaultHandler(sender, e);
+            }
+            else if ((m_EventPoolMode & EventPoolMode.AllowNoHandler) == 0)
+            {
+                noHandlerException = true;
             }
 
             ReferencePool.Release(e.GetType(), e);
-            if (handlers == null && (m_EventPoolMode & EventPoolMode.AllowNoHandler) == 0)
+
+            if (noHandlerException)
             {
                 throw new GameFrameworkException(string.Format("Event '{0}' not allow no handler.", eventId.ToString()));
             }

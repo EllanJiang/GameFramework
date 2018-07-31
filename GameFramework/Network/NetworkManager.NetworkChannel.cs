@@ -215,7 +215,7 @@ namespace GameFramework.Network
             {
                 get
                 {
-                    return m_ReceivePacketPool.Count;
+                    return m_ReceivePacketPool.EventCount;
                 }
             }
 
