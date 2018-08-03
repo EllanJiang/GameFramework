@@ -295,7 +295,7 @@ namespace GameFramework.ObjectPool
                     }
                 }
 
-                throw new GameFrameworkException(string.Format("Can not find target in object pool '{0}'.", Utility.Text.GetFullName<T>(Name)));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find target in object pool '{0}'.", Utility.Text.GetFullName<T>(Name)));
             }
 
             /// <summary>
@@ -335,7 +335,7 @@ namespace GameFramework.ObjectPool
                     }
                 }
 
-                throw new GameFrameworkException(string.Format("Can not find target in object pool '{0}'.", Utility.Text.GetFullName<T>(Name)));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find target in object pool '{0}'.", Utility.Text.GetFullName<T>(Name)));
             }
 
             /// <summary>
@@ -375,7 +375,7 @@ namespace GameFramework.ObjectPool
                     }
                 }
 
-                throw new GameFrameworkException(string.Format("Can not find target in object pool '{0}'.", Utility.Text.GetFullName<T>(Name)));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find target in object pool '{0}'.", Utility.Text.GetFullName<T>(Name)));
             }
 
             /// <summary>

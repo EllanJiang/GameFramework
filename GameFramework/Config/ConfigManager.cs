@@ -290,7 +290,7 @@ namespace GameFramework.Config
             ConfigData? configData = GetConfigData(configName);
             if (!configData.HasValue)
             {
-                throw new GameFrameworkException(string.Format("Config name '{0}' is not exist.", configName));
+                throw new GameFrameworkException(Utility.Text.Format("Config name '{0}' is not exist.", configName));
             }
 
             return configData.Value.BoolValue;
@@ -318,7 +318,7 @@ namespace GameFramework.Config
             ConfigData? configData = GetConfigData(configName);
             if (!configData.HasValue)
             {
-                throw new GameFrameworkException(string.Format("Config name '{0}' is not exist.", configName));
+                throw new GameFrameworkException(Utility.Text.Format("Config name '{0}' is not exist.", configName));
             }
 
             return configData.Value.IntValue;
@@ -346,7 +346,7 @@ namespace GameFramework.Config
             ConfigData? configData = GetConfigData(configName);
             if (!configData.HasValue)
             {
-                throw new GameFrameworkException(string.Format("Config name '{0}' is not exist.", configName));
+                throw new GameFrameworkException(Utility.Text.Format("Config name '{0}' is not exist.", configName));
             }
 
             return configData.Value.FloatValue;
@@ -374,7 +374,7 @@ namespace GameFramework.Config
             ConfigData? configData = GetConfigData(configName);
             if (!configData.HasValue)
             {
-                throw new GameFrameworkException(string.Format("Config name '{0}' is not exist.", configName));
+                throw new GameFrameworkException(Utility.Text.Format("Config name '{0}' is not exist.", configName));
             }
 
             return configData.Value.StringValue;
@@ -414,7 +414,7 @@ namespace GameFramework.Config
             {
                 if (!m_ConfigHelper.LoadConfig(configAsset, userData))
                 {
-                    throw new GameFrameworkException(string.Format("Load config failure in helper, asset name '{0}'.", configAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Load config failure in helper, asset name '{0}'.", configAssetName));
                 }
             }
             catch (Exception exception)
@@ -440,7 +440,7 @@ namespace GameFramework.Config
 
         private void LoadConfigFailureCallback(string configAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
-            string appendErrorMessage = string.Format("Load config failure, asset name '{0}', status '{1}', error message '{2}'.", configAssetName, status.ToString(), errorMessage);
+            string appendErrorMessage = Utility.Text.Format("Load config failure, asset name '{0}', status '{1}', error message '{2}'.", configAssetName, status.ToString(), errorMessage);
             if (m_LoadConfigFailureEventHandler != null)
             {
                 m_LoadConfigFailureEventHandler(this, new LoadConfigFailureEventArgs(configAssetName, appendErrorMessage, userData));

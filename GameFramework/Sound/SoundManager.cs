@@ -297,7 +297,7 @@ namespace GameFramework.Sound
             SoundGroup soundGroup = (SoundGroup)GetSoundGroup(soundGroupName);
             if (soundGroup == null)
             {
-                throw new GameFrameworkException(string.Format("Sound group '{0}' is not exist.", soundGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("Sound group '{0}' is not exist.", soundGroupName));
             }
 
             soundGroup.AddSoundAgentHelper(m_SoundHelper, soundAgentHelper);
@@ -456,12 +456,12 @@ namespace GameFramework.Sound
             if (soundGroup == null)
             {
                 errorCode = PlaySoundErrorCode.SoundGroupNotExist;
-                errorMessage = string.Format("Sound group '{0}' is not exist.", soundGroupName);
+                errorMessage = Utility.Text.Format("Sound group '{0}' is not exist.", soundGroupName);
             }
             else if (soundGroup.SoundAgentCount <= 0)
             {
                 errorCode = PlaySoundErrorCode.SoundGroupHasNoAgent;
-                errorMessage = string.Format("Sound group '{0}' is have no sound agent.", soundGroupName);
+                errorMessage = Utility.Text.Format("Sound group '{0}' is have no sound agent.", soundGroupName);
             }
 
             if (errorCode.HasValue)
@@ -570,7 +570,7 @@ namespace GameFramework.Sound
                 }
             }
 
-            throw new GameFrameworkException(string.Format("Can not find sound '{0}'.", serialId.ToString()));
+            throw new GameFrameworkException(Utility.Text.Format("Can not find sound '{0}'.", serialId.ToString()));
         }
 
         /// <summary>
@@ -597,7 +597,7 @@ namespace GameFramework.Sound
                 }
             }
 
-            throw new GameFrameworkException(string.Format("Can not find sound '{0}'.", serialId.ToString()));
+            throw new GameFrameworkException(Utility.Text.Format("Can not find sound '{0}'.", serialId.ToString()));
         }
 
         private void LoadSoundSuccessCallback(string soundAssetName, object soundAsset, float duration, object userData)
@@ -630,7 +630,7 @@ namespace GameFramework.Sound
             {
                 m_SoundsToReleaseOnLoad.Remove(playSoundInfo.SerialId);
                 m_SoundHelper.ReleaseSoundAsset(soundAsset);
-                string errorMessage = string.Format("Sound group '{0}' play sound '{1}' failure.", playSoundInfo.SoundGroup.Name, soundAssetName);
+                string errorMessage = Utility.Text.Format("Sound group '{0}' play sound '{1}' failure.", playSoundInfo.SoundGroup.Name, soundAssetName);
                 if (m_PlaySoundFailureEventHandler != null)
                 {
                     m_PlaySoundFailureEventHandler(this, new PlaySoundFailureEventArgs(playSoundInfo.SerialId, soundAssetName, playSoundInfo.SoundGroup.Name, playSoundInfo.PlaySoundParams, errorCode.Value, errorMessage, playSoundInfo.UserData));
@@ -651,7 +651,7 @@ namespace GameFramework.Sound
 
             m_SoundsBeingLoaded.Remove(playSoundInfo.SerialId);
             m_SoundsToReleaseOnLoad.Remove(playSoundInfo.SerialId);
-            string appendErrorMessage = string.Format("Load sound failure, asset name '{0}', status '{1}', error message '{2}'.", soundAssetName, status.ToString(), errorMessage);
+            string appendErrorMessage = Utility.Text.Format("Load sound failure, asset name '{0}', status '{1}', error message '{2}'.", soundAssetName, status.ToString(), errorMessage);
             if (m_PlaySoundFailureEventHandler != null)
             {
                 m_PlaySoundFailureEventHandler(this, new PlaySoundFailureEventArgs(playSoundInfo.SerialId, soundAssetName, playSoundInfo.SoundGroup.Name, playSoundInfo.PlaySoundParams, PlaySoundErrorCode.LoadAssetFailure, appendErrorMessage, playSoundInfo.UserData));

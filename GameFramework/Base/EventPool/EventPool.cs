@@ -152,11 +152,11 @@ namespace GameFramework
             }
             else if ((m_EventPoolMode & EventPoolMode.AllowMultiHandler) == 0)
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not allow multi handler.", id.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not allow multi handler.", id.ToString()));
             }
             else if ((m_EventPoolMode & EventPoolMode.AllowDuplicateHandler) == 0 && Check(id, handler))
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not allow duplicate handler.", id.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not allow duplicate handler.", id.ToString()));
             }
             else
             {
@@ -179,12 +179,12 @@ namespace GameFramework
             LinkedList<EventHandler<T>> handlers = null;
             if (!m_EventHandlers.TryGetValue(id, out handlers))
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not exists any handler.", id.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not exists any handler.", id.ToString()));
             }
 
             if (!handlers.Remove(handler))
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not exists specified handler.", id.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not exists specified handler.", id.ToString()));
             }
         }
 
@@ -254,7 +254,7 @@ namespace GameFramework
 
             if (noHandlerException)
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not allow no handler.", eventId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not allow no handler.", eventId.ToString()));
             }
         }
     }

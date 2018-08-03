@@ -72,7 +72,7 @@ namespace GameFramework.Resource
             {
                 get
                 {
-                    return IsVariant ? string.Format("{0}.{1}", m_Name, m_Variant) : m_Name;
+                    return IsVariant ? Utility.Text.Format("{0}.{1}", m_Name, m_Variant) : m_Name;
                 }
             }
 

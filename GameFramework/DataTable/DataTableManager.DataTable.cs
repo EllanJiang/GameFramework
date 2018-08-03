@@ -404,12 +404,12 @@ namespace GameFramework.DataTable
                         throw;
                     }
 
-                    throw new GameFrameworkException(string.Format("Can not parse data table '{0}' at '{1}' with exception '{2}'.", Utility.Text.GetFullName<T>(Name), dataRowText, exception.ToString()), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' at '{1}' with exception '{2}'.", Utility.Text.GetFullName<T>(Name), dataRowText, exception.ToString()), exception);
                 }
 
                 if (HasDataRow(dataRow.Id))
                 {
-                    throw new GameFrameworkException(string.Format("Already exist '{0}' in data table '{1}'.", dataRow.Id.ToString(), Utility.Text.GetFullName<T>(Name)));
+                    throw new GameFrameworkException(Utility.Text.Format("Already exist '{0}' in data table '{1}'.", dataRow.Id.ToString(), Utility.Text.GetFullName<T>(Name)));
                 }
 
                 m_DataSet.Add(dataRow.Id, dataRow);

@@ -178,7 +178,7 @@ namespace GameFramework.Resource
                 byte[] bytes = File.ReadAllBytes(e.DownloadPath);
                 if (m_VersionListZipLength != bytes.Length)
                 {
-                    string errorMessage = string.Format("Latest version list zip length error, need '{0}', downloaded '{1}'.", m_VersionListZipLength.ToString(), bytes.Length.ToString());
+                    string errorMessage = Utility.Text.Format("Latest version list zip length error, need '{0}', downloaded '{1}'.", m_VersionListZipLength.ToString(), bytes.Length.ToString());
                     OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                     return;
                 }
@@ -186,7 +186,7 @@ namespace GameFramework.Resource
                 int hashCode = Utility.Converter.GetInt32(Utility.Verifier.GetCrc32(bytes));
                 if (m_VersionListZipHashCode != hashCode)
                 {
-                    string errorMessage = string.Format("Latest version list zip hash code error, need '{0}', downloaded '{1}'.", m_VersionListZipHashCode.ToString("X8"), hashCode.ToString("X8"));
+                    string errorMessage = Utility.Text.Format("Latest version list zip hash code error, need '{0}', downloaded '{1}'.", m_VersionListZipHashCode.ToString("X8"), hashCode.ToString("X8"));
                     OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                     return;
                 }
@@ -197,21 +197,21 @@ namespace GameFramework.Resource
                 }
                 catch (Exception exception)
                 {
-                    string errorMessage = string.Format("Unable to decompress latest version list '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
+                    string errorMessage = Utility.Text.Format("Unable to decompress latest version list '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
                     OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                     return;
                 }
 
                 if (bytes == null)
                 {
-                    string errorMessage = string.Format("Unable to decompress latest version list '{0}'.", e.DownloadPath);
+                    string errorMessage = Utility.Text.Format("Unable to decompress latest version list '{0}'.", e.DownloadPath);
                     OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                     return;
                 }
 
                 if (m_VersionListLength != bytes.Length)
                 {
-                    string errorMessage = string.Format("Latest version list length error, need '{0}', downloaded '{1}'.", m_VersionListLength.ToString(), bytes.Length.ToString());
+                    string errorMessage = Utility.Text.Format("Latest version list length error, need '{0}', downloaded '{1}'.", m_VersionListLength.ToString(), bytes.Length.ToString());
                     OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                     return;
                 }

@@ -276,7 +276,7 @@ namespace GameFramework.Resource
                         File.Move(backupFile, file);
                     }
 
-                    throw new GameFrameworkException(string.Format("Pack save exception '{0}'.", exception.Message), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Pack save exception '{0}'.", exception.Message), exception);
                 }
                 finally
                 {
@@ -304,13 +304,13 @@ namespace GameFramework.Resource
                 if (e.CurrentLength > updateInfo.ZipLength)
                 {
                     m_DownloadManager.RemoveDownload(e.SerialId);
-                    string downloadFile = string.Format("{0}.download", e.DownloadPath);
+                    string downloadFile = Utility.Text.Format("{0}.download", e.DownloadPath);
                     if (File.Exists(downloadFile))
                     {
                         File.Delete(downloadFile);
                     }
 
-                    string errorMessage = string.Format("When download start, downloaded length is larger than zip length, need '{0}', current '{1}'.", updateInfo.ZipLength.ToString(), e.CurrentLength.ToString());
+                    string errorMessage = Utility.Text.Format("When download start, downloaded length is larger than zip length, need '{0}', current '{1}'.", updateInfo.ZipLength.ToString(), e.CurrentLength.ToString());
                     OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                     return;
                 }
@@ -337,13 +337,13 @@ namespace GameFramework.Resource
                 if (e.CurrentLength > updateInfo.ZipLength)
                 {
                     m_DownloadManager.RemoveDownload(e.SerialId);
-                    string downloadFile = string.Format("{0}.download", e.DownloadPath);
+                    string downloadFile = Utility.Text.Format("{0}.download", e.DownloadPath);
                     if (File.Exists(downloadFile))
                     {
                         File.Delete(downloadFile);
                     }
 
-                    string errorMessage = string.Format("When download update, downloaded length is larger than zip length, need '{0}', current '{1}'.", updateInfo.ZipLength.ToString(), e.CurrentLength.ToString());
+                    string errorMessage = Utility.Text.Format("When download update, downloaded length is larger than zip length, need '{0}', current '{1}'.", updateInfo.ZipLength.ToString(), e.CurrentLength.ToString());
                     OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                     return;
                 }
@@ -367,7 +367,7 @@ namespace GameFramework.Resource
 
                 if (updateInfo.ZipLength != bytes.Length)
                 {
-                    string errorMessage = string.Format("Zip length error, need '{0}', downloaded '{1}'.", updateInfo.ZipLength.ToString(), bytes.Length.ToString());
+                    string errorMessage = Utility.Text.Format("Zip length error, need '{0}', downloaded '{1}'.", updateInfo.ZipLength.ToString(), bytes.Length.ToString());
                     OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                     return;
                 }
@@ -388,7 +388,7 @@ namespace GameFramework.Resource
                 int hashCode = Utility.Converter.GetInt32(Utility.Verifier.GetCrc32(bytes));
                 if (updateInfo.ZipHashCode != hashCode)
                 {
-                    string errorMessage = string.Format("Zip hash code error, need '{0}', downloaded '{1}'.", updateInfo.ZipHashCode.ToString("X8"), hashCode.ToString("X8"));
+                    string errorMessage = Utility.Text.Format("Zip hash code error, need '{0}', downloaded '{1}'.", updateInfo.ZipHashCode.ToString("X8"), hashCode.ToString("X8"));
                     OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                     return;
                 }
@@ -401,21 +401,21 @@ namespace GameFramework.Resource
                     }
                     catch (Exception exception)
                     {
-                        string errorMessage = string.Format("Unable to decompress from file '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
+                        string errorMessage = Utility.Text.Format("Unable to decompress from file '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;
                     }
 
                     if (bytes == null)
                     {
-                        string errorMessage = string.Format("Unable to decompress from file '{0}'.", e.DownloadPath);
+                        string errorMessage = Utility.Text.Format("Unable to decompress from file '{0}'.", e.DownloadPath);
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;
                     }
 
                     if (updateInfo.Length != bytes.Length)
                     {
-                        string errorMessage = string.Format("Resource length error, need '{0}', downloaded '{1}'.", updateInfo.Length.ToString(), bytes.Length.ToString());
+                        string errorMessage = Utility.Text.Format("Resource length error, need '{0}', downloaded '{1}'.", updateInfo.Length.ToString(), bytes.Length.ToString());
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;
                     }
@@ -427,14 +427,14 @@ namespace GameFramework.Resource
 
                 if (m_ResourceManager.m_ResourceInfos.ContainsKey(updateInfo.ResourceName))
                 {
-                    throw new GameFrameworkException(string.Format("Resource info '{0}' is already exist.", updateInfo.ResourceName.FullName));
+                    throw new GameFrameworkException(Utility.Text.Format("Resource info '{0}' is already exist.", updateInfo.ResourceName.FullName));
                 }
 
                 m_ResourceManager.m_ResourceInfos.Add(updateInfo.ResourceName, new ResourceInfo(updateInfo.ResourceName, updateInfo.LoadType, updateInfo.Length, updateInfo.HashCode, false));
 
                 if (m_ResourceManager.m_ReadWriteResourceInfos.ContainsKey(updateInfo.ResourceName))
                 {
-                    throw new GameFrameworkException(string.Format("Read-write resource info '{0}' is already exist.", updateInfo.ResourceName.FullName));
+                    throw new GameFrameworkException(Utility.Text.Format("Read-write resource info '{0}' is already exist.", updateInfo.ResourceName.FullName));
                 }
 
                 m_ResourceManager.m_ReadWriteResourceInfos.Add(updateInfo.ResourceName, new ReadWriteResourceInfo(updateInfo.LoadType, updateInfo.Length, updateInfo.HashCode));

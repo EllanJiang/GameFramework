@@ -286,7 +286,7 @@ namespace GameFramework.Localization
             string value = null;
             if (!m_Dictionary.TryGetValue(key, out value))
             {
-                return string.Format("<NoKey>{0}", key);
+                return Utility.Text.Format("<NoKey>{0}", key);
             }
 
             return value;
@@ -308,16 +308,16 @@ namespace GameFramework.Localization
             string value = null;
             if (!m_Dictionary.TryGetValue(key, out value))
             {
-                return string.Format("<NoKey>{0}", key);
+                return Utility.Text.Format("<NoKey>{0}", key);
             }
 
             try
             {
-                return string.Format(value, arg0);
+                return Utility.Text.Format(value, arg0);
             }
             catch (Exception exception)
             {
-                return string.Format("<Error>{0},{1},{2},{3}", key, value, arg0, exception.Message);
+                return Utility.Text.Format("<Error>{0},{1},{2},{3}", key, value, arg0, exception.Message);
             }
         }
 
@@ -338,16 +338,16 @@ namespace GameFramework.Localization
             string value = null;
             if (!m_Dictionary.TryGetValue(key, out value))
             {
-                return string.Format("<NoKey>{0}", key);
+                return Utility.Text.Format("<NoKey>{0}", key);
             }
 
             try
             {
-                return string.Format(value, arg0, arg1);
+                return Utility.Text.Format(value, arg0, arg1);
             }
             catch (Exception exception)
             {
-                return string.Format("<Error>{0},{1},{2},{3},{4}", key, value, arg0, arg1, exception.Message);
+                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4}", key, value, arg0, arg1, exception.Message);
             }
         }
 
@@ -369,16 +369,16 @@ namespace GameFramework.Localization
             string value = null;
             if (!m_Dictionary.TryGetValue(key, out value))
             {
-                return string.Format("<NoKey>{0}", key);
+                return Utility.Text.Format("<NoKey>{0}", key);
             }
 
             try
             {
-                return string.Format(value, arg0, arg1, arg2);
+                return Utility.Text.Format(value, arg0, arg1, arg2);
             }
             catch (Exception exception)
             {
-                return string.Format("<Error>{0},{1},{2},{3},{4},{5}", key, value, arg0, arg1, arg2, exception.Message);
+                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5}", key, value, arg0, arg1, arg2, exception.Message);
             }
         }
 
@@ -398,16 +398,16 @@ namespace GameFramework.Localization
             string value = null;
             if (!m_Dictionary.TryGetValue(key, out value))
             {
-                return string.Format("<NoKey>{0}", key);
+                return Utility.Text.Format("<NoKey>{0}", key);
             }
 
             try
             {
-                return string.Format(value, args);
+                return Utility.Text.Format(value, args);
             }
             catch (Exception exception)
             {
-                string errorString = string.Format("<Error>{0},{1}", key, value);
+                string errorString = Utility.Text.Format("<Error>{0},{1}", key, value);
                 if (args != null)
                 {
                     foreach (object arg in args)
@@ -454,7 +454,7 @@ namespace GameFramework.Localization
                 return value;
             }
 
-            return string.Format("<NoKey>{0}", key);
+            return Utility.Text.Format("<NoKey>{0}", key);
         }
 
         /// <summary>
@@ -495,7 +495,7 @@ namespace GameFramework.Localization
             {
                 if (!m_LocalizationHelper.LoadDictionary(dictionaryAsset, userData))
                 {
-                    throw new GameFrameworkException(string.Format("Load dictionary failure in helper, asset name '{0}'.", dictionaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Load dictionary failure in helper, asset name '{0}'.", dictionaryAssetName));
                 }
             }
             catch (Exception exception)
@@ -521,7 +521,7 @@ namespace GameFramework.Localization
 
         private void LoadDictionaryFailureCallback(string dictionaryAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
-            string appendErrorMessage = string.Format("Load dictionary failure, asset name '{0}', status '{1}', error message '{2}'.", dictionaryAssetName, status.ToString(), errorMessage);
+            string appendErrorMessage = Utility.Text.Format("Load dictionary failure, asset name '{0}', status '{1}', error message '{2}'.", dictionaryAssetName, status.ToString(), errorMessage);
             if (m_LoadDictionaryFailureEventHandler != null)
             {
                 m_LoadDictionaryFailureEventHandler(this, new LoadDictionaryFailureEventArgs(dictionaryAssetName, appendErrorMessage, userData));

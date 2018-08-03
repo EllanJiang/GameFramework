@@ -255,7 +255,7 @@ namespace GameFramework.Fsm
         {
             if (HasFsm<T>(name))
             {
-                throw new GameFrameworkException(string.Format("Already exist FSM '{0}'.", Utility.Text.GetFullName<T>(name)));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", Utility.Text.GetFullName<T>(name)));
             }
 
             Fsm<T> fsm = new Fsm<T>(name, owner, states);

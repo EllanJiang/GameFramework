@@ -102,7 +102,7 @@ namespace GameFramework.ObjectPool
 
             if (!typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new GameFrameworkException(string.Format("Object type '{0}' is invalid.", objectType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
             return InternalHasObjectPool(Utility.Text.GetFullName(objectType, string.Empty));
@@ -134,7 +134,7 @@ namespace GameFramework.ObjectPool
 
             if (!typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new GameFrameworkException(string.Format("Object type '{0}' is invalid.", objectType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
             return InternalHasObjectPool(Utility.Text.GetFullName(objectType, name));
@@ -164,7 +164,7 @@ namespace GameFramework.ObjectPool
 
             if (!typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new GameFrameworkException(string.Format("Object type '{0}' is invalid.", objectType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
             return InternelGetObjectPool(Utility.Text.GetFullName(objectType, string.Empty));
@@ -196,7 +196,7 @@ namespace GameFramework.ObjectPool
 
             if (!typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new GameFrameworkException(string.Format("Object type '{0}' is invalid.", objectType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
             return InternelGetObjectPool(Utility.Text.GetFullName(objectType, name));
@@ -1035,7 +1035,7 @@ namespace GameFramework.ObjectPool
 
             if (!typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new GameFrameworkException(string.Format("Object type '{0}' is invalid.", objectType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
             return InternalDestroyObjectPool(Utility.Text.GetFullName(objectType, string.Empty));
@@ -1067,7 +1067,7 @@ namespace GameFramework.ObjectPool
 
             if (!typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new GameFrameworkException(string.Format("Object type '{0}' is invalid.", objectType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
             return InternalDestroyObjectPool(Utility.Text.GetFullName(objectType, name));
@@ -1148,7 +1148,7 @@ namespace GameFramework.ObjectPool
         {
             if (HasObjectPool<T>(name))
             {
-                throw new GameFrameworkException(string.Format("Already exist object pool '{0}'.", Utility.Text.GetFullName<T>(name)));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist object pool '{0}'.", Utility.Text.GetFullName<T>(name)));
             }
 
             ObjectPool<T> objectPool = new ObjectPool<T>(name, allowMultiSpawn, autoReleaseInterval, capacity, expireTime, priority);
@@ -1165,12 +1165,12 @@ namespace GameFramework.ObjectPool
 
             if (!typeof(ObjectBase).IsAssignableFrom(objectType))
             {
-                throw new GameFrameworkException(string.Format("Object type '{0}' is invalid.", objectType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
             if (HasObjectPool(objectType, name))
             {
-                throw new GameFrameworkException(string.Format("Already exist object pool '{0}'.", Utility.Text.GetFullName(objectType, name)));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist object pool '{0}'.", Utility.Text.GetFullName(objectType, name)));
             }
 
             Type objectPoolType = typeof(ObjectPool<>).MakeGenericType(objectType);

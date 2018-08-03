@@ -406,7 +406,7 @@ namespace GameFramework.Network
                         m_NetworkType = NetworkType.IPv6;
                         break;
                     default:
-                        string errorMessage = string.Format("Not supported address family '{0}'.", ipAddress.AddressFamily.ToString());
+                        string errorMessage = Utility.Text.Format("Not supported address family '{0}'.", ipAddress.AddressFamily.ToString());
                         if (NetworkChannelError != null)
                         {
                             NetworkChannelError(this, NetworkErrorCode.AddressFamilyError, errorMessage);

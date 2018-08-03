@@ -56,7 +56,7 @@ namespace GameFramework.Fsm
                 string stateName = state.GetType().FullName;
                 if (m_States.ContainsKey(stateName))
                 {
-                    throw new GameFrameworkException(string.Format("FSM '{0}' state '{1}' is already exist.", Utility.Text.GetFullName<T>(name), stateName));
+                    throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' state '{1}' is already exist.", Utility.Text.GetFullName<T>(name), stateName));
                 }
 
                 m_States.Add(stateName, state);
@@ -170,7 +170,7 @@ namespace GameFramework.Fsm
             FsmState<T> state = GetState<TState>();
             if (state == null)
             {
-                throw new GameFrameworkException(string.Format("FSM '{0}' can not start state '{1}' which is not exist.", Utility.Text.GetFullName<T>(Name), typeof(TState).FullName));
+                throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' can not start state '{1}' which is not exist.", Utility.Text.GetFullName<T>(Name), typeof(TState).FullName));
             }
 
             m_CurrentStateTime = 0f;
@@ -196,13 +196,13 @@ namespace GameFramework.Fsm
 
             if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
             {
-                throw new GameFrameworkException(string.Format("State type '{0}' is invalid.", stateType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
             }
 
             FsmState<T> state = GetState(stateType);
             if (state == null)
             {
-                throw new GameFrameworkException(string.Format("FSM '{0}' can not start state '{1}' which is not exist.", Utility.Text.GetFullName<T>(Name), stateType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' can not start state '{1}' which is not exist.", Utility.Text.GetFullName<T>(Name), stateType.FullName));
             }
 
             m_CurrentStateTime = 0f;
@@ -234,7 +234,7 @@ namespace GameFramework.Fsm
 
             if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
             {
-                throw new GameFrameworkException(string.Format("State type '{0}' is invalid.", stateType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
             }
 
             return m_States.ContainsKey(stateType.FullName);
@@ -270,7 +270,7 @@ namespace GameFramework.Fsm
 
             if (!typeof(FsmState<T>).IsAssignableFrom(stateType))
             {
-                throw new GameFrameworkException(string.Format("State type '{0}' is invalid.", stateType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
             }
 
             FsmState<T> state = null;
@@ -502,7 +502,7 @@ namespace GameFramework.Fsm
             FsmState<T> state = GetState(stateType);
             if (state == null)
             {
-                throw new GameFrameworkException(string.Format("FSM '{0}' can not change state to '{1}' which is not exist.", Utility.Text.GetFullName<T>(Name), stateType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' can not change state to '{1}' which is not exist.", Utility.Text.GetFullName<T>(Name), stateType.FullName));
             }
 
             m_CurrentState.OnLeave(this, false);

@@ -110,7 +110,7 @@ namespace GameFramework
             Type type = reference.GetType();
             if (referenceType != type)
             {
-                throw new GameFrameworkException(string.Format("Reference type '{0}' not equals to reference's type '{1}'.", referenceType.FullName, type.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Reference type '{0}' not equals to reference's type '{1}'.", referenceType.FullName, type.FullName));
             }
 
             GetReferenceCollection(referenceType.FullName).Release(reference);
@@ -195,7 +195,7 @@ namespace GameFramework
 
             if (!typeof(IReference).IsAssignableFrom(referenceType))
             {
-                throw new GameFrameworkException(string.Format("Reference type '{0}' is invalid.", referenceType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Reference type '{0}' is invalid.", referenceType.FullName));
             }
         }
 

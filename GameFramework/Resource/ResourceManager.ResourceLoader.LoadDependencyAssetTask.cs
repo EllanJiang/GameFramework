@@ -39,7 +39,7 @@ namespace GameFramework.Resource
                 public override void OnLoadAssetFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)
                 {
                     base.OnLoadAssetFailure(agent, status, errorMessage);
-                    m_MainTask.OnLoadAssetFailure(agent, LoadResourceStatus.DependencyError, string.Format("Can not load dependency asset '{0}', internal status '{1}', internal error message '{2}'.", AssetName, status.ToString(), errorMessage));
+                    m_MainTask.OnLoadAssetFailure(agent, LoadResourceStatus.DependencyError, Utility.Text.Format("Can not load dependency asset '{0}', internal status '{1}', internal error message '{2}'.", AssetName, status.ToString(), errorMessage));
                 }
             }
         }

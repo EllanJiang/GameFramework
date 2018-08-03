@@ -235,7 +235,7 @@ namespace GameFramework.Network
 
             if (HasNetworkChannel(name))
             {
-                throw new GameFrameworkException(string.Format("Already exist network channel '{0}'.", name ?? string.Empty));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist network channel '{0}'.", name ?? string.Empty));
             }
 
             NetworkChannel networkChannel = new NetworkChannel(name, networkChannelHelper);

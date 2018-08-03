@@ -284,7 +284,7 @@ namespace GameFramework.Resource
 
                 if (!CheckAsset(assetName, out resourceInfo, out resourceChildName, out dependencyAssetNames, out scatteredDependencyAssetNames))
                 {
-                    string errorMessage = string.Format("Can not load asset '{0}'.", assetName);
+                    string errorMessage = Utility.Text.Format("Can not load asset '{0}'.", assetName);
                     if (loadAssetCallbacks.LoadAssetFailureCallback != null)
                     {
                         loadAssetCallbacks.LoadAssetFailureCallback(assetName, LoadResourceStatus.NotReady, errorMessage, userData);
@@ -299,7 +299,7 @@ namespace GameFramework.Resource
                 {
                     if (!LoadDependencyAsset(dependencyAssetName, priority, mainTask, userData))
                     {
-                        string errorMessage = string.Format("Can not load dependency asset '{0}' when load asset '{1}'.", dependencyAssetName, assetName);
+                        string errorMessage = Utility.Text.Format("Can not load dependency asset '{0}' when load asset '{1}'.", dependencyAssetName, assetName);
                         if (loadAssetCallbacks.LoadAssetFailureCallback != null)
                         {
                             loadAssetCallbacks.LoadAssetFailureCallback(assetName, LoadResourceStatus.DependencyError, errorMessage, userData);
@@ -338,7 +338,7 @@ namespace GameFramework.Resource
 
                 if (!CheckAsset(sceneAssetName, out resourceInfo, out resourceChildName, out dependencyAssetNames, out scatteredDependencyAssetNames))
                 {
-                    string errorMessage = string.Format("Can not load scene '{0}'.", sceneAssetName);
+                    string errorMessage = Utility.Text.Format("Can not load scene '{0}'.", sceneAssetName);
                     if (loadSceneCallbacks.LoadSceneFailureCallback != null)
                     {
                         loadSceneCallbacks.LoadSceneFailureCallback(sceneAssetName, LoadResourceStatus.NotReady, errorMessage, userData);
@@ -353,7 +353,7 @@ namespace GameFramework.Resource
                 {
                     if (!LoadDependencyAsset(dependencyAssetName, priority, mainTask, userData))
                     {
-                        string errorMessage = string.Format("Can not load dependency asset '{0}' when load scene '{1}'.", dependencyAssetName, sceneAssetName);
+                        string errorMessage = Utility.Text.Format("Can not load dependency asset '{0}' when load scene '{1}'.", dependencyAssetName, sceneAssetName);
                         if (loadSceneCallbacks.LoadSceneFailureCallback != null)
                         {
                             loadSceneCallbacks.LoadSceneFailureCallback(sceneAssetName, LoadResourceStatus.DependencyError, errorMessage, userData);
@@ -388,7 +388,7 @@ namespace GameFramework.Resource
                 }
                 else
                 {
-                    throw new GameFrameworkException(string.Format("Can not find asset of scene '{0}'.", sceneAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not find asset of scene '{0}'.", sceneAssetName));
                 }
 
                 m_ResourceManager.m_ResourceHelper.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
