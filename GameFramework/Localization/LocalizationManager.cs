@@ -275,6 +275,117 @@ namespace GameFramework.Localization
         /// 根据字典主键获取字典内容字符串。
         /// </summary>
         /// <param name="key">字典主键。</param>
+        /// <returns>要获取的字典内容字符串。</returns>
+        public string GetString(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new GameFrameworkException("Key is invalid.");
+            }
+
+            string value = null;
+            if (!m_Dictionary.TryGetValue(key, out value))
+            {
+                return string.Format("<NoKey>{0}", key);
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// 根据字典主键获取字典内容字符串。
+        /// </summary>
+        /// <param name="key">字典主键。</param>
+        /// <param name="arg0">字典参数 0。</param>
+        /// <returns>要获取的字典内容字符串。</returns>
+        public string GetString(string key, object arg0)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new GameFrameworkException("Key is invalid.");
+            }
+
+            string value = null;
+            if (!m_Dictionary.TryGetValue(key, out value))
+            {
+                return string.Format("<NoKey>{0}", key);
+            }
+
+            try
+            {
+                return string.Format(value, arg0);
+            }
+            catch (Exception exception)
+            {
+                return string.Format("<Error>{0},{1},{2},{3}", key, value, arg0, exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// 根据字典主键获取字典内容字符串。
+        /// </summary>
+        /// <param name="key">字典主键。</param>
+        /// <param name="arg0">字典参数 0。</param>
+        /// <param name="arg1">字典参数 1。</param>
+        /// <returns>要获取的字典内容字符串。</returns>
+        public string GetString(string key, object arg0, object arg1)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new GameFrameworkException("Key is invalid.");
+            }
+
+            string value = null;
+            if (!m_Dictionary.TryGetValue(key, out value))
+            {
+                return string.Format("<NoKey>{0}", key);
+            }
+
+            try
+            {
+                return string.Format(value, arg0, arg1);
+            }
+            catch (Exception exception)
+            {
+                return string.Format("<Error>{0},{1},{2},{3},{4}", key, value, arg0, arg1, exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// 根据字典主键获取字典内容字符串。
+        /// </summary>
+        /// <param name="key">字典主键。</param>
+        /// <param name="arg0">字典参数 0。</param>
+        /// <param name="arg1">字典参数 1。</param>
+        /// <param name="arg2">字典参数 2。</param>
+        /// <returns>要获取的字典内容字符串。</returns>
+        public string GetString(string key, object arg0, object arg1, object arg2)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new GameFrameworkException("Key is invalid.");
+            }
+
+            string value = null;
+            if (!m_Dictionary.TryGetValue(key, out value))
+            {
+                return string.Format("<NoKey>{0}", key);
+            }
+
+            try
+            {
+                return string.Format(value, arg0, arg1, arg2);
+            }
+            catch (Exception exception)
+            {
+                return string.Format("<Error>{0},{1},{2},{3},{4},{5}", key, value, arg0, arg1, arg2, exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// 根据字典主键获取字典内容字符串。
+        /// </summary>
+        /// <param name="key">字典主键。</param>
         /// <param name="args">字典参数。</param>
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString(string key, params object[] args)
