@@ -429,6 +429,7 @@ namespace GameFramework.Network
                     throw new GameFrameworkException(errorMessage);
                 }
 
+                m_SendState.Reset();
                 m_ReceiveState.PrepareForPacketHeader(m_NetworkChannelHelper.PacketHeaderLength);
 
                 try
@@ -547,6 +548,7 @@ namespace GameFramework.Network
                 if (disposing)
                 {
                     Close();
+                    m_ReceiveState.Dispose();
                 }
 
                 m_Disposed = true;

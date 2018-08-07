@@ -5,6 +5,7 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
 using System.IO;
 
 namespace GameFramework.Network
@@ -13,16 +14,18 @@ namespace GameFramework.Network
     {
         private partial class NetworkChannel
         {
-            private sealed class ReceiveState
+            private sealed class ReceiveState : IDisposable
             {
                 private const int DefaultBufferLength = 1024 * 8;
-                private readonly MemoryStream m_Stream;
+                private MemoryStream m_Stream;
                 private IPacketHeader m_PacketHeader;
+                private bool m_Disposed;
 
                 public ReceiveState()
                 {
                     m_Stream = new MemoryStream(DefaultBufferLength);
                     m_PacketHeader = null;
+                    m_Disposed = false;
                 }
 
                 public MemoryStream Stream
@@ -54,6 +57,38 @@ namespace GameFramework.Network
                     }
 
                     Reset(packetHeader.PacketLength, packetHeader);
+                }
+
+                /// <summary>
+                /// 释放资源。
+                /// </summary>
+                public void Dispose()
+                {
+                    Dispose(true);
+                    GC.SuppressFinalize(this);
+                }
+
+                /// <summary>
+                /// 释放资源。
+                /// </summary>
+                /// <param name="disposing">释放资源标记。</param>
+                private void Dispose(bool disposing)
+                {
+                    if (m_Disposed)
+                    {
+                        return;
+                    }
+
+                    if (disposing)
+                    {
+                        if (m_Stream != null)
+                        {
+                            m_Stream.Dispose();
+                            m_Stream = null;
+                        }
+                    }
+
+                    m_Disposed = true;
                 }
 
                 private void Reset(int targetLength, IPacketHeader packetHeader)

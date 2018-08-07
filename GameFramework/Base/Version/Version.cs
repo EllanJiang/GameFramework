@@ -36,7 +36,7 @@ namespace GameFramework
             {
                 if (s_VersionHelper == null)
                 {
-                    throw new GameFrameworkException("Version helper is invalid.");
+                    return string.Empty;
                 }
 
                 return s_VersionHelper.GameVersion;
@@ -52,7 +52,7 @@ namespace GameFramework
             {
                 if (s_VersionHelper == null)
                 {
-                    throw new GameFrameworkException("Version helper is invalid.");
+                    return 0;
                 }
 
                 return s_VersionHelper.InternalGameVersion;
