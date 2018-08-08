@@ -59,19 +59,12 @@ namespace GameFramework.Network
                     Reset(packetHeader.PacketLength, packetHeader);
                 }
 
-                /// <summary>
-                /// 释放资源。
-                /// </summary>
                 public void Dispose()
                 {
                     Dispose(true);
                     GC.SuppressFinalize(this);
                 }
 
-                /// <summary>
-                /// 释放资源。
-                /// </summary>
-                /// <param name="disposing">释放资源标记。</param>
                 private void Dispose(bool disposing)
                 {
                     if (m_Disposed)

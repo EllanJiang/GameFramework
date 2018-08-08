@@ -548,6 +548,7 @@ namespace GameFramework.Network
                 if (disposing)
                 {
                     Close();
+                    m_SendState.Dispose();
                     m_ReceiveState.Dispose();
                 }
 
@@ -558,7 +559,7 @@ namespace GameFramework.Network
             {
                 try
                 {
-                    m_Socket.BeginSend(m_SendState.GetPacketBytes(), m_SendState.Offset, m_SendState.Length, SocketFlags.None, SendCallback, m_Socket);
+                    m_Socket.BeginSend(m_SendState.Stream.GetBuffer(), (int)m_SendState.Stream.Position, (int)(m_SendState.Stream.Length - m_SendState.Stream.Position), SocketFlags.None, SendCallback, m_Socket);
                 }
                 catch (Exception exception)
                 {
@@ -594,52 +595,53 @@ namespace GameFramework.Network
 
             private void ProcessSend()
             {
-                if (m_SendPacketPool.Count <= 0)
+                if (m_SendState.Stream.Length > 0)
                 {
                     return;
                 }
 
-                if (!m_SendState.IsFree)
+                if (m_SendPacketPool.Count > 0)
                 {
-                    return;
-                }
-
-                Packet packet = null;
-                lock (m_SendPacketPool)
-                {
-                    packet = m_SendPacketPool.Dequeue();
-                }
-
-                byte[] packetBytes = null;
-                try
-                {
-                    packetBytes = m_NetworkChannelHelper.Serialize(packet);
-                }
-                catch (Exception exception)
-                {
-                    m_Active = false;
-                    if (NetworkChannelError != null)
+                    Packet packet = null;
+                    lock (m_SendPacketPool)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.SerializeError, exception.ToString());
-                        return;
+                        packet = m_SendPacketPool.Dequeue();
                     }
 
-                    throw;
-                }
-
-                if (packetBytes == null || packetBytes.Length <= 0)
-                {
-                    string errorMessage = "Serialized packet is invalid.";
-                    if (NetworkChannelError != null)
+                    byte[] packetBytes = null;
+                    try
                     {
-                        NetworkChannelError(this, NetworkErrorCode.SerializeError, errorMessage);
-                        return;
+                        packetBytes = m_NetworkChannelHelper.Serialize(packet);
+                    }
+                    catch (Exception exception)
+                    {
+                        m_Active = false;
+                        if (NetworkChannelError != null)
+                        {
+                            NetworkChannelError(this, NetworkErrorCode.SerializeError, exception.ToString());
+                            return;
+                        }
+
+                        throw;
                     }
 
-                    throw new GameFrameworkException(errorMessage);
+                    if (packetBytes == null || packetBytes.Length <= 0)
+                    {
+                        string errorMessage = "Serialized packet is invalid.";
+                        if (NetworkChannelError != null)
+                        {
+                            NetworkChannelError(this, NetworkErrorCode.SerializeError, errorMessage);
+                            return;
+                        }
+
+                        throw new GameFrameworkException(errorMessage);
+                    }
+
+                    m_SendState.AddPacket(packetBytes);
                 }
 
-                m_SendState.SetPacket(packetBytes);
+                m_SendState.Stream.Position = 0L;
+
                 Send();
             }
 
@@ -767,9 +769,10 @@ namespace GameFramework.Network
             private void SendCallback(IAsyncResult ar)
             {
                 Socket socket = (Socket)ar.AsyncState;
+                int bytesSent = 0;
                 try
                 {
-                    m_SendState.Offset += socket.EndSend(ar);
+                    bytesSent = socket.EndSend(ar);
                 }
                 catch (ObjectDisposedException)
                 {
@@ -787,7 +790,8 @@ namespace GameFramework.Network
                     throw;
                 }
 
-                if (m_SendState.Offset < m_SendState.Length)
+                m_SendState.Stream.Position += bytesSent;
+                if (m_SendState.Stream.Position < m_SendState.Stream.Length)
                 {
                     Send();
                     return;
