@@ -34,11 +34,6 @@ namespace GameFramework.Network
                     }
                 }
 
-                public void AddPacket(byte[] packetBytes)
-                {
-                    m_Stream.Write(packetBytes, 0, packetBytes.Length);
-                }
-
                 public void Reset()
                 {
                     m_Stream.Position = 0L;

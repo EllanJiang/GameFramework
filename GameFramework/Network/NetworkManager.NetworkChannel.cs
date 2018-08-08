@@ -608,10 +608,10 @@ namespace GameFramework.Network
                         packet = m_SendPacketPool.Dequeue();
                     }
 
-                    byte[] packetBytes = null;
+                    bool serializeResult = false;
                     try
                     {
-                        packetBytes = m_NetworkChannelHelper.Serialize(packet);
+                        serializeResult = m_NetworkChannelHelper.Serialize(packet, m_SendState.Stream);
                     }
                     catch (Exception exception)
                     {
@@ -625,9 +625,9 @@ namespace GameFramework.Network
                         throw;
                     }
 
-                    if (packetBytes == null || packetBytes.Length <= 0)
+                    if (!serializeResult)
                     {
-                        string errorMessage = "Serialized packet is invalid.";
+                        string errorMessage = "Serialized packet failure.";
                         if (NetworkChannelError != null)
                         {
                             NetworkChannelError(this, NetworkErrorCode.SerializeError, errorMessage);
@@ -636,8 +636,6 @@ namespace GameFramework.Network
 
                         throw new GameFrameworkException(errorMessage);
                     }
-
-                    m_SendState.AddPacket(packetBytes);
                 }
 
                 m_SendState.Stream.Position = 0L;
