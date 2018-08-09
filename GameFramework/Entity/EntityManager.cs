@@ -1197,7 +1197,7 @@ namespace GameFramework.Entity
             m_EntitiesBeingLoaded.Remove(showEntityInfo.EntityId);
             if (m_EntitiesToReleaseOnLoad.Contains(showEntityInfo.SerialId))
             {
-                Log.Debug("Release entity '{0}' (serial id '{1}') on loading success.", showEntityInfo.EntityId.ToString(), showEntityInfo.SerialId.ToString());
+                GameFrameworkLog.Debug("Release entity '{0}' (serial id '{1}') on loading success.", showEntityInfo.EntityId.ToString(), showEntityInfo.SerialId.ToString());
                 m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.SerialId);
                 m_EntityHelper.ReleaseEntity(entityAsset, null);
                 return;

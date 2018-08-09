@@ -86,7 +86,7 @@ namespace GameFramework.Resource
                 string versionListFileName = Utility.Path.GetCombinePath(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName));
                 if (!File.Exists(versionListFileName))
                 {
-                    Log.Debug("Latest internal resource version is '{0}', local resource version is not exist.", latestInternalResourceVersion.ToString());
+                    GameFrameworkLog.Debug("Latest internal resource version is '{0}', local resource version is not exist.", latestInternalResourceVersion.ToString());
                     return CheckVersionListResult.NeedUpdate;
                 }
 
@@ -100,7 +100,7 @@ namespace GameFramework.Resource
                         char[] header = binaryReader.ReadChars(3);
                         if (header[0] != VersionListHeader[0] || header[1] != VersionListHeader[1] || header[2] != VersionListHeader[2])
                         {
-                            Log.Debug("Latest internal resource version is '{0}', local resource version is invalid.", latestInternalResourceVersion.ToString());
+                            GameFrameworkLog.Debug("Latest internal resource version is '{0}', local resource version is invalid.", latestInternalResourceVersion.ToString());
                             return CheckVersionListResult.NeedUpdate;
                         }
 
@@ -120,7 +120,7 @@ namespace GameFramework.Resource
                 }
                 catch
                 {
-                    Log.Debug("Latest internal resource version is '{0}', local resource version is invalid.", latestInternalResourceVersion.ToString());
+                    GameFrameworkLog.Debug("Latest internal resource version is '{0}', local resource version is invalid.", latestInternalResourceVersion.ToString());
                     return CheckVersionListResult.NeedUpdate;
                 }
                 finally
@@ -134,11 +134,11 @@ namespace GameFramework.Resource
 
                 if (internalResourceVersion != latestInternalResourceVersion)
                 {
-                    Log.Debug("Applicable game version is '{0}', latest internal resource version is '{1}', local resource version is '{2}'.", applicableGameVersion, latestInternalResourceVersion.ToString(), internalResourceVersion.ToString());
+                    GameFrameworkLog.Debug("Applicable game version is '{0}', latest internal resource version is '{1}', local resource version is '{2}'.", applicableGameVersion, latestInternalResourceVersion.ToString(), internalResourceVersion.ToString());
                     return CheckVersionListResult.NeedUpdate;
                 }
 
-                Log.Debug("Applicable game version is '{0}', latest internal resource version is '{1}', local resource version is up-to-date.", applicableGameVersion, latestInternalResourceVersion.ToString());
+                GameFrameworkLog.Debug("Applicable game version is '{0}', latest internal resource version is '{1}', local resource version is up-to-date.", applicableGameVersion, latestInternalResourceVersion.ToString());
                 return CheckVersionListResult.Updated;
             }
 

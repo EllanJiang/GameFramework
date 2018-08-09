@@ -42,7 +42,7 @@ namespace GameFramework
 
             s_GameFrameworkModules.Clear();
             ReferencePool.ClearAll();
-            Log.SetLogHelper(null);
+            GameFrameworkLog.SetLogHelper(null);
         }
 
         /// <summary>

@@ -48,9 +48,9 @@
     <Compile Include="Base\GameFrameworkException.cs" />
     <Compile Include="Base\GameFrameworkFunc.cs" />
     <Compile Include="Base\GameFrameworkModule.cs" />
-    <Compile Include="Base\Log\Log.cs" />
-    <Compile Include="Base\Log\Log.ILogHelper.cs" />
-    <Compile Include="Base\Log\LogLevel.cs" />
+    <Compile Include="Base\Log\GameFrameworkLog.cs" />
+    <Compile Include="Base\Log\GameFrameworkLog.ILogHelper.cs" />
+    <Compile Include="Base\Log\GameFrameworkLogLevel.cs" />
     <Compile Include="Base\ReferencePool\IReference.cs" />
     <Compile Include="Base\ReferencePool\ReferencePool.cs" />
     <Compile Include="Base\ReferencePool\ReferencePool.ReferenceCollection.cs" />

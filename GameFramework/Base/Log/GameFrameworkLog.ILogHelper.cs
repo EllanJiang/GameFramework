@@ -7,7 +7,7 @@
 
 namespace GameFramework
 {
-    public static partial class Log
+    public static partial class GameFrameworkLog
     {
         /// <summary>
         /// 日志辅助器接口。
@@ -19,7 +19,7 @@ namespace GameFramework
             /// </summary>
             /// <param name="level">日志等级。</param>
             /// <param name="message">日志内容。</param>
-            void Log(LogLevel level, object message);
+            void Log(GameFrameworkLogLevel level, object message);
         }
     }
 }
