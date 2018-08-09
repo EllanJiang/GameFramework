@@ -26,9 +26,10 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+        /// 记录调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="message">日志内容。</param>
+        /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
         [Conditional("DEBUG")]
         public static void Debug(object message)
         {
@@ -41,9 +42,10 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+        /// 记录调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="message">日志内容。</param>
+        /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
         [Conditional("DEBUG")]
         public static void Debug(string message)
         {
@@ -56,10 +58,11 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+        /// 记录调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="format">日志格式。</param>
         /// <param name="arg0">日志参数 0。</param>
+        /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
         [Conditional("DEBUG")]
         public static void Debug(string format, object arg0)
         {
@@ -72,11 +75,12 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+        /// 记录调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="format">日志格式。</param>
         /// <param name="arg0">日志参数 0。</param>
         /// <param name="arg1">日志参数 1。</param>
+        /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
         [Conditional("DEBUG")]
         public static void Debug(string format, object arg0, object arg1)
         {
@@ -89,12 +93,13 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+        /// 记录调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="format">日志格式。</param>
         /// <param name="arg0">日志参数 0。</param>
         /// <param name="arg1">日志参数 1。</param>
         /// <param name="arg2">日志参数 2。</param>
+        /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
         [Conditional("DEBUG")]
         public static void Debug(string format, object arg0, object arg1, object arg2)
         {
@@ -107,10 +112,11 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+        /// 记录调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="format">日志格式。</param>
         /// <param name="args">日志参数。</param>
+        /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
         [Conditional("DEBUG")]
         public static void Debug(string format, params object[] args)
         {
