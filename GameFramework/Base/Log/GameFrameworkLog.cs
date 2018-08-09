@@ -10,16 +10,16 @@ using System.Diagnostics;
 namespace GameFramework
 {
     /// <summary>
-    /// 日志类。
+    /// 游戏框架日志类。
     /// </summary>
     public static partial class GameFrameworkLog
     {
         private static ILogHelper s_LogHelper = null;
 
         /// <summary>
-        /// 设置日志辅助器。
+        /// 设置游戏框架日志辅助器。
         /// </summary>
-        /// <param name="logHelper">要设置的日志辅助器。</param>
+        /// <param name="logHelper">要设置的游戏框架日志辅助器。</param>
         public static void SetLogHelper(ILogHelper logHelper)
         {
             s_LogHelper = logHelper;

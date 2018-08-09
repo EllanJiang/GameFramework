@@ -8,7 +8,7 @@
 namespace GameFramework
 {
     /// <summary>
-    /// 日志等级。
+    /// 游戏框架日志等级。
     /// </summary>
     public enum GameFrameworkLogLevel
     {
