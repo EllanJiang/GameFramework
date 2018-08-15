@@ -595,12 +595,12 @@ namespace GameFramework.Network
 
             private void ProcessSend()
             {
-                if (m_SendState.Stream.Length > 0)
+                if (m_SendState.Stream.Length > 0 || m_SendPacketPool.Count <= 0)
                 {
                     return;
                 }
 
-                if (m_SendPacketPool.Count > 0)
+                while (m_SendPacketPool.Count > 0)
                 {
                     Packet packet = null;
                     lock (m_SendPacketPool)
