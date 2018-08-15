@@ -32,6 +32,8 @@ namespace GameFramework.Network
             private readonly SendState m_SendState;
             private readonly ReceiveState m_ReceiveState;
             private readonly HeartBeatState m_HeartBeatState;
+            private int m_SentPacketCount;
+            private int m_ReceivedPacketCount;
             private bool m_Active;
             private bool m_Disposed;
 
@@ -59,6 +61,8 @@ namespace GameFramework.Network
                 m_SendState = new SendState();
                 m_ReceiveState = new ReceiveState();
                 m_HeartBeatState = new HeartBeatState();
+                m_SentPacketCount = 0;
+                m_ReceivedPacketCount = 0;
                 m_Active = false;
                 m_Disposed = false;
 
@@ -198,7 +202,7 @@ namespace GameFramework.Network
             }
 
             /// <summary>
-            /// 要发送的消息包数量。
+            /// 获取要发送的消息包数量。
             /// </summary>
             public int SendPacketCount
             {
@@ -209,13 +213,35 @@ namespace GameFramework.Network
             }
 
             /// <summary>
-            /// 已接收未处理的消息包数量。
+            /// 获取累计发送的消息包数量。
+            /// </summary>
+            public int SentPacketCount
+            {
+                get
+                {
+                    return m_SentPacketCount;
+                }
+            }
+
+            /// <summary>
+            /// 获取已接收未处理的消息包数量。
             /// </summary>
             public int ReceivePacketCount
             {
                 get
                 {
                     return m_ReceivePacketPool.EventCount;
+                }
+            }
+
+            /// <summary>
+            /// 获取累计已接收的消息包数量。
+            /// </summary>
+            public int ReceivedPacketCount
+            {
+                get
+                {
+                    return m_ReceivedPacketCount;
                 }
             }
 
@@ -246,6 +272,17 @@ namespace GameFramework.Network
                 set
                 {
                     m_HeartBeatInterval = value;
+                }
+            }
+
+            /// <summary>
+            /// 获取心跳等待时长，以秒为单位。
+            /// </summary>
+            public float HeartBeatElapseSeconds
+            {
+                get
+                {
+                    return m_HeartBeatState.HeartBeatElapseSeconds;
                 }
             }
 
@@ -468,6 +505,8 @@ namespace GameFramework.Network
                     m_ReceivePacketPool.Clear();
 
                     m_Active = false;
+                    m_SentPacketCount = 0;
+                    m_ReceivedPacketCount = 0;
                     try
                     {
                         m_Socket.Shutdown(SocketShutdown.Both);
@@ -595,12 +634,12 @@ namespace GameFramework.Network
 
             private void ProcessSend()
             {
-                if (m_SendState.Stream.Length > 0)
+                if (m_SendState.Stream.Length > 0 || m_SendPacketPool.Count <= 0)
                 {
                     return;
                 }
 
-                if (m_SendPacketPool.Count > 0)
+                while (m_SendPacketPool.Count > 0)
                 {
                     Packet packet = null;
                     lock (m_SendPacketPool)
@@ -751,6 +790,9 @@ namespace GameFramework.Network
                 }
 
                 m_Active = true;
+                m_SentPacketCount = 0;
+                m_ReceivedPacketCount = 0;
+
                 lock (m_HeartBeatState)
                 {
                     m_HeartBeatState.Reset(true);
@@ -795,6 +837,7 @@ namespace GameFramework.Network
                     return;
                 }
 
+                m_SentPacketCount++;
                 m_SendState.Reset();
             }
 
@@ -835,6 +878,7 @@ namespace GameFramework.Network
                     return;
                 }
 
+                m_ReceivedPacketCount++;
                 m_ReceiveState.Stream.Position = 0L;
 
                 bool processSuccess = false;

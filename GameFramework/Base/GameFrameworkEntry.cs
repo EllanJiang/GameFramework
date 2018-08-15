@@ -103,7 +103,7 @@ namespace GameFramework
             GameFrameworkModule module = (GameFrameworkModule)Activator.CreateInstance(moduleType);
             if (module == null)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Can not create module '{0}'.", module.GetType().FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not create module '{0}'.", moduleType.FullName));
             }
 
             LinkedListNode<GameFrameworkModule> current = s_GameFrameworkModules.First;

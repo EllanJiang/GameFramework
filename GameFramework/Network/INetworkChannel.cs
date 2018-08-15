@@ -72,7 +72,7 @@ namespace GameFramework.Network
         }
 
         /// <summary>
-        /// 要发送的消息包数量。
+        /// 获取要发送的消息包数量。
         /// </summary>
         int SendPacketCount
         {
@@ -80,9 +80,25 @@ namespace GameFramework.Network
         }
 
         /// <summary>
-        /// 已接收未处理的消息包数量。
+        /// 获取累计发送的消息包数量。
+        /// </summary>
+        int SentPacketCount
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取已接收未处理的消息包数量。
         /// </summary>
         int ReceivePacketCount
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取累计已接收的消息包数量。
+        /// </summary>
+        int ReceivedPacketCount
         {
             get;
         }
@@ -103,6 +119,14 @@ namespace GameFramework.Network
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// 获取心跳等待时长，以秒为单位。
+        /// </summary>
+        float HeartBeatElapseSeconds
+        {
+            get;
         }
 
         /// <summary>
