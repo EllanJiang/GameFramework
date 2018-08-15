@@ -5,6 +5,8 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
+
 namespace GameFramework
 {
     public static partial class Utility
@@ -14,7 +16,7 @@ namespace GameFramework
         /// </summary>
         public static class Random
         {
-            private static System.Random s_Random = new System.Random();
+            private static System.Random s_Random = new System.Random((int)DateTime.Now.Ticks);
 
             /// <summary>
             /// 设置随机数种子。
