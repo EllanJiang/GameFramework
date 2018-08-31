@@ -261,6 +261,17 @@ namespace GameFramework.Network
             }
 
             /// <summary>
+            /// 获取丢失心跳的次数。
+            /// </summary>
+            public int MissHeartBeatCount
+            {
+                get
+                {
+                    return m_HeartBeatState.MissHeartBeatCount;
+                }
+            }
+
+            /// <summary>
             /// 获取或设置心跳间隔时长，以秒为单位。
             /// </summary>
             public float HeartBeatInterval

@@ -113,6 +113,14 @@ namespace GameFramework.Network
         }
 
         /// <summary>
+        /// 获取丢失心跳的次数。
+        /// </summary>
+        int MissHeartBeatCount
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取或设置心跳间隔时长，以秒为单位。
         /// </summary>
         float HeartBeatInterval
