@@ -281,7 +281,7 @@ namespace GameFramework.DataTable
         /// <returns>要获取的数据表。</returns>
         public IDataTable<T> GetDataTable<T>() where T : IDataRow
         {
-            return (IDataTable<T>)InternelGetDataTable(Utility.Text.GetFullName<T>(string.Empty));
+            return (IDataTable<T>)InternalGetDataTable(Utility.Text.GetFullName<T>(string.Empty));
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ namespace GameFramework.DataTable
                 throw new GameFrameworkException(Utility.Text.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
             }
 
-            return InternelGetDataTable(Utility.Text.GetFullName(dataRowType, string.Empty));
+            return InternalGetDataTable(Utility.Text.GetFullName(dataRowType, string.Empty));
         }
 
         /// <summary>
@@ -312,7 +312,7 @@ namespace GameFramework.DataTable
         /// <returns>要获取的数据表。</returns>
         public IDataTable<T> GetDataTable<T>(string name) where T : IDataRow
         {
-            return (IDataTable<T>)InternelGetDataTable(Utility.Text.GetFullName<T>(name));
+            return (IDataTable<T>)InternalGetDataTable(Utility.Text.GetFullName<T>(name));
         }
 
         /// <summary>
@@ -333,7 +333,7 @@ namespace GameFramework.DataTable
                 throw new GameFrameworkException(Utility.Text.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
             }
 
-            return InternelGetDataTable(Utility.Text.GetFullName(dataRowType, name));
+            return InternalGetDataTable(Utility.Text.GetFullName(dataRowType, name));
         }
 
         /// <summary>
@@ -518,7 +518,7 @@ namespace GameFramework.DataTable
             return m_DataTables.ContainsKey(fullName);
         }
 
-        private DataTableBase InternelGetDataTable(string fullName)
+        private DataTableBase InternalGetDataTable(string fullName)
         {
             DataTableBase dataTable = null;
             if (m_DataTables.TryGetValue(fullName, out dataTable))

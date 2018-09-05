@@ -152,7 +152,7 @@ namespace GameFramework.Fsm
         /// <returns>要获取的有限状态机。</returns>
         public IFsm<T> GetFsm<T>() where T : class
         {
-            return (IFsm<T>)InternelGetFsm(Utility.Text.GetFullName<T>(string.Empty));
+            return (IFsm<T>)InternalGetFsm(Utility.Text.GetFullName<T>(string.Empty));
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException("Owner type is invalid.");
             }
 
-            return InternelGetFsm(Utility.Text.GetFullName(ownerType, string.Empty));
+            return InternalGetFsm(Utility.Text.GetFullName(ownerType, string.Empty));
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace GameFramework.Fsm
         /// <returns>要获取的有限状态机。</returns>
         public IFsm<T> GetFsm<T>(string name) where T : class
         {
-            return (IFsm<T>)InternelGetFsm(Utility.Text.GetFullName<T>(name));
+            return (IFsm<T>)InternalGetFsm(Utility.Text.GetFullName<T>(name));
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException("Owner type is invalid.");
             }
 
-            return InternelGetFsm(Utility.Text.GetFullName(ownerType, name));
+            return InternalGetFsm(Utility.Text.GetFullName(ownerType, name));
         }
 
         /// <summary>
@@ -351,7 +351,7 @@ namespace GameFramework.Fsm
             return m_Fsms.ContainsKey(fullName);
         }
 
-        private FsmBase InternelGetFsm(string fullName)
+        private FsmBase InternalGetFsm(string fullName)
         {
             FsmBase fsm = null;
             if (m_Fsms.TryGetValue(fullName, out fsm))

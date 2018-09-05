@@ -147,7 +147,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要获取的对象池。</returns>
         public IObjectPool<T> GetObjectPool<T>() where T : ObjectBase
         {
-            return (IObjectPool<T>)InternelGetObjectPool(Utility.Text.GetFullName<T>(string.Empty));
+            return (IObjectPool<T>)InternalGetObjectPool(Utility.Text.GetFullName<T>(string.Empty));
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace GameFramework.ObjectPool
                 throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
-            return InternelGetObjectPool(Utility.Text.GetFullName(objectType, string.Empty));
+            return InternalGetObjectPool(Utility.Text.GetFullName(objectType, string.Empty));
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要获取的对象池。</returns>
         public IObjectPool<T> GetObjectPool<T>(string name) where T : ObjectBase
         {
-            return (IObjectPool<T>)InternelGetObjectPool(Utility.Text.GetFullName<T>(name));
+            return (IObjectPool<T>)InternalGetObjectPool(Utility.Text.GetFullName<T>(name));
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace GameFramework.ObjectPool
                 throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
-            return InternelGetObjectPool(Utility.Text.GetFullName(objectType, name));
+            return InternalGetObjectPool(Utility.Text.GetFullName(objectType, name));
         }
 
         /// <summary>
@@ -1133,7 +1133,7 @@ namespace GameFramework.ObjectPool
             return m_ObjectPools.ContainsKey(fullName);
         }
 
-        private ObjectPoolBase InternelGetObjectPool(string fullName)
+        private ObjectPoolBase InternalGetObjectPool(string fullName)
         {
             ObjectPoolBase objectPool = null;
             if (m_ObjectPools.TryGetValue(fullName, out objectPool))
