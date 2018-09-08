@@ -156,6 +156,29 @@ namespace GameFramework.ObjectPool
         }
 
         /// <summary>
+        /// 检查是否存在对象池。
+        /// </summary>
+        /// <param name="condition">要检查的条件。</param>
+        /// <returns>是否存在对象池。</returns>
+        public bool HasObjectPool(Predicate<ObjectPoolBase> condition)
+        {
+            if (condition == null)
+            {
+                throw new GameFrameworkException("Condition is invalid.");
+            }
+
+            foreach (KeyValuePair<string, ObjectPoolBase> objectPool in m_ObjectPools)
+            {
+                if (condition(objectPool.Value))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// 获取对象池。
         /// </summary>
         /// <typeparam name="T">对象类型。</typeparam>
@@ -236,6 +259,80 @@ namespace GameFramework.ObjectPool
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// 获取对象池。
+        /// </summary>
+        /// <param name="condition">要检查的条件。</param>
+        /// <returns>要获取的对象池。</returns>
+        public ObjectPoolBase GetObjectPool(Predicate<ObjectPoolBase> condition)
+        {
+            if (condition == null)
+            {
+                throw new GameFrameworkException("Condition is invalid.");
+            }
+
+            foreach (KeyValuePair<string, ObjectPoolBase> objectPool in m_ObjectPools)
+            {
+                if (condition(objectPool.Value))
+                {
+                    return objectPool.Value;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 获取对象池。
+        /// </summary>
+        /// <param name="condition">要检查的条件。</param>
+        /// <returns>要获取的对象池。</returns>
+        public ObjectPoolBase[] GetObjectPools(Predicate<ObjectPoolBase> condition)
+        {
+            if (condition == null)
+            {
+                throw new GameFrameworkException("Condition is invalid.");
+            }
+
+            List<ObjectPoolBase> results = new List<ObjectPoolBase>();
+            foreach (KeyValuePair<string, ObjectPoolBase> objectPool in m_ObjectPools)
+            {
+                if (condition(objectPool.Value))
+                {
+                    results.Add(objectPool.Value);
+                }
+            }
+
+            return results.ToArray();
+        }
+
+        /// <summary>
+        /// 获取对象池。
+        /// </summary>
+        /// <param name="condition">要检查的条件。</param>
+        /// <param name="results">要获取的对象池。</param>
+        public void GetObjectPools(Predicate<ObjectPoolBase> condition, List<ObjectPoolBase> results)
+        {
+            if (condition == null)
+            {
+                throw new GameFrameworkException("Condition is invalid.");
+            }
+
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<string, ObjectPoolBase> objectPool in m_ObjectPools)
+            {
+                if (condition(objectPool.Value))
+                {
+                    results.Add(objectPool.Value);
+                }
+            }
         }
 
         /// <summary>
