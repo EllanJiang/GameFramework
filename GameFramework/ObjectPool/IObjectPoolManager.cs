@@ -54,6 +54,13 @@ namespace GameFramework.ObjectPool
         bool HasObjectPool(Type objectType, string name);
 
         /// <summary>
+        /// 检查是否存在对象池。
+        /// </summary>
+        /// <param name="fullName">对象池完整名称。</param>
+        /// <returns>是否存在对象池。</returns>
+        bool HasObjectPool(string fullName);
+
+        /// <summary>
         /// 获取对象池。
         /// </summary>
         /// <typeparam name="T">对象类型。</typeparam>
@@ -82,6 +89,13 @@ namespace GameFramework.ObjectPool
         /// <param name="name">对象池名称。</param>
         /// <returns>要获取的对象池。</returns>
         ObjectPoolBase GetObjectPool(Type objectType, string name);
+
+        /// <summary>
+        /// 获取对象池。
+        /// </summary>
+        /// <param name="fullName">对象池完整名称。</param>
+        /// <returns>要获取的对象池。</returns>
+        ObjectPoolBase GetObjectPool(string fullName);
 
         /// <summary>
         /// 获取所有对象池。

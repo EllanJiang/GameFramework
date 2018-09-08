@@ -85,7 +85,7 @@ namespace GameFramework.ObjectPool
         /// <returns>是否存在对象池。</returns>
         public bool HasObjectPool<T>() where T : ObjectBase
         {
-            return InternalHasObjectPool(Utility.Text.GetFullName<T>(string.Empty));
+            return HasObjectPool(Utility.Text.GetFullName<T>(string.Empty));
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace GameFramework.ObjectPool
                 throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
-            return InternalHasObjectPool(Utility.Text.GetFullName(objectType, string.Empty));
+            return HasObjectPool(Utility.Text.GetFullName(objectType, string.Empty));
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace GameFramework.ObjectPool
         /// <returns>是否存在对象池。</returns>
         public bool HasObjectPool<T>(string name) where T : ObjectBase
         {
-            return InternalHasObjectPool(Utility.Text.GetFullName<T>(name));
+            return HasObjectPool(Utility.Text.GetFullName<T>(name));
         }
 
         /// <summary>
@@ -137,7 +137,22 @@ namespace GameFramework.ObjectPool
                 throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
-            return InternalHasObjectPool(Utility.Text.GetFullName(objectType, name));
+            return HasObjectPool(Utility.Text.GetFullName(objectType, name));
+        }
+
+        /// <summary>
+        /// 检查是否存在对象池。
+        /// </summary>
+        /// <param name="fullName">对象池完整名称。</param>
+        /// <returns>是否存在对象池。</returns>
+        public bool HasObjectPool(string fullName)
+        {
+            if (string.IsNullOrEmpty(fullName))
+            {
+                throw new GameFrameworkException("Full name is invalid.");
+            }
+
+            return m_ObjectPools.ContainsKey(fullName);
         }
 
         /// <summary>
@@ -147,7 +162,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要获取的对象池。</returns>
         public IObjectPool<T> GetObjectPool<T>() where T : ObjectBase
         {
-            return (IObjectPool<T>)InternalGetObjectPool(Utility.Text.GetFullName<T>(string.Empty));
+            return (IObjectPool<T>)GetObjectPool(Utility.Text.GetFullName<T>(string.Empty));
         }
 
         /// <summary>
@@ -167,7 +182,7 @@ namespace GameFramework.ObjectPool
                 throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
-            return InternalGetObjectPool(Utility.Text.GetFullName(objectType, string.Empty));
+            return GetObjectPool(Utility.Text.GetFullName(objectType, string.Empty));
         }
 
         /// <summary>
@@ -178,7 +193,7 @@ namespace GameFramework.ObjectPool
         /// <returns>要获取的对象池。</returns>
         public IObjectPool<T> GetObjectPool<T>(string name) where T : ObjectBase
         {
-            return (IObjectPool<T>)InternalGetObjectPool(Utility.Text.GetFullName<T>(name));
+            return (IObjectPool<T>)GetObjectPool(Utility.Text.GetFullName<T>(name));
         }
 
         /// <summary>
@@ -199,7 +214,28 @@ namespace GameFramework.ObjectPool
                 throw new GameFrameworkException(Utility.Text.Format("Object type '{0}' is invalid.", objectType.FullName));
             }
 
-            return InternalGetObjectPool(Utility.Text.GetFullName(objectType, name));
+            return GetObjectPool(Utility.Text.GetFullName(objectType, name));
+        }
+
+        /// <summary>
+        /// 获取对象池。
+        /// </summary>
+        /// <param name="fullName">对象池完整名称。</param>
+        /// <returns>要获取的对象池。</returns>
+        public ObjectPoolBase GetObjectPool(string fullName)
+        {
+            if (string.IsNullOrEmpty(fullName))
+            {
+                throw new GameFrameworkException("Full name is invalid.");
+            }
+
+            ObjectPoolBase objectPool = null;
+            if (m_ObjectPools.TryGetValue(fullName, out objectPool))
+            {
+                return objectPool;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -1126,22 +1162,6 @@ namespace GameFramework.ObjectPool
             {
                 objectPool.ReleaseAllUnused();
             }
-        }
-
-        private bool InternalHasObjectPool(string fullName)
-        {
-            return m_ObjectPools.ContainsKey(fullName);
-        }
-
-        private ObjectPoolBase InternalGetObjectPool(string fullName)
-        {
-            ObjectPoolBase objectPool = null;
-            if (m_ObjectPools.TryGetValue(fullName, out objectPool))
-            {
-                return objectPool;
-            }
-
-            return null;
         }
 
         private IObjectPool<T> InternalCreateObjectPool<T>(string name, bool allowMultiSpawn, float autoReleaseInterval, int capacity, float expireTime, int priority) where T : ObjectBase
