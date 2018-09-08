@@ -45,6 +45,9 @@ namespace GameFramework.ObjectPool
             }
         }
 
+        /// <summary>
+        /// 获取对象池完整名称。
+        /// </summary>
         public string FullName
         {
             get

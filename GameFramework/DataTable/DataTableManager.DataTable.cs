@@ -166,6 +166,171 @@ namespace GameFramework.DataTable
             }
 
             /// <summary>
+            /// 获取符合条件的数据表行。
+            /// </summary>
+            /// <param name="condition">要检查的条件。</param>
+            /// <returns>符合条件的数据表行。</returns>
+            public T[] GetDataRows(Predicate<T> condition)
+            {
+                if (condition == null)
+                {
+                    throw new GameFrameworkException("Condition is invalid.");
+                }
+
+                List<T> results = new List<T>();
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
+                {
+                    if (condition(dataRow.Value))
+                    {
+                        results.Add(dataRow.Value);
+                    }
+                }
+
+                return results.ToArray();
+            }
+
+            /// <summary>
+            /// 获取符合条件的数据表行。
+            /// </summary>
+            /// <param name="condition">要检查的条件。</param>
+            /// <param name="results">符合条件的数据表行。</param>
+            public void GetDataRows(Predicate<T> condition, List<T> results)
+            {
+                if (condition == null)
+                {
+                    throw new GameFrameworkException("Condition is invalid.");
+                }
+
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
+                {
+                    if (condition(dataRow.Value))
+                    {
+                        results.Add(dataRow.Value);
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 获取排序后的数据表行。
+            /// </summary>
+            /// <param name="comparison">要排序的条件。</param>
+            /// <returns>排序后的数据表行。</returns>
+            public T[] GetDataRows(Comparison<T> comparison)
+            {
+                if (comparison == null)
+                {
+                    throw new GameFrameworkException("Comparison is invalid.");
+                }
+
+                List<T> results = new List<T>();
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
+                {
+                    results.Add(dataRow.Value);
+                }
+
+                results.Sort(comparison);
+                return results.ToArray();
+            }
+
+            /// <summary>
+            /// 获取排序后的数据表行。
+            /// </summary>
+            /// <param name="comparison">要排序的条件。</param>
+            /// <param name="results">排序后的数据表行。</param>
+            public void GetDataRows(Comparison<T> comparison, List<T> results)
+            {
+                if (comparison == null)
+                {
+                    throw new GameFrameworkException("Comparison is invalid.");
+                }
+
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
+                {
+                    results.Add(dataRow.Value);
+                }
+
+                results.Sort(comparison);
+            }
+
+            /// <summary>
+            /// 获取排序后的符合条件的数据表行。
+            /// </summary>
+            /// <param name="condition">要检查的条件。</param>
+            /// <param name="comparison">要排序的条件。</param>
+            /// <returns>排序后的符合条件的数据表行。</returns>
+            public T[] GetDataRows(Predicate<T> condition, Comparison<T> comparison)
+            {
+                if (condition == null)
+                {
+                    throw new GameFrameworkException("Condition is invalid.");
+                }
+
+                if (comparison == null)
+                {
+                    throw new GameFrameworkException("Comparison is invalid.");
+                }
+
+                List<T> results = new List<T>();
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
+                {
+                    if (condition(dataRow.Value))
+                    {
+                        results.Add(dataRow.Value);
+                    }
+                }
+
+                results.Sort(comparison);
+                return results.ToArray();
+            }
+
+            /// <summary>
+            /// 获取排序后的符合条件的数据表行。
+            /// </summary>
+            /// <param name="condition">要检查的条件。</param>
+            /// <param name="comparison">要排序的条件。</param>
+            /// <param name="results">排序后的符合条件的数据表行。</param>
+            public void GetDataRows(Predicate<T> condition, Comparison<T> comparison, List<T> results)
+            {
+                if (condition == null)
+                {
+                    throw new GameFrameworkException("Condition is invalid.");
+                }
+
+                if (comparison == null)
+                {
+                    throw new GameFrameworkException("Comparison is invalid.");
+                }
+
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
+                {
+                    if (condition(dataRow.Value))
+                    {
+                        results.Add(dataRow.Value);
+                    }
+                }
+
+                results.Sort(comparison);
+            }
+
+            /// <summary>
             /// 获取所有数据表行。
             /// </summary>
             /// <returns>所有数据表行。</returns>
@@ -197,171 +362,6 @@ namespace GameFramework.DataTable
                 {
                     results.Add(dataRow.Value);
                 }
-            }
-
-            /// <summary>
-            /// 获取所有符合条件的数据表行。
-            /// </summary>
-            /// <param name="condition">要检查的条件。</param>
-            /// <returns>所有符合条件的数据表行。</returns>
-            public T[] GetAllDataRows(Predicate<T> condition)
-            {
-                if (condition == null)
-                {
-                    throw new GameFrameworkException("Condition is invalid.");
-                }
-
-                List<T> results = new List<T>();
-                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-                {
-                    if (condition(dataRow.Value))
-                    {
-                        results.Add(dataRow.Value);
-                    }
-                }
-
-                return results.ToArray();
-            }
-
-            /// <summary>
-            /// 获取所有符合条件的数据表行。
-            /// </summary>
-            /// <param name="condition">要检查的条件。</param>
-            /// <param name="results">所有符合条件的数据表行。</param>
-            public void GetAllDataRows(Predicate<T> condition, List<T> results)
-            {
-                if (condition == null)
-                {
-                    throw new GameFrameworkException("Condition is invalid.");
-                }
-
-                if (results == null)
-                {
-                    throw new GameFrameworkException("Results is invalid.");
-                }
-
-                results.Clear();
-                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-                {
-                    if (condition(dataRow.Value))
-                    {
-                        results.Add(dataRow.Value);
-                    }
-                }
-            }
-
-            /// <summary>
-            /// 获取所有排序后的数据表行。
-            /// </summary>
-            /// <param name="comparison">要排序的条件。</param>
-            /// <returns>所有排序后的数据表行。</returns>
-            public T[] GetAllDataRows(Comparison<T> comparison)
-            {
-                if (comparison == null)
-                {
-                    throw new GameFrameworkException("Comparison is invalid.");
-                }
-
-                List<T> results = new List<T>();
-                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-                {
-                    results.Add(dataRow.Value);
-                }
-
-                results.Sort(comparison);
-                return results.ToArray();
-            }
-
-            /// <summary>
-            /// 获取所有排序后的数据表行。
-            /// </summary>
-            /// <param name="comparison">要排序的条件。</param>
-            /// <param name="results">所有排序后的数据表行。</param>
-            public void GetAllDataRows(Comparison<T> comparison, List<T> results)
-            {
-                if (comparison == null)
-                {
-                    throw new GameFrameworkException("Comparison is invalid.");
-                }
-
-                if (results == null)
-                {
-                    throw new GameFrameworkException("Results is invalid.");
-                }
-
-                results.Clear();
-                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-                {
-                    results.Add(dataRow.Value);
-                }
-
-                results.Sort(comparison);
-            }
-
-            /// <summary>
-            /// 获取所有排序后的符合条件的数据表行。
-            /// </summary>
-            /// <param name="condition">要检查的条件。</param>
-            /// <param name="comparison">要排序的条件。</param>
-            /// <returns>所有排序后的符合条件的数据表行。</returns>
-            public T[] GetAllDataRows(Predicate<T> condition, Comparison<T> comparison)
-            {
-                if (condition == null)
-                {
-                    throw new GameFrameworkException("Condition is invalid.");
-                }
-
-                if (comparison == null)
-                {
-                    throw new GameFrameworkException("Comparison is invalid.");
-                }
-
-                List<T> results = new List<T>();
-                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-                {
-                    if (condition(dataRow.Value))
-                    {
-                        results.Add(dataRow.Value);
-                    }
-                }
-
-                results.Sort(comparison);
-                return results.ToArray();
-            }
-
-            /// <summary>
-            /// 获取所有排序后的符合条件的数据表行。
-            /// </summary>
-            /// <param name="condition">要检查的条件。</param>
-            /// <param name="comparison">要排序的条件。</param>
-            /// <param name="results">所有排序后的符合条件的数据表行。</param>
-            public void GetAllDataRows(Predicate<T> condition, Comparison<T> comparison, List<T> results)
-            {
-                if (condition == null)
-                {
-                    throw new GameFrameworkException("Condition is invalid.");
-                }
-
-                if (comparison == null)
-                {
-                    throw new GameFrameworkException("Comparison is invalid.");
-                }
-
-                if (results == null)
-                {
-                    throw new GameFrameworkException("Results is invalid.");
-                }
-
-                results.Clear();
-                foreach (KeyValuePair<int, T> dataRow in m_DataSet)
-                {
-                    if (condition(dataRow.Value))
-                    {
-                        results.Add(dataRow.Value);
-                    }
-                }
-
-                results.Sort(comparison);
             }
 
             /// <summary>
