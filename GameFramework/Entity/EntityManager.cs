@@ -626,18 +626,18 @@ namespace GameFramework.Entity
 
             if (m_EntityInfos.ContainsKey(entityId))
             {
-                throw new GameFrameworkException(string.Format("Entity id '{0}' is already exist.", entityId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Entity id '{0}' is already exist.", entityId.ToString()));
             }
 
             if (IsLoadingEntity(entityId))
             {
-                throw new GameFrameworkException(string.Format("Entity '{0}' is already being loaded.", entityId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Entity '{0}' is already being loaded.", entityId.ToString()));
             }
 
             EntityGroup entityGroup = (EntityGroup)GetEntityGroup(entityGroupName);
             if (entityGroup == null)
             {
-                throw new GameFrameworkException(string.Format("Entity group '{0}' is not exist.", entityGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("Entity group '{0}' is not exist.", entityGroupName));
             }
 
             EntityInstanceObject entityInstanceObject = entityGroup.SpawnEntityInstanceObject(entityAssetName);
@@ -673,7 +673,7 @@ namespace GameFramework.Entity
                 int serialId = 0;
                 if (!m_EntitiesBeingLoaded.TryGetValue(entityId, out serialId))
                 {
-                    throw new GameFrameworkException(string.Format("Can not find entity '{0}'.", entityId.ToString()));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not find entity '{0}'.", entityId.ToString()));
                 }
 
                 m_EntitiesToReleaseOnLoad.Add(serialId);
@@ -684,7 +684,7 @@ namespace GameFramework.Entity
             EntityInfo entityInfo = GetEntityInfo(entityId);
             if (entityInfo == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find entity '{0}'.", entityId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find entity '{0}'.", entityId.ToString()));
             }
 
             InternalHideEntity(entityInfo, userData);
@@ -761,7 +761,7 @@ namespace GameFramework.Entity
             EntityInfo childEntityInfo = GetEntityInfo(childEntityId);
             if (childEntityInfo == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find child entity '{0}'.", childEntityId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find child entity '{0}'.", childEntityId.ToString()));
             }
 
             return childEntityInfo.ParentEntity;
@@ -792,7 +792,7 @@ namespace GameFramework.Entity
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
             if (parentEntityInfo == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find parent entity '{0}'.", parentEntityId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId.ToString()));
             }
 
             return parentEntityInfo.GetChildEntities();
@@ -808,7 +808,7 @@ namespace GameFramework.Entity
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
             if (parentEntityInfo == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find parent entity '{0}'.", parentEntityId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId.ToString()));
             }
 
             parentEntityInfo.GetChildEntities(results);
@@ -864,29 +864,29 @@ namespace GameFramework.Entity
         {
             if (childEntityId == parentEntityId)
             {
-                throw new GameFrameworkException(string.Format("Can not attach entity when child entity id equals to parent entity id '{0}'.", parentEntityId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not attach entity when child entity id equals to parent entity id '{0}'.", parentEntityId.ToString()));
             }
 
             EntityInfo childEntityInfo = GetEntityInfo(childEntityId);
             if (childEntityInfo == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find child entity '{0}'.", childEntityId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find child entity '{0}'.", childEntityId.ToString()));
             }
 
             if (childEntityInfo.Status >= EntityStatus.WillHide)
             {
-                throw new GameFrameworkException(string.Format("Can not attach entity when child entity status is '{0}'.", childEntityInfo.Status.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not attach entity when child entity status is '{0}'.", childEntityInfo.Status.ToString()));
             }
 
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
             if (parentEntityInfo == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find parent entity '{0}'.", parentEntityId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId.ToString()));
             }
 
             if (parentEntityInfo.Status >= EntityStatus.WillHide)
             {
-                throw new GameFrameworkException(string.Format("Can not attach entity when parent entity status is '{0}'.", parentEntityInfo.Status.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not attach entity when parent entity status is '{0}'.", parentEntityInfo.Status.ToString()));
             }
 
             IEntity childEntity = childEntityInfo.Entity;
@@ -1000,7 +1000,7 @@ namespace GameFramework.Entity
             EntityInfo childEntityInfo = GetEntityInfo(childEntityId);
             if (childEntityInfo == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find child entity '{0}'.", childEntityId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find child entity '{0}'.", childEntityId.ToString()));
             }
 
             IEntity parentEntity = childEntityInfo.ParentEntity;
@@ -1012,7 +1012,7 @@ namespace GameFramework.Entity
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntity.Id);
             if (parentEntityInfo == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find parent entity '{0}'.", parentEntity.Id.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntity.Id.ToString()));
             }
 
             IEntity childEntity = childEntityInfo.Entity;
@@ -1065,7 +1065,7 @@ namespace GameFramework.Entity
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
             if (parentEntityInfo == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find parent entity '{0}'.", parentEntityId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId.ToString()));
             }
 
             IEntity[] childEntities = parentEntityInfo.GetChildEntities();
@@ -1197,7 +1197,7 @@ namespace GameFramework.Entity
             m_EntitiesBeingLoaded.Remove(showEntityInfo.EntityId);
             if (m_EntitiesToReleaseOnLoad.Contains(showEntityInfo.SerialId))
             {
-                Log.Debug("Release entity '{0}' (serial id '{1}') on loading success.", showEntityInfo.EntityId.ToString(), showEntityInfo.SerialId.ToString());
+                GameFrameworkLog.Debug("Release entity '{0}' (serial id '{1}') on loading success.", showEntityInfo.EntityId.ToString(), showEntityInfo.SerialId.ToString());
                 m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.SerialId);
                 m_EntityHelper.ReleaseEntity(entityAsset, null);
                 return;
@@ -1219,7 +1219,7 @@ namespace GameFramework.Entity
 
             m_EntitiesBeingLoaded.Remove(showEntityInfo.EntityId);
             m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.SerialId);
-            string appendErrorMessage = string.Format("Load entity failure, asset name '{0}', status '{1}', error message '{2}'.", entityAssetName, status.ToString(), errorMessage);
+            string appendErrorMessage = Utility.Text.Format("Load entity failure, asset name '{0}', status '{1}', error message '{2}'.", entityAssetName, status.ToString(), errorMessage);
             if (m_ShowEntityFailureEventHandler != null)
             {
                 m_ShowEntityFailureEventHandler(this, new ShowEntityFailureEventArgs(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroup.Name, appendErrorMessage, showEntityInfo.UserData));

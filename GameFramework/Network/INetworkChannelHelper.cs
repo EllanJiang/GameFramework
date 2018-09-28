@@ -44,8 +44,9 @@ namespace GameFramework.Network
         /// </summary>
         /// <typeparam name="T">消息包类型。</typeparam>
         /// <param name="packet">要序列化的消息包。</param>
-        /// <returns>序列化后的消息包字节流。</returns>
-        byte[] Serialize<T>(T packet) where T : Packet;
+        /// <param name="destination">要序列化的目标流。</param>
+        /// <returns>是否序列化成功。</returns>
+        bool Serialize<T>(T packet, Stream destination) where T : Packet;
 
         /// <summary>
         /// 反序列消息包头。

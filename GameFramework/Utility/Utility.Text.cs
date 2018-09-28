@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace GameFramework
@@ -18,6 +19,89 @@ namespace GameFramework
         /// </summary>
         public static class Text
         {
+            [ThreadStatic]
+            private static StringBuilder s_CachedStringBuilder = new StringBuilder(1024);
+
+            /// <summary>
+            /// 获取格式化字符串。
+            /// </summary>
+            /// <param name="format">字符串格式。</param>
+            /// <param name="arg0">字符串参数 0。</param>
+            /// <returns>格式化后的字符串。</returns>
+            public static string Format(string format, object arg0)
+            {
+                if (format == null)
+                {
+                    throw new GameFrameworkException("Format is invalid.");
+                }
+
+                s_CachedStringBuilder.Length = 0;
+                s_CachedStringBuilder.AppendFormat(format, arg0);
+                return s_CachedStringBuilder.ToString();
+            }
+
+            /// <summary>
+            /// 获取格式化字符串。
+            /// </summary>
+            /// <param name="format">字符串格式。</param>
+            /// <param name="arg0">字符串参数 0。</param>
+            /// <param name="arg1">字符串参数 1。</param>
+            /// <returns>格式化后的字符串。</returns>
+            public static string Format(string format, object arg0, object arg1)
+            {
+                if (format == null)
+                {
+                    throw new GameFrameworkException("Format is invalid.");
+                }
+
+                s_CachedStringBuilder.Length = 0;
+                s_CachedStringBuilder.AppendFormat(format, arg0, arg1);
+                return s_CachedStringBuilder.ToString();
+            }
+
+            /// <summary>
+            /// 获取格式化字符串。
+            /// </summary>
+            /// <param name="format">字符串格式。</param>
+            /// <param name="arg0">字符串参数 0。</param>
+            /// <param name="arg1">字符串参数 1。</param>
+            /// <param name="arg2">字符串参数 2。</param>
+            /// <returns>格式化后的字符串。</returns>
+            public static string Format(string format, object arg0, object arg1, object arg2)
+            {
+                if (format == null)
+                {
+                    throw new GameFrameworkException("Format is invalid.");
+                }
+
+                s_CachedStringBuilder.Length = 0;
+                s_CachedStringBuilder.AppendFormat(format, arg0, arg1, arg2);
+                return s_CachedStringBuilder.ToString();
+            }
+
+            /// <summary>
+            /// 获取格式化字符串。
+            /// </summary>
+            /// <param name="format">字符串格式。</param>
+            /// <param name="args">字符串参数。</param>
+            /// <returns>格式化后的字符串。</returns>
+            public static string Format(string format, params object[] args)
+            {
+                if (format == null)
+                {
+                    throw new GameFrameworkException("Format is invalid.");
+                }
+
+                if (args == null)
+                {
+                    throw new GameFrameworkException("Args is invalid.");
+                }
+
+                s_CachedStringBuilder.Length = 0;
+                s_CachedStringBuilder.AppendFormat(format, args);
+                return s_CachedStringBuilder.ToString();
+            }
+
             /// <summary>
             /// 将文本按行切分。
             /// </summary>
@@ -61,7 +145,7 @@ namespace GameFramework
                 }
 
                 string typeName = type.FullName;
-                return string.IsNullOrEmpty(name) ? typeName : string.Format("{0}.{1}", typeName, name);
+                return string.IsNullOrEmpty(name) ? typeName : Utility.Text.Format("{0}.{1}", typeName, name);
             }
 
             /// <summary>
@@ -81,12 +165,6 @@ namespace GameFramework
                 return str;
             }
 
-            /// <summary>
-            /// 读取一行文本。
-            /// </summary>
-            /// <param name="text">要读取的文本。</param>
-            /// <param name="position">开始的位置。</param>
-            /// <returns>一行文本。</returns>
             private static string ReadLine(string text, ref int position)
             {
                 if (text == null)

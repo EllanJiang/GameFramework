@@ -46,6 +46,17 @@ namespace GameFramework.ObjectPool
         }
 
         /// <summary>
+        /// 获取对象池完整名称。
+        /// </summary>
+        public string FullName
+        {
+            get
+            {
+                return Utility.Text.GetFullName(ObjectType, m_Name);
+            }
+        }
+
+        /// <summary>
         /// 获取对象池对象类型。
         /// </summary>
         public abstract Type ObjectType

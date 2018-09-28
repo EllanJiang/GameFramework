@@ -32,6 +32,8 @@ namespace GameFramework.Network
             private readonly SendState m_SendState;
             private readonly ReceiveState m_ReceiveState;
             private readonly HeartBeatState m_HeartBeatState;
+            private int m_SentPacketCount;
+            private int m_ReceivedPacketCount;
             private bool m_Active;
             private bool m_Disposed;
 
@@ -59,6 +61,8 @@ namespace GameFramework.Network
                 m_SendState = new SendState();
                 m_ReceiveState = new ReceiveState();
                 m_HeartBeatState = new HeartBeatState();
+                m_SentPacketCount = 0;
+                m_ReceivedPacketCount = 0;
                 m_Active = false;
                 m_Disposed = false;
 
@@ -198,7 +202,7 @@ namespace GameFramework.Network
             }
 
             /// <summary>
-            /// 要发送的消息包数量。
+            /// 获取要发送的消息包数量。
             /// </summary>
             public int SendPacketCount
             {
@@ -209,13 +213,35 @@ namespace GameFramework.Network
             }
 
             /// <summary>
-            /// 已接收未处理的消息包数量。
+            /// 获取累计发送的消息包数量。
+            /// </summary>
+            public int SentPacketCount
+            {
+                get
+                {
+                    return m_SentPacketCount;
+                }
+            }
+
+            /// <summary>
+            /// 获取已接收未处理的消息包数量。
             /// </summary>
             public int ReceivePacketCount
             {
                 get
                 {
-                    return m_ReceivePacketPool.Count;
+                    return m_ReceivePacketPool.EventCount;
+                }
+            }
+
+            /// <summary>
+            /// 获取累计已接收的消息包数量。
+            /// </summary>
+            public int ReceivedPacketCount
+            {
+                get
+                {
+                    return m_ReceivedPacketCount;
                 }
             }
 
@@ -235,6 +261,17 @@ namespace GameFramework.Network
             }
 
             /// <summary>
+            /// 获取丢失心跳的次数。
+            /// </summary>
+            public int MissHeartBeatCount
+            {
+                get
+                {
+                    return m_HeartBeatState.MissHeartBeatCount;
+                }
+            }
+
+            /// <summary>
             /// 获取或设置心跳间隔时长，以秒为单位。
             /// </summary>
             public float HeartBeatInterval
@@ -246,6 +283,17 @@ namespace GameFramework.Network
                 set
                 {
                     m_HeartBeatInterval = value;
+                }
+            }
+
+            /// <summary>
+            /// 获取心跳等待时长，以秒为单位。
+            /// </summary>
+            public float HeartBeatElapseSeconds
+            {
+                get
+                {
+                    return m_HeartBeatState.HeartBeatElapseSeconds;
                 }
             }
 
@@ -406,7 +454,7 @@ namespace GameFramework.Network
                         m_NetworkType = NetworkType.IPv6;
                         break;
                     default:
-                        string errorMessage = string.Format("Not supported address family '{0}'.", ipAddress.AddressFamily.ToString());
+                        string errorMessage = Utility.Text.Format("Not supported address family '{0}'.", ipAddress.AddressFamily.ToString());
                         if (NetworkChannelError != null)
                         {
                             NetworkChannelError(this, NetworkErrorCode.AddressFamilyError, errorMessage);
@@ -429,6 +477,7 @@ namespace GameFramework.Network
                     throw new GameFrameworkException(errorMessage);
                 }
 
+                m_SendState.Reset();
                 m_ReceiveState.PrepareForPacketHeader(m_NetworkChannelHelper.PacketHeaderLength);
 
                 try
@@ -467,6 +516,8 @@ namespace GameFramework.Network
                     m_ReceivePacketPool.Clear();
 
                     m_Active = false;
+                    m_SentPacketCount = 0;
+                    m_ReceivedPacketCount = 0;
                     try
                     {
                         m_Socket.Shutdown(SocketShutdown.Both);
@@ -547,6 +598,8 @@ namespace GameFramework.Network
                 if (disposing)
                 {
                     Close();
+                    m_SendState.Dispose();
+                    m_ReceiveState.Dispose();
                 }
 
                 m_Disposed = true;
@@ -556,7 +609,7 @@ namespace GameFramework.Network
             {
                 try
                 {
-                    m_Socket.BeginSend(m_SendState.GetPacketBytes(), m_SendState.Offset, m_SendState.Length, SocketFlags.None, SendCallback, m_Socket);
+                    m_Socket.BeginSend(m_SendState.Stream.GetBuffer(), (int)m_SendState.Stream.Position, (int)(m_SendState.Stream.Length - m_SendState.Stream.Position), SocketFlags.None, SendCallback, m_Socket);
                 }
                 catch (Exception exception)
                 {
@@ -592,52 +645,51 @@ namespace GameFramework.Network
 
             private void ProcessSend()
             {
-                if (m_SendPacketPool.Count <= 0)
+                if (m_SendState.Stream.Length > 0 || m_SendPacketPool.Count <= 0)
                 {
                     return;
                 }
 
-                if (!m_SendState.IsFree)
+                while (m_SendPacketPool.Count > 0)
                 {
-                    return;
-                }
-
-                Packet packet = null;
-                lock (m_SendPacketPool)
-                {
-                    packet = m_SendPacketPool.Dequeue();
-                }
-
-                byte[] packetBytes = null;
-                try
-                {
-                    packetBytes = m_NetworkChannelHelper.Serialize(packet);
-                }
-                catch (Exception exception)
-                {
-                    m_Active = false;
-                    if (NetworkChannelError != null)
+                    Packet packet = null;
+                    lock (m_SendPacketPool)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.SerializeError, exception.ToString());
-                        return;
+                        packet = m_SendPacketPool.Dequeue();
                     }
 
-                    throw;
-                }
-
-                if (packetBytes == null || packetBytes.Length <= 0)
-                {
-                    string errorMessage = "Serialized packet is invalid.";
-                    if (NetworkChannelError != null)
+                    bool serializeResult = false;
+                    try
                     {
-                        NetworkChannelError(this, NetworkErrorCode.SerializeError, errorMessage);
-                        return;
+                        serializeResult = m_NetworkChannelHelper.Serialize(packet, m_SendState.Stream);
+                    }
+                    catch (Exception exception)
+                    {
+                        m_Active = false;
+                        if (NetworkChannelError != null)
+                        {
+                            NetworkChannelError(this, NetworkErrorCode.SerializeError, exception.ToString());
+                            return;
+                        }
+
+                        throw;
                     }
 
-                    throw new GameFrameworkException(errorMessage);
+                    if (!serializeResult)
+                    {
+                        string errorMessage = "Serialized packet failure.";
+                        if (NetworkChannelError != null)
+                        {
+                            NetworkChannelError(this, NetworkErrorCode.SerializeError, errorMessage);
+                            return;
+                        }
+
+                        throw new GameFrameworkException(errorMessage);
+                    }
                 }
 
-                m_SendState.SetPacket(packetBytes);
+                m_SendState.Stream.Position = 0L;
+
                 Send();
             }
 
@@ -749,6 +801,9 @@ namespace GameFramework.Network
                 }
 
                 m_Active = true;
+                m_SentPacketCount = 0;
+                m_ReceivedPacketCount = 0;
+
                 lock (m_HeartBeatState)
                 {
                     m_HeartBeatState.Reset(true);
@@ -765,9 +820,10 @@ namespace GameFramework.Network
             private void SendCallback(IAsyncResult ar)
             {
                 Socket socket = (Socket)ar.AsyncState;
+                int bytesSent = 0;
                 try
                 {
-                    m_SendState.Offset += socket.EndSend(ar);
+                    bytesSent = socket.EndSend(ar);
                 }
                 catch (ObjectDisposedException)
                 {
@@ -785,12 +841,14 @@ namespace GameFramework.Network
                     throw;
                 }
 
-                if (m_SendState.Offset < m_SendState.Length)
+                m_SendState.Stream.Position += bytesSent;
+                if (m_SendState.Stream.Position < m_SendState.Stream.Length)
                 {
                     Send();
                     return;
                 }
 
+                m_SentPacketCount++;
                 m_SendState.Reset();
             }
 
@@ -831,6 +889,7 @@ namespace GameFramework.Network
                     return;
                 }
 
+                m_ReceivedPacketCount++;
                 m_ReceiveState.Stream.Position = 0L;
 
                 bool processSuccess = false;

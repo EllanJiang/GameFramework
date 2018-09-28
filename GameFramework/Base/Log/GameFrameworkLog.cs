@@ -10,25 +10,26 @@ using System.Diagnostics;
 namespace GameFramework
 {
     /// <summary>
-    /// 日志类。
+    /// 游戏框架日志类。
     /// </summary>
-    public static partial class Log
+    public static partial class GameFrameworkLog
     {
         private static ILogHelper s_LogHelper = null;
 
         /// <summary>
-        /// 设置日志辅助器。
+        /// 设置游戏框架日志辅助器。
         /// </summary>
-        /// <param name="logHelper">要设置的日志辅助器。</param>
+        /// <param name="logHelper">要设置的游戏框架日志辅助器。</param>
         public static void SetLogHelper(ILogHelper logHelper)
         {
             s_LogHelper = logHelper;
         }
 
         /// <summary>
-        /// 记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+        /// 记录调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="message">日志内容。</param>
+        /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
         [Conditional("DEBUG")]
         public static void Debug(object message)
         {
@@ -37,13 +38,14 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Debug, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, message);
         }
 
         /// <summary>
-        /// 记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+        /// 记录调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="message">日志内容。</param>
+        /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
         [Conditional("DEBUG")]
         public static void Debug(string message)
         {
@@ -52,14 +54,15 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Debug, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, message);
         }
 
         /// <summary>
-        /// 记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+        /// 记录调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="format">日志格式。</param>
         /// <param name="arg0">日志参数 0。</param>
+        /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
         [Conditional("DEBUG")]
         public static void Debug(string format, object arg0)
         {
@@ -68,15 +71,16 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Debug, string.Format(format, arg0));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg0));
         }
 
         /// <summary>
-        /// 记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+        /// 记录调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="format">日志格式。</param>
         /// <param name="arg0">日志参数 0。</param>
         /// <param name="arg1">日志参数 1。</param>
+        /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
         [Conditional("DEBUG")]
         public static void Debug(string format, object arg0, object arg1)
         {
@@ -85,16 +89,17 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Debug, string.Format(format, arg0, arg1));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg0, arg1));
         }
 
         /// <summary>
-        /// 记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+        /// 记录调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="format">日志格式。</param>
         /// <param name="arg0">日志参数 0。</param>
         /// <param name="arg1">日志参数 1。</param>
         /// <param name="arg2">日志参数 2。</param>
+        /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
         [Conditional("DEBUG")]
         public static void Debug(string format, object arg0, object arg1, object arg2)
         {
@@ -103,14 +108,15 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Debug, string.Format(format, arg0, arg1, arg2));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg0, arg1, arg2));
         }
 
         /// <summary>
-        /// 记录调试级别日志，仅在带有 DEBUG 预编译选项时产生。
+        /// 记录调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="format">日志格式。</param>
         /// <param name="args">日志参数。</param>
+        /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
         [Conditional("DEBUG")]
         public static void Debug(string format, params object[] args)
         {
@@ -119,7 +125,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Debug, string.Format(format, args));
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, args));
         }
 
         /// <summary>
@@ -133,7 +139,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Info, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, message);
         }
 
         /// <summary>
@@ -147,7 +153,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Info, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, message);
         }
 
         /// <summary>
@@ -162,7 +168,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Info, string.Format(format, arg0));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg0));
         }
 
         /// <summary>
@@ -178,7 +184,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Info, string.Format(format, arg0, arg1));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg0, arg1));
         }
 
         /// <summary>
@@ -195,7 +201,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Info, string.Format(format, arg0, arg1, arg2));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, arg0, arg1, arg2));
         }
 
         /// <summary>
@@ -210,7 +216,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Info, string.Format(format, args));
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, Utility.Text.Format(format, args));
         }
 
         /// <summary>
@@ -224,7 +230,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Warning, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, message);
         }
 
         /// <summary>
@@ -238,7 +244,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Warning, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, message);
         }
 
         /// <summary>
@@ -253,7 +259,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Warning, string.Format(format, arg0));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg0));
         }
 
         /// <summary>
@@ -269,7 +275,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Warning, string.Format(format, arg0, arg1));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg0, arg1));
         }
 
         /// <summary>
@@ -286,7 +292,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Warning, string.Format(format, arg0, arg1, arg2));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, arg0, arg1, arg2));
         }
 
         /// <summary>
@@ -301,7 +307,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Warning, string.Format(format, args));
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, Utility.Text.Format(format, args));
         }
 
         /// <summary>
@@ -315,7 +321,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Error, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, message);
         }
 
         /// <summary>
@@ -329,7 +335,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Error, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, message);
         }
 
         /// <summary>
@@ -344,7 +350,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Error, string.Format(format, arg0));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg0));
         }
 
         /// <summary>
@@ -360,7 +366,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Error, string.Format(format, arg0, arg1));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg0, arg1));
         }
 
         /// <summary>
@@ -377,7 +383,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Error, string.Format(format, arg0, arg1, arg2));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg0, arg1, arg2));
         }
 
         /// <summary>
@@ -392,7 +398,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Error, string.Format(format, args));
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, args));
         }
 
         /// <summary>
@@ -406,7 +412,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Fatal, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, message);
         }
 
         /// <summary>
@@ -420,7 +426,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Fatal, message);
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, message);
         }
 
         /// <summary>
@@ -435,7 +441,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Fatal, string.Format(format, arg0));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg0));
         }
 
         /// <summary>
@@ -451,7 +457,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Fatal, string.Format(format, arg0, arg1));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg0, arg1));
         }
 
         /// <summary>
@@ -468,7 +474,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Fatal, string.Format(format, arg0, arg1, arg2));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, arg0, arg1, arg2));
         }
 
         /// <summary>
@@ -483,7 +489,7 @@ namespace GameFramework
                 return;
             }
 
-            s_LogHelper.Log(LogLevel.Fatal, string.Format(format, args));
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, Utility.Text.Format(format, args));
         }
     }
 }

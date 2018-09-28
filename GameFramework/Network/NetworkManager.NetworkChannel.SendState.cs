@@ -5,70 +5,64 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
+using System.IO;
+
 namespace GameFramework.Network
 {
     internal partial class NetworkManager
     {
         private partial class NetworkChannel
         {
-            private sealed class SendState
+            private sealed class SendState : IDisposable
             {
-                private byte[] m_PacketBytes;
-                private int m_Offset;
-                private int m_Length;
+                private const int DefaultBufferLength = 1024 * 8;
+                private MemoryStream m_Stream;
+                private bool m_Disposed;
 
                 public SendState()
                 {
-                    m_PacketBytes = null;
-                    m_Offset = 0;
-                    m_Length = 0;
+                    m_Stream = new MemoryStream(DefaultBufferLength);
+                    m_Disposed = false;
                 }
 
-                public bool IsFree
+                public MemoryStream Stream
                 {
                     get
                     {
-                        return m_PacketBytes == null && m_Offset == 0 && m_Length == 0;
+                        return m_Stream;
                     }
-                }
-
-                public int Offset
-                {
-                    get
-                    {
-                        return m_Offset;
-                    }
-                    set
-                    {
-                        m_Offset = value;
-                    }
-                }
-
-                public int Length
-                {
-                    get
-                    {
-                        return m_Length;
-                    }
-                }
-
-                public byte[] GetPacketBytes()
-                {
-                    return m_PacketBytes;
-                }
-
-                public void SetPacket(byte[] packetBytes)
-                {
-                    m_PacketBytes = packetBytes;
-                    m_Offset = 0;
-                    m_Length = packetBytes.Length;
                 }
 
                 public void Reset()
                 {
-                    m_PacketBytes = null;
-                    m_Offset = 0;
-                    m_Length = 0;
+                    m_Stream.Position = 0L;
+                    m_Stream.SetLength(0L);
+                }
+
+                public void Dispose()
+                {
+                    Dispose(true);
+                    GC.SuppressFinalize(this);
+                }
+
+                private void Dispose(bool disposing)
+                {
+                    if (m_Disposed)
+                    {
+                        return;
+                    }
+
+                    if (disposing)
+                    {
+                        if (m_Stream != null)
+                        {
+                            m_Stream.Dispose();
+                            m_Stream = null;
+                        }
+                    }
+
+                    m_Disposed = true;
                 }
             }
         }

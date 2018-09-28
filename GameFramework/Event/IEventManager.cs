@@ -15,15 +15,30 @@ namespace GameFramework.Event
     public interface IEventManager
     {
         /// <summary>
-        /// 获取事件数量。
+        /// 获取事件处理函数的数量。
         /// </summary>
-        int Count
+        int EventHandlerCount
         {
             get;
         }
 
         /// <summary>
-        /// 检查订阅事件处理函数。
+        /// 获取事件数量。
+        /// </summary>
+        int EventCount
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取事件处理函数的数量。
+        /// </summary>
+        /// <param name="id">事件类型编号。</param>
+        /// <returns>事件处理函数的数量。</returns>
+        int Count(int id);
+
+        /// <summary>
+        /// 检查是否存在事件处理函数。
         /// </summary>
         /// <param name="id">事件类型编号。</param>
         /// <param name="handler">要检查的事件处理函数。</param>

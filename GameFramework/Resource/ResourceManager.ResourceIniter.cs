@@ -68,7 +68,7 @@ namespace GameFramework.Resource
             {
                 if (bytes == null || bytes.Length <= 0)
                 {
-                    throw new GameFrameworkException(string.Format("Package list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
+                    throw new GameFrameworkException(Utility.Text.Format("Package list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
                 }
 
                 MemoryStream memoryStream = null;
@@ -159,7 +159,7 @@ namespace GameFramework.Resource
                                     ushort versionIndex = binaryReader.ReadUInt16();
                                     if (versionIndex >= resourceCount)
                                     {
-                                        throw new GameFrameworkException(string.Format("Package index '{0}' is invalid, resource count is '{1}'.", versionIndex, resourceCount));
+                                        throw new GameFrameworkException(Utility.Text.Format("Package index '{0}' is invalid, resource count is '{1}'.", versionIndex, resourceCount));
                                     }
 
                                     resourceGroup.AddResource(names[versionIndex], variants[versionIndex], lengths[versionIndex]);
@@ -181,7 +181,7 @@ namespace GameFramework.Resource
                         throw;
                     }
 
-                    throw new GameFrameworkException(string.Format("Parse package list exception '{0}'.", exception.Message), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse package list exception '{0}'.", exception.Message), exception);
                 }
                 finally
                 {
@@ -228,7 +228,7 @@ namespace GameFramework.Resource
             {
                 if (m_ResourceManager.m_ResourceInfos.ContainsKey(resourceName))
                 {
-                    throw new GameFrameworkException(string.Format("Resource info '{0}' is already exist.", resourceName.FullName));
+                    throw new GameFrameworkException(Utility.Text.Format("Resource info '{0}' is already exist.", resourceName.FullName));
                 }
 
                 m_ResourceManager.m_ResourceInfos.Add(resourceName, new ResourceInfo(resourceName, loadType, length, hashCode, true));

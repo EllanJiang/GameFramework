@@ -136,7 +136,7 @@ namespace GameFramework.Resource
                     }
                     else
                     {
-                        throw new GameFrameworkException(string.Format("Check resources '{0}' error with unknown status.", ci.ResourceName.FullName));
+                        throw new GameFrameworkException(Utility.Text.Format("Check resources '{0}' error with unknown status.", ci.ResourceName.FullName));
                     }
 
                     if (ci.NeedRemove)
@@ -148,7 +148,7 @@ namespace GameFramework.Resource
 
                         if (!m_ResourceManager.m_ReadWriteResourceInfos.ContainsKey(ci.ResourceName))
                         {
-                            throw new GameFrameworkException(string.Format("Resource '{0}' is not exist in read-write list.", ci.ResourceName.FullName));
+                            throw new GameFrameworkException(Utility.Text.Format("Resource '{0}' is not exist in read-write list.", ci.ResourceName.FullName));
                         }
 
                         m_ResourceManager.m_ReadWriteResourceInfos.Remove(ci.ResourceName);
@@ -204,7 +204,7 @@ namespace GameFramework.Resource
 
                 if (bytes == null || bytes.Length <= 0)
                 {
-                    throw new GameFrameworkException(string.Format("Version list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
+                    throw new GameFrameworkException(Utility.Text.Format("Version list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
                 }
 
                 MemoryStream memoryStream = null;
@@ -296,7 +296,7 @@ namespace GameFramework.Resource
                                     ushort versionIndex = binaryReader.ReadUInt16();
                                     if (versionIndex >= resourceCount)
                                     {
-                                        throw new GameFrameworkException(string.Format("Version index '{0}' is invalid, resource count is '{1}'.", versionIndex, resourceCount));
+                                        throw new GameFrameworkException(Utility.Text.Format("Version index '{0}' is invalid, resource count is '{1}'.", versionIndex, resourceCount));
                                     }
 
                                     resourceGroup.AddResource(names[versionIndex], variants[versionIndex], lengths[versionIndex]);
@@ -319,7 +319,7 @@ namespace GameFramework.Resource
                         throw;
                     }
 
-                    throw new GameFrameworkException(string.Format("Parse version list exception '{0}'.", exception.Message), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse version list exception '{0}'.", exception.Message), exception);
                 }
                 finally
                 {
@@ -405,7 +405,7 @@ namespace GameFramework.Resource
                         throw;
                     }
 
-                    throw new GameFrameworkException(string.Format("Parse readonly list exception '{0}'.", exception.Message), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse readonly list exception '{0}'.", exception.Message), exception);
                 }
                 finally
                 {
@@ -477,7 +477,7 @@ namespace GameFramework.Resource
                                 ResourceName resourceName = new ResourceName(name, variant);
                                 if (m_ResourceManager.m_ReadWriteResourceInfos.ContainsKey(resourceName))
                                 {
-                                    throw new GameFrameworkException(string.Format("Read-write resource info '{0}' is already exist.", resourceName.FullName));
+                                    throw new GameFrameworkException(Utility.Text.Format("Read-write resource info '{0}' is already exist.", resourceName.FullName));
                                 }
 
                                 m_ResourceManager.m_ReadWriteResourceInfos.Add(resourceName, new ReadWriteResourceInfo(loadType, length, hashCode));
@@ -499,7 +499,7 @@ namespace GameFramework.Resource
                         throw;
                     }
 
-                    throw new GameFrameworkException(string.Format("Parse read-write list exception '{0}'.", exception.Message), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse read-write list exception '{0}'.", exception.Message), exception);
                 }
                 finally
                 {
@@ -546,7 +546,7 @@ namespace GameFramework.Resource
             {
                 if (m_ResourceManager.m_ResourceInfos.ContainsKey(resourceName))
                 {
-                    throw new GameFrameworkException(string.Format("Resource info '{0}' is already exist.", resourceName.FullName));
+                    throw new GameFrameworkException(Utility.Text.Format("Resource info '{0}' is already exist.", resourceName.FullName));
                 }
 
                 m_ResourceManager.m_ResourceInfos.Add(resourceName, new ResourceInfo(resourceName, loadType, length, hashCode, storageInReadOnly));

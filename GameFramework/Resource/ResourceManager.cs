@@ -1218,7 +1218,7 @@ namespace GameFramework.Resource
             ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
             if (resourceGroup == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find resource group '{0}'.", resourceGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
             }
 
             return resourceGroup.Ready;
@@ -1233,7 +1233,7 @@ namespace GameFramework.Resource
             ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
             if (resourceGroup == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find resource group '{0}'.", resourceGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
             }
 
             return resourceGroup.ResourceCount;
@@ -1248,7 +1248,7 @@ namespace GameFramework.Resource
             ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
             if (resourceGroup == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find resource group '{0}'.", resourceGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
             }
 
             return resourceGroup.ReadyResourceCount;
@@ -1263,7 +1263,7 @@ namespace GameFramework.Resource
             ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
             if (resourceGroup == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find resource group '{0}'.", resourceGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
             }
 
             return resourceGroup.TotalLength;
@@ -1278,7 +1278,7 @@ namespace GameFramework.Resource
             ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
             if (resourceGroup == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find resource group '{0}'.", resourceGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
             }
 
             return resourceGroup.TotalReadyLength;
@@ -1293,7 +1293,7 @@ namespace GameFramework.Resource
             ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
             if (resourceGroup == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find resource group '{0}'.", resourceGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
             }
 
             return resourceGroup.Progress;

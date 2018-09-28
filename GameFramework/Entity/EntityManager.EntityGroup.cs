@@ -46,7 +46,7 @@ namespace GameFramework.Entity
 
                 m_Name = name;
                 m_EntityGroupHelper = entityGroupHelper;
-                m_InstancePool = objectPoolManager.CreateSingleSpawnObjectPool<EntityInstanceObject>(string.Format("Entity Instance Pool ({0})", name), instanceCapacity, instanceExpireTime, instancePriority);
+                m_InstancePool = objectPoolManager.CreateSingleSpawnObjectPool<EntityInstanceObject>(Utility.Text.Format("Entity Instance Pool ({0})", name), instanceCapacity, instanceExpireTime, instancePriority);
                 m_InstancePool.AutoReleaseInterval = instanceAutoReleaseInterval;
                 m_Entities = new LinkedList<IEntity>();
             }

@@ -178,7 +178,7 @@ namespace GameFramework.Download
                 m_Task = task;
 
                 m_Task.Status = DownloadTaskStatus.Doing;
-                string downloadFile = string.Format("{0}.download", m_Task.DownloadPath);
+                string downloadFile = Utility.Text.Format("{0}.download", m_Task.DownloadPath);
 
                 try
                 {
@@ -338,7 +338,7 @@ namespace GameFramework.Download
                     File.Delete(m_Task.DownloadPath);
                 }
 
-                File.Move(string.Format("{0}.download", m_Task.DownloadPath), m_Task.DownloadPath);
+                File.Move(Utility.Text.Format("{0}.download", m_Task.DownloadPath), m_Task.DownloadPath);
 
                 m_Task.Status = DownloadTaskStatus.Done;
 

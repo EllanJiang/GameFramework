@@ -31,6 +31,7 @@ namespace GameFramework
             /// 开始采样。
             /// </summary>
             /// <param name="name">采样名称。</param>
+            /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
             [Conditional("DEBUG")]
             public static void BeginSample(string name)
             {
@@ -45,6 +46,7 @@ namespace GameFramework
             /// <summary>
             /// 结束采样。
             /// </summary>
+            /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
             [Conditional("DEBUG")]
             public static void EndSample()
             {

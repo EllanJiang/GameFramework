@@ -25,13 +25,24 @@ namespace GameFramework.Event
         }
 
         /// <summary>
-        /// 获取事件数量。
+        /// 获取事件处理函数的数量。
         /// </summary>
-        public int Count
+        public int EventHandlerCount
         {
             get
             {
-                return m_EventPool.Count;
+                return m_EventPool.EventHandlerCount;
+            }
+        }
+
+        /// <summary>
+        /// 获取事件数量。
+        /// </summary>
+        public int EventCount
+        {
+            get
+            {
+                return m_EventPool.EventCount;
             }
         }
 
@@ -66,7 +77,17 @@ namespace GameFramework.Event
         }
 
         /// <summary>
-        /// 检查订阅事件处理函数。
+        /// 获取事件处理函数的数量。
+        /// </summary>
+        /// <param name="id">事件类型编号。</param>
+        /// <returns>事件处理函数的数量。</returns>
+        public int Count(int id)
+        {
+            return m_EventPool.Count(id);
+        }
+
+        /// <summary>
+        /// 检查是否存在事件处理函数。
         /// </summary>
         /// <param name="id">事件类型编号。</param>
         /// <param name="handler">要检查的事件处理函数。</param>

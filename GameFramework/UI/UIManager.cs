@@ -736,7 +736,7 @@ namespace GameFramework.UI
             UIGroup uiGroup = (UIGroup)GetUIGroup(uiGroupName);
             if (uiGroup == null)
             {
-                throw new GameFrameworkException(string.Format("UI group '{0}' is not exist.", uiGroupName));
+                throw new GameFrameworkException(Utility.Text.Format("UI group '{0}' is not exist.", uiGroupName));
             }
 
             int serialId = m_Serial++;
@@ -780,7 +780,7 @@ namespace GameFramework.UI
             IUIForm uiForm = GetUIForm(serialId);
             if (uiForm == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find UI form '{0}'.", serialId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find UI form '{0}'.", serialId.ToString()));
             }
 
             CloseUIForm(uiForm, userData);
@@ -968,7 +968,7 @@ namespace GameFramework.UI
             m_UIFormAssetNamesBeingLoaded.Remove(uiFormAssetName);
             if (m_UIFormsToReleaseOnLoad.Contains(openUIFormInfo.SerialId))
             {
-                Log.Debug("Release UI form '{0}' on loading success.", openUIFormInfo.SerialId.ToString());
+                GameFrameworkLog.Debug("Release UI form '{0}' on loading success.", openUIFormInfo.SerialId.ToString());
                 m_UIFormsToReleaseOnLoad.Remove(openUIFormInfo.SerialId);
                 m_UIFormHelper.ReleaseUIForm(uiFormAsset, null);
                 return;
@@ -991,7 +991,7 @@ namespace GameFramework.UI
             m_UIFormsBeingLoaded.Remove(openUIFormInfo.SerialId);
             m_UIFormAssetNamesBeingLoaded.Remove(uiFormAssetName);
             m_UIFormsToReleaseOnLoad.Remove(openUIFormInfo.SerialId);
-            string appendErrorMessage = string.Format("Load UI form failure, asset name '{0}', status '{1}', error message '{2}'.", uiFormAssetName, status.ToString(), errorMessage);
+            string appendErrorMessage = Utility.Text.Format("Load UI form failure, asset name '{0}', status '{1}', error message '{2}'.", uiFormAssetName, status.ToString(), errorMessage);
             if (m_OpenUIFormFailureEventHandler != null)
             {
                 m_OpenUIFormFailureEventHandler(this, new OpenUIFormFailureEventArgs(openUIFormInfo.SerialId, uiFormAssetName, openUIFormInfo.UIGroup.Name, openUIFormInfo.PauseCoveredUIForm, appendErrorMessage, openUIFormInfo.UserData));

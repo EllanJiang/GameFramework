@@ -168,7 +168,7 @@ namespace GameFramework.Resource
                                 LinkedListNode<string> next = current.Next;
                                 if (!m_AssetPool.CanSpawn(current.Value))
                                 {
-                                    OnError(LoadResourceStatus.DependencyError, string.Format("Can not find dependency asset object named '{0}'.", current.Value));
+                                    OnError(LoadResourceStatus.DependencyError, Utility.Text.Format("Can not find dependency asset object named '{0}'.", current.Value));
                                     return;
                                 }
 
@@ -200,7 +200,7 @@ namespace GameFramework.Resource
                         ResourceObject resourceObject = m_ResourcePool.Spawn(m_Task.ResourceInfo.ResourceName.Name);
                         if (resourceObject == null)
                         {
-                            OnError(LoadResourceStatus.DependencyError, string.Format("Can not find resource object named '{0}'.", m_Task.ResourceInfo.ResourceName.Name));
+                            OnError(LoadResourceStatus.DependencyError, Utility.Text.Format("Can not find resource object named '{0}'.", m_Task.ResourceInfo.ResourceName.Name));
                             return;
                         }
 
@@ -291,7 +291,7 @@ namespace GameFramework.Resource
                         {
                             if (!IsAssetLoading(dependencyAssetName))
                             {
-                                OnError(LoadResourceStatus.DependencyError, string.Format("Can not find dependency asset object named '{0}'.", dependencyAssetName));
+                                OnError(LoadResourceStatus.DependencyError, Utility.Text.Format("Can not find dependency asset object named '{0}'.", dependencyAssetName));
                                 return;
                             }
 

@@ -42,7 +42,7 @@ namespace GameFramework
 
             s_GameFrameworkModules.Clear();
             ReferencePool.ClearAll();
-            Log.SetLogHelper(null);
+            GameFrameworkLog.SetLogHelper(null);
         }
 
         /// <summary>
@@ -56,19 +56,19 @@ namespace GameFramework
             Type interfaceType = typeof(T);
             if (!interfaceType.IsInterface)
             {
-                throw new GameFrameworkException(string.Format("You must get module by interface, but '{0}' is not.", interfaceType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("You must get module by interface, but '{0}' is not.", interfaceType.FullName));
             }
 
             if (!interfaceType.FullName.StartsWith("GameFramework."))
             {
-                throw new GameFrameworkException(string.Format("You must get a Game Framework module, but '{0}' is not.", interfaceType.FullName));
+                throw new GameFrameworkException(Utility.Text.Format("You must get a Game Framework module, but '{0}' is not.", interfaceType.FullName));
             }
 
-            string moduleName = string.Format("{0}.{1}", interfaceType.Namespace, interfaceType.Name.Substring(1));
+            string moduleName = Utility.Text.Format("{0}.{1}", interfaceType.Namespace, interfaceType.Name.Substring(1));
             Type moduleType = Type.GetType(moduleName);
             if (moduleType == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find Game Framework module type '{0}'.", moduleName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find Game Framework module type '{0}'.", moduleName));
             }
 
             return GetModule(moduleType) as T;
@@ -103,7 +103,7 @@ namespace GameFramework
             GameFrameworkModule module = (GameFrameworkModule)Activator.CreateInstance(moduleType);
             if (module == null)
             {
-                throw new GameFrameworkException(string.Format("Can not create module '{0}'.", module.GetType().FullName));
+                throw new GameFrameworkException(Utility.Text.Format("Can not create module '{0}'.", moduleType.FullName));
             }
 
             LinkedListNode<GameFrameworkModule> current = s_GameFrameworkModules.First;

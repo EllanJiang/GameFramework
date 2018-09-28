@@ -94,7 +94,7 @@ namespace GameFramework
 
                 foreach (System.Reflection.Assembly assembly in s_Assemblies)
                 {
-                    type = Type.GetType(string.Format("{0}, {1}", typeName, assembly.FullName));
+                    type = Type.GetType(Utility.Text.Format("{0}, {1}", typeName, assembly.FullName));
                     if (type != null)
                     {
                         s_CachedTypes.Add(typeName, type);
