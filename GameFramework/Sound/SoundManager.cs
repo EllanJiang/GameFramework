@@ -273,10 +273,13 @@ namespace GameFramework.Sound
                 return false;
             }
 
-            SoundGroup soundGroup = new SoundGroup(soundGroupName, soundGroupHelper);
-            soundGroup.AvoidBeingReplacedBySamePriority = soundGroupAvoidBeingReplacedBySamePriority;
-            soundGroup.Mute = soundGroupMute;
-            soundGroup.Volume = soundGroupVolume;
+            SoundGroup soundGroup = new SoundGroup(soundGroupName, soundGroupHelper)
+            {
+                AvoidBeingReplacedBySamePriority = soundGroupAvoidBeingReplacedBySamePriority,
+                Mute = soundGroupMute,
+                Volume = soundGroupVolume
+            };
+
             m_SoundGroups.Add(soundGroupName, soundGroup);
 
             return true;
