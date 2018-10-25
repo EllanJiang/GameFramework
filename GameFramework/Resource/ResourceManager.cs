@@ -1065,6 +1065,35 @@ namespace GameFramework.Resource
             m_ResourceLoader.LoadAsset(assetName, assetType, priority, loadAssetCallbacks, userData);
         }
 
+        /// ChangeBy: Shine Wu 2018/10/16 同步加载资源
+        /// <summary>
+        /// 同步加载资源
+        /// </summary>
+        /// <returns>Asset资源对象。</returns>
+        /// <param name="assetName">要加载资源的名称。</param>
+        /// <param name="subName">要加载子资源的名称。</param>
+        /// <param name="syncAssetBundleCallback">加载AssetBundle回调。</param>
+        /// <param name="syncAssetObjectCallback">加载AssetObject回调。</param>
+        public object LoadAssetSync(string assetName, string subName, SyncAssetBundleCallback syncAssetBundleCallback, SyncAssetObjectCallback syncAssetObjectCallback)
+        {
+            if (string.IsNullOrEmpty(assetName))
+            {
+                throw new GameFrameworkException("Asset name is invalid.");
+            }
+
+            if (syncAssetBundleCallback == null)
+            {
+                throw new GameFrameworkException("Sync Asset Bundle callback is invalid.");
+            }
+
+            if (syncAssetObjectCallback == null)
+            {
+                throw new GameFrameworkException("Sync Asset Object callback is invalid.");
+            }
+
+            return m_ResourceLoader.LoadAssetSync(assetName, subName, syncAssetBundleCallback, syncAssetObjectCallback);
+        }
+
         /// <summary>
         /// 卸载资源。
         /// </summary>

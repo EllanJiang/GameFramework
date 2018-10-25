@@ -8,6 +8,7 @@
 using GameFramework.ObjectPool;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GameFramework.Resource
 {
@@ -312,6 +313,99 @@ namespace GameFramework.Resource
 
                 m_TaskPool.AddTask(mainTask);
             }
+
+            /// ChangeBy: Shine Wu 2018/10/16 同步加载资源
+            /// <summary>
+            /// 同步加载资源。
+            /// </summary>
+            /// <param name="assetName">要加载资源的名称。</param>
+            /// <param name="subName">要加载子资源的名称。</param>
+            /// <param name="syncAssetBundleCallback">加载AssetBundle回调。</param>
+            /// <param name="syncAssetObjectCallbac">加载AssetObject回调。</param>
+            public object LoadAssetSync(string assetName, string subName, SyncAssetBundleCallback syncAssetBundleCallback, SyncAssetObjectCallback syncAssetObjectCallbac)
+            {
+                ResourceInfo? resourceInfo = null;
+                string resourceChildName = null;
+                string[] dependencyAssetNames = null;
+                string[] scatteredDependencyAssetNames = null;
+
+                if (!CheckAsset(assetName, out resourceInfo, out resourceChildName, out dependencyAssetNames, out scatteredDependencyAssetNames))
+                {
+                    string errorMessage = Utility.Text.Format("Can not load asset '{0}' without assetInfo.", assetName);
+                    throw new GameFrameworkException(errorMessage);
+                }
+
+                foreach (string dependencyAssetName in dependencyAssetNames)
+                {
+                    LoadAssetSync(dependencyAssetName, null, syncAssetBundleCallback, syncAssetObjectCallbac);
+                }
+
+                AssetObject assetObject = null;
+                if (string.IsNullOrEmpty(subName)) {
+                    assetObject = m_AssetPool.Spawn(assetName);
+                }
+                else {
+                    assetObject = m_AssetPool.Spawn(subName);
+                }
+
+                if (assetObject != null)
+                {
+                    // 同步加载不增加引用计数
+                    UnloadAsset(assetObject.Target);
+                    return assetObject.Target;
+                }
+
+                ResourceObject resourceObject = m_ResourcePool.Spawn(resourceInfo.Value.ResourceName.Name);
+                if (resourceObject == null)
+                {
+                    string fullPath = Utility.Path.GetCombinePath(resourceInfo.Value.StorageInReadOnly ? m_ResourceManager.ReadOnlyPath : m_ResourceManager.ReadWritePath, Utility.Path.GetResourceNameWithSuffix(resourceInfo.Value.ResourceName.FullName));
+                    object assetBundle = null;
+
+                    LoadType loadType = resourceInfo.Value.LoadType;
+                    if (loadType == LoadType.LoadFromFile) {
+                        assetBundle = syncAssetBundleCallback(fullPath, null);
+                    }
+                    else {
+                        byte[] bytes = File.ReadAllBytes(fullPath);
+                        if (loadType == LoadType.LoadFromMemoryAndQuickDecrypt || loadType == LoadType.LoadFromMemoryAndDecrypt)
+                        {
+                            bytes = m_ResourceManager.m_DecryptResourceCallback(resourceInfo.Value.ResourceName.Name, resourceInfo.Value.ResourceName.Variant, (int)loadType, resourceInfo.Value.Length, resourceInfo.Value.HashCode, resourceInfo.Value.StorageInReadOnly, bytes);
+                        }
+                        assetBundle = syncAssetBundleCallback(null, bytes);
+                     }
+
+                    resourceObject = new ResourceObject(resourceInfo.Value.ResourceName.Name, assetBundle, m_ResourceManager.m_ResourceHelper);
+                    m_ResourcePool.Register(resourceObject, true);
+                }
+
+                if (resourceObject == null)
+                {
+                    string errorMessage = Utility.Text.Format("Can not load asset '{0}' without AssetBundle.", resourceInfo.Value.ResourceName.Name);
+                    throw new GameFrameworkException(errorMessage);
+                }
+
+                object asset = syncAssetObjectCallbac(resourceObject.Target, resourceChildName, subName);
+
+                if (asset == null) {
+                    string errorMessage = Utility.Text.Format("Can not load asset '{0}' without AssetObject.", assetName);
+                    throw new GameFrameworkException(errorMessage);
+                }
+
+                if (string.IsNullOrEmpty(subName))
+                {
+                    assetObject = new AssetObject(assetName, asset, dependencyAssetNames, resourceObject.Target, m_AssetPool, m_ResourcePool, m_ResourceManager.m_ResourceHelper, m_DependencyCount);
+                }
+                else
+                {
+                    assetObject = new AssetObject(subName, asset, dependencyAssetNames, resourceObject.Target, m_AssetPool, m_ResourcePool, m_ResourceManager.m_ResourceHelper, m_DependencyCount);
+                }
+                m_AssetPool.Register(assetObject, true);
+
+                // 同步加载不增加引用计数
+                UnloadAsset(asset);
+                return asset;
+            }
+
 
             /// <summary>
             /// 卸载资源。

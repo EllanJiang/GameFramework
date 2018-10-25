@@ -411,6 +411,17 @@ namespace GameFramework.Resource
         /// <param name="userData">用户自定义数据。</param>
         void LoadAsset(string assetName, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData);
 
+        /// ChangeBy: Shine Wu 2018/10/16 同步加载资源
+        /// <summary>
+        /// 同步加载资源。
+        /// </summary>
+        /// <returns>Asset资源对象。</returns>
+        /// <param name="assetName">要加载资源的名称。</param>
+        /// <param name="subName">要加载资源的子名称。</param>
+        /// <param name="syncAssetBundleCallback">加载AssetBundle回调。</param>
+        /// <param name="syncAssetObjectCallback">加载AssetObject回调。</param>
+        object LoadAssetSync(string assetName, string subName, SyncAssetBundleCallback syncAssetBundleCallback, SyncAssetObjectCallback syncAssetObjectCallback);
+
         /// <summary>
         /// 卸载资源。
         /// </summary>
