@@ -132,6 +132,11 @@
     <Compile Include="Fsm\FsmState.cs" />
     <Compile Include="Fsm\IFsm.cs" />
     <Compile Include="Fsm\IFsmManager.cs" />
+    <Compile Include="Job\ConditionalJob.cs" />
+    <Compile Include="Job\IJobManager.cs" />
+    <Compile Include="Job\JobBase.cs" />
+    <Compile Include="Job\JobManager.cs" />
+    <Compile Include="Job\JobStatus.cs" />
     <Compile Include="Localization\ILocalizationHelper.cs" />
     <Compile Include="Localization\ILocalizationManager.cs" />
     <Compile Include="Localization\Language.cs" />
