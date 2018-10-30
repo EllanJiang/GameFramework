@@ -64,7 +64,7 @@ namespace GameFramework
         /// <typeparam name="T">引用类型。</typeparam>
         public static T Acquire<T>() where T : class, IReference, new()
         {
-            return GetReferenceCollection(typeof(T).FullName).Acquire<T>();
+            return GetReferenceCollection(typeof(T)).Acquire<T>();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace GameFramework
         public static IReference Acquire(Type referenceType)
         {
             InternalCheckReferenceType(referenceType);
-            return GetReferenceCollection(referenceType.FullName).Acquire(referenceType);
+            return GetReferenceCollection(referenceType).Acquire();
         }
 
         /// <summary>
@@ -90,30 +90,23 @@ namespace GameFramework
                 throw new GameFrameworkException("Reference is invalid.");
             }
 
-            GetReferenceCollection(typeof(T).FullName).Release(reference);
+            GetReferenceCollection(typeof(T)).Release(reference);
         }
 
         /// <summary>
         /// 将引用归还引用池。
         /// </summary>
-        /// <param name="referenceType">引用类型。</param>
         /// <param name="reference">引用。</param>
-        public static void Release(Type referenceType, IReference reference)
+        public static void Release(IReference reference)
         {
-            InternalCheckReferenceType(referenceType);
-
             if (reference == null)
             {
                 throw new GameFrameworkException("Reference is invalid.");
             }
 
-            Type type = reference.GetType();
-            if (referenceType != type)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Reference type '{0}' not equals to reference's type '{1}'.", referenceType.FullName, type.FullName));
-            }
-
-            GetReferenceCollection(referenceType.FullName).Release(reference);
+            Type referenceType = reference.GetType();
+            InternalCheckReferenceType(referenceType);
+            GetReferenceCollection(referenceType).Release(reference);
         }
 
         /// <summary>
@@ -123,7 +116,7 @@ namespace GameFramework
         /// <param name="count">追加数量。</param>
         public static void Add<T>(int count) where T : class, IReference, new()
         {
-            GetReferenceCollection(typeof(T).FullName).Add<T>(count);
+            GetReferenceCollection(typeof(T)).Add<T>(count);
         }
 
         /// <summary>
@@ -134,11 +127,7 @@ namespace GameFramework
         public static void Add(Type referenceType, int count)
         {
             InternalCheckReferenceType(referenceType);
-            ReferenceCollection referenceCollection = GetReferenceCollection(referenceType.FullName);
-            while (count-- > 0)
-            {
-                referenceCollection.Release((IReference)Activator.CreateInstance(referenceType));
-            }
+            GetReferenceCollection(referenceType).Add(count);
         }
 
         /// <summary>
@@ -148,7 +137,7 @@ namespace GameFramework
         /// <param name="count">移除数量。</param>
         public static void Remove<T>(int count) where T : class, IReference
         {
-            GetReferenceCollection(typeof(T).FullName).Remove<T>(count);
+            GetReferenceCollection(typeof(T)).Remove(count);
         }
 
         /// <summary>
@@ -159,7 +148,7 @@ namespace GameFramework
         public static void Remove(Type referenceType, int count)
         {
             InternalCheckReferenceType(referenceType);
-            GetReferenceCollection(referenceType.FullName).Remove(referenceType, count);
+            GetReferenceCollection(referenceType).Remove(count);
         }
 
         /// <summary>
@@ -168,7 +157,7 @@ namespace GameFramework
         /// <typeparam name="T">引用类型。</typeparam>
         public static void RemoveAll<T>() where T : class, IReference
         {
-            GetReferenceCollection(typeof(T).FullName).RemoveAll();
+            GetReferenceCollection(typeof(T)).RemoveAll();
         }
 
         /// <summary>
@@ -178,7 +167,7 @@ namespace GameFramework
         public static void RemoveAll(Type referenceType)
         {
             InternalCheckReferenceType(referenceType);
-            GetReferenceCollection(referenceType.FullName).RemoveAll();
+            GetReferenceCollection(referenceType).RemoveAll();
         }
 
         private static void InternalCheckReferenceType(Type referenceType)
@@ -199,14 +188,20 @@ namespace GameFramework
             }
         }
 
-        private static ReferenceCollection GetReferenceCollection(string fullName)
+        private static ReferenceCollection GetReferenceCollection(Type referenceType)
         {
+            if (referenceType == null)
+            {
+                throw new GameFrameworkException("ReferenceType is invalid.");
+            }
+
+            string fullName = referenceType.FullName;
             ReferenceCollection referenceCollection = null;
             lock (s_ReferenceCollections)
             {
                 if (!s_ReferenceCollections.TryGetValue(fullName, out referenceCollection))
                 {
-                    referenceCollection = new ReferenceCollection();
+                    referenceCollection = new ReferenceCollection(referenceType);
                     s_ReferenceCollections.Add(fullName, referenceCollection);
                 }
             }
