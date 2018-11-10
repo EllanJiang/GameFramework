@@ -67,7 +67,7 @@ namespace GameFramework.Job
                 {
                     LinkedListNode<JobBase> next = current.Next;
                     m_Jobs.Remove(current);
-                    ReferencePool.Release(job);
+                    ReferencePool.Release((IReference)job);
                     current = next;
                 }
             }
@@ -82,7 +82,7 @@ namespace GameFramework.Job
 
             foreach (JobBase job in m_Jobs)
             {
-                ReferencePool.Release(job);
+                ReferencePool.Release((IReference)job);
             }
 
             m_Jobs.Clear();
