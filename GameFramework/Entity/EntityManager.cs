@@ -1161,6 +1161,11 @@ namespace GameFramework.Entity
                 HideEntity(childEntity.Id, userData);
             }
 
+            if (entityInfo.Status == EntityStatus.Hidden)
+            {
+                return;
+            }
+
             DetachEntity(entity.Id, userData);
             entityInfo.Status = EntityStatus.WillHide;
             entity.OnHide(userData);
