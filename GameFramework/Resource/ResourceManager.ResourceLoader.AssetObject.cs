@@ -24,9 +24,9 @@ namespace GameFramework.Resource
                 private readonly IObjectPool<AssetObject> m_AssetPool;
                 private readonly IObjectPool<ResourceObject> m_ResourcePool;
                 private readonly IResourceHelper m_ResourceHelper;
-                private readonly Dictionary<object, int> m_DependencyCount;
+                private readonly Dictionary<object, int> m_AssetDependencyCount;
 
-                public AssetObject(string name, object target, object[] dependencyAssets, object resource, IObjectPool<AssetObject> assetPool, IObjectPool<ResourceObject> resourcePool, IResourceHelper resourceHelper, Dictionary<object, int> dependencyCount)
+                public AssetObject(string name, object target, object[] dependencyAssets, object resource, IObjectPool<AssetObject> assetPool, IObjectPool<ResourceObject> resourcePool, IResourceHelper resourceHelper, Dictionary<object, int> assetDependencyCount)
                     : base(name, target)
                 {
                     if (dependencyAssets == null)
@@ -54,9 +54,9 @@ namespace GameFramework.Resource
                         throw new GameFrameworkException("Resource helper is invalid.");
                     }
 
-                    if (dependencyCount == null)
+                    if (assetDependencyCount == null)
                     {
-                        throw new GameFrameworkException("Dependency count is invalid.");
+                        throw new GameFrameworkException("Asset dependency count is invalid.");
                     }
 
                     m_DependencyAssets = dependencyAssets;
@@ -64,18 +64,18 @@ namespace GameFramework.Resource
                     m_AssetPool = assetPool;
                     m_ResourcePool = resourcePool;
                     m_ResourceHelper = resourceHelper;
-                    m_DependencyCount = dependencyCount;
+                    m_AssetDependencyCount = assetDependencyCount;
 
                     foreach (object dependencyAsset in m_DependencyAssets)
                     {
                         int referenceCount = 0;
-                        if (m_DependencyCount.TryGetValue(dependencyAsset, out referenceCount))
+                        if (m_AssetDependencyCount.TryGetValue(dependencyAsset, out referenceCount))
                         {
-                            m_DependencyCount[dependencyAsset] = referenceCount + 1;
+                            m_AssetDependencyCount[dependencyAsset] = referenceCount + 1;
                         }
                         else
                         {
-                            m_DependencyCount.Add(dependencyAsset, 1);
+                            m_AssetDependencyCount.Add(dependencyAsset, 1);
                         }
                     }
                 }
@@ -85,7 +85,7 @@ namespace GameFramework.Resource
                     get
                     {
                         int targetReferenceCount = 0;
-                        m_DependencyCount.TryGetValue(Target, out targetReferenceCount);
+                        m_AssetDependencyCount.TryGetValue(Target, out targetReferenceCount);
                         return base.CustomCanReleaseFlag && targetReferenceCount <= 0;
                     }
                 }
@@ -104,26 +104,26 @@ namespace GameFramework.Resource
                     if (!isShutdown)
                     {
                         int targetReferenceCount = 0;
-                        if (m_DependencyCount.TryGetValue(Target, out targetReferenceCount) && targetReferenceCount > 0)
+                        if (m_AssetDependencyCount.TryGetValue(Target, out targetReferenceCount) && targetReferenceCount > 0)
                         {
-                            throw new GameFrameworkException(Utility.Text.Format("Target '{0}' dependency asset reference count is '{1}' larger than 0.", Name, targetReferenceCount.ToString()));
+                            throw new GameFrameworkException(Utility.Text.Format("Asset target '{0}' reference count is '{1}' larger than 0.", Name, targetReferenceCount.ToString()));
                         }
 
                         foreach (object dependencyAsset in m_DependencyAssets)
                         {
                             int referenceCount = 0;
-                            if (m_DependencyCount.TryGetValue(dependencyAsset, out referenceCount))
+                            if (m_AssetDependencyCount.TryGetValue(dependencyAsset, out referenceCount))
                             {
-                                m_DependencyCount[dependencyAsset] = referenceCount - 1;
+                                m_AssetDependencyCount[dependencyAsset] = referenceCount - 1;
                             }
                             else
                             {
-                                throw new GameFrameworkException(Utility.Text.Format("Target '{0}' dependency asset reference count is invalid.", Name));
+                                throw new GameFrameworkException(Utility.Text.Format("Asset target '{0}' dependency asset reference count is invalid.", Name));
                             }
                         }
                     }
 
-                    m_DependencyCount.Remove(Target);
+                    m_AssetDependencyCount.Remove(Target);
                     m_ResourceHelper.Release(Target);
                     m_ResourcePool.Unspawn(m_Resource);
                 }

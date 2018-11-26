@@ -61,9 +61,9 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public override void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset)
+                public override void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset, object dependencyResource)
                 {
-                    base.OnLoadDependencyAsset(agent, dependencyAssetName, dependencyAsset);
+                    base.OnLoadDependencyAsset(agent, dependencyAssetName, dependencyAsset, dependencyResource);
                     if (m_LoadAssetCallbacks.LoadAssetDependencyAssetCallback != null)
                     {
                         m_LoadAssetCallbacks.LoadAssetDependencyAssetCallback(AssetName, dependencyAssetName, LoadedDependencyAssetCount, TotalDependencyAssetCount, UserData);

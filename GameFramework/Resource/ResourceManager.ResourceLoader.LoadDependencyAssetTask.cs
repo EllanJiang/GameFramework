@@ -33,7 +33,7 @@ namespace GameFramework.Resource
                 public override void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)
                 {
                     base.OnLoadAssetSuccess(agent, asset, duration);
-                    m_MainTask.OnLoadDependencyAsset(agent, AssetName, asset);
+                    m_MainTask.OnLoadDependencyAsset(agent, AssetName, asset, ResourceObject != null ? ResourceObject.Target : null);
                 }
 
                 public override void OnLoadAssetFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)

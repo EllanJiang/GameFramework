@@ -29,7 +29,8 @@ namespace GameFramework.Resource
                 private readonly string[] m_ScatteredDependencyAssetNames;
                 private readonly object m_UserData;
                 private readonly List<object> m_DependencyAssets;
-                private object m_Resource;
+                private readonly HashSet<object> m_DependencyResources;
+                private ResourceObject m_ResourceObject;
                 private DateTime m_StartTime;
                 private int m_TotalDependencyAssetCount;
 
@@ -46,7 +47,8 @@ namespace GameFramework.Resource
                     m_ScatteredDependencyAssetNames = scatteredDependencyAssetNames;
                     m_UserData = userData;
                     m_DependencyAssets = new List<object>();
-                    m_Resource = null;
+                    m_DependencyResources = new HashSet<object>();
+                    m_ResourceObject = null;
                     m_StartTime = default(DateTime);
                     m_TotalDependencyAssetCount = 0;
                 }
@@ -111,11 +113,11 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public object Resource
+                public ResourceObject ResourceObject
                 {
                     get
                     {
-                        return m_Resource;
+                        return m_ResourceObject;
                     }
                 }
 
@@ -179,10 +181,15 @@ namespace GameFramework.Resource
                     return m_DependencyAssets.ToArray();
                 }
 
-                public void LoadMain(LoadResourceAgent agent, object resource)
+                public HashSet<object> GetDependencyResources()
                 {
-                    m_Resource = resource;
-                    agent.Helper.LoadAsset(resource, ResourceChildName, AssetType, IsScene);
+                    return m_DependencyResources;
+                }
+
+                public void LoadMain(LoadResourceAgent agent, ResourceObject resourceObject)
+                {
+                    m_ResourceObject = resourceObject;
+                    agent.Helper.LoadAsset(resourceObject.Target, ResourceChildName, AssetType, IsScene);
                 }
 
                 public virtual void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)
@@ -200,9 +207,13 @@ namespace GameFramework.Resource
 
                 }
 
-                public virtual void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset)
+                public virtual void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset, object dependencyResource)
                 {
                     m_DependencyAssets.Add(dependencyAsset);
+                    if (dependencyResource != null)
+                    {
+                        m_DependencyResources.Add(dependencyResource);
+                    }
                 }
             }
         }

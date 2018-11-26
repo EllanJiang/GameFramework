@@ -353,7 +353,7 @@ namespace GameFramework.Resource
 
                 private void OnResourceObjectReady(ResourceObject resourceObject)
                 {
-                    m_Task.LoadMain(this, resourceObject.Target);
+                    m_Task.LoadMain(this, resourceObject);
                 }
 
                 private void OnError(LoadResourceStatus status, string errorMessage)
@@ -382,7 +382,7 @@ namespace GameFramework.Resource
 
                 private void OnLoadResourceAgentHelperReadFileComplete(object sender, LoadResourceAgentHelperReadFileCompleteEventArgs e)
                 {
-                    ResourceObject resourceObject = new ResourceObject(m_Task.ResourceInfo.ResourceName.Name, e.Resource, m_ResourceHelper);
+                    ResourceObject resourceObject = new ResourceObject(m_Task.ResourceInfo.ResourceName.Name, e.Resource, m_ResourceHelper, m_ResourceLoader.m_ResourceDependencyCount);
                     m_ResourcePool.Register(resourceObject, true);
                     m_LoadingResource = false;
                     s_LoadingResourceNames.Remove(m_Task.ResourceInfo.ResourceName.Name);
@@ -403,7 +403,7 @@ namespace GameFramework.Resource
 
                 private void OnLoadResourceAgentHelperParseBytesComplete(object sender, LoadResourceAgentHelperParseBytesCompleteEventArgs e)
                 {
-                    ResourceObject resourceObject = new ResourceObject(m_Task.ResourceInfo.ResourceName.Name, e.Resource, m_ResourceHelper);
+                    ResourceObject resourceObject = new ResourceObject(m_Task.ResourceInfo.ResourceName.Name, e.Resource, m_ResourceHelper, m_ResourceLoader.m_ResourceDependencyCount);
                     m_ResourcePool.Register(resourceObject, true);
                     m_LoadingResource = false;
                     s_LoadingResourceNames.Remove(m_Task.ResourceInfo.ResourceName.Name);
@@ -420,8 +420,12 @@ namespace GameFramework.Resource
 
                     if (assetObject == null)
                     {
-                        assetObject = new AssetObject(m_Task.AssetName, e.Asset, m_Task.GetDependencyAssets(), m_Task.Resource, m_AssetPool, m_ResourcePool, m_ResourceHelper, m_ResourceLoader.m_DependencyCount);
+                        assetObject = new AssetObject(m_Task.AssetName, e.Asset, m_Task.GetDependencyAssets(), m_Task.ResourceObject.Target, m_AssetPool, m_ResourcePool, m_ResourceHelper, m_ResourceLoader.m_AssetDependencyCount);
                         m_AssetPool.Register(assetObject, true);
+                        foreach (object dependencyResource in m_Task.GetDependencyResources())
+                        {
+                            m_Task.ResourceObject.AddDependencyResource(dependencyResource);
+                        }
                     }
 
                     m_LoadingAsset = false;
