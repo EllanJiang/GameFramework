@@ -7,22 +7,22 @@
 
 using System;
 
-namespace GameFramework.Job
+namespace GameFramework.Task
 {
     /// <summary>
     /// 条件任务。
     /// </summary>
-    public sealed class ConditionalJob : JobBase
+    public sealed class ConditionalTask : TaskBase
     {
-        private Predicate<ConditionalJob> m_Condition;
-        private GameFrameworkAction<ConditionalJob, string> m_CompleteAction;
-        private GameFrameworkAction<ConditionalJob, string> m_FailureAction;
-        private GameFrameworkAction<ConditionalJob, string> m_CancelAction;
+        private Predicate<ConditionalTask> m_Condition;
+        private GameFrameworkAction<ConditionalTask, string> m_CompleteAction;
+        private GameFrameworkAction<ConditionalTask, string> m_FailureAction;
+        private GameFrameworkAction<ConditionalTask, string> m_CancelAction;
 
         /// <summary>
         /// 初始化条件任务的新实例。
         /// </summary>
-        public ConditionalJob()
+        public ConditionalTask()
         {
             m_Condition = null;
             m_CompleteAction = null;
@@ -34,7 +34,7 @@ namespace GameFramework.Job
         /// 设置任务完成的条件。
         /// </summary>
         /// <param name="condition">任务完成的条件。</param>
-        public void SetCondition(Predicate<ConditionalJob> condition)
+        public void SetCondition(Predicate<ConditionalTask> condition)
         {
             m_Condition = condition;
         }
@@ -43,7 +43,7 @@ namespace GameFramework.Job
         /// 设置任务完成时的行为。
         /// </summary>
         /// <param name="completeAction">任务完成时的行为。</param>
-        public void SetCompleteAction(GameFrameworkAction<ConditionalJob, string> completeAction)
+        public void SetCompleteAction(GameFrameworkAction<ConditionalTask, string> completeAction)
         {
             m_CompleteAction = completeAction;
         }
@@ -52,7 +52,7 @@ namespace GameFramework.Job
         /// 设置任务失败时的行为。
         /// </summary>
         /// <param name="failureAction">任务失败时的行为。</param>
-        public void SetFailureAction(GameFrameworkAction<ConditionalJob, string> failureAction)
+        public void SetFailureAction(GameFrameworkAction<ConditionalTask, string> failureAction)
         {
             m_FailureAction = failureAction;
         }
@@ -61,7 +61,7 @@ namespace GameFramework.Job
         /// 设置任务取消时的行为。
         /// </summary>
         /// <param name="cancelAction">任务取消时的行为。</param>
-        public void SetCancelAction(GameFrameworkAction<ConditionalJob, string> cancelAction)
+        public void SetCancelAction(GameFrameworkAction<ConditionalTask, string> cancelAction)
         {
             m_CancelAction = cancelAction;
         }

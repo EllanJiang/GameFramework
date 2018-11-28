@@ -5,12 +5,12 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-namespace GameFramework.Job
+namespace GameFramework.Task
 {
     /// <summary>
     /// 任务基类。
     /// </summary>
-    public abstract class JobBase : IReference
+    public abstract class TaskBase : IReference
     {
         /// <summary>
         /// 任务默认优先级。
@@ -19,17 +19,17 @@ namespace GameFramework.Job
 
         private int m_SerialId;
         private int m_Priority;
-        private JobStatus m_Status;
+        private TaskStatus m_Status;
         private object m_UserData;
 
         /// <summary>
         /// 初始化任务基类的新实例。
         /// </summary>
-        public JobBase()
+        public TaskBase()
         {
             m_SerialId = 0;
             m_Priority = DefaultPriority;
-            m_Status = JobStatus.Free;
+            m_Status = TaskStatus.Free;
             m_UserData = null;
         }
 
@@ -66,7 +66,7 @@ namespace GameFramework.Job
         /// <summary>
         /// 获取任务的状态。
         /// </summary>
-        public JobStatus Status
+        public TaskStatus Status
         {
             get
             {
@@ -96,7 +96,7 @@ namespace GameFramework.Job
         {
             m_SerialId = 0;
             m_Priority = DefaultPriority;
-            m_Status = JobStatus.Free;
+            m_Status = TaskStatus.Free;
             m_UserData = null;
         }
 
@@ -105,7 +105,7 @@ namespace GameFramework.Job
         /// </summary>
         protected internal virtual void OnGenerate()
         {
-            m_Status = JobStatus.Waiting;
+            m_Status = TaskStatus.Waiting;
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace GameFramework.Job
         /// </summary>
         protected internal virtual void OnStart()
         {
-            m_Status = JobStatus.Running;
+            m_Status = TaskStatus.Running;
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace GameFramework.Job
         /// <param name="reason">任务完成的原因。</param>
         protected internal virtual void OnComplete(string reason)
         {
-            m_Status = JobStatus.Completed;
+            m_Status = TaskStatus.Completed;
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace GameFramework.Job
         /// <param name="reason">任务失败的原因。</param>
         protected internal virtual void OnFailure(string reason)
         {
-            m_Status = JobStatus.Failed;
+            m_Status = TaskStatus.Failed;
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace GameFramework.Job
         /// <param name="reason">任务取消的原因。</param>
         protected internal virtual void OnCancel(string reason)
         {
-            m_Status = JobStatus.Canceled;
+            m_Status = TaskStatus.Canceled;
         }
     }
 }

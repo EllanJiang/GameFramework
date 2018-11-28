@@ -5,12 +5,12 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-namespace GameFramework.Job
+namespace GameFramework.Task
 {
     /// <summary>
     /// 任务状态。
     /// </summary>
-    public enum JobStatus
+    public enum TaskStatus
     {
         /// <summary>
         /// 空闲。

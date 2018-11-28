@@ -7,22 +7,22 @@
 
 using System.Collections.Generic;
 
-namespace GameFramework.Job
+namespace GameFramework.Task
 {
     /// <summary>
     /// 任务管理器。
     /// </summary>
-    internal sealed class JobManager : GameFrameworkModule, IJobManager
+    internal sealed class TaskManager : GameFrameworkModule, ITaskManager
     {
-        private readonly LinkedList<JobBase> m_Jobs;
+        private readonly LinkedList<TaskBase> m_Tasks;
         private int m_Serial;
 
         /// <summary>
         /// 初始化任务管理器的新实例。
         /// </summary>
-        public JobManager()
+        public TaskManager()
         {
-            m_Jobs = new LinkedList<JobBase>();
+            m_Tasks = new LinkedList<TaskBase>();
             m_Serial = 0;
         }
 
@@ -33,7 +33,7 @@ namespace GameFramework.Job
         {
             get
             {
-                return m_Jobs.Count;
+                return m_Tasks.Count;
             }
         }
 
@@ -44,30 +44,30 @@ namespace GameFramework.Job
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
-            LinkedListNode<JobBase> current = m_Jobs.First;
+            LinkedListNode<TaskBase> current = m_Tasks.First;
             while (current != null)
             {
-                JobBase job = current.Value;
-                if (job.Status == JobStatus.Free)
+                TaskBase task = current.Value;
+                if (task.Status == TaskStatus.Free)
                 {
-                    throw new GameFrameworkException("Job status is invalid.");
+                    throw new GameFrameworkException("Task status is invalid.");
                 }
 
-                if (job.Status == JobStatus.Waiting)
+                if (task.Status == TaskStatus.Waiting)
                 {
-                    job.OnStart();
+                    task.OnStart();
                 }
 
-                if (job.Status == JobStatus.Running)
+                if (task.Status == TaskStatus.Running)
                 {
-                    job.OnUpdate(elapseSeconds, realElapseSeconds);
+                    task.OnUpdate(elapseSeconds, realElapseSeconds);
                     current = current.Next;
                 }
                 else
                 {
-                    LinkedListNode<JobBase> next = current.Next;
-                    m_Jobs.Remove(current);
-                    ReferencePool.Release((IReference)job);
+                    LinkedListNode<TaskBase> next = current.Next;
+                    m_Tasks.Remove(current);
+                    ReferencePool.Release((IReference)task);
                     current = next;
                 }
             }
@@ -78,14 +78,14 @@ namespace GameFramework.Job
         /// </summary>
         internal override void Shutdown()
         {
-            CancelAllJobs(null);
+            CancelAllTasks(null);
 
-            foreach (JobBase job in m_Jobs)
+            foreach (TaskBase task in m_Tasks)
             {
-                ReferencePool.Release((IReference)job);
+                ReferencePool.Release((IReference)task);
             }
 
-            m_Jobs.Clear();
+            m_Tasks.Clear();
         }
 
         /// <summary>
@@ -93,9 +93,9 @@ namespace GameFramework.Job
         /// </summary>
         /// <typeparam name="T">任务的类型。</typeparam>
         /// <returns>生成的指定类型的任务。</returns>
-        public T GenerateJob<T>() where T : JobBase, new()
+        public T GenerateTask<T>() where T : TaskBase, new()
         {
-            return GenerateJob<T>(JobBase.DefaultPriority);
+            return GenerateTask<T>(TaskBase.DefaultPriority);
         }
 
         /// <summary>
@@ -104,17 +104,17 @@ namespace GameFramework.Job
         /// <typeparam name="T">任务的类型。</typeparam>
         /// <param name="priority">任务的优先级。</param>
         /// <returns>生成的指定类型的任务。</returns>
-        public T GenerateJob<T>(int priority) where T : JobBase, new()
+        public T GenerateTask<T>(int priority) where T : TaskBase, new()
         {
-            T job = ReferencePool.Acquire<T>();
-            job.SerialId = m_Serial++;
-            job.Priority = priority;
-            job.OnGenerate();
+            T task = ReferencePool.Acquire<T>();
+            task.SerialId = m_Serial++;
+            task.Priority = priority;
+            task.OnGenerate();
 
-            LinkedListNode<JobBase> current = m_Jobs.First;
+            LinkedListNode<TaskBase> current = m_Tasks.First;
             while (current != null)
             {
-                if (job.Priority > current.Value.Priority)
+                if (task.Priority > current.Value.Priority)
                 {
                     break;
                 }
@@ -124,14 +124,14 @@ namespace GameFramework.Job
 
             if (current != null)
             {
-                m_Jobs.AddBefore(current, job);
+                m_Tasks.AddBefore(current, task);
             }
             else
             {
-                m_Jobs.AddLast(job);
+                m_Tasks.AddLast(task);
             }
 
-            return job;
+            return task;
         }
 
         /// <summary>
@@ -139,9 +139,9 @@ namespace GameFramework.Job
         /// </summary>
         /// <param name="serialId">要取消的任务的序列编号。</param>
         /// <returns>取消任务是否成功。</returns>
-        public bool CancelJob(int serialId)
+        public bool CancelTask(int serialId)
         {
-            return CancelJob(serialId, null);
+            return CancelTask(serialId, null);
         }
 
         /// <summary>
@@ -150,21 +150,21 @@ namespace GameFramework.Job
         /// <param name="serialId">要取消的任务的序列编号。</param>
         /// <param name="reason">任务取消的原因。</param>
         /// <returns>取消任务是否成功。</returns>
-        public bool CancelJob(int serialId, string reason)
+        public bool CancelTask(int serialId, string reason)
         {
-            foreach (JobBase job in m_Jobs)
+            foreach (TaskBase task in m_Tasks)
             {
-                if (job.SerialId != serialId)
+                if (task.SerialId != serialId)
                 {
                     continue;
                 }
 
-                if (job.Status != JobStatus.Waiting && job.Status != JobStatus.Running)
+                if (task.Status != TaskStatus.Waiting && task.Status != TaskStatus.Running)
                 {
                     return false;
                 }
 
-                job.OnCancel(reason);
+                task.OnCancel(reason);
                 return true;
             }
 
@@ -174,48 +174,48 @@ namespace GameFramework.Job
         /// <summary>
         /// 取消任务。
         /// </summary>
-        /// <param name="job">要取消的任务。</param>
+        /// <param name="task">要取消的任务。</param>
         /// <returns>取消任务是否成功。</returns>
-        public bool CancelJob(JobBase job)
+        public bool CancelTask(TaskBase task)
         {
-            if (job == null)
+            if (task == null)
             {
-                throw new GameFrameworkException("Job is invalid.");
+                throw new GameFrameworkException("Task is invalid.");
             }
 
-            return CancelJob(job.SerialId, null);
+            return CancelTask(task.SerialId, null);
         }
 
         /// <summary>
         /// 取消任务。
         /// </summary>
-        /// <param name="job">要取消的任务。</param>
+        /// <param name="task">要取消的任务。</param>
         /// <param name="reason">任务取消的原因。</param>
         /// <returns>取消任务是否成功。</returns>
-        public bool CancelJob(JobBase job, string reason)
+        public bool CancelTask(TaskBase task, string reason)
         {
-            if (job == null)
+            if (task == null)
             {
-                throw new GameFrameworkException("Job is invalid.");
+                throw new GameFrameworkException("Task is invalid.");
             }
 
-            return CancelJob(job.SerialId, reason);
+            return CancelTask(task.SerialId, reason);
         }
 
         /// <summary>
         /// 取消所有任务。
         /// </summary>
         /// <param name="reason">任务取消的原因。</param>
-        public void CancelAllJobs(string reason)
+        public void CancelAllTasks(string reason)
         {
-            foreach (JobBase job in m_Jobs)
+            foreach (TaskBase task in m_Tasks)
             {
-                if (job.Status != JobStatus.Waiting && job.Status != JobStatus.Running)
+                if (task.Status != TaskStatus.Waiting && task.Status != TaskStatus.Running)
                 {
                     continue;
                 }
 
-                job.OnCancel(reason);
+                task.OnCancel(reason);
             }
         }
     }
