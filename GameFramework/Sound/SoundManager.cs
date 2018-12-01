@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
 // Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -273,10 +273,13 @@ namespace GameFramework.Sound
                 return false;
             }
 
-            SoundGroup soundGroup = new SoundGroup(soundGroupName, soundGroupHelper);
-            soundGroup.AvoidBeingReplacedBySamePriority = soundGroupAvoidBeingReplacedBySamePriority;
-            soundGroup.Mute = soundGroupMute;
-            soundGroup.Volume = soundGroupVolume;
+            SoundGroup soundGroup = new SoundGroup(soundGroupName, soundGroupHelper)
+            {
+                AvoidBeingReplacedBySamePriority = soundGroupAvoidBeingReplacedBySamePriority,
+                Mute = soundGroupMute,
+                Volume = soundGroupVolume
+            };
+
             m_SoundGroups.Add(soundGroupName, soundGroup);
 
             return true;

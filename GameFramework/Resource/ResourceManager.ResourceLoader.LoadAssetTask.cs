@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
 // Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -61,9 +61,9 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public override void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset)
+                public override void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset, object dependencyResource)
                 {
-                    base.OnLoadDependencyAsset(agent, dependencyAssetName, dependencyAsset);
+                    base.OnLoadDependencyAsset(agent, dependencyAssetName, dependencyAsset, dependencyResource);
                     if (m_LoadAssetCallbacks.LoadAssetDependencyAssetCallback != null)
                     {
                         m_LoadAssetCallbacks.LoadAssetDependencyAssetCallback(AssetName, dependencyAssetName, LoadedDependencyAssetCount, TotalDependencyAssetCount, UserData);

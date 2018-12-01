@@ -8,20 +8,30 @@ namespace GameFramework
         private sealed class ReferenceCollection
         {
             private readonly Queue<IReference> m_References;
+            private readonly Type m_ReferenceType;
             private int m_UsingReferenceCount;
             private int m_AcquireReferenceCount;
             private int m_ReleaseReferenceCount;
             private int m_AddReferenceCount;
             private int m_RemoveReferenceCount;
 
-            public ReferenceCollection()
+            public ReferenceCollection(Type referenceType)
             {
                 m_References = new Queue<IReference>();
+                m_ReferenceType = referenceType;
                 m_UsingReferenceCount = 0;
                 m_AcquireReferenceCount = 0;
                 m_ReleaseReferenceCount = 0;
                 m_AddReferenceCount = 0;
                 m_RemoveReferenceCount = 0;
+            }
+
+            public Type ReferenceType
+            {
+                get
+                {
+                    return m_ReferenceType;
+                }
             }
 
             public int UnusedReferenceCount
@@ -74,6 +84,11 @@ namespace GameFramework
 
             public T Acquire<T>() where T : class, IReference, new()
             {
+                if (typeof(T) != m_ReferenceType)
+                {
+                    throw new GameFrameworkException("Type is invalid.");
+                }
+
                 m_UsingReferenceCount++;
                 m_AcquireReferenceCount++;
                 lock (m_References)
@@ -88,7 +103,7 @@ namespace GameFramework
                 return new T();
             }
 
-            public IReference Acquire(Type referenceType)
+            public IReference Acquire()
             {
                 m_UsingReferenceCount++;
                 m_AcquireReferenceCount++;
@@ -101,26 +116,19 @@ namespace GameFramework
                 }
 
                 m_AddReferenceCount++;
-                return (IReference)Activator.CreateInstance(referenceType);
+                return (IReference)Activator.CreateInstance(m_ReferenceType);
             }
 
-            public void Release<T>(T reference) where T : class, IReference
+            public void Release(IReference reference)
             {
                 reference.Clear();
                 lock (m_References)
                 {
-                    m_References.Enqueue(reference);
-                }
+                    if (m_References.Contains(reference))
+                    {
+                        throw new GameFrameworkException("The reference has been released.");
+                    }
 
-                m_ReleaseReferenceCount++;
-                m_UsingReferenceCount--;
-            }
-
-            public void Release(Type referenceType, IReference reference)
-            {
-                reference.Clear();
-                lock (m_References)
-                {
                     m_References.Enqueue(reference);
                 }
 
@@ -130,6 +138,11 @@ namespace GameFramework
 
             public void Add<T>(int count) where T : class, IReference, new()
             {
+                if (typeof(T) != m_ReferenceType)
+                {
+                    throw new GameFrameworkException("Type is invalid.");
+                }
+
                 lock (m_References)
                 {
                     m_AddReferenceCount += count;
@@ -140,36 +153,19 @@ namespace GameFramework
                 }
             }
 
-            public void Add(Type referenceType, int count)
+            public void Add(int count)
             {
                 lock (m_References)
                 {
                     m_AddReferenceCount += count;
                     while (count-- > 0)
                     {
-                        m_References.Enqueue((IReference)Activator.CreateInstance(referenceType));
+                        m_References.Enqueue((IReference)Activator.CreateInstance(m_ReferenceType));
                     }
                 }
             }
 
-            public void Remove<T>(int count) where T : class, IReference
-            {
-                lock (m_References)
-                {
-                    if (count > m_References.Count)
-                    {
-                        count = m_References.Count;
-                    }
-
-                    m_RemoveReferenceCount += count;
-                    while (count-- > 0)
-                    {
-                        m_References.Dequeue();
-                    }
-                }
-            }
-
-            public void Remove(Type referenceType, int count)
+            public void Remove(int count)
             {
                 lock (m_References)
                 {

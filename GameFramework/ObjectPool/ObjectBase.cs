@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
 // Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -21,7 +21,7 @@ namespace GameFramework.ObjectPool
         private DateTime m_LastUseTime;
 
         /// <summary>
-        /// 初始化对象的新实例。
+        /// 初始化对象基类的新实例。
         /// </summary>
         /// <param name="target">对象。</param>
         public ObjectBase(object target)

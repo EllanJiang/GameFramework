@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
 // Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -33,7 +33,7 @@ namespace GameFramework.Resource
                 public override void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)
                 {
                     base.OnLoadAssetSuccess(agent, asset, duration);
-                    m_MainTask.OnLoadDependencyAsset(agent, AssetName, asset);
+                    m_MainTask.OnLoadDependencyAsset(agent, AssetName, asset, ResourceObject != null ? ResourceObject.Target : null);
                 }
 
                 public override void OnLoadAssetFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)

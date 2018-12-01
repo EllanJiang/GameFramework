@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
 // Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -772,7 +772,7 @@ namespace GameFramework.Resource
 
             if (m_ResourceMode != ResourceMode.Updatable)
             {
-                throw new GameFrameworkException("You can not use InitResources without updatable resource mode.");
+                throw new GameFrameworkException("You can not use CheckVersionList without updatable resource mode.");
             }
 
             if (m_VersionListProcessor == null)
@@ -805,7 +805,7 @@ namespace GameFramework.Resource
 
             if (m_ResourceMode != ResourceMode.Updatable)
             {
-                throw new GameFrameworkException("You can not use InitResources without updatable resource mode.");
+                throw new GameFrameworkException("You can not use UpdateVersionList without updatable resource mode.");
             }
 
             if (m_VersionListProcessor == null)
@@ -835,7 +835,7 @@ namespace GameFramework.Resource
 
             if (m_ResourceMode != ResourceMode.Updatable)
             {
-                throw new GameFrameworkException("You can not use InitResources without updatable resource mode.");
+                throw new GameFrameworkException("You can not use CheckResources without updatable resource mode.");
             }
 
             if (m_ResourceChecker == null)
@@ -866,7 +866,7 @@ namespace GameFramework.Resource
 
             if (m_ResourceMode != ResourceMode.Updatable)
             {
-                throw new GameFrameworkException("You can not use InitResources without updatable resource mode.");
+                throw new GameFrameworkException("You can not use UpdateResources without updatable resource mode.");
             }
 
             if (m_ResourceUpdater == null)

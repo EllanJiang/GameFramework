@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
 // Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -496,7 +496,7 @@ namespace GameFramework.ObjectPool
                 ObjectInfo[] results = new ObjectInfo[m_Objects.Count];
                 foreach (Object<T> obj in m_Objects)
                 {
-                    results[index++] = new ObjectInfo(obj.Name, obj.Locked, obj.Priority, obj.LastUseTime, obj.SpawnCount);
+                    results[index++] = new ObjectInfo(obj.Name, obj.Locked, obj.CustomCanReleaseFlag, obj.Priority, obj.LastUseTime, obj.SpawnCount);
                 }
 
                 return results;

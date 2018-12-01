@@ -267,6 +267,11 @@
     <Compile Include="Sound\SoundManager.PlaySoundInfo.cs" />
     <Compile Include="Sound\SoundManager.SoundAgent.cs" />
     <Compile Include="Sound\SoundManager.SoundGroup.cs" />
+    <Compile Include="Task\ConditionalTask.cs" />
+    <Compile Include="Task\ITaskManager.cs" />
+    <Compile Include="Task\TaskBase.cs" />
+    <Compile Include="Task\TaskManager.cs" />
+    <Compile Include="Task\TaskStatus.cs" />
     <Compile Include="UI\CloseUIFormCompleteEventArgs.cs" />
     <Compile Include="UI\IUIForm.cs" />
     <Compile Include="UI\IUIFormHelper.cs" />
