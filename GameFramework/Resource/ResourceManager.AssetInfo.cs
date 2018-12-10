@@ -16,16 +16,19 @@ namespace GameFramework.Resource
         {
             private readonly string m_AssetName;
             private readonly ResourceName m_ResourceName;
+            private readonly string m_ResourceChildName;
 
             /// <summary>
             /// 初始化资源信息的新实例。
             /// </summary>
             /// <param name="assetName">资源名称。</param>
             /// <param name="resourceName">所在资源名称。</param>
-            public AssetInfo(string assetName, ResourceName resourceName)
+            /// <param name="resourceChildName">子资源名称。</param>
+            public AssetInfo(string assetName, ResourceName resourceName, string resourceChildName)
             {
                 m_AssetName = assetName;
                 m_ResourceName = resourceName;
+                m_ResourceChildName = resourceChildName;
             }
 
             /// <summary>
@@ -47,6 +50,17 @@ namespace GameFramework.Resource
                 get
                 {
                     return m_ResourceName;
+                }
+            }
+
+            /// <summary>
+            /// 获取子资源名称。
+            /// </summary>
+            public string ResourceChildName
+            {
+                get
+                {
+                    return m_ResourceChildName;
                 }
             }
         }

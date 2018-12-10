@@ -29,7 +29,7 @@ namespace GameFramework.Resource
                 private readonly string[] m_ScatteredDependencyAssetNames;
                 private readonly object m_UserData;
                 private readonly List<object> m_DependencyAssets;
-                private readonly HashSet<object> m_DependencyResources;
+                private readonly List<object> m_DependencyResources;
                 private ResourceObject m_ResourceObject;
                 private DateTime m_StartTime;
                 private int m_TotalDependencyAssetCount;
@@ -47,7 +47,7 @@ namespace GameFramework.Resource
                     m_ScatteredDependencyAssetNames = scatteredDependencyAssetNames;
                     m_UserData = userData;
                     m_DependencyAssets = new List<object>();
-                    m_DependencyResources = new HashSet<object>();
+                    m_DependencyResources = new List<object>();
                     m_ResourceObject = null;
                     m_StartTime = default(DateTime);
                     m_TotalDependencyAssetCount = 0;
@@ -181,7 +181,7 @@ namespace GameFramework.Resource
                     return m_DependencyAssets.ToArray();
                 }
 
-                public HashSet<object> GetDependencyResources()
+                public List<object> GetDependencyResources()
                 {
                     return m_DependencyResources;
                 }
@@ -210,7 +210,7 @@ namespace GameFramework.Resource
                 public virtual void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset, object dependencyResource)
                 {
                     m_DependencyAssets.Add(dependencyAsset);
-                    if (dependencyResource != null)
+                    if (dependencyResource != null && !m_DependencyResources.Contains(dependencyResource))
                     {
                         m_DependencyResources.Add(dependencyResource);
                     }

@@ -453,13 +453,7 @@ namespace GameFramework.Resource
                     return false;
                 }
 
-                int childNamePosition = assetName.LastIndexOf('/');
-                if (childNamePosition + 1 >= assetName.Length)
-                {
-                    return false;
-                }
-
-                resourceChildName = assetName.Substring(childNamePosition + 1);
+                resourceChildName = assetInfo.Value.ResourceChildName;
 
                 AssetDependencyInfo? assetDependencyInfo = m_ResourceManager.GetAssetDependencyInfo(assetName);
                 if (assetDependencyInfo.HasValue)
@@ -476,9 +470,9 @@ namespace GameFramework.Resource
                 switch ((LoadType)loadType)
                 {
                     case LoadType.LoadFromMemoryAndQuickDecrypt:
-                        return Utility.Encryption.GetQuickXorBytes(bytes, Utility.Converter.GetBytes(hashCode));
+                        return Utility.Encryption.GetQuickSelfXorBytes(bytes, Utility.Converter.GetBytes(hashCode));
                     case LoadType.LoadFromMemoryAndDecrypt:
-                        return Utility.Encryption.GetXorBytes(bytes, Utility.Converter.GetBytes(hashCode));
+                        return Utility.Encryption.GetSelfXorBytes(bytes, Utility.Converter.GetBytes(hashCode));
                     default:
                         return bytes;
                 }

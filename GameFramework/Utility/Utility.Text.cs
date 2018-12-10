@@ -109,15 +109,30 @@ namespace GameFramework
             /// <returns>按行切分后的文本。</returns>
             public static string[] SplitToLines(string text)
             {
-                List<string> texts = new List<string>();
+                List<string> results = new List<string>();
+                SplitToLines(text, results);
+                return results.ToArray();
+            }
+
+            /// <summary>
+            /// 将文本按行切分。
+            /// </summary>
+            /// <param name="text">要切分的文本。</param>
+            /// <param name="results">按行切分后的文本。</param>
+            public static void SplitToLines(string text, List<string> results)
+            {
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
                 int position = 0;
                 string rowText = null;
                 while ((rowText = ReadLine(text, ref position)) != null)
                 {
-                    texts.Add(rowText);
+                    results.Add(rowText);
                 }
-
-                return texts.ToArray();
             }
 
             /// <summary>
