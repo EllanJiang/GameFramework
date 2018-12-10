@@ -80,7 +80,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Resource name is invalid.");
                 }
 
-                return Utility.Text.Format("{0}.dat", resourceName);
+                return Text.Format("{0}.dat", resourceName);
             }
 
             /// <summary>
@@ -96,7 +96,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Resource name is invalid.");
                 }
 
-                return Utility.Text.Format("{0}.{1:x8}.dat", resourceName, hashCode);
+                return Text.Format("{0}.{1:x8}.dat", resourceName, hashCode);
             }
 
             /// <summary>

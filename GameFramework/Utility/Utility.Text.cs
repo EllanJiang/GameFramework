@@ -145,7 +145,7 @@ namespace GameFramework
                 }
 
                 string typeName = type.FullName;
-                return string.IsNullOrEmpty(name) ? typeName : Utility.Text.Format("{0}.{1}", typeName, name);
+                return string.IsNullOrEmpty(name) ? typeName : Format("{0}.{1}", typeName, name);
             }
 
             /// <summary>
