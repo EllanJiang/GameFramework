@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.IO;
 
 namespace GameFramework.DataTable
 {
@@ -66,6 +67,20 @@ namespace GameFramework.DataTable
         /// </summary>
         /// <param name="dataRowText">要解析的数据表行文本。</param>
         internal abstract void AddDataRow(string dataRowText);
+
+        /// <summary>
+        /// 增加数据表行。
+        /// </summary>
+        /// <param name="dataRowBytes">要解析的数据表行二进制流。</param>
+        internal abstract void AddDataRow(ArraySegment<byte> dataRowBytes);
+
+        /// <summary>
+        /// 增加数据表行。
+        /// </summary>
+        /// <param name="stream">数据表二进制流。</param>
+        /// <param name="dataRowOffset">要解析的数据表行的偏移。</param>
+        /// <param name="dataRowLength">要解析的数据表行的长度。</param>
+        internal abstract void AddDataRow(Stream stream, int dataRowOffset, int dataRowLength);
 
         /// <summary>
         /// 关闭并清理数据表。

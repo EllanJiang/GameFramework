@@ -8,6 +8,7 @@
 using GameFramework.Resource;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GameFramework.DataTable
 {
@@ -407,7 +408,12 @@ namespace GameFramework.DataTable
             }
 
             DataTable<T> dataTable = new DataTable<T>(name);
-            string[] dataRowTexts = m_DataTableHelper.SplitToDataRows(text);
+            IEnumerable<string> dataRowTexts = m_DataTableHelper.GetSplitedDataRows(text);
+            if (dataRowTexts == null)
+            {
+                throw new GameFrameworkException("Invalid data row texts.");
+            }
+
             foreach (string dataRowText in dataRowTexts)
             {
                 dataTable.AddDataRow(dataRowText);
@@ -443,10 +449,201 @@ namespace GameFramework.DataTable
 
             Type dataTableType = typeof(DataTable<>).MakeGenericType(dataRowType);
             DataTableBase dataTable = (DataTableBase)Activator.CreateInstance(dataTableType, name);
-            string[] dataRowTexts = m_DataTableHelper.SplitToDataRows(text);
+            IEnumerable<string> dataRowTexts = m_DataTableHelper.GetSplitedDataRows(text);
+            if (dataRowTexts == null)
+            {
+                throw new GameFrameworkException("Invalid data row texts.");
+            }
+
             foreach (string dataRowText in dataRowTexts)
             {
                 dataTable.AddDataRow(dataRowText);
+            }
+
+            m_DataTables.Add(Utility.Text.GetFullName(dataRowType, name), dataTable);
+            return dataTable;
+        }
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <param name="bytes">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        public IDataTable<T> CreateDataTable<T>(byte[] bytes) where T : class, IDataRow, new()
+        {
+            return CreateDataTable<T>(string.Empty, bytes);
+        }
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="bytes">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        public DataTableBase CreateDataTable(Type dataRowType, byte[] bytes)
+        {
+            return CreateDataTable(dataRowType, string.Empty, bytes);
+        }
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <param name="name">数据表名称。</param>
+        /// <param name="bytes">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        public IDataTable<T> CreateDataTable<T>(string name, byte[] bytes) where T : class, IDataRow, new()
+        {
+            if (HasDataTable<T>(name))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Already exist data table '{0}'.", Utility.Text.GetFullName<T>(name)));
+            }
+
+            DataTable<T> dataTable = new DataTable<T>(name);
+            IEnumerable<ArraySegment<byte>> dataRowByteses = m_DataTableHelper.GetSplitedDataRows(bytes);
+            if (dataRowByteses == null)
+            {
+                throw new GameFrameworkException("Invalid data row byteses.");
+            }
+
+            foreach (ArraySegment<byte> dataRowBytes in dataRowByteses)
+            {
+                dataTable.AddDataRow(dataRowBytes);
+            }
+
+            m_DataTables.Add(Utility.Text.GetFullName<T>(name), dataTable);
+            return dataTable;
+        }
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="name">数据表名称。</param>
+        /// <param name="bytes">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        public DataTableBase CreateDataTable(Type dataRowType, string name, byte[] bytes)
+        {
+            if (dataRowType == null)
+            {
+                throw new GameFrameworkException("Data row type is invalid.");
+            }
+
+            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
+            }
+
+            if (HasDataTable(dataRowType, name))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Already exist data table '{0}'.", Utility.Text.GetFullName(dataRowType, name)));
+            }
+
+            Type dataTableType = typeof(DataTable<>).MakeGenericType(dataRowType);
+            DataTableBase dataTable = (DataTableBase)Activator.CreateInstance(dataTableType, name);
+            IEnumerable<ArraySegment<byte>> dataRowByteses = m_DataTableHelper.GetSplitedDataRows(bytes);
+            if (dataRowByteses == null)
+            {
+                throw new GameFrameworkException("Invalid data row byteses.");
+            }
+
+            foreach (ArraySegment<byte> dataRowBytes in dataRowByteses)
+            {
+                dataTable.AddDataRow(dataRowBytes);
+            }
+
+            m_DataTables.Add(Utility.Text.GetFullName(dataRowType, name), dataTable);
+            return dataTable;
+        }
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <param name="stream">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        public IDataTable<T> CreateDataTable<T>(Stream stream) where T : class, IDataRow, new()
+        {
+            return CreateDataTable<T>(string.Empty, stream);
+        }
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="stream">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        public DataTableBase CreateDataTable(Type dataRowType, Stream stream)
+        {
+            return CreateDataTable(dataRowType, string.Empty, stream);
+        }
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <param name="name">数据表名称。</param>
+        /// <param name="stream">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        public IDataTable<T> CreateDataTable<T>(string name, Stream stream) where T : class, IDataRow, new()
+        {
+            if (HasDataTable<T>(name))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Already exist data table '{0}'.", Utility.Text.GetFullName<T>(name)));
+            }
+
+            DataTable<T> dataTable = new DataTable<T>(name);
+            IEnumerable<KeyValuePair<int, int>> dataRowKeyValuePairs = m_DataTableHelper.GetSplitedDataRows(stream);
+            if (dataRowKeyValuePairs == null)
+            {
+                throw new GameFrameworkException("Invalid data row key value pairs.");
+            }
+
+            foreach (KeyValuePair<int, int> dataRowKeyValuePair in dataRowKeyValuePairs)
+            {
+                dataTable.AddDataRow(stream, dataRowKeyValuePair.Key, dataRowKeyValuePair.Value);
+            }
+
+            m_DataTables.Add(Utility.Text.GetFullName<T>(name), dataTable);
+            return dataTable;
+        }
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="name">数据表名称。</param>
+        /// <param name="stream">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        public DataTableBase CreateDataTable(Type dataRowType, string name, Stream stream)
+        {
+            if (dataRowType == null)
+            {
+                throw new GameFrameworkException("Data row type is invalid.");
+            }
+
+            if (!typeof(IDataRow).IsAssignableFrom(dataRowType))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Data row type '{0}' is invalid.", dataRowType.FullName));
+            }
+
+            if (HasDataTable(dataRowType, name))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Already exist data table '{0}'.", Utility.Text.GetFullName(dataRowType, name)));
+            }
+
+            Type dataTableType = typeof(DataTable<>).MakeGenericType(dataRowType);
+            DataTableBase dataTable = (DataTableBase)Activator.CreateInstance(dataTableType, name);
+            IEnumerable<KeyValuePair<int, int>> dataRowKeyValuePairs = m_DataTableHelper.GetSplitedDataRows(stream);
+            if (dataRowKeyValuePairs == null)
+            {
+                throw new GameFrameworkException("Invalid data row key value pairs.");
+            }
+
+            foreach (KeyValuePair<int, int> dataRowKeyValuePair in dataRowKeyValuePairs)
+            {
+                dataTable.AddDataRow(stream, dataRowKeyValuePair.Key, dataRowKeyValuePair.Value);
             }
 
             m_DataTables.Add(Utility.Text.GetFullName(dataRowType, name), dataTable);

@@ -5,6 +5,10 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+
 namespace GameFramework.DataTable
 {
     /// <summary>
@@ -21,11 +25,25 @@ namespace GameFramework.DataTable
         bool LoadDataTable(object dataTableAsset, object userData);
 
         /// <summary>
-        /// 将要解析的数据表文本分割为数据表行文本。
+        /// 获取数据表行文本。
         /// </summary>
         /// <param name="text">要解析的数据表文本。</param>
         /// <returns>数据表行文本。</returns>
-        string[] SplitToDataRows(string text);
+        IEnumerable<string> GetSplitedDataRows(string text);
+
+        /// <summary>
+        /// 获取数据表行二进制流。
+        /// </summary>
+        /// <param name="bytes">要解析的数据表二进制流。</param>
+        /// <returns>数据表行二进制流。</returns>
+        IEnumerable<ArraySegment<byte>> GetSplitedDataRows(byte[] bytes);
+
+        /// <summary>
+        /// 获取数据表行描述数据，包含每个数据表行的偏移和长度。
+        /// </summary>
+        /// <param name="stream">要解析的数据表二进制流。</param>
+        /// <returns>数据表行描述数据。</returns>
+        IEnumerable<KeyValuePair<int, int>> GetSplitedDataRows(Stream stream);
 
         /// <summary>
         /// 释放数据表资源。

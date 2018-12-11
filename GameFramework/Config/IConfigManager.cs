@@ -7,6 +7,7 @@
 
 using GameFramework.Resource;
 using System;
+using System.IO;
 
 namespace GameFramework.Config
 {
@@ -97,6 +98,36 @@ namespace GameFramework.Config
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析配置成功。</returns>
         bool ParseConfig(string text, object userData);
+
+        /// <summary>
+        /// 解析配置。
+        /// </summary>
+        /// <param name="bytes">要解析的配置二进制流。</param>
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(byte[] bytes);
+
+        /// <summary>
+        /// 解析配置。
+        /// </summary>
+        /// <param name="bytes">要解析的配置二进制流。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(byte[] bytes, object userData);
+
+        /// <summary>
+        /// 解析配置。
+        /// </summary>
+        /// <param name="stream">要解析的配置二进制流。</param>
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(Stream stream);
+
+        /// <summary>
+        /// 解析配置。
+        /// </summary>
+        /// <param name="stream">要解析的配置二进制流。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(Stream stream, object userData);
 
         /// <summary>
         /// 检查是否存在指定配置项。
