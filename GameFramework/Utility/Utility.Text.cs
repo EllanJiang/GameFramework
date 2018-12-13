@@ -6,9 +6,7 @@
 //------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace GameFramework
 {
@@ -103,39 +101,6 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 将文本按行切分。
-            /// </summary>
-            /// <param name="text">要切分的文本。</param>
-            /// <returns>按行切分后的文本。</returns>
-            public static string[] SplitToLines(string text)
-            {
-                List<string> results = new List<string>();
-                SplitToLines(text, results);
-                return results.ToArray();
-            }
-
-            /// <summary>
-            /// 将文本按行切分。
-            /// </summary>
-            /// <param name="text">要切分的文本。</param>
-            /// <param name="results">按行切分后的文本。</param>
-            public static void SplitToLines(string text, List<string> results)
-            {
-                if (results == null)
-                {
-                    throw new GameFrameworkException("Results is invalid.");
-                }
-
-                results.Clear();
-                int position = 0;
-                string rowText = null;
-                while ((rowText = ReadLine(text, ref position)) != null)
-                {
-                    results.Add(rowText);
-                }
-            }
-
-            /// <summary>
             /// 根据类型和名称获取完整名称。
             /// </summary>
             /// <typeparam name="T">类型。</typeparam>
@@ -161,63 +126,6 @@ namespace GameFramework
 
                 string typeName = type.FullName;
                 return string.IsNullOrEmpty(name) ? typeName : Format("{0}.{1}", typeName, name);
-            }
-
-            /// <summary>
-            /// 获取用于编辑器显示的名称。
-            /// </summary>
-            /// <param name="fieldName">字段名称。</param>
-            /// <returns>编辑器显示名称。</returns>
-            public static string FieldNameForDisplay(string fieldName)
-            {
-                if (string.IsNullOrEmpty(fieldName))
-                {
-                    return string.Empty;
-                }
-
-                string str = Regex.Replace(fieldName, @"^m_", string.Empty);
-                str = Regex.Replace(str, @"((?<=[a-z])[A-Z]|[A-Z](?=[a-z]))", @" $1").TrimStart();
-                return str;
-            }
-
-            private static string ReadLine(string text, ref int position)
-            {
-                if (text == null)
-                {
-                    return null;
-                }
-
-                int length = text.Length;
-                int offset = position;
-                while (offset < length)
-                {
-                    char ch = text[offset];
-                    switch (ch)
-                    {
-                        case '\r':
-                        case '\n':
-                            string str = text.Substring(position, offset - position);
-                            position = offset + 1;
-                            if (((ch == '\r') && (position < length)) && (text[position] == '\n'))
-                            {
-                                position++;
-                            }
-
-                            return str;
-                        default:
-                            offset++;
-                            break;
-                    }
-                }
-
-                if (offset > position)
-                {
-                    string str = text.Substring(position, offset - position);
-                    position = offset;
-                    return str;
-                }
-
-                return null;
             }
         }
     }
