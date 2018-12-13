@@ -408,17 +408,7 @@ namespace GameFramework.DataTable
             }
 
             DataTable<T> dataTable = new DataTable<T>(name);
-            IEnumerable<string> dataRowTexts = m_DataTableHelper.GetSplitedDataRows(text);
-            if (dataRowTexts == null)
-            {
-                throw new GameFrameworkException("Invalid data row texts.");
-            }
-
-            foreach (string dataRowText in dataRowTexts)
-            {
-                dataTable.AddDataRow(dataRowText);
-            }
-
+            InternalCreateDataTable(dataTable, text);
             m_DataTables.Add(Utility.Text.GetFullName<T>(name), dataTable);
             return dataTable;
         }
@@ -449,17 +439,7 @@ namespace GameFramework.DataTable
 
             Type dataTableType = typeof(DataTable<>).MakeGenericType(dataRowType);
             DataTableBase dataTable = (DataTableBase)Activator.CreateInstance(dataTableType, name);
-            IEnumerable<string> dataRowTexts = m_DataTableHelper.GetSplitedDataRows(text);
-            if (dataRowTexts == null)
-            {
-                throw new GameFrameworkException("Invalid data row texts.");
-            }
-
-            foreach (string dataRowText in dataRowTexts)
-            {
-                dataTable.AddDataRow(dataRowText);
-            }
-
+            InternalCreateDataTable(dataTable, text);
             m_DataTables.Add(Utility.Text.GetFullName(dataRowType, name), dataTable);
             return dataTable;
         }
@@ -501,17 +481,7 @@ namespace GameFramework.DataTable
             }
 
             DataTable<T> dataTable = new DataTable<T>(name);
-            IEnumerable<ArraySegment<byte>> dataRowByteses = m_DataTableHelper.GetSplitedDataRows(bytes);
-            if (dataRowByteses == null)
-            {
-                throw new GameFrameworkException("Invalid data row byteses.");
-            }
-
-            foreach (ArraySegment<byte> dataRowBytes in dataRowByteses)
-            {
-                dataTable.AddDataRow(dataRowBytes);
-            }
-
+            InternalCreateDataTable(dataTable, bytes);
             m_DataTables.Add(Utility.Text.GetFullName<T>(name), dataTable);
             return dataTable;
         }
@@ -542,17 +512,7 @@ namespace GameFramework.DataTable
 
             Type dataTableType = typeof(DataTable<>).MakeGenericType(dataRowType);
             DataTableBase dataTable = (DataTableBase)Activator.CreateInstance(dataTableType, name);
-            IEnumerable<ArraySegment<byte>> dataRowByteses = m_DataTableHelper.GetSplitedDataRows(bytes);
-            if (dataRowByteses == null)
-            {
-                throw new GameFrameworkException("Invalid data row byteses.");
-            }
-
-            foreach (ArraySegment<byte> dataRowBytes in dataRowByteses)
-            {
-                dataTable.AddDataRow(dataRowBytes);
-            }
-
+            InternalCreateDataTable(dataTable, bytes);
             m_DataTables.Add(Utility.Text.GetFullName(dataRowType, name), dataTable);
             return dataTable;
         }
@@ -594,17 +554,7 @@ namespace GameFramework.DataTable
             }
 
             DataTable<T> dataTable = new DataTable<T>(name);
-            IEnumerable<KeyValuePair<int, int>> dataRowKeyValuePairs = m_DataTableHelper.GetSplitedDataRows(stream);
-            if (dataRowKeyValuePairs == null)
-            {
-                throw new GameFrameworkException("Invalid data row key value pairs.");
-            }
-
-            foreach (KeyValuePair<int, int> dataRowKeyValuePair in dataRowKeyValuePairs)
-            {
-                dataTable.AddDataRow(stream, dataRowKeyValuePair.Key, dataRowKeyValuePair.Value);
-            }
-
+            InternalCreateDataTable(dataTable, stream);
             m_DataTables.Add(Utility.Text.GetFullName<T>(name), dataTable);
             return dataTable;
         }
@@ -635,17 +585,7 @@ namespace GameFramework.DataTable
 
             Type dataTableType = typeof(DataTable<>).MakeGenericType(dataRowType);
             DataTableBase dataTable = (DataTableBase)Activator.CreateInstance(dataTableType, name);
-            IEnumerable<KeyValuePair<int, int>> dataRowKeyValuePairs = m_DataTableHelper.GetSplitedDataRows(stream);
-            if (dataRowKeyValuePairs == null)
-            {
-                throw new GameFrameworkException("Invalid data row key value pairs.");
-            }
-
-            foreach (KeyValuePair<int, int> dataRowKeyValuePair in dataRowKeyValuePairs)
-            {
-                dataTable.AddDataRow(stream, dataRowKeyValuePair.Key, dataRowKeyValuePair.Value);
-            }
-
+            InternalCreateDataTable(dataTable, stream);
             m_DataTables.Add(Utility.Text.GetFullName(dataRowType, name), dataTable);
             return dataTable;
         }
@@ -724,6 +664,48 @@ namespace GameFramework.DataTable
             }
 
             return null;
+        }
+
+        private void InternalCreateDataTable(DataTableBase dataTable, string text)
+        {
+            IEnumerable<GameFrameworkSegment<string>> dataRowSegments = m_DataTableHelper.GetDataRowSegments(text);
+            if (dataRowSegments == null)
+            {
+                throw new GameFrameworkException("Data row segments is invalid.");
+            }
+
+            foreach (GameFrameworkSegment<string> dataRowSegment in dataRowSegments)
+            {
+                dataTable.AddDataRow(dataRowSegment);
+            }
+        }
+
+        private void InternalCreateDataTable(DataTableBase dataTable, byte[] bytes)
+        {
+            IEnumerable<GameFrameworkSegment<byte[]>> dataRowSegments = m_DataTableHelper.GetDataRowSegments(bytes);
+            if (dataRowSegments == null)
+            {
+                throw new GameFrameworkException("Data row segments is invalid.");
+            }
+
+            foreach (GameFrameworkSegment<byte[]> dataRowSegment in dataRowSegments)
+            {
+                dataTable.AddDataRow(dataRowSegment);
+            }
+        }
+
+        private void InternalCreateDataTable(DataTableBase dataTable, Stream stream)
+        {
+            IEnumerable<GameFrameworkSegment<Stream>> dataRowSegments = m_DataTableHelper.GetDataRowSegments(stream);
+            if (dataRowSegments == null)
+            {
+                throw new GameFrameworkException("Data row segments is invalid.");
+            }
+
+            foreach (GameFrameworkSegment<Stream> dataRowSegment in dataRowSegments)
+            {
+                dataTable.AddDataRow(dataRowSegment);
+            }
         }
 
         private bool InternalDestroyDataTable(string fullName)

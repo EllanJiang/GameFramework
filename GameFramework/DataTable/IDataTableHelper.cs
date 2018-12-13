@@ -5,7 +5,6 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -25,25 +24,25 @@ namespace GameFramework.DataTable
         bool LoadDataTable(object dataTableAsset, object userData);
 
         /// <summary>
-        /// 获取数据表行文本。
+        /// 获取数据表行片段。
         /// </summary>
         /// <param name="text">要解析的数据表文本。</param>
-        /// <returns>数据表行文本。</returns>
-        IEnumerable<string> GetSplitedDataRows(string text);
+        /// <returns>数据表行片段。</returns>
+        IEnumerable<GameFrameworkSegment<string>> GetDataRowSegments(string text);
 
         /// <summary>
-        /// 获取数据表行二进制流。
+        /// 获取数据表行片段。
         /// </summary>
         /// <param name="bytes">要解析的数据表二进制流。</param>
-        /// <returns>数据表行二进制流。</returns>
-        IEnumerable<ArraySegment<byte>> GetSplitedDataRows(byte[] bytes);
+        /// <returns>数据表行片段。</returns>
+        IEnumerable<GameFrameworkSegment<byte[]>> GetDataRowSegments(byte[] bytes);
 
         /// <summary>
-        /// 获取数据表行描述数据，包含每个数据表行的偏移和长度。
+        /// 获取数据表行片段。
         /// </summary>
         /// <param name="stream">要解析的数据表二进制流。</param>
-        /// <returns>数据表行描述数据。</returns>
-        IEnumerable<KeyValuePair<int, int>> GetSplitedDataRows(Stream stream);
+        /// <returns>数据表行片段。</returns>
+        IEnumerable<GameFrameworkSegment<Stream>> GetDataRowSegments(Stream stream);
 
         /// <summary>
         /// 释放数据表资源。

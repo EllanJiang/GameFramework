@@ -390,37 +390,13 @@ namespace GameFramework.DataTable
             /// <summary>
             /// 增加数据表行。
             /// </summary>
-            /// <param name="dataRowText">要解析的数据表行文本。</param>
-            internal override void AddDataRow(string dataRowText)
+            /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+            internal override void AddDataRow(GameFrameworkSegment<string> dataRowSegment)
             {
                 T dataRow = new T();
                 try
                 {
-                    dataRow.ParseDataRow(dataRowText);
-                }
-                catch (Exception exception)
-                {
-                    if (exception is GameFrameworkException)
-                    {
-                        throw;
-                    }
-
-                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' at '{1}' with exception '{2}'.", Utility.Text.GetFullName<T>(Name), dataRowText ?? string.Empty, exception.ToString()), exception);
-                }
-
-                InternalAddDataRow(dataRow);
-            }
-
-            /// <summary>
-            /// 增加数据表行。
-            /// </summary>
-            /// <param name="dataRowBytes">要解析的数据表行二进制流。</param>
-            internal override void AddDataRow(ArraySegment<byte> dataRowBytes)
-            {
-                T dataRow = new T();
-                try
-                {
-                    dataRow.ParseDataRow(dataRowBytes);
+                    dataRow.ParseDataRow(dataRowSegment);
                 }
                 catch (Exception exception)
                 {
@@ -438,15 +414,37 @@ namespace GameFramework.DataTable
             /// <summary>
             /// 增加数据表行。
             /// </summary>
-            /// <param name="stream">数据表二进制流。</param>
-            /// <param name="dataRowOffset">要解析的数据表行的偏移。</param>
-            /// <param name="dataRowLength">要解析的数据表行的长度。</param>
-            internal override void AddDataRow(Stream stream, int dataRowOffset, int dataRowLength)
+            /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+            internal override void AddDataRow(GameFrameworkSegment<byte[]> dataRowSegment)
             {
                 T dataRow = new T();
                 try
                 {
-                    dataRow.ParseDataRow(stream, dataRowOffset, dataRowLength);
+                    dataRow.ParseDataRow(dataRowSegment);
+                }
+                catch (Exception exception)
+                {
+                    if (exception is GameFrameworkException)
+                    {
+                        throw;
+                    }
+
+                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", Utility.Text.GetFullName<T>(Name), exception.ToString()), exception);
+                }
+
+                InternalAddDataRow(dataRow);
+            }
+
+            /// <summary>
+            /// 增加数据表行。
+            /// </summary>
+            /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+            internal override void AddDataRow(GameFrameworkSegment<Stream> dataRowSegment)
+            {
+                T dataRow = new T();
+                try
+                {
+                    dataRow.ParseDataRow(dataRowSegment);
                 }
                 catch (Exception exception)
                 {

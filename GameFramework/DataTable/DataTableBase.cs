@@ -65,22 +65,20 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 增加数据表行。
         /// </summary>
-        /// <param name="dataRowText">要解析的数据表行文本。</param>
-        internal abstract void AddDataRow(string dataRowText);
+        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        internal abstract void AddDataRow(GameFrameworkSegment<string> dataRowSegment);
 
         /// <summary>
         /// 增加数据表行。
         /// </summary>
-        /// <param name="dataRowBytes">要解析的数据表行二进制流。</param>
-        internal abstract void AddDataRow(ArraySegment<byte> dataRowBytes);
+        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        internal abstract void AddDataRow(GameFrameworkSegment<byte[]> dataRowSegment);
 
         /// <summary>
         /// 增加数据表行。
         /// </summary>
-        /// <param name="stream">数据表二进制流。</param>
-        /// <param name="dataRowOffset">要解析的数据表行的偏移。</param>
-        /// <param name="dataRowLength">要解析的数据表行的长度。</param>
-        internal abstract void AddDataRow(Stream stream, int dataRowOffset, int dataRowLength);
+        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        internal abstract void AddDataRow(GameFrameworkSegment<Stream> dataRowSegment);
 
         /// <summary>
         /// 关闭并清理数据表。
