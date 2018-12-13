@@ -668,7 +668,21 @@ namespace GameFramework.DataTable
 
         private void InternalCreateDataTable(DataTableBase dataTable, string text)
         {
-            IEnumerable<GameFrameworkSegment<string>> dataRowSegments = m_DataTableHelper.GetDataRowSegments(text);
+            IEnumerable<GameFrameworkSegment<string>> dataRowSegments = null;
+            try
+            {
+                dataRowSegments = m_DataTableHelper.GetDataRowSegments(text);
+            }
+            catch (Exception exception)
+            {
+                if (exception is GameFrameworkException)
+                {
+                    throw;
+                }
+
+                throw new GameFrameworkException(Utility.Text.Format("Can not get data row segments with exception '{0}'.", exception.ToString()), exception);
+            }
+
             if (dataRowSegments == null)
             {
                 throw new GameFrameworkException("Data row segments is invalid.");
@@ -682,7 +696,21 @@ namespace GameFramework.DataTable
 
         private void InternalCreateDataTable(DataTableBase dataTable, byte[] bytes)
         {
-            IEnumerable<GameFrameworkSegment<byte[]>> dataRowSegments = m_DataTableHelper.GetDataRowSegments(bytes);
+            IEnumerable<GameFrameworkSegment<byte[]>> dataRowSegments = null;
+            try
+            {
+                dataRowSegments = m_DataTableHelper.GetDataRowSegments(bytes);
+            }
+            catch (Exception exception)
+            {
+                if (exception is GameFrameworkException)
+                {
+                    throw;
+                }
+
+                throw new GameFrameworkException(Utility.Text.Format("Can not get data row segments with exception '{0}'.", exception.ToString()), exception);
+            }
+
             if (dataRowSegments == null)
             {
                 throw new GameFrameworkException("Data row segments is invalid.");
@@ -696,7 +724,21 @@ namespace GameFramework.DataTable
 
         private void InternalCreateDataTable(DataTableBase dataTable, Stream stream)
         {
-            IEnumerable<GameFrameworkSegment<Stream>> dataRowSegments = m_DataTableHelper.GetDataRowSegments(stream);
+            IEnumerable<GameFrameworkSegment<Stream>> dataRowSegments = null;
+            try
+            {
+                dataRowSegments = m_DataTableHelper.GetDataRowSegments(stream);
+            }
+            catch (Exception exception)
+            {
+                if (exception is GameFrameworkException)
+                {
+                    throw;
+                }
+
+                throw new GameFrameworkException(Utility.Text.Format("Can not get data row segments with exception '{0}'.", exception.ToString()), exception);
+            }
+
             if (dataRowSegments == null)
             {
                 throw new GameFrameworkException("Data row segments is invalid.");

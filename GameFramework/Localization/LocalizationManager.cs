@@ -269,7 +269,19 @@ namespace GameFramework.Localization
                 throw new GameFrameworkException("You must set localization helper first.");
             }
 
-            return m_LocalizationHelper.ParseDictionary(text, userData);
+            try
+            {
+                return m_LocalizationHelper.ParseDictionary(text, userData);
+            }
+            catch (Exception exception)
+            {
+                if (exception is GameFrameworkException)
+                {
+                    throw;
+                }
+
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse dictionary with exception '{0}'.", exception.ToString()), exception);
+            }
         }
 
         /// <summary>
@@ -295,7 +307,19 @@ namespace GameFramework.Localization
                 throw new GameFrameworkException("You must set localization helper first.");
             }
 
-            return m_LocalizationHelper.ParseDictionary(bytes, userData);
+            try
+            {
+                return m_LocalizationHelper.ParseDictionary(bytes, userData);
+            }
+            catch (Exception exception)
+            {
+                if (exception is GameFrameworkException)
+                {
+                    throw;
+                }
+
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse dictionary with exception '{0}'.", exception.ToString()), exception);
+            }
         }
 
         /// <summary>
@@ -321,7 +345,19 @@ namespace GameFramework.Localization
                 throw new GameFrameworkException("You must set localization helper first.");
             }
 
-            return m_LocalizationHelper.ParseDictionary(stream, userData);
+            try
+            {
+                return m_LocalizationHelper.ParseDictionary(stream, userData);
+            }
+            catch (Exception exception)
+            {
+                if (exception is GameFrameworkException)
+                {
+                    throw;
+                }
+
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse dictionary with exception '{0}'.", exception.ToString()), exception);
+            }
         }
 
         /// <summary>

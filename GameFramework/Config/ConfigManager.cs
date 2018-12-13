@@ -231,7 +231,19 @@ namespace GameFramework.Config
                 throw new GameFrameworkException("You must set config helper first.");
             }
 
-            return m_ConfigHelper.ParseConfig(text, userData);
+            try
+            {
+                return m_ConfigHelper.ParseConfig(text, userData);
+            }
+            catch (Exception exception)
+            {
+                if (exception is GameFrameworkException)
+                {
+                    throw;
+                }
+
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse config with exception '{0}'.", exception.ToString()), exception);
+            }
         }
 
         /// <summary>
@@ -257,7 +269,19 @@ namespace GameFramework.Config
                 throw new GameFrameworkException("You must set config helper first.");
             }
 
-            return m_ConfigHelper.ParseConfig(bytes, userData);
+            try
+            {
+                return m_ConfigHelper.ParseConfig(bytes, userData);
+            }
+            catch (Exception exception)
+            {
+                if (exception is GameFrameworkException)
+                {
+                    throw;
+                }
+
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse config with exception '{0}'.", exception.ToString()), exception);
+            }
         }
 
         /// <summary>
@@ -283,7 +307,19 @@ namespace GameFramework.Config
                 throw new GameFrameworkException("You must set config helper first.");
             }
 
-            return m_ConfigHelper.ParseConfig(stream, userData);
+            try
+            {
+                return m_ConfigHelper.ParseConfig(stream, userData);
+            }
+            catch (Exception exception)
+            {
+                if (exception is GameFrameworkException)
+                {
+                    throw;
+                }
+
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse config with exception '{0}'.", exception.ToString()), exception);
+            }
         }
 
         /// <summary>
