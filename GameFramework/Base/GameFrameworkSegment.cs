@@ -77,5 +77,56 @@ namespace GameFramework
                 return m_Length;
             }
         }
+
+        /// <summary>
+        /// 获取对象的哈希值。
+        /// </summary>
+        /// <returns>对象的哈希值。</returns>
+        public override int GetHashCode()
+        {
+            return m_Source.GetHashCode() ^ m_Offset ^ m_Length;
+        }
+
+        /// <summary>
+        /// 比较对象是否与自身相等。
+        /// </summary>
+        /// <param name="obj">要比较的对象。</param>
+        /// <returns>被比较的对象是否与自身相等。</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is GameFrameworkSegment<T> && Equals((GameFrameworkSegment<T>)obj);
+        }
+
+        /// <summary>
+        /// 比较对象是否与自身相等。
+        /// </summary>
+        /// <param name="obj">要比较的对象。</param>
+        /// <returns>被比较的对象是否与自身相等。</returns>
+        public bool Equals(GameFrameworkSegment<T> obj)
+        {
+            return obj.m_Source.Equals(m_Source) && obj.m_Offset == m_Offset && obj.m_Length == m_Length;
+        }
+
+        /// <summary>
+        /// 判断两个对象是否相等。
+        /// </summary>
+        /// <param name="a">值 a。</param>
+        /// <param name="b">值 b。</param>
+        /// <returns>两个对象是否相等。</returns>
+        public static bool operator ==(GameFrameworkSegment<T> a, GameFrameworkSegment<T> b)
+        {
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// 判断两个对象是否不相等。
+        /// </summary>
+        /// <param name="a">值 a。</param>
+        /// <param name="b">值 b。</param>
+        /// <returns>两个对象是否不相等。</returns>
+        public static bool operator !=(GameFrameworkSegment<T> a, GameFrameworkSegment<T> b)
+        {
+            return !(a == b);
+        }
     }
 }
