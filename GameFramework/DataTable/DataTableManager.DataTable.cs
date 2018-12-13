@@ -393,10 +393,13 @@ namespace GameFramework.DataTable
             /// <param name="dataRowSegment">要解析的数据表行片段。</param>
             internal override void AddDataRow(GameFrameworkSegment<string> dataRowSegment)
             {
-                T dataRow = new T();
                 try
                 {
-                    dataRow.ParseDataRow(dataRowSegment);
+                    T dataRow = new T();
+                    if (dataRow.ParseDataRow(dataRowSegment))
+                    {
+                        InternalAddDataRow(dataRow);
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -407,8 +410,6 @@ namespace GameFramework.DataTable
 
                     throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", Utility.Text.GetFullName<T>(Name), exception.ToString()), exception);
                 }
-
-                InternalAddDataRow(dataRow);
             }
 
             /// <summary>
@@ -417,10 +418,13 @@ namespace GameFramework.DataTable
             /// <param name="dataRowSegment">要解析的数据表行片段。</param>
             internal override void AddDataRow(GameFrameworkSegment<byte[]> dataRowSegment)
             {
-                T dataRow = new T();
                 try
                 {
-                    dataRow.ParseDataRow(dataRowSegment);
+                    T dataRow = new T();
+                    if (dataRow.ParseDataRow(dataRowSegment))
+                    {
+                        InternalAddDataRow(dataRow);
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -431,8 +435,6 @@ namespace GameFramework.DataTable
 
                     throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", Utility.Text.GetFullName<T>(Name), exception.ToString()), exception);
                 }
-
-                InternalAddDataRow(dataRow);
             }
 
             /// <summary>
@@ -441,10 +443,13 @@ namespace GameFramework.DataTable
             /// <param name="dataRowSegment">要解析的数据表行片段。</param>
             internal override void AddDataRow(GameFrameworkSegment<Stream> dataRowSegment)
             {
-                T dataRow = new T();
                 try
                 {
-                    dataRow.ParseDataRow(dataRowSegment);
+                    T dataRow = new T();
+                    if (dataRow.ParseDataRow(dataRowSegment))
+                    {
+                        InternalAddDataRow(dataRow);
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -455,8 +460,6 @@ namespace GameFramework.DataTable
 
                     throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", Utility.Text.GetFullName<T>(Name), exception.ToString()), exception);
                 }
-
-                InternalAddDataRow(dataRow);
             }
 
             private void InternalAddDataRow(T dataRow)
