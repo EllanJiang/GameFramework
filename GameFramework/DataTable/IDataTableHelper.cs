@@ -20,7 +20,7 @@ namespace GameFramework.DataTable
         /// </summary>
         /// <param name="dataTableAsset">数据表资源。</param>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>加载是否成功。</returns>
+        /// <returns>是否加载成功。</returns>
         bool LoadDataTable(object dataTableAsset, object userData);
 
         /// <summary>

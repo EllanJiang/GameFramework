@@ -39,7 +39,7 @@ namespace GameFramework.Task
         /// 取消任务。
         /// </summary>
         /// <param name="serialId">要取消的任务的序列编号。</param>
-        /// <returns>取消任务是否成功。</returns>
+        /// <returns>是否取消任务成功。</returns>
         bool CancelTask(int serialId);
 
         /// <summary>
@@ -47,14 +47,14 @@ namespace GameFramework.Task
         /// </summary>
         /// <param name="serialId">要取消的任务的序列编号。</param>
         /// <param name="reason">任务取消的原因。</param>
-        /// <returns>取消任务是否成功。</returns>
+        /// <returns>是否取消任务成功。</returns>
         bool CancelTask(int serialId, string reason);
 
         /// <summary>
         /// 取消任务。
         /// </summary>
         /// <param name="task">要取消的任务。</param>
-        /// <returns>取消任务是否成功。</returns>
+        /// <returns>是否取消任务成功。</returns>
         bool CancelTask(TaskBase task);
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace GameFramework.Task
         /// </summary>
         /// <param name="task">要取消的任务。</param>
         /// <param name="reason">任务取消的原因。</param>
-        /// <returns>取消任务是否成功。</returns>
+        /// <returns>是否取消任务成功。</returns>
         bool CancelTask(TaskBase task, string reason);
 
         /// <summary>
