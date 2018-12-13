@@ -11,7 +11,7 @@ namespace GameFramework
     /// 数据片段。
     /// </summary>
     /// <typeparam name="T">数据源类型。</typeparam>
-    public struct GameFrameworkSegment<T>
+    public struct GameFrameworkSegment<T> where T : class
     {
         private readonly T m_Source;
         private readonly int m_Offset;
@@ -104,7 +104,7 @@ namespace GameFramework
         /// <returns>被比较的对象是否与自身相等。</returns>
         public bool Equals(GameFrameworkSegment<T> obj)
         {
-            return obj.m_Source.Equals(m_Source) && obj.m_Offset == m_Offset && obj.m_Length == m_Length;
+            return obj.m_Source == m_Source && obj.m_Offset == m_Offset && obj.m_Length == m_Length;
         }
 
         /// <summary>
