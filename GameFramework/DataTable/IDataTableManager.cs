@@ -61,29 +61,33 @@ namespace GameFramework.DataTable
         /// 加载数据表。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
-        void LoadDataTable(string dataTableAssetName);
+        /// <param name="loadType">数据表加载方式。</param>
+        void LoadDataTable(string dataTableAssetName, LoadType loadType);
 
         /// <summary>
         /// 加载数据表。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
+        /// <param name="loadType">数据表加载方式。</param>
         /// <param name="priority">加载数据表资源的优先级。</param>
-        void LoadDataTable(string dataTableAssetName, int priority);
+        void LoadDataTable(string dataTableAssetName, LoadType loadType, int priority);
 
         /// <summary>
         /// 加载数据表。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
+        /// <param name="loadType">数据表加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadDataTable(string dataTableAssetName, object userData);
+        void LoadDataTable(string dataTableAssetName, LoadType loadType, object userData);
 
         /// <summary>
         /// 加载数据表。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
+        /// <param name="loadType">数据表加载方式。</param>
         /// <param name="priority">加载数据表资源的优先级。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadDataTable(string dataTableAssetName, int priority, object userData);
+        void LoadDataTable(string dataTableAssetName, LoadType loadType, int priority, object userData);
 
         /// <summary>
         /// 是否存在数据表。

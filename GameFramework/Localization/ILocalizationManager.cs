@@ -77,29 +77,33 @@ namespace GameFramework.Localization
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
-        void LoadDictionary(string dictionaryAssetName);
+        /// <param name="loadType">字典加载方式。</param>
+        void LoadDictionary(string dictionaryAssetName, LoadType loadType);
 
         /// <summary>
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="loadType">字典加载方式。</param>
         /// <param name="priority">加载字典资源的优先级。</param>
-        void LoadDictionary(string dictionaryAssetName, int priority);
+        void LoadDictionary(string dictionaryAssetName, LoadType loadType, int priority);
 
         /// <summary>
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="loadType">字典加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadDictionary(string dictionaryAssetName, object userData);
+        void LoadDictionary(string dictionaryAssetName, LoadType loadType, object userData);
 
         /// <summary>
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="loadType">字典加载方式。</param>
         /// <param name="priority">加载字典资源的优先级。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadDictionary(string dictionaryAssetName, int priority, object userData);
+        void LoadDictionary(string dictionaryAssetName, LoadType loadType, int priority, object userData);
 
         /// <summary>
         /// 解析字典。

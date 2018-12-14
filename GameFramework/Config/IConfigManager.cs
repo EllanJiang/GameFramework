@@ -60,29 +60,33 @@ namespace GameFramework.Config
         /// 加载配置。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
-        void LoadConfig(string configAssetName);
+        /// <param name="loadType">配置加载方式。</param>
+        void LoadConfig(string configAssetName, LoadType loadType);
 
         /// <summary>
         /// 加载配置。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="loadType">配置加载方式。</param>
         /// <param name="priority">加载配置资源的优先级。</param>
-        void LoadConfig(string configAssetName, int priority);
+        void LoadConfig(string configAssetName, LoadType loadType, int priority);
 
         /// <summary>
         /// 加载配置。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="loadType">配置加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadConfig(string configAssetName, object userData);
+        void LoadConfig(string configAssetName, LoadType loadType, object userData);
 
         /// <summary>
         /// 加载配置。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="loadType">配置加载方式。</param>
         /// <param name="priority">加载配置资源的优先级。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadConfig(string configAssetName, int priority, object userData);
+        void LoadConfig(string configAssetName, LoadType loadType, int priority, object userData);
 
         /// <summary>
         /// 解析配置。

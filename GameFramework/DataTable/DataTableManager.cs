@@ -167,38 +167,42 @@ namespace GameFramework.DataTable
         /// 加载数据表。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
-        public void LoadDataTable(string dataTableAssetName)
+        /// <param name="loadType">数据表加载方式。</param>
+        public void LoadDataTable(string dataTableAssetName, LoadType loadType)
         {
-            LoadDataTable(dataTableAssetName, Constant.DefaultPriority, null);
+            LoadDataTable(dataTableAssetName, loadType, Constant.DefaultPriority, null);
         }
 
         /// <summary>
         /// 加载数据表。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
+        /// <param name="loadType">数据表加载方式。</param>
         /// <param name="priority">加载数据表资源的优先级。</param>
-        public void LoadDataTable(string dataTableAssetName, int priority)
+        public void LoadDataTable(string dataTableAssetName, LoadType loadType, int priority)
         {
-            LoadDataTable(dataTableAssetName, priority, null);
+            LoadDataTable(dataTableAssetName, loadType, priority, null);
         }
 
         /// <summary>
         /// 加载数据表。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
+        /// <param name="loadType">数据表加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void LoadDataTable(string dataTableAssetName, object userData)
+        public void LoadDataTable(string dataTableAssetName, LoadType loadType, object userData)
         {
-            LoadDataTable(dataTableAssetName, Constant.DefaultPriority, userData);
+            LoadDataTable(dataTableAssetName, loadType, Constant.DefaultPriority, userData);
         }
 
         /// <summary>
         /// 加载数据表。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
+        /// <param name="loadType">数据表加载方式。</param>
         /// <param name="priority">加载数据表资源的优先级。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void LoadDataTable(string dataTableAssetName, int priority, object userData)
+        public void LoadDataTable(string dataTableAssetName, LoadType loadType, int priority, object userData)
         {
             if (m_ResourceManager == null)
             {
@@ -210,7 +214,7 @@ namespace GameFramework.DataTable
                 throw new GameFrameworkException("You must set data table helper first.");
             }
 
-            m_ResourceManager.LoadAsset(dataTableAssetName, priority, m_LoadAssetCallbacks, userData);
+            m_ResourceManager.LoadAsset(dataTableAssetName, priority, m_LoadAssetCallbacks, new LoadDataTableInfo(loadType, userData));
         }
 
         /// <summary>
@@ -764,9 +768,15 @@ namespace GameFramework.DataTable
 
         private void LoadDataTableSuccessCallback(string dataTableAssetName, object dataTableAsset, float duration, object userData)
         {
+            LoadDataTableInfo loadDataTableInfo = (LoadDataTableInfo)userData;
+            if (loadDataTableInfo == null)
+            {
+                throw new GameFrameworkException("Load data table info is invalid.");
+            }
+
             try
             {
-                if (!m_DataTableHelper.LoadDataTable(dataTableAsset, userData))
+                if (!m_DataTableHelper.LoadDataTable(dataTableAsset, loadDataTableInfo.LoadType, loadDataTableInfo.UserData))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load data table failure in helper, asset name '{0}'.", dataTableAssetName));
                 }
@@ -775,7 +785,7 @@ namespace GameFramework.DataTable
             {
                 if (m_LoadDataTableFailureEventHandler != null)
                 {
-                    m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, exception.ToString(), userData));
+                    m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, exception.ToString(), loadDataTableInfo.UserData));
                     return;
                 }
 
@@ -788,16 +798,22 @@ namespace GameFramework.DataTable
 
             if (m_LoadDataTableSuccessEventHandler != null)
             {
-                m_LoadDataTableSuccessEventHandler(this, new LoadDataTableSuccessEventArgs(dataTableAssetName, duration, userData));
+                m_LoadDataTableSuccessEventHandler(this, new LoadDataTableSuccessEventArgs(dataTableAssetName, duration, loadDataTableInfo.UserData));
             }
         }
 
         private void LoadDataTableFailureCallback(string dataTableAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
+            LoadDataTableInfo loadDataTableInfo = (LoadDataTableInfo)userData;
+            if (loadDataTableInfo == null)
+            {
+                throw new GameFrameworkException("Load data table info is invalid.");
+            }
+
             string appendErrorMessage = Utility.Text.Format("Load data table failure, asset name '{0}', status '{1}', error message '{2}'.", dataTableAssetName, status.ToString(), errorMessage);
             if (m_LoadDataTableFailureEventHandler != null)
             {
-                m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, appendErrorMessage, userData));
+                m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, appendErrorMessage, loadDataTableInfo.UserData));
                 return;
             }
 
@@ -806,17 +822,29 @@ namespace GameFramework.DataTable
 
         private void LoadDataTableUpdateCallback(string dataTableAssetName, float progress, object userData)
         {
+            LoadDataTableInfo loadDataTableInfo = (LoadDataTableInfo)userData;
+            if (loadDataTableInfo == null)
+            {
+                throw new GameFrameworkException("Load data table info is invalid.");
+            }
+
             if (m_LoadDataTableUpdateEventHandler != null)
             {
-                m_LoadDataTableUpdateEventHandler(this, new LoadDataTableUpdateEventArgs(dataTableAssetName, progress, userData));
+                m_LoadDataTableUpdateEventHandler(this, new LoadDataTableUpdateEventArgs(dataTableAssetName, progress, loadDataTableInfo.UserData));
             }
         }
 
         private void LoadDataTableDependencyAssetCallback(string dataTableAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
+            LoadDataTableInfo loadDataTableInfo = (LoadDataTableInfo)userData;
+            if (loadDataTableInfo == null)
+            {
+                throw new GameFrameworkException("Load data table info is invalid.");
+            }
+
             if (m_LoadDataTableDependencyAssetEventHandler != null)
             {
-                m_LoadDataTableDependencyAssetEventHandler(this, new LoadDataTableDependencyAssetEventArgs(dataTableAssetName, dependencyAssetName, loadedCount, totalCount, userData));
+                m_LoadDataTableDependencyAssetEventHandler(this, new LoadDataTableDependencyAssetEventArgs(dataTableAssetName, dependencyAssetName, loadedCount, totalCount, loadDataTableInfo.UserData));
             }
         }
     }

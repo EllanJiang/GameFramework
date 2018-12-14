@@ -18,9 +18,10 @@ namespace GameFramework.Config
         /// 加载配置。
         /// </summary>
         /// <param name="configAsset">配置资源。</param>
+        /// <param name="loadType">配置加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否加载成功。</returns>
-        bool LoadConfig(object configAsset, object userData);
+        bool LoadConfig(object configAsset, LoadType loadType, object userData);
 
         /// <summary>
         /// 解析配置。

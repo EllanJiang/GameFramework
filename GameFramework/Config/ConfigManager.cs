@@ -162,38 +162,42 @@ namespace GameFramework.Config
         /// 加载配置。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
-        public void LoadConfig(string configAssetName)
+        /// <param name="loadType">配置加载方式。</param>
+        public void LoadConfig(string configAssetName, LoadType loadType)
         {
-            LoadConfig(configAssetName, Constant.DefaultPriority, null);
+            LoadConfig(configAssetName, loadType, Constant.DefaultPriority, null);
         }
 
         /// <summary>
         /// 加载配置。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="loadType">配置加载方式。</param>
         /// <param name="priority">加载配置资源的优先级。</param>
-        public void LoadConfig(string configAssetName, int priority)
+        public void LoadConfig(string configAssetName, LoadType loadType, int priority)
         {
-            LoadConfig(configAssetName, priority, null);
+            LoadConfig(configAssetName, loadType, priority, null);
         }
 
         /// <summary>
         /// 加载配置。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="loadType">配置加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void LoadConfig(string configAssetName, object userData)
+        public void LoadConfig(string configAssetName, LoadType loadType, object userData)
         {
-            LoadConfig(configAssetName, Constant.DefaultPriority, userData);
+            LoadConfig(configAssetName, loadType, Constant.DefaultPriority, userData);
         }
 
         /// <summary>
         /// 加载配置。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="loadType">配置加载方式。</param>
         /// <param name="priority">加载配置资源的优先级。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void LoadConfig(string configAssetName, int priority, object userData)
+        public void LoadConfig(string configAssetName, LoadType loadType, int priority, object userData)
         {
             if (m_ResourceManager == null)
             {
@@ -205,7 +209,7 @@ namespace GameFramework.Config
                 throw new GameFrameworkException("You must set config helper first.");
             }
 
-            m_ResourceManager.LoadAsset(configAssetName, priority, m_LoadAssetCallbacks, userData);
+            m_ResourceManager.LoadAsset(configAssetName, priority, m_LoadAssetCallbacks, new LoadConfigInfo(loadType, userData));
         }
 
         /// <summary>
@@ -499,9 +503,15 @@ namespace GameFramework.Config
 
         private void LoadConfigSuccessCallback(string configAssetName, object configAsset, float duration, object userData)
         {
+            LoadConfigInfo loadConfigInfo = (LoadConfigInfo)userData;
+            if (loadConfigInfo == null)
+            {
+                throw new GameFrameworkException("Load config info is invalid.");
+            }
+
             try
             {
-                if (!m_ConfigHelper.LoadConfig(configAsset, userData))
+                if (!m_ConfigHelper.LoadConfig(configAsset, loadConfigInfo.LoadType, loadConfigInfo.UserData))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load config failure in helper, asset name '{0}'.", configAssetName));
                 }
@@ -510,7 +520,7 @@ namespace GameFramework.Config
             {
                 if (m_LoadConfigFailureEventHandler != null)
                 {
-                    m_LoadConfigFailureEventHandler(this, new LoadConfigFailureEventArgs(configAssetName, exception.ToString(), userData));
+                    m_LoadConfigFailureEventHandler(this, new LoadConfigFailureEventArgs(configAssetName, exception.ToString(), loadConfigInfo.UserData));
                     return;
                 }
 
@@ -523,16 +533,22 @@ namespace GameFramework.Config
 
             if (m_LoadConfigSuccessEventHandler != null)
             {
-                m_LoadConfigSuccessEventHandler(this, new LoadConfigSuccessEventArgs(configAssetName, duration, userData));
+                m_LoadConfigSuccessEventHandler(this, new LoadConfigSuccessEventArgs(configAssetName, duration, loadConfigInfo.UserData));
             }
         }
 
         private void LoadConfigFailureCallback(string configAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
+            LoadConfigInfo loadConfigInfo = (LoadConfigInfo)userData;
+            if (loadConfigInfo == null)
+            {
+                throw new GameFrameworkException("Load config info is invalid.");
+            }
+
             string appendErrorMessage = Utility.Text.Format("Load config failure, asset name '{0}', status '{1}', error message '{2}'.", configAssetName, status.ToString(), errorMessage);
             if (m_LoadConfigFailureEventHandler != null)
             {
-                m_LoadConfigFailureEventHandler(this, new LoadConfigFailureEventArgs(configAssetName, appendErrorMessage, userData));
+                m_LoadConfigFailureEventHandler(this, new LoadConfigFailureEventArgs(configAssetName, appendErrorMessage, loadConfigInfo.UserData));
                 return;
             }
 
@@ -541,17 +557,29 @@ namespace GameFramework.Config
 
         private void LoadConfigUpdateCallback(string configAssetName, float progress, object userData)
         {
+            LoadConfigInfo loadConfigInfo = (LoadConfigInfo)userData;
+            if (loadConfigInfo == null)
+            {
+                throw new GameFrameworkException("Load config info is invalid.");
+            }
+
             if (m_LoadConfigUpdateEventHandler != null)
             {
-                m_LoadConfigUpdateEventHandler(this, new LoadConfigUpdateEventArgs(configAssetName, progress, userData));
+                m_LoadConfigUpdateEventHandler(this, new LoadConfigUpdateEventArgs(configAssetName, progress, loadConfigInfo.UserData));
             }
         }
 
         private void LoadConfigDependencyAssetCallback(string configAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
+            LoadConfigInfo loadConfigInfo = (LoadConfigInfo)userData;
+            if (loadConfigInfo == null)
+            {
+                throw new GameFrameworkException("Load config info is invalid.");
+            }
+
             if (m_LoadConfigDependencyAssetEventHandler != null)
             {
-                m_LoadConfigDependencyAssetEventHandler(this, new LoadConfigDependencyAssetEventArgs(configAssetName, dependencyAssetName, loadedCount, totalCount, userData));
+                m_LoadConfigDependencyAssetEventHandler(this, new LoadConfigDependencyAssetEventArgs(configAssetName, dependencyAssetName, loadedCount, totalCount, loadConfigInfo.UserData));
             }
         }
     }
