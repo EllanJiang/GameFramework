@@ -694,7 +694,10 @@ namespace GameFramework.DataTable
 
             foreach (GameFrameworkSegment<string> dataRowSegment in dataRowSegments)
             {
-                dataTable.AddDataRow(dataRowSegment);
+                if (!dataTable.AddDataRow(dataRowSegment))
+                {
+                    throw new GameFrameworkException("Add data row failure.");
+                }
             }
         }
 
@@ -722,7 +725,10 @@ namespace GameFramework.DataTable
 
             foreach (GameFrameworkSegment<byte[]> dataRowSegment in dataRowSegments)
             {
-                dataTable.AddDataRow(dataRowSegment);
+                if (!dataTable.AddDataRow(dataRowSegment))
+                {
+                    throw new GameFrameworkException("Add data row failure.");
+                }
             }
         }
 
@@ -750,7 +756,10 @@ namespace GameFramework.DataTable
 
             foreach (GameFrameworkSegment<Stream> dataRowSegment in dataRowSegments)
             {
-                dataTable.AddDataRow(dataRowSegment);
+                if (!dataTable.AddDataRow(dataRowSegment))
+                {
+                    throw new GameFrameworkException("Add data row failure.");
+                }
             }
         }
 

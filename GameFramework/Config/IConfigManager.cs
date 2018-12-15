@@ -92,40 +92,46 @@ namespace GameFramework.Config
         /// 解析配置。
         /// </summary>
         /// <param name="text">要解析的配置文本。</param>
-        void ParseConfig(string text);
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(string text);
 
         /// <summary>
         /// 解析配置。
         /// </summary>
         /// <param name="text">要解析的配置文本。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void ParseConfig(string text, object userData);
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(string text, object userData);
 
         /// <summary>
         /// 解析配置。
         /// </summary>
         /// <param name="bytes">要解析的配置二进制流。</param>
-        void ParseConfig(byte[] bytes);
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(byte[] bytes);
 
         /// <summary>
         /// 解析配置。
         /// </summary>
         /// <param name="bytes">要解析的配置二进制流。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void ParseConfig(byte[] bytes, object userData);
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(byte[] bytes, object userData);
 
         /// <summary>
         /// 解析配置。
         /// </summary>
         /// <param name="stream">要解析的配置二进制流。</param>
-        void ParseConfig(Stream stream);
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(Stream stream);
 
         /// <summary>
         /// 解析配置。
         /// </summary>
         /// <param name="stream">要解析的配置二进制流。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void ParseConfig(Stream stream, object userData);
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(Stream stream, object userData);
 
         /// <summary>
         /// 检查是否存在指定配置项。
