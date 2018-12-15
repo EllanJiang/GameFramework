@@ -254,10 +254,9 @@ namespace GameFramework.Localization
         /// 解析字典。
         /// </summary>
         /// <param name="text">要解析的字典文本。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(string text)
+        public void ParseDictionary(string text)
         {
-            return ParseDictionary(text, null);
+            ParseDictionary(text, null);
         }
 
         /// <summary>
@@ -265,8 +264,7 @@ namespace GameFramework.Localization
         /// </summary>
         /// <param name="text">要解析的字典文本。</param>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(string text, object userData)
+        public void ParseDictionary(string text, object userData)
         {
             if (m_LocalizationHelper == null)
             {
@@ -275,7 +273,7 @@ namespace GameFramework.Localization
 
             try
             {
-                return m_LocalizationHelper.ParseDictionary(text, userData);
+                m_LocalizationHelper.ParseDictionary(text, userData);
             }
             catch (Exception exception)
             {
@@ -292,10 +290,9 @@ namespace GameFramework.Localization
         /// 解析字典。
         /// </summary>
         /// <param name="bytes">要解析的字典二进制流。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(byte[] bytes)
+        public void ParseDictionary(byte[] bytes)
         {
-            return ParseDictionary(bytes, null);
+            ParseDictionary(bytes, null);
         }
 
         /// <summary>
@@ -303,8 +300,7 @@ namespace GameFramework.Localization
         /// </summary>
         /// <param name="bytes">要解析的字典二进制流。</param>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(byte[] bytes, object userData)
+        public void ParseDictionary(byte[] bytes, object userData)
         {
             if (m_LocalizationHelper == null)
             {
@@ -313,7 +309,7 @@ namespace GameFramework.Localization
 
             try
             {
-                return m_LocalizationHelper.ParseDictionary(bytes, userData);
+                m_LocalizationHelper.ParseDictionary(bytes, userData);
             }
             catch (Exception exception)
             {
@@ -330,10 +326,9 @@ namespace GameFramework.Localization
         /// 解析字典。
         /// </summary>
         /// <param name="stream">要解析的字典二进制流。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(Stream stream)
+        public void ParseDictionary(Stream stream)
         {
-            return ParseDictionary(stream, null);
+            ParseDictionary(stream, null);
         }
 
         /// <summary>
@@ -341,8 +336,7 @@ namespace GameFramework.Localization
         /// </summary>
         /// <param name="stream">要解析的字典二进制流。</param>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(Stream stream, object userData)
+        public void ParseDictionary(Stream stream, object userData)
         {
             if (m_LocalizationHelper == null)
             {
@@ -351,7 +345,7 @@ namespace GameFramework.Localization
 
             try
             {
-                return m_LocalizationHelper.ParseDictionary(stream, userData);
+                m_LocalizationHelper.ParseDictionary(stream, userData);
             }
             catch (Exception exception)
             {

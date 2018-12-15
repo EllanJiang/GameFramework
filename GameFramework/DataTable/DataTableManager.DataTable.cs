@@ -396,10 +396,8 @@ namespace GameFramework.DataTable
                 try
                 {
                     T dataRow = new T();
-                    if (dataRow.ParseDataRow(dataRowSegment))
-                    {
-                        InternalAddDataRow(dataRow);
-                    }
+                    dataRow.ParseDataRow(dataRowSegment);
+                    InternalAddDataRow(dataRow);
                 }
                 catch (Exception exception)
                 {
@@ -421,10 +419,8 @@ namespace GameFramework.DataTable
                 try
                 {
                     T dataRow = new T();
-                    if (dataRow.ParseDataRow(dataRowSegment))
-                    {
-                        InternalAddDataRow(dataRow);
-                    }
+                    dataRow.ParseDataRow(dataRowSegment);
+                    InternalAddDataRow(dataRow);
                 }
                 catch (Exception exception)
                 {
@@ -446,10 +442,8 @@ namespace GameFramework.DataTable
                 try
                 {
                     T dataRow = new T();
-                    if (dataRow.ParseDataRow(dataRowSegment))
-                    {
-                        InternalAddDataRow(dataRow);
-                    }
+                    dataRow.ParseDataRow(dataRowSegment);
+                    InternalAddDataRow(dataRow);
                 }
                 catch (Exception exception)
                 {
