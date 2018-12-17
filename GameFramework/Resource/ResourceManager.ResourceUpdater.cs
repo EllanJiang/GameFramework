@@ -1,5 +1,5 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
+// Game Framework
 // Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
@@ -238,7 +238,7 @@ namespace GameFramework.Resource
                         binaryWriter.Write(m_ResourceManager.m_ReadWriteResourceInfos.Count);
                         foreach (KeyValuePair<ResourceName, ReadWriteResourceInfo> i in m_ResourceManager.m_ReadWriteResourceInfos)
                         {
-                            byte[] nameBytes = Utility.Encryption.GetXorBytes(Utility.Converter.GetBytes(i.Key.Name), encryptCode);
+                            byte[] nameBytes = Utility.Encryption.GetSelfXorBytes(Utility.Converter.GetBytes(i.Key.Name), encryptCode);
                             binaryWriter.Write((byte)nameBytes.Length);
                             binaryWriter.Write(nameBytes);
 
@@ -248,7 +248,7 @@ namespace GameFramework.Resource
                             }
                             else
                             {
-                                byte[] variantBytes = Utility.Encryption.GetXorBytes(Utility.Converter.GetBytes(i.Key.Variant), encryptCode);
+                                byte[] variantBytes = Utility.Encryption.GetSelfXorBytes(Utility.Converter.GetBytes(i.Key.Variant), encryptCode);
                                 binaryWriter.Write((byte)variantBytes.Length);
                                 binaryWriter.Write(variantBytes);
                             }
@@ -377,11 +377,11 @@ namespace GameFramework.Resource
                     byte[] hashBytes = Utility.Converter.GetBytes(updateInfo.HashCode);
                     if (updateInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt)
                     {
-                        bytes = Utility.Encryption.GetQuickXorBytes(bytes, hashBytes);
+                        Utility.Encryption.GetQuickSelfXorBytes(bytes, hashBytes);
                     }
                     else if (updateInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt)
                     {
-                        bytes = Utility.Encryption.GetXorBytes(bytes, hashBytes);
+                        Utility.Encryption.GetSelfXorBytes(bytes, hashBytes);
                     }
                 }
 

@@ -1,5 +1,5 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
+// Game Framework
 // Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
@@ -109,7 +109,7 @@ namespace GameFramework.Resource
                         if (listVersion == 0)
                         {
                             byte[] encryptBytes = binaryReader.ReadBytes(4);
-                            applicableGameVersion = Utility.Converter.GetString(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
+                            applicableGameVersion = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
                             internalResourceVersion = binaryReader.ReadInt32();
                         }
                         else

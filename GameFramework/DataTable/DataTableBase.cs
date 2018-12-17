@@ -1,11 +1,12 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
+// Game Framework
 // Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 using System;
+using System.IO;
 
 namespace GameFramework.DataTable
 {
@@ -64,8 +65,23 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 增加数据表行。
         /// </summary>
-        /// <param name="dataRowText">要解析的数据表行文本。</param>
-        internal abstract void AddDataRow(string dataRowText);
+        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <returns>是否增加数据表行成功。</returns>
+        internal abstract bool AddDataRow(GameFrameworkSegment<string> dataRowSegment);
+
+        /// <summary>
+        /// 增加数据表行。
+        /// </summary>
+        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <returns>是否增加数据表行成功。</returns>
+        internal abstract bool AddDataRow(GameFrameworkSegment<byte[]> dataRowSegment);
+
+        /// <summary>
+        /// 增加数据表行。
+        /// </summary>
+        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <returns>是否增加数据表行成功。</returns>
+        internal abstract bool AddDataRow(GameFrameworkSegment<Stream> dataRowSegment);
 
         /// <summary>
         /// 关闭并清理数据表。

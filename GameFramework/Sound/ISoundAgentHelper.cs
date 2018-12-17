@@ -1,5 +1,5 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
+// Game Framework
 // Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
@@ -150,7 +150,7 @@ namespace GameFramework.Sound
         /// 设置声音资源。
         /// </summary>
         /// <param name="soundAsset">声音资源。</param>
-        /// <returns>设置声音资源是否成功。</returns>
+        /// <returns>是否设置声音资源成功。</returns>
         bool SetSoundAsset(object soundAsset);
     }
 }

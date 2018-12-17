@@ -1,5 +1,5 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
+// Game Framework
 // Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
@@ -19,7 +19,7 @@ namespace GameFramework.Resource
             /// </summary>
             private sealed class ResourceObject : ObjectBase
             {
-                private readonly HashSet<object> m_DependencyResources;
+                private readonly List<object> m_DependencyResources;
                 private readonly IResourceHelper m_ResourceHelper;
                 private readonly Dictionary<object, int> m_ResourceDependencyCount;
 
@@ -36,7 +36,7 @@ namespace GameFramework.Resource
                         throw new GameFrameworkException("Resource dependency count is invalid.");
                     }
 
-                    m_DependencyResources = new HashSet<object>();
+                    m_DependencyResources = new List<object>();
                     m_ResourceHelper = resourceHelper;
                     m_ResourceDependencyCount = resourceDependencyCount;
                 }
@@ -53,10 +53,12 @@ namespace GameFramework.Resource
 
                 public void AddDependencyResource(object dependencyResource)
                 {
-                    if (!m_DependencyResources.Add(dependencyResource))
+                    if (m_DependencyResources.Contains(dependencyResource))
                     {
                         return;
                     }
+
+                    m_DependencyResources.Add(dependencyResource);
 
                     int referenceCount = 0;
                     if (m_ResourceDependencyCount.TryGetValue(dependencyResource, out referenceCount))

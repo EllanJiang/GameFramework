@@ -38,6 +38,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\DataStruct\LoadType.cs" />
     <Compile Include="Base\EventPool\BaseEventArgs.cs" />
     <Compile Include="Base\EventPool\EventPool.cs" />
     <Compile Include="Base\EventPool\EventPool.Event.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Base\GameFrameworkException.cs" />
     <Compile Include="Base\GameFrameworkFunc.cs" />
     <Compile Include="Base\GameFrameworkModule.cs" />
+    <Compile Include="Base\GameFrameworkSegment.cs" />
     <Compile Include="Base\Log\GameFrameworkLog.cs" />
     <Compile Include="Base\Log\GameFrameworkLog.ILogHelper.cs" />
     <Compile Include="Base\Log\GameFrameworkLogLevel.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="Base\Version\Version.IVersionHelper.cs" />
     <Compile Include="Config\ConfigManager.ConfigData.cs" />
     <Compile Include="Config\ConfigManager.cs" />
+    <Compile Include="Config\ConfigManager.LoadConfigInfo.cs" />
     <Compile Include="Config\IConfigHelper.cs" />
     <Compile Include="Config\IConfigManager.cs" />
     <Compile Include="Config\LoadConfigDependencyAssetEventArgs.cs" />
@@ -77,6 +80,7 @@
     <Compile Include="DataTable\DataTableBase.cs" />
     <Compile Include="DataTable\DataTableManager.cs" />
     <Compile Include="DataTable\DataTableManager.DataTable.cs" />
+    <Compile Include="DataTable\DataTableManager.LoadDataTableInfo.cs" />
     <Compile Include="DataTable\IDataRow.cs" />
     <Compile Include="DataTable\IDataTable.cs" />
     <Compile Include="DataTable\IDataTableHelper.cs" />
@@ -140,6 +144,7 @@
     <Compile Include="Localization\LoadDictionarySuccessEventArgs.cs" />
     <Compile Include="Localization\LoadDictionaryUpdateEventArgs.cs" />
     <Compile Include="Localization\LocalizationManager.cs" />
+    <Compile Include="Localization\LocalizationManager.LoadDictionaryInfo.cs" />
     <Compile Include="Network\INetworkChannel.cs" />
     <Compile Include="Network\INetworkChannelHelper.cs" />
     <Compile Include="Network\INetworkManager.cs" />

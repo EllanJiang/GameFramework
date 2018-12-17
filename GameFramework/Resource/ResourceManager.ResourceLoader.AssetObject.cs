@@ -1,5 +1,5 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
+// Game Framework
 // Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
@@ -121,11 +121,12 @@ namespace GameFramework.Resource
                                 throw new GameFrameworkException(Utility.Text.Format("Asset target '{0}' dependency asset reference count is invalid.", Name));
                             }
                         }
+
+                        m_ResourcePool.Unspawn(m_Resource);
                     }
 
                     m_AssetDependencyCount.Remove(Target);
                     m_ResourceHelper.Release(Target);
-                    m_ResourcePool.Unspawn(m_Resource);
                 }
             }
         }

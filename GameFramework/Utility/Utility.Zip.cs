@@ -1,9 +1,11 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
+// Game Framework
 // Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
+
+using System;
 
 namespace GameFramework
 {
@@ -37,7 +39,19 @@ namespace GameFramework
                     throw new GameFrameworkException("Zip helper is invalid.");
                 }
 
-                return s_ZipHelper.Compress(bytes);
+                try
+                {
+                    return s_ZipHelper.Compress(bytes);
+                }
+                catch (Exception exception)
+                {
+                    if (exception is GameFrameworkException)
+                    {
+                        throw;
+                    }
+
+                    throw new GameFrameworkException(Text.Format("Can not compress bytes with exception '{0}'.", exception.ToString()), exception);
+                }
             }
 
             /// <summary>
@@ -52,7 +66,19 @@ namespace GameFramework
                     throw new GameFrameworkException("Zip helper is invalid.");
                 }
 
-                return s_ZipHelper.Decompress(bytes);
+                try
+                {
+                    return s_ZipHelper.Decompress(bytes);
+                }
+                catch (Exception exception)
+                {
+                    if (exception is GameFrameworkException)
+                    {
+                        throw;
+                    }
+
+                    throw new GameFrameworkException(Text.Format("Can not decompress bytes with exception '{0}'.", exception.ToString()), exception);
+                }
             }
         }
     }

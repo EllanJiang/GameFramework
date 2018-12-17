@@ -1,5 +1,5 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
+// Game Framework
 // Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
@@ -80,7 +80,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Resource name is invalid.");
                 }
 
-                return Utility.Text.Format("{0}.dat", resourceName);
+                return Text.Format("{0}.dat", resourceName);
             }
 
             /// <summary>
@@ -96,7 +96,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Resource name is invalid.");
                 }
 
-                return Utility.Text.Format("{0}.{1:x8}.dat", resourceName, hashCode);
+                return Text.Format("{0}.{1:x8}.dat", resourceName, hashCode);
             }
 
             /// <summary>
