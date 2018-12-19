@@ -37,6 +37,14 @@ namespace GameFramework.Sound
         }
 
         /// <summary>
+        /// 获取声音长度。
+        /// </summary>
+        float Length
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取或设置播放位置。
         /// </summary>
         float Time
