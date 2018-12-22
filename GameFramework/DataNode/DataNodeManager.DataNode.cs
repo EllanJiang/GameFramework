@@ -59,7 +59,7 @@ namespace GameFramework.DataNode
             {
                 get
                 {
-                    return m_Parent == null ? m_Name : Utility.Text.Format("{0}{1}{2}", m_Parent.FullName, PathSplit[0], m_Name);
+                    return m_Parent == null ? m_Name : Utility.Text.Format("{0}{1}{2}", m_Parent.FullName, PathSplitSeparator[0], m_Name);
                 }
             }
 
@@ -307,9 +307,9 @@ namespace GameFramework.DataNode
                     return false;
                 }
 
-                foreach (string pathSplit in PathSplit)
+                foreach (string pathSplitSeparator in PathSplitSeparator)
                 {
-                    if (name.Contains(pathSplit))
+                    if (name.Contains(pathSplitSeparator))
                     {
                         return false;
                     }
