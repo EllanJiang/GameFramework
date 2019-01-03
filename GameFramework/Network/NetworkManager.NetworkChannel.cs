@@ -550,7 +550,19 @@ namespace GameFramework.Network
                     string errorMessage = "You must connect first.";
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.SocketError, errorMessage);
+                        NetworkChannelError(this, NetworkErrorCode.SendError, errorMessage);
+                        return;
+                    }
+
+                    throw new GameFrameworkException(errorMessage);
+                }
+
+                if (!m_Active)
+                {
+                    string errorMessage = "Socket is not active.";
+                    if (NetworkChannelError != null)
+                    {
+                        NetworkChannelError(this, NetworkErrorCode.SendError, errorMessage);
                         return;
                     }
 

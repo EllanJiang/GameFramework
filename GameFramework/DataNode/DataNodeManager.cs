@@ -15,7 +15,7 @@ namespace GameFramework.DataNode
     internal sealed partial class DataNodeManager : GameFrameworkModule, IDataNodeManager
     {
         private static readonly string[] EmptyStringArray = new string[] { };
-        private static readonly string[] PathSplit = new string[] { ".", "/", "\\" };
+        private static readonly string[] PathSplitSeparator = new string[] { ".", "/", "\\" };
 
         private const string RootName = "<Root>";
         private DataNode m_Root;
@@ -275,7 +275,7 @@ namespace GameFramework.DataNode
                 return EmptyStringArray;
             }
 
-            return path.Split(PathSplit, StringSplitOptions.RemoveEmptyEntries);
+            return path.Split(PathSplitSeparator, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

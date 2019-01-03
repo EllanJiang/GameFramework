@@ -95,6 +95,17 @@ namespace GameFramework.Sound
             }
 
             /// <summary>
+            /// 获取声音长度。
+            /// </summary>
+            public float Length
+            {
+                get
+                {
+                    return m_SoundAgentHelper.Length;
+                }
+            }
+
+            /// <summary>
             /// 获取或设置播放位置。
             /// </summary>
             public float Time
