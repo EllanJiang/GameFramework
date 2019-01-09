@@ -7,9 +7,9 @@
 
 namespace GameFramework.Download
 {
-    internal partial class DownloadManager
+    internal sealed partial class DownloadManager : GameFrameworkModule, IDownloadManager
     {
-        private partial class DownloadCounter
+        private sealed partial class DownloadCounter
         {
             private sealed class DownloadCounterNode
             {

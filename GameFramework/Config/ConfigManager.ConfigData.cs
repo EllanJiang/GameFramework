@@ -7,7 +7,7 @@
 
 namespace GameFramework.Config
 {
-    internal partial class ConfigManager
+    internal sealed partial class ConfigManager : GameFrameworkModule, IConfigManager
     {
         private struct ConfigData
         {

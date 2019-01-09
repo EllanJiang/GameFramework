@@ -7,9 +7,9 @@
 
 namespace GameFramework.UI
 {
-    internal partial class UIManager
+    internal sealed partial class UIManager : GameFrameworkModule, IUIManager
     {
-        private partial class UIGroup
+        private sealed partial class UIGroup : IUIGroup
         {
             /// <summary>
             /// 界面组界面信息。

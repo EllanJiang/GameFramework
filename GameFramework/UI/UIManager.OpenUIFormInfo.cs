@@ -7,7 +7,7 @@
 
 namespace GameFramework.UI
 {
-    internal partial class UIManager
+    internal sealed partial class UIManager : GameFrameworkModule, IUIManager
     {
         private sealed class OpenUIFormInfo
         {

@@ -10,7 +10,7 @@ using System.IO;
 
 namespace GameFramework.Download
 {
-    internal partial class DownloadManager
+    internal sealed partial class DownloadManager : GameFrameworkModule, IDownloadManager
     {
         /// <summary>
         /// 下载代理。

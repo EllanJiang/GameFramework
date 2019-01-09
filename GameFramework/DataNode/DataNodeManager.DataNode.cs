@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace GameFramework.DataNode
 {
-    internal partial class DataNodeManager
+    internal sealed partial class DataNodeManager : GameFrameworkModule, IDataNodeManager
     {
         /// <summary>
         /// 数据结点。

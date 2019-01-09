@@ -7,7 +7,7 @@
 
 namespace GameFramework.DataTable
 {
-    internal partial class DataTableManager
+    internal sealed partial class DataTableManager : GameFrameworkModule, IDataTableManager
     {
         private sealed class LoadDataTableInfo
         {

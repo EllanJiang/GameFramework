@@ -9,7 +9,7 @@ using System;
 
 namespace GameFramework.Sound
 {
-    internal partial class SoundManager
+    internal sealed partial class SoundManager : GameFrameworkModule, ISoundManager
     {
         /// <summary>
         /// 声音代理。

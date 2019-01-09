@@ -7,7 +7,7 @@
 
 namespace GameFramework.Resource
 {
-    internal partial class ResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         private struct ReadWriteResourceInfo
         {

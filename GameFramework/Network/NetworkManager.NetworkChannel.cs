@@ -12,7 +12,7 @@ using System.Net.Sockets;
 
 namespace GameFramework.Network
 {
-    internal partial class NetworkManager
+    internal sealed partial class NetworkManager : GameFrameworkModule, INetworkManager
     {
         /// <summary>
         /// 网络频道。

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace GameFramework.Entity
 {
-    internal partial class EntityManager
+    internal sealed partial class EntityManager : GameFrameworkModule, IEntityManager
     {
         /// <summary>
         /// 实体组。
