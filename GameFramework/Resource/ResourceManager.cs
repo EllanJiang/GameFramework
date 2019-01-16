@@ -1395,7 +1395,7 @@ namespace GameFramework.Resource
             m_ResourceUpdater.AddResourceUpdate(resourceName, loadType, length, hashCode, zipLength, zipHashCode, Utility.Path.GetCombinePath(m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(resourceName.FullName)), Utility.Path.GetRemotePath(m_UpdatePrefixUri, Utility.Path.GetResourceNameWithCrc32AndSuffix(resourceName.FullName, hashCode)), 0);
         }
 
-        private void OnCheckerResourceCheckComplete(int removedCount, int updateCount, int updateTotalLength, int updateTotalZipLength)
+        private void OnCheckerResourceCheckComplete(int removedCount, int updateCount, long updateTotalLength, long updateTotalZipLength)
         {
             m_VersionListProcessor.VersionListUpdateSuccess -= OnVersionListProcessorUpdateSuccess;
             m_VersionListProcessor.VersionListUpdateFailure -= OnVersionListProcessorUpdateFailure;

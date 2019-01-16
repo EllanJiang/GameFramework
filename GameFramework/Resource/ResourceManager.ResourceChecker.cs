@@ -26,7 +26,7 @@ namespace GameFramework.Resource
             private bool m_ReadWriteListReady;
 
             public GameFrameworkAction<ResourceName, LoadType, int, int, int, int> ResourceNeedUpdate;
-            public GameFrameworkAction<int, int, int, int> ResourceCheckComplete;
+            public GameFrameworkAction<int, int, long, long> ResourceCheckComplete;
 
             /// <summary>
             /// 初始化资源检查器的新实例。
@@ -107,8 +107,8 @@ namespace GameFramework.Resource
 
                 int removedCount = 0;
                 int updateCount = 0;
-                int updateTotalLength = 0;
-                int updateTotalZipLength = 0;
+                long updateTotalLength = 0L;
+                long updateTotalZipLength = 0L;
                 foreach (KeyValuePair<ResourceName, CheckInfo> checkInfo in m_CheckInfos)
                 {
                     CheckInfo ci = checkInfo.Value;
