@@ -9,6 +9,7 @@ using GameFramework.Download;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace GameFramework.Resource
 {
@@ -226,7 +227,7 @@ namespace GameFramework.Resource
                 try
                 {
                     fileStream = new FileStream(file, FileMode.CreateNew, FileAccess.Write);
-                    using (BinaryWriter binaryWriter = new BinaryWriter(fileStream))
+                    using (BinaryWriter binaryWriter = new BinaryWriter(fileStream, Encoding.UTF8))
                     {
                         fileStream = null;
                         byte[] encryptCode = new byte[4];

@@ -8,6 +8,7 @@
 using GameFramework.Download;
 using System;
 using System.IO;
+using System.Text;
 
 namespace GameFramework.Resource
 {
@@ -94,7 +95,7 @@ namespace GameFramework.Resource
                 try
                 {
                     fileStream = new FileStream(versionListFileName, FileMode.Open, FileAccess.Read);
-                    using (BinaryReader binaryReader = new BinaryReader(fileStream))
+                    using (BinaryReader binaryReader = new BinaryReader(fileStream, Encoding.UTF8))
                     {
                         fileStream = null;
                         char[] header = binaryReader.ReadChars(3);

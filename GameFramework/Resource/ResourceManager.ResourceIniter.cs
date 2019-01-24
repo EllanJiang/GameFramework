@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace GameFramework.Resource
 {
@@ -74,8 +75,8 @@ namespace GameFramework.Resource
                 MemoryStream memoryStream = null;
                 try
                 {
-                    memoryStream = new MemoryStream(bytes);
-                    using (BinaryReader binaryReader = new BinaryReader(memoryStream))
+                    memoryStream = new MemoryStream(bytes, false);
+                    using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                     {
                         memoryStream = null;
                         char[] header = binaryReader.ReadChars(3);
