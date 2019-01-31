@@ -93,17 +93,14 @@ namespace GameFramework.Resource
                             m_ResourceManager.m_InternalResourceVersion = binaryReader.ReadInt32();
 
                             int resourceCount = binaryReader.ReadInt32();
-                            string[] names = new string[resourceCount];
-                            string[] variants = new string[resourceCount];
-                            int[] lengths = new int[resourceCount];
                             for (int i = 0; i < resourceCount; i++)
                             {
-                                names[i] = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
-                                variants[i] = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
-                                ResourceName resourceName = new ResourceName(names[i], variants[i]);
+                                string name = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
+                                string variant = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
+                                ResourceName resourceName = new ResourceName(name, variant);
 
                                 LoadType loadType = (LoadType)binaryReader.ReadByte();
-                                lengths[i] = binaryReader.ReadInt32();
+                                int length = binaryReader.ReadInt32();
                                 int hashCode = binaryReader.ReadInt32();
                                 byte[] hashCodeBytes = Utility.Converter.GetBytes(hashCode);
 
@@ -119,7 +116,7 @@ namespace GameFramework.Resource
                                         dependencyAssetNames[k] = m_ResourceManager.GetEncryptedString(binaryReader, hashCodeBytes);
                                     }
 
-                                    if (variants[i] == null || variants[i] == m_CurrentVariant)
+                                    if (variant == null || variant == m_CurrentVariant)
                                     {
                                         int childNamePosition = assetName.LastIndexOf('/');
                                         if (childNamePosition < 0 || childNamePosition + 1 >= assetName.Length)
@@ -131,33 +128,9 @@ namespace GameFramework.Resource
                                     }
                                 }
 
-                                if (variants[i] == null || variants[i] == m_CurrentVariant)
+                                if (variant == null || variant == m_CurrentVariant)
                                 {
-                                    ProcessResourceInfo(resourceName, loadType, lengths[i], hashCode);
-                                }
-                            }
-
-                            ResourceGroup resourceGroupAll = m_ResourceManager.GetResourceGroup(string.Empty);
-                            for (int i = 0; i < resourceCount; i++)
-                            {
-                                resourceGroupAll.AddResource(names[i], variants[i], lengths[i]);
-                            }
-
-                            int resourceGroupCount = binaryReader.ReadInt32();
-                            for (int i = 0; i < resourceGroupCount; i++)
-                            {
-                                string groupName = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
-                                ResourceGroup resourceGroup = m_ResourceManager.GetResourceGroup(groupName);
-                                int groupResourceCount = binaryReader.ReadInt32();
-                                for (int j = 0; j < groupResourceCount; j++)
-                                {
-                                    ushort versionIndex = binaryReader.ReadUInt16();
-                                    if (versionIndex >= resourceCount)
-                                    {
-                                        throw new GameFrameworkException(Utility.Text.Format("Package index '{0}' is invalid, resource count is '{1}'.", versionIndex, resourceCount));
-                                    }
-
-                                    resourceGroup.AddResource(names[versionIndex], variants[versionIndex], lengths[versionIndex]);
+                                    ProcessResourceInfo(resourceName, loadType, length, hashCode);
                                 }
                             }
                         }
