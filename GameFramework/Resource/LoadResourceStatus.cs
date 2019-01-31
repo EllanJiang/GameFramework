@@ -38,13 +38,8 @@ namespace GameFramework.Resource
         TypeError,
 
         /// <summary>
-        /// 加载子资源错误。
+        /// 加载资源错误。
         /// </summary>
-        ChildAssetError,
-
-        /// <summary>
-        /// 加载场景资源错误。
-        /// </summary>
-        SceneAssetError,
+        AssetError,
     }
 }

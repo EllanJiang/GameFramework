@@ -16,7 +16,6 @@ namespace GameFramework.Resource
         {
             private readonly string m_AssetName;
             private readonly ResourceName m_ResourceName;
-            private readonly string m_ResourceChildName;
             private readonly string[] m_DependencyAssetNames;
 
             /// <summary>
@@ -24,13 +23,11 @@ namespace GameFramework.Resource
             /// </summary>
             /// <param name="assetName">资源名称。</param>
             /// <param name="resourceName">所在资源名称。</param>
-            /// <param name="resourceChildName">子资源名称。</param>
             /// <param name="dependencyAssetNames">依赖资源名称。</param>
-            public AssetInfo(string assetName, ResourceName resourceName, string resourceChildName, string[] dependencyAssetNames)
+            public AssetInfo(string assetName, ResourceName resourceName, string[] dependencyAssetNames)
             {
                 m_AssetName = assetName;
                 m_ResourceName = resourceName;
-                m_ResourceChildName = resourceChildName;
                 m_DependencyAssetNames = dependencyAssetNames;
             }
 
@@ -53,17 +50,6 @@ namespace GameFramework.Resource
                 get
                 {
                     return m_ResourceName;
-                }
-            }
-
-            /// <summary>
-            /// 获取子资源名称。
-            /// </summary>
-            public string ResourceChildName
-            {
-                get
-                {
-                    return m_ResourceChildName;
                 }
             }
 

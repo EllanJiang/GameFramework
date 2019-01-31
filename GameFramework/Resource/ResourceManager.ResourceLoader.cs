@@ -281,10 +281,9 @@ namespace GameFramework.Resource
             public void LoadAsset(string assetName, Type assetType, int priority, LoadAssetCallbacks loadAssetCallbacks, object userData)
             {
                 ResourceInfo? resourceInfo = null;
-                string resourceChildName = null;
                 string[] dependencyAssetNames = null;
 
-                if (!CheckAsset(assetName, out resourceInfo, out resourceChildName, out dependencyAssetNames))
+                if (!CheckAsset(assetName, out resourceInfo, out dependencyAssetNames))
                 {
                     string errorMessage = Utility.Text.Format("Can not load asset '{0}'.", assetName);
                     if (loadAssetCallbacks.LoadAssetFailureCallback != null)
@@ -296,7 +295,7 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(errorMessage);
                 }
 
-                LoadAssetTask mainTask = new LoadAssetTask(assetName, assetType, priority, resourceInfo.Value, resourceChildName, dependencyAssetNames, loadAssetCallbacks, userData);
+                LoadAssetTask mainTask = new LoadAssetTask(assetName, assetType, priority, resourceInfo.Value, dependencyAssetNames, loadAssetCallbacks, userData);
                 foreach (string dependencyAssetName in dependencyAssetNames)
                 {
                     if (!LoadDependencyAsset(dependencyAssetName, priority, mainTask, userData))
@@ -334,10 +333,9 @@ namespace GameFramework.Resource
             public void LoadScene(string sceneAssetName, int priority, LoadSceneCallbacks loadSceneCallbacks, object userData)
             {
                 ResourceInfo? resourceInfo = null;
-                string resourceChildName = null;
                 string[] dependencyAssetNames = null;
 
-                if (!CheckAsset(sceneAssetName, out resourceInfo, out resourceChildName, out dependencyAssetNames))
+                if (!CheckAsset(sceneAssetName, out resourceInfo, out dependencyAssetNames))
                 {
                     string errorMessage = Utility.Text.Format("Can not load scene '{0}'.", sceneAssetName);
                     if (loadSceneCallbacks.LoadSceneFailureCallback != null)
@@ -349,7 +347,7 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(errorMessage);
                 }
 
-                LoadSceneTask mainTask = new LoadSceneTask(sceneAssetName, priority, resourceInfo.Value, resourceChildName, dependencyAssetNames, loadSceneCallbacks, userData);
+                LoadSceneTask mainTask = new LoadSceneTask(sceneAssetName, priority, resourceInfo.Value, dependencyAssetNames, loadSceneCallbacks, userData);
                 foreach (string dependencyAssetName in dependencyAssetNames)
                 {
                     if (!LoadDependencyAsset(dependencyAssetName, priority, mainTask, userData))
@@ -403,16 +401,15 @@ namespace GameFramework.Resource
                 }
 
                 ResourceInfo? resourceInfo = null;
-                string resourceChildName = null;
                 string[] dependencyAssetNames = null;
 
-                if (!CheckAsset(assetName, out resourceInfo, out resourceChildName, out dependencyAssetNames))
+                if (!CheckAsset(assetName, out resourceInfo, out dependencyAssetNames))
                 {
                     GameFrameworkLog.Debug("Can not load asset '{0}'.", assetName);
                     return false;
                 }
 
-                LoadDependencyAssetTask dependencyTask = new LoadDependencyAssetTask(assetName, priority, resourceInfo.Value, resourceChildName, dependencyAssetNames, mainTask, userData);
+                LoadDependencyAssetTask dependencyTask = new LoadDependencyAssetTask(assetName, priority, resourceInfo.Value, dependencyAssetNames, mainTask, userData);
                 foreach (string dependencyAssetName in dependencyAssetNames)
                 {
                     if (!LoadDependencyAsset(dependencyAssetName, priority, dependencyTask, userData))
@@ -426,10 +423,9 @@ namespace GameFramework.Resource
                 return true;
             }
 
-            private bool CheckAsset(string assetName, out ResourceInfo? resourceInfo, out string resourceChildName, out string[] dependencyAssetNames)
+            private bool CheckAsset(string assetName, out ResourceInfo? resourceInfo, out string[] dependencyAssetNames)
             {
                 resourceInfo = null;
-                resourceChildName = null;
                 dependencyAssetNames = null;
 
                 if (string.IsNullOrEmpty(assetName))
@@ -449,7 +445,6 @@ namespace GameFramework.Resource
                     return false;
                 }
 
-                resourceChildName = assetInfo.Value.ResourceChildName;
                 dependencyAssetNames = assetInfo.Value.GetDependencyAssetNames();
 
                 return true;

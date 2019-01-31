@@ -257,13 +257,7 @@ namespace GameFramework.Resource
 
                                     if (variant == null || variant == m_CurrentVariant)
                                     {
-                                        int childNamePosition = assetName.LastIndexOf('/');
-                                        if (childNamePosition < 0 || childNamePosition + 1 >= assetName.Length)
-                                        {
-                                            throw new GameFrameworkException(Utility.Text.Format("Asset name '{0}' is invalid.", assetName));
-                                        }
-
-                                        m_ResourceManager.m_AssetInfos.Add(assetName, new AssetInfo(assetName, resourceName, assetName.Substring(childNamePosition + 1), dependencyAssetNames));
+                                        m_ResourceManager.m_AssetInfos.Add(assetName, new AssetInfo(assetName, resourceName, dependencyAssetNames));
                                     }
                                 }
 

@@ -17,8 +17,8 @@ namespace GameFramework.Resource
             {
                 private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
 
-                public LoadAssetTask(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
-                    : base(assetName, assetType, priority, resourceInfo, resourceChildName, dependencyAssetNames, userData)
+                public LoadAssetTask(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
+                    : base(assetName, assetType, priority, resourceInfo, dependencyAssetNames, userData)
                 {
                     m_LoadAssetCallbacks = loadAssetCallbacks;
                 }

@@ -15,8 +15,8 @@ namespace GameFramework.Resource
             {
                 private readonly LoadSceneCallbacks m_LoadSceneCallbacks;
 
-                public LoadSceneTask(string sceneAssetName, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, LoadSceneCallbacks loadSceneCallbacks, object userData)
-                    : base(sceneAssetName, null, priority, resourceInfo, resourceChildName, dependencyAssetNames, userData)
+                public LoadSceneTask(string sceneAssetName, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadSceneCallbacks loadSceneCallbacks, object userData)
+                    : base(sceneAssetName, null, priority, resourceInfo, dependencyAssetNames, userData)
                 {
                     m_LoadSceneCallbacks = loadSceneCallbacks;
                 }
