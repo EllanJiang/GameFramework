@@ -450,12 +450,7 @@ namespace GameFramework.Resource
                 }
 
                 resourceChildName = assetInfo.Value.ResourceChildName;
-
-                AssetDependencyInfo? assetDependencyInfo = m_ResourceManager.GetAssetDependencyInfo(assetName);
-                if (assetDependencyInfo.HasValue)
-                {
-                    dependencyAssetNames = assetDependencyInfo.Value.GetDependencyAssetNames();
-                }
+                dependencyAssetNames = assetInfo.Value.GetDependencyAssetNames();
 
                 return true;
             }

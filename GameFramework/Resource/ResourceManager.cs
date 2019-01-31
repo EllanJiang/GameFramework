@@ -28,7 +28,6 @@ namespace GameFramework.Resource
         private const byte ReadWriteListVersionHeader = 0;
 
         private readonly Dictionary<string, AssetInfo> m_AssetInfos;
-        private readonly Dictionary<string, AssetDependencyInfo> m_AssetDependencyInfos;
         private readonly Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
         private readonly Dictionary<string, ResourceGroup> m_ResourceGroups;
         private readonly SortedDictionary<ResourceName, ReadWriteResourceInfo> m_ReadWriteResourceInfos;
@@ -65,7 +64,6 @@ namespace GameFramework.Resource
         {
             ResourceNameComparer resourceNameComparer = new ResourceNameComparer();
             m_AssetInfos = new Dictionary<string, AssetInfo>();
-            m_AssetDependencyInfos = new Dictionary<string, AssetDependencyInfo>();
             m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>(resourceNameComparer);
             m_ResourceGroups = new Dictionary<string, ResourceGroup>();
             m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>(resourceNameComparer);
@@ -550,7 +548,6 @@ namespace GameFramework.Resource
             }
 
             m_AssetInfos.Clear();
-            m_AssetDependencyInfos.Clear();
             m_ResourceInfos.Clear();
             m_ResourceGroups.Clear();
             m_ReadWriteResourceInfos.Clear();
@@ -1314,22 +1311,6 @@ namespace GameFramework.Resource
             if (m_AssetInfos.TryGetValue(assetName, out assetInfo))
             {
                 return assetInfo;
-            }
-
-            return null;
-        }
-
-        private AssetDependencyInfo? GetAssetDependencyInfo(string assetName)
-        {
-            if (string.IsNullOrEmpty(assetName))
-            {
-                throw new GameFrameworkException("Asset name is invalid.");
-            }
-
-            AssetDependencyInfo assetDependencyInfo = default(AssetDependencyInfo);
-            if (m_AssetDependencyInfos.TryGetValue(assetName, out assetDependencyInfo))
-            {
-                return assetDependencyInfo;
             }
 
             return null;

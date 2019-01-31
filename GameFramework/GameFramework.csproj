@@ -206,7 +206,6 @@
     <Compile Include="Resource\LoadSceneFailureCallback.cs" />
     <Compile Include="Resource\LoadSceneSuccessCallback.cs" />
     <Compile Include="Resource\LoadSceneUpdateCallback.cs" />
-    <Compile Include="Resource\ResourceManager.AssetDependencyInfo.cs" />
     <Compile Include="Resource\ResourceManager.AssetInfo.cs" />
     <Compile Include="Resource\ResourceManager.cs" />
     <Compile Include="Resource\ResourceManager.LoadType.cs" />

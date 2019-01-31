@@ -17,6 +17,7 @@ namespace GameFramework.Resource
             private readonly string m_AssetName;
             private readonly ResourceName m_ResourceName;
             private readonly string m_ResourceChildName;
+            private readonly string[] m_DependencyAssetNames;
 
             /// <summary>
             /// 初始化资源信息的新实例。
@@ -24,11 +25,13 @@ namespace GameFramework.Resource
             /// <param name="assetName">资源名称。</param>
             /// <param name="resourceName">所在资源名称。</param>
             /// <param name="resourceChildName">子资源名称。</param>
-            public AssetInfo(string assetName, ResourceName resourceName, string resourceChildName)
+            /// <param name="dependencyAssetNames">依赖资源名称。</param>
+            public AssetInfo(string assetName, ResourceName resourceName, string resourceChildName, string[] dependencyAssetNames)
             {
                 m_AssetName = assetName;
                 m_ResourceName = resourceName;
                 m_ResourceChildName = resourceChildName;
+                m_DependencyAssetNames = dependencyAssetNames;
             }
 
             /// <summary>
@@ -62,6 +65,15 @@ namespace GameFramework.Resource
                 {
                     return m_ResourceChildName;
                 }
+            }
+
+            /// <summary>
+            /// 获取依赖资源名称。
+            /// </summary>
+            /// <returns>依赖资源名称。</returns>
+            public string[] GetDependencyAssetNames()
+            {
+                return m_DependencyAssetNames;
             }
         }
     }

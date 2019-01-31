@@ -100,6 +100,7 @@ namespace GameFramework.Resource
                             {
                                 names[i] = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
                                 variants[i] = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
+                                ResourceName resourceName = new ResourceName(names[i], variants[i]);
 
                                 LoadType loadType = (LoadType)binaryReader.ReadByte();
                                 lengths[i] = binaryReader.ReadInt32();
@@ -107,10 +108,9 @@ namespace GameFramework.Resource
                                 byte[] hashCodeBytes = Utility.Converter.GetBytes(hashCode);
 
                                 int assetNamesCount = binaryReader.ReadInt32();
-                                string[] assetNames = new string[assetNamesCount];
                                 for (int j = 0; j < assetNamesCount; j++)
                                 {
-                                    assetNames[j] = m_ResourceManager.GetEncryptedString(binaryReader, hashCodeBytes);
+                                    string assetName = m_ResourceManager.GetEncryptedString(binaryReader, hashCodeBytes);
 
                                     int dependencyAssetNamesCount = binaryReader.ReadInt32();
                                     string[] dependencyAssetNames = new string[dependencyAssetNamesCount];
@@ -121,14 +121,18 @@ namespace GameFramework.Resource
 
                                     if (variants[i] == null || variants[i] == m_CurrentVariant)
                                     {
-                                        m_ResourceManager.m_AssetDependencyInfos.Add(assetNames[j], new AssetDependencyInfo(assetNames[j], dependencyAssetNames));
+                                        int childNamePosition = assetName.LastIndexOf('/');
+                                        if (childNamePosition < 0 || childNamePosition + 1 >= assetName.Length)
+                                        {
+                                            throw new GameFrameworkException(Utility.Text.Format("Asset name '{0}' is invalid.", assetName));
+                                        }
+
+                                        m_ResourceManager.m_AssetInfos.Add(assetName, new AssetInfo(assetName, resourceName, assetName.Substring(childNamePosition + 1), dependencyAssetNames));
                                     }
                                 }
 
                                 if (variants[i] == null || variants[i] == m_CurrentVariant)
                                 {
-                                    ResourceName resourceName = new ResourceName(names[i], variants[i]);
-                                    ProcessAssetInfo(resourceName, assetNames);
                                     ProcessResourceInfo(resourceName, loadType, lengths[i], hashCode);
                                 }
                             }
@@ -181,20 +185,6 @@ namespace GameFramework.Resource
                         memoryStream.Dispose();
                         memoryStream = null;
                     }
-                }
-            }
-
-            private void ProcessAssetInfo(ResourceName resourceName, string[] assetNames)
-            {
-                foreach (string assetName in assetNames)
-                {
-                    int childNamePosition = assetName.LastIndexOf('/');
-                    if (childNamePosition < 0 || childNamePosition + 1 >= assetName.Length)
-                    {
-                        throw new GameFrameworkException(Utility.Text.Format("Asset name '{0}' is invalid.", assetName));
-                    }
-
-                    m_ResourceManager.m_AssetInfos.Add(assetName, new AssetInfo(assetName, resourceName, assetName.Substring(childNamePosition + 1)));
                 }
             }
 
