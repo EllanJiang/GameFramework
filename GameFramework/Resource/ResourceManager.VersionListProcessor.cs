@@ -98,8 +98,7 @@ namespace GameFramework.Resource
                     using (BinaryReader binaryReader = new BinaryReader(fileStream, Encoding.UTF8))
                     {
                         fileStream = null;
-                        char[] header = binaryReader.ReadChars(3);
-                        if (header[0] != VersionListHeader[0] || header[1] != VersionListHeader[1] || header[2] != VersionListHeader[2])
+                        if (binaryReader.ReadChar() != VersionListHeader[0] || binaryReader.ReadChar() != VersionListHeader[1] || binaryReader.ReadChar() != VersionListHeader[2])
                         {
                             GameFrameworkLog.Debug("Latest internal resource version is '{0}', local resource version is invalid.", latestInternalResourceVersion.ToString());
                             return CheckVersionListResult.NeedUpdate;

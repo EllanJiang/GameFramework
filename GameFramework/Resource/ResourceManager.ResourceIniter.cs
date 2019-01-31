@@ -79,8 +79,7 @@ namespace GameFramework.Resource
                     using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                     {
                         memoryStream = null;
-                        char[] header = binaryReader.ReadChars(3);
-                        if (header[0] != PackageListHeader[0] || header[1] != PackageListHeader[1] || header[2] != PackageListHeader[2])
+                        if (binaryReader.ReadChar() != PackageListHeader[0] || binaryReader.ReadChar() != PackageListHeader[1] || binaryReader.ReadChar() != PackageListHeader[2])
                         {
                             throw new GameFrameworkException("Package list header is invalid.");
                         }
@@ -98,7 +97,6 @@ namespace GameFramework.Resource
                             string[] names = new string[resourceCount];
                             string[] variants = new string[resourceCount];
                             int[] lengths = new int[resourceCount];
-                            Dictionary<string, string[]> dependencyAssetNamesCollection = new Dictionary<string, string[]>();
                             for (int i = 0; i < resourceCount; i++)
                             {
                                 names[i] = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
@@ -129,7 +127,7 @@ namespace GameFramework.Resource
 
                                     if (variants[i] == null || variants[i] == m_CurrentVariant)
                                     {
-                                        dependencyAssetNamesCollection.Add(assetNames[j], dependencyAssetNames);
+                                        m_ResourceManager.m_AssetDependencyInfos.Add(assetNames[j], new AssetDependencyInfo(assetNames[j], dependencyAssetNames));
                                     }
                                 }
 
@@ -140,8 +138,6 @@ namespace GameFramework.Resource
                                     ProcessResourceInfo(resourceName, loadType, lengths[i], hashCode);
                                 }
                             }
-
-                            ProcessAssetDependencyInfo(dependencyAssetNamesCollection);
 
                             ResourceGroup resourceGroupAll = m_ResourceManager.GetResourceGroup(string.Empty);
                             for (int i = 0; i < resourceCount; i++)
@@ -205,29 +201,6 @@ namespace GameFramework.Resource
                     }
 
                     m_ResourceManager.m_AssetInfos.Add(assetName, new AssetInfo(assetName, resourceName, assetName.Substring(childNamePosition + 1)));
-                }
-            }
-
-            private void ProcessAssetDependencyInfo(Dictionary<string, string[]> dependencyAssetNamesCollection)
-            {
-                foreach (KeyValuePair<string, string[]> dependencyAssetNamesCollectionItem in dependencyAssetNamesCollection)
-                {
-                    List<string> dependencyAssetNames = new List<string>();
-                    List<string> scatteredDependencyAssetNames = new List<string>();
-                    foreach (string dependencyAssetName in dependencyAssetNamesCollectionItem.Value)
-                    {
-                        AssetInfo? assetInfo = m_ResourceManager.GetAssetInfo(dependencyAssetName);
-                        if (assetInfo.HasValue)
-                        {
-                            dependencyAssetNames.Add(dependencyAssetName);
-                        }
-                        else
-                        {
-                            scatteredDependencyAssetNames.Add(dependencyAssetName);
-                        }
-                    }
-
-                    m_ResourceManager.m_AssetDependencyInfos.Add(dependencyAssetNamesCollectionItem.Key, new AssetDependencyInfo(dependencyAssetNamesCollectionItem.Key, dependencyAssetNames.ToArray(), scatteredDependencyAssetNames.ToArray()));
                 }
             }
 

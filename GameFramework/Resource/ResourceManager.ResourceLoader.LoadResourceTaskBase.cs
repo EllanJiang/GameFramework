@@ -26,7 +26,6 @@ namespace GameFramework.Resource
                 private readonly ResourceInfo m_ResourceInfo;
                 private readonly string m_ResourceChildName;
                 private readonly string[] m_DependencyAssetNames;
-                private readonly string[] m_ScatteredDependencyAssetNames;
                 private readonly object m_UserData;
                 private readonly List<object> m_DependencyAssets;
                 private readonly List<object> m_DependencyResources;
@@ -34,7 +33,7 @@ namespace GameFramework.Resource
                 private DateTime m_StartTime;
                 private int m_TotalDependencyAssetCount;
 
-                public LoadResourceTaskBase(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, object userData)
+                public LoadResourceTaskBase(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, object userData)
                 {
                     m_SerialId = s_Serial++;
                     m_Priority = priority;
@@ -44,7 +43,6 @@ namespace GameFramework.Resource
                     m_ResourceInfo = resourceInfo;
                     m_ResourceChildName = resourceChildName;
                     m_DependencyAssetNames = dependencyAssetNames;
-                    m_ScatteredDependencyAssetNames = scatteredDependencyAssetNames;
                     m_UserData = userData;
                     m_DependencyAssets = new List<object>();
                     m_DependencyResources = new List<object>();
@@ -169,11 +167,6 @@ namespace GameFramework.Resource
                 public string[] GetDependencyAssetNames()
                 {
                     return m_DependencyAssetNames;
-                }
-
-                public string[] GetScatteredDependencyAssetNames()
-                {
-                    return m_ScatteredDependencyAssetNames;
                 }
 
                 public object[] GetDependencyAssets()

@@ -16,19 +16,16 @@ namespace GameFramework.Resource
         {
             private readonly string m_AssetName;
             private readonly string[] m_DependencyAssetNames;
-            private readonly string[] m_ScatteredDependencyAssetNames;
 
             /// <summary>
             /// 初始化资源依赖信息的新实例。
             /// </summary>
             /// <param name="assetName">资源名称。</param>
             /// <param name="dependencyAssetNames">依赖资源名称。</param>
-            /// <param name="scatteredDependencyAssetNames">依赖零散资源名称。</param>
-            public AssetDependencyInfo(string assetName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames)
+            public AssetDependencyInfo(string assetName, string[] dependencyAssetNames)
             {
                 m_AssetName = assetName;
                 m_DependencyAssetNames = dependencyAssetNames;
-                m_ScatteredDependencyAssetNames = scatteredDependencyAssetNames;
             }
 
             /// <summary>
@@ -49,15 +46,6 @@ namespace GameFramework.Resource
             public string[] GetDependencyAssetNames()
             {
                 return m_DependencyAssetNames;
-            }
-
-            /// <summary>
-            /// 获取依赖零散资源名称。
-            /// </summary>
-            /// <returns>依赖零散资源名称。</returns>
-            public string[] GetScatteredDependencyAssetNames()
-            {
-                return m_ScatteredDependencyAssetNames;
             }
         }
     }
