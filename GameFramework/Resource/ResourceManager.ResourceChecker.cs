@@ -225,7 +225,8 @@ namespace GameFramework.Resource
                         if (listVersion == 0)
                         {
                             byte[] encryptBytes = binaryReader.ReadBytes(4);
-                            m_ResourceManager.m_ApplicableGameVersion = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
+
+                            m_ResourceManager.m_ApplicableGameVersion = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
                             m_ResourceManager.m_InternalResourceVersion = binaryReader.ReadInt32();
 
                             int resourceCount = binaryReader.ReadInt32();
@@ -234,18 +235,13 @@ namespace GameFramework.Resource
                             int[] lengths = new int[resourceCount];
                             for (int i = 0; i < resourceCount; i++)
                             {
-                                names[i] = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
-
-                                variants[i] = null;
-                                byte variantLength = binaryReader.ReadByte();
-                                if (variantLength > 0)
-                                {
-                                    variants[i] = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(variantLength), encryptBytes));
-                                }
+                                names[i] = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
+                                variants[i] = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
 
                                 LoadType loadType = (LoadType)binaryReader.ReadByte();
                                 lengths[i] = binaryReader.ReadInt32();
                                 int hashCode = binaryReader.ReadInt32();
+                                byte[] hashCodeBytes = Utility.Converter.GetBytes(hashCode);
                                 int zipLength = binaryReader.ReadInt32();
                                 int zipHashCode = binaryReader.ReadInt32();
 
@@ -253,13 +249,13 @@ namespace GameFramework.Resource
                                 string[] assetNames = new string[assetNamesCount];
                                 for (int j = 0; j < assetNamesCount; j++)
                                 {
-                                    assetNames[j] = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), Utility.Converter.GetBytes(hashCode)));
+                                    assetNames[j] = m_ResourceManager.GetEncryptedString(binaryReader, hashCodeBytes);
 
                                     int dependencyAssetNamesCount = binaryReader.ReadInt32();
                                     string[] dependencyAssetNames = new string[dependencyAssetNamesCount];
                                     for (int k = 0; k < dependencyAssetNamesCount; k++)
                                     {
-                                        dependencyAssetNames[k] = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), Utility.Converter.GetBytes(hashCode)));
+                                        dependencyAssetNames[k] = m_ResourceManager.GetEncryptedString(binaryReader, hashCodeBytes);
                                     }
 
                                     if (variants[i] == null || variants[i] == m_CurrentVariant)
@@ -285,7 +281,7 @@ namespace GameFramework.Resource
                             int resourceGroupCount = binaryReader.ReadInt32();
                             for (int i = 0; i < resourceGroupCount; i++)
                             {
-                                string groupName = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
+                                string groupName = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
                                 ResourceGroup resourceGroup = m_ResourceManager.GetResourceGroup(groupName);
                                 int groupResourceCount = binaryReader.ReadInt32();
                                 for (int j = 0; j < groupResourceCount; j++)
@@ -369,14 +365,8 @@ namespace GameFramework.Resource
                             int resourceCount = binaryReader.ReadInt32();
                             for (int i = 0; i < resourceCount; i++)
                             {
-                                string name = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
-
-                                string variant = null;
-                                byte variantLength = binaryReader.ReadByte();
-                                if (variantLength > 0)
-                                {
-                                    variant = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(variantLength), encryptBytes));
-                                }
+                                string name = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
+                                string variant = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
 
                                 LoadType loadType = (LoadType)binaryReader.ReadByte();
                                 int length = binaryReader.ReadInt32();
@@ -454,14 +444,8 @@ namespace GameFramework.Resource
                             int resourceCount = binaryReader.ReadInt32();
                             for (int i = 0; i < resourceCount; i++)
                             {
-                                string name = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
-
-                                string variant = null;
-                                byte variantLength = binaryReader.ReadByte();
-                                if (variantLength > 0)
-                                {
-                                    variant = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(variantLength), encryptBytes));
-                                }
+                                string name = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
+                                string variant = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
 
                                 LoadType loadType = (LoadType)binaryReader.ReadByte();
                                 int length = binaryReader.ReadInt32();

@@ -109,7 +109,8 @@ namespace GameFramework.Resource
                         if (listVersion == 0)
                         {
                             byte[] encryptBytes = binaryReader.ReadBytes(4);
-                            applicableGameVersion = Utility.Converter.GetString(Utility.Encryption.GetSelfXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
+
+                            applicableGameVersion = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
                             internalResourceVersion = binaryReader.ReadInt32();
                         }
                         else

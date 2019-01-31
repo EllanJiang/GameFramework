@@ -9,6 +9,7 @@ using GameFramework.Download;
 using GameFramework.ObjectPool;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GameFramework.Resource
 {
@@ -31,6 +32,8 @@ namespace GameFramework.Resource
         private readonly Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
         private readonly Dictionary<string, ResourceGroup> m_ResourceGroups;
         private readonly SortedDictionary<ResourceName, ReadWriteResourceInfo> m_ReadWriteResourceInfos;
+        private readonly byte[] m_CachedBytesForEncryptedString;
+
         private ResourceIniter m_ResourceIniter;
         private VersionListProcessor m_VersionListProcessor;
         private ResourceChecker m_ResourceChecker;
@@ -66,6 +69,7 @@ namespace GameFramework.Resource
             m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>(resourceNameComparer);
             m_ResourceGroups = new Dictionary<string, ResourceGroup>();
             m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>(resourceNameComparer);
+            m_CachedBytesForEncryptedString = new byte[byte.MaxValue];
 
             m_ResourceIniter = null;
             m_VersionListProcessor = null;
@@ -1365,6 +1369,24 @@ namespace GameFramework.Resource
             m_ResourceGroups.Add(name ?? string.Empty, resourceGroup);
 
             return resourceGroup;
+        }
+
+        private string GetEncryptedString(BinaryReader binaryReader, byte[] encryptBytes)
+        {
+            int length = binaryReader.ReadByte();
+            if (length <= 0)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < length; i++)
+            {
+                m_CachedBytesForEncryptedString[i] = binaryReader.ReadByte();
+            }
+
+            Utility.Encryption.GetSelfXorBytes(m_CachedBytesForEncryptedString, encryptBytes, length);
+
+            return Utility.Converter.GetString(m_CachedBytesForEncryptedString, 0, length);
         }
 
         private void OnIniterResourceInitComplete()
