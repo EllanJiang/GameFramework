@@ -215,7 +215,6 @@
     <Compile Include="Resource\ResourceManager.ResourceChecker.CheckInfo.LocalVersionInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceChecker.CheckInfo.RemoteVersionInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceChecker.cs" />
-    <Compile Include="Resource\ResourceManager.ResourceGroup.cs" />
     <Compile Include="Resource\ResourceManager.ResourceInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceIniter.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.AssetObject.cs" />

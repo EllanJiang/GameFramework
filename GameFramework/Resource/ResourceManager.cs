@@ -27,9 +27,8 @@ namespace GameFramework.Resource
         private const string BackupFileSuffixName = ".bak";
         private const byte ReadWriteListVersionHeader = 0;
 
-        private readonly Dictionary<string, AssetInfo> m_AssetInfos;
-        private readonly Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
-        private readonly Dictionary<string, ResourceGroup> m_ResourceGroups;
+        private Dictionary<string, AssetInfo> m_AssetInfos;
+        private Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
         private readonly SortedDictionary<ResourceName, ReadWriteResourceInfo> m_ReadWriteResourceInfos;
         private readonly byte[] m_CachedBytesForEncryptedString;
 
@@ -62,11 +61,9 @@ namespace GameFramework.Resource
         /// </summary>
         public ResourceManager()
         {
-            ResourceNameComparer resourceNameComparer = new ResourceNameComparer();
-            m_AssetInfos = new Dictionary<string, AssetInfo>();
-            m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>(resourceNameComparer);
-            m_ResourceGroups = new Dictionary<string, ResourceGroup>();
-            m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>(resourceNameComparer);
+            m_AssetInfos = null;
+            m_ResourceInfos = null;
+            m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>(new ResourceNameComparer());
             m_CachedBytesForEncryptedString = new byte[byte.MaxValue];
 
             m_ResourceIniter = null;
@@ -181,7 +178,7 @@ namespace GameFramework.Resource
         {
             get
             {
-                return m_AssetInfos.Count;
+                return m_AssetInfos != null ? m_AssetInfos.Count : 0;
             }
         }
 
@@ -192,18 +189,7 @@ namespace GameFramework.Resource
         {
             get
             {
-                return m_ResourceInfos.Count;
-            }
-        }
-
-        /// <summary>
-        /// 获取资源组数量。
-        /// </summary>
-        public int ResourceGroupCount
-        {
-            get
-            {
-                return m_ResourceGroups.Count;
+                return m_ResourceInfos != null ? m_ResourceInfos.Count : 0;
             }
         }
 
@@ -547,9 +533,18 @@ namespace GameFramework.Resource
                 m_ResourceLoader = null;
             }
 
-            m_AssetInfos.Clear();
-            m_ResourceInfos.Clear();
-            m_ResourceGroups.Clear();
+            if (m_AssetInfos != null)
+            {
+                m_AssetInfos.Clear();
+                m_AssetInfos = null;
+            }
+
+            if (m_ResourceInfos != null)
+            {
+                m_ResourceInfos.Clear();
+                m_ResourceInfos = null;
+            }
+
             m_ReadWriteResourceInfos.Clear();
         }
 
@@ -1210,101 +1205,16 @@ namespace GameFramework.Resource
             m_ResourceLoader.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
         }
 
-        /// <summary>
-        /// 获取资源组是否准备完毕。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        public bool GetResourceGroupReady(string resourceGroupName)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
-            if (resourceGroup == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
-            }
-
-            return resourceGroup.Ready;
-        }
-
-        /// <summary>
-        /// 获取资源组资源数量。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        public int GetResourceGroupResourceCount(string resourceGroupName)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
-            if (resourceGroup == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
-            }
-
-            return resourceGroup.ResourceCount;
-        }
-
-        /// <summary>
-        /// 获取资源组已准备完成资源数量。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        public int GetResourceGroupReadyResourceCount(string resourceGroupName)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
-            if (resourceGroup == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
-            }
-
-            return resourceGroup.ReadyResourceCount;
-        }
-
-        /// <summary>
-        /// 获取资源组总大小。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        public int GetResourceGroupTotalLength(string resourceGroupName)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
-            if (resourceGroup == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
-            }
-
-            return resourceGroup.TotalLength;
-        }
-
-        /// <summary>
-        /// 获取资源组已准备完成总大小。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        public int GetResourceGroupTotalReadyLength(string resourceGroupName)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
-            if (resourceGroup == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
-            }
-
-            return resourceGroup.TotalReadyLength;
-        }
-
-        /// <summary>
-        /// 获取资源组准备进度。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        public float GetResourceGroupProgress(string resourceGroupName)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
-            if (resourceGroup == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
-            }
-
-            return resourceGroup.Progress;
-        }
-
         private AssetInfo? GetAssetInfo(string assetName)
         {
             if (string.IsNullOrEmpty(assetName))
             {
                 throw new GameFrameworkException("Asset name is invalid.");
+            }
+
+            if (m_AssetInfos == null)
+            {
+                return null;
             }
 
             AssetInfo assetInfo = default(AssetInfo);
@@ -1318,6 +1228,11 @@ namespace GameFramework.Resource
 
         private ResourceInfo? GetResourceInfo(ResourceName resourceName)
         {
+            if (m_ResourceInfos == null)
+            {
+                return null;
+            }
+
             ResourceInfo resourceInfo = default(ResourceInfo);
             if (m_ResourceInfos.TryGetValue(resourceName, out resourceInfo))
             {
@@ -1325,31 +1240,6 @@ namespace GameFramework.Resource
             }
 
             return null;
-        }
-
-        private ResourceGroup FindResourceGroup(string name)
-        {
-            ResourceGroup resourceGroup = null;
-            if (m_ResourceGroups.TryGetValue(name ?? string.Empty, out resourceGroup))
-            {
-                return resourceGroup;
-            }
-
-            return null;
-        }
-
-        private ResourceGroup GetResourceGroup(string name)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(name);
-            if (resourceGroup != null)
-            {
-                return resourceGroup;
-            }
-
-            resourceGroup = new ResourceGroup(m_ResourceInfos);
-            m_ResourceGroups.Add(name ?? string.Empty, resourceGroup);
-
-            return resourceGroup;
         }
 
         private string GetEncryptedString(BinaryReader binaryReader, byte[] encryptBytes)

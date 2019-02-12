@@ -81,14 +81,6 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取资源组数量。
-        /// </summary>
-        int ResourceGroupCount
-        {
-            get;
-        }
-
-        /// <summary>
         /// 获取或设置资源更新下载地址。
         /// </summary>
         string UpdatePrefixUri
@@ -463,41 +455,5 @@ namespace GameFramework.Resource
         /// <param name="unloadSceneCallbacks">卸载场景回调函数集。</param>
         /// <param name="userData">用户自定义数据。</param>
         void UnloadScene(string sceneAssetName, UnloadSceneCallbacks unloadSceneCallbacks, object userData);
-
-        /// <summary>
-        /// 获取资源组是否准备完毕。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        bool GetResourceGroupReady(string resourceGroupName);
-
-        /// <summary>
-        /// 获取资源组资源数量。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        int GetResourceGroupResourceCount(string resourceGroupName);
-
-        /// <summary>
-        /// 获取资源组已准备完成资源数量。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        int GetResourceGroupReadyResourceCount(string resourceGroupName);
-
-        /// <summary>
-        /// 获取资源组总大小。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        int GetResourceGroupTotalLength(string resourceGroupName);
-
-        /// <summary>
-        /// 获取资源组已准备完成总大小。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        int GetResourceGroupTotalReadyLength(string resourceGroupName);
-
-        /// <summary>
-        /// 获取资源组准备进度。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        float GetResourceGroupProgress(string resourceGroupName);
     }
 }

@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -92,7 +93,11 @@ namespace GameFramework.Resource
                             m_ResourceManager.m_ApplicableGameVersion = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
                             m_ResourceManager.m_InternalResourceVersion = binaryReader.ReadInt32();
 
+                            int assetCount = binaryReader.ReadInt32();
+                            m_ResourceManager.m_AssetInfos = new Dictionary<string, AssetInfo>(assetCount);
                             int resourceCount = binaryReader.ReadInt32();
+                            m_ResourceManager.m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>(resourceCount, new ResourceNameComparer());
+
                             for (int i = 0; i < resourceCount; i++)
                             {
                                 string name = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
