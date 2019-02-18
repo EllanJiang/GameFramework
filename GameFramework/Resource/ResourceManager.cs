@@ -26,6 +26,7 @@ namespace GameFramework.Resource
         private const string ResourceListFileName = "list";
         private const string BackupFileSuffixName = ".bak";
         private const byte ReadWriteListVersionHeader = 0;
+        private const int OneMegaBytes = 1024 * 1024;
 
         private Dictionary<string, AssetInfo> m_AssetInfos;
         private Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
@@ -46,6 +47,8 @@ namespace GameFramework.Resource
         private string m_UpdatePrefixUri;
         private string m_ApplicableGameVersion;
         private int m_InternalResourceVersion;
+        private byte[] m_UpdateFileCache;
+        private Stream m_DecompressCache;
         private DecryptResourceCallback m_DecryptResourceCallback;
         private InitResourcesCompleteCallback m_InitResourcesCompleteCallback;
         private UpdateVersionListCallbacks m_UpdateVersionListCallbacks;
@@ -81,6 +84,8 @@ namespace GameFramework.Resource
             m_UpdatePrefixUri = null;
             m_ApplicableGameVersion = null;
             m_InternalResourceVersion = 0;
+            m_UpdateFileCache = null;
+            m_DecompressCache = null;
             m_DecryptResourceCallback = null;
             m_InitResourcesCompleteCallback = null;
             m_UpdateVersionListCallbacks = null;
@@ -205,6 +210,51 @@ namespace GameFramework.Resource
             set
             {
                 m_UpdatePrefixUri = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置更新文件缓存大小。
+        /// </summary>
+        public int UpdateFileCacheLength
+        {
+            get
+            {
+                return m_UpdateFileCache != null ? m_UpdateFileCache.Length : 0;
+            }
+            set
+            {
+                if (m_ResourceUpdater == null)
+                {
+                    throw new GameFrameworkException("You can not use UpdateFileCacheLength at this time.");
+                }
+
+                if (m_UpdateFileCache != null && m_UpdateFileCache.Length == value)
+                {
+                    return;
+                }
+
+                m_UpdateFileCache = new byte[value];
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置每下载多少字节的资源，刷新一次资源列表。
+        /// </summary>
+        public int GenerateReadWriteListLength
+        {
+            get
+            {
+                return m_ResourceUpdater != null ? m_ResourceUpdater.GenerateReadWriteListLength : 0;
+            }
+            set
+            {
+                if (m_ResourceUpdater == null)
+                {
+                    throw new GameFrameworkException("You can not use GenerateReadWriteListLength at this time.");
+                }
+
+                m_ResourceUpdater.GenerateReadWriteListLength = value;
             }
         }
 
@@ -525,6 +575,12 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
+                m_UpdateFileCache = null;
+                if (m_DecompressCache != null)
+                {
+                    m_DecompressCache.Dispose();
+                    m_DecompressCache = null;
+                }
             }
 
             if (m_ResourceLoader != null)
@@ -1312,6 +1368,12 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
+                m_UpdateFileCache = null;
+                if (m_DecompressCache != null)
+                {
+                    m_DecompressCache.Dispose();
+                    m_DecompressCache = null;
+                }
             }
 
             m_CheckResourcesCompleteCallback(updateCount > 0, removedCount, updateCount, updateTotalLength, updateTotalZipLength);
@@ -1359,6 +1421,12 @@ namespace GameFramework.Resource
             m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
             m_ResourceUpdater.Shutdown();
             m_ResourceUpdater = null;
+            m_UpdateFileCache = null;
+            if (m_DecompressCache != null)
+            {
+                m_DecompressCache.Dispose();
+                m_DecompressCache = null;
+            }
 
             m_UpdateResourcesCompleteCallback();
             m_UpdateResourcesCompleteCallback = null;

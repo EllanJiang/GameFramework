@@ -26,6 +26,8 @@ namespace GameFramework.Resource
             private bool m_CheckResourcesComplete;
             private bool m_UpdateAllowed;
             private bool m_UpdateComplete;
+            private int m_GenerateReadWriteListLength;
+            private int m_CurrentGenerateReadWriteListLength;
             private int m_RetryCount;
             private int m_UpdatingCount;
 
@@ -47,6 +49,8 @@ namespace GameFramework.Resource
                 m_CheckResourcesComplete = false;
                 m_UpdateAllowed = false;
                 m_UpdateComplete = false;
+                m_GenerateReadWriteListLength = 0;
+                m_CurrentGenerateReadWriteListLength = 0;
                 m_RetryCount = 3;
                 m_UpdatingCount = 0;
 
@@ -55,6 +59,21 @@ namespace GameFramework.Resource
                 ResourceUpdateSuccess = null;
                 ResourceUpdateFailure = null;
                 ResourceUpdateAllComplete = null;
+            }
+
+            /// <summary>
+            /// 获取或设置每下载多少字节的资源，刷新一次资源列表。
+            /// </summary>
+            public int GenerateReadWriteListLength
+            {
+                get
+                {
+                    return m_GenerateReadWriteListLength;
+                }
+                set
+                {
+                    m_GenerateReadWriteListLength = value;
+                }
             }
 
             /// <summary>
@@ -363,65 +382,99 @@ namespace GameFramework.Resource
                     return;
                 }
 
-                bool zip = (updateInfo.Length != updateInfo.ZipLength || updateInfo.HashCode != updateInfo.ZipHashCode);
-                byte[] bytes = File.ReadAllBytes(e.DownloadPath);
-
-                if (updateInfo.ZipLength != bytes.Length)
+                using (FileStream fileStream = new FileStream(e.DownloadPath, FileMode.Open, FileAccess.ReadWrite))
                 {
-                    string errorMessage = Utility.Text.Format("Zip length error, need '{0}', downloaded '{1}'.", updateInfo.ZipLength.ToString(), bytes.Length.ToString());
-                    OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
-                    return;
-                }
+                    bool zip = (updateInfo.Length != updateInfo.ZipLength || updateInfo.HashCode != updateInfo.ZipHashCode);
 
-                if (!zip)
-                {
-                    byte[] hashBytes = Utility.Converter.GetBytes(updateInfo.HashCode);
-                    if (updateInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt)
+                    int length = (int)fileStream.Length;
+                    if (length != updateInfo.ZipLength)
                     {
-                        Utility.Encryption.GetQuickSelfXorBytes(bytes, hashBytes);
-                    }
-                    else if (updateInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt)
-                    {
-                        Utility.Encryption.GetSelfXorBytes(bytes, hashBytes);
-                    }
-                }
-
-                int hashCode = Utility.Converter.GetInt32(Utility.Verifier.GetCrc32(bytes));
-                if (updateInfo.ZipHashCode != hashCode)
-                {
-                    string errorMessage = Utility.Text.Format("Zip hash code error, need '{0}', downloaded '{1}'.", updateInfo.ZipHashCode.ToString("X8"), hashCode.ToString("X8"));
-                    OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
-                    return;
-                }
-
-                if (zip)
-                {
-                    try
-                    {
-                        bytes = Utility.Zip.Decompress(bytes);
-                    }
-                    catch (Exception exception)
-                    {
-                        string errorMessage = Utility.Text.Format("Unable to decompress from file '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
+                        string errorMessage = Utility.Text.Format("Zip length error, need '{0}', downloaded '{1}'.", updateInfo.ZipLength.ToString(), length.ToString());
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;
                     }
 
-                    if (bytes == null)
+                    if (m_ResourceManager.m_UpdateFileCache == null || m_ResourceManager.m_UpdateFileCache.Length < length)
                     {
-                        string errorMessage = Utility.Text.Format("Unable to decompress from file '{0}'.", e.DownloadPath);
+                        m_ResourceManager.m_UpdateFileCache = new byte[(length / OneMegaBytes + 1) * OneMegaBytes];
+                    }
+
+                    int offset = 0;
+                    int count = length;
+                    while (count > 0)
+                    {
+                        int bytesRead = fileStream.Read(m_ResourceManager.m_UpdateFileCache, offset, count);
+                        if (bytesRead <= 0)
+                        {
+                            throw new GameFrameworkException(Utility.Text.Format("Unknown error when load file '{0}'.", e.DownloadPath));
+                        }
+
+                        offset += bytesRead;
+                        count -= bytesRead;
+                    }
+
+                    if (!zip)
+                    {
+                        byte[] hashBytes = Utility.Converter.GetBytes(updateInfo.HashCode);
+                        if (updateInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt)
+                        {
+                            Utility.Encryption.GetQuickSelfXorBytes(m_ResourceManager.m_UpdateFileCache, hashBytes);
+                        }
+                        else if (updateInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt)
+                        {
+                            Utility.Encryption.GetSelfXorBytes(m_ResourceManager.m_UpdateFileCache, hashBytes, length);
+                        }
+                    }
+
+                    int hashCode = Utility.Converter.GetInt32(Utility.Verifier.GetCrc32(m_ResourceManager.m_UpdateFileCache, 0, length));
+                    if (hashCode != updateInfo.ZipHashCode)
+                    {
+                        string errorMessage = Utility.Text.Format("Zip hash code error, need '{0}', downloaded '{1}'.", updateInfo.ZipHashCode.ToString("X8"), hashCode.ToString("X8"));
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;
                     }
 
-                    if (updateInfo.Length != bytes.Length)
+                    if (zip)
                     {
-                        string errorMessage = Utility.Text.Format("Resource length error, need '{0}', downloaded '{1}'.", updateInfo.Length.ToString(), bytes.Length.ToString());
-                        OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
-                        return;
-                    }
+                        try
+                        {
+                            if (m_ResourceManager.m_DecompressCache == null)
+                            {
+                                m_ResourceManager.m_DecompressCache = new MemoryStream();
+                            }
 
-                    File.WriteAllBytes(e.DownloadPath, bytes);
+                            m_ResourceManager.m_DecompressCache.Position = 0L;
+                            m_ResourceManager.m_DecompressCache.SetLength(0L);
+                            if (!Utility.Zip.Decompress(m_ResourceManager.m_UpdateFileCache, 0, length, m_ResourceManager.m_DecompressCache))
+                            {
+                                string errorMessage = Utility.Text.Format("Unable to decompress from file '{0}'.", e.DownloadPath);
+                                OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
+                                return;
+                            }
+
+                            if (m_ResourceManager.m_DecompressCache.Length != updateInfo.Length)
+                            {
+                                string errorMessage = Utility.Text.Format("Resource length error, need '{0}', downloaded '{1}'.", updateInfo.Length.ToString(), m_ResourceManager.m_DecompressCache.Length.ToString());
+                                OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
+                                return;
+                            }
+
+                            fileStream.Position = 0L;
+                            fileStream.SetLength(0L);
+                            m_ResourceManager.m_DecompressCache.Position = 0L;
+                            int bytesRead = 0;
+                            while ((bytesRead = m_ResourceManager.m_DecompressCache.Read(m_ResourceManager.m_UpdateFileCache, 0, m_ResourceManager.m_UpdateFileCache.Length)) > 0)
+                            {
+                                fileStream.Write(m_ResourceManager.m_UpdateFileCache, 0, bytesRead);
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            string errorMessage = Utility.Text.Format("Unable to decompress from file '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
+                            OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
+                            return;
+                        }
+                    }
                 }
 
                 m_UpdatingCount--;
@@ -440,7 +493,12 @@ namespace GameFramework.Resource
 
                 m_ResourceManager.m_ReadWriteResourceInfos.Add(updateInfo.ResourceName, new ReadWriteResourceInfo(updateInfo.LoadType, updateInfo.Length, updateInfo.HashCode));
 
-                GenerateReadWriteList();
+                m_CurrentGenerateReadWriteListLength += updateInfo.ZipLength;
+                if (m_UpdatingCount <= 0 || m_CurrentGenerateReadWriteListLength >= m_GenerateReadWriteListLength)
+                {
+                    m_CurrentGenerateReadWriteListLength = 0;
+                    GenerateReadWriteList();
+                }
 
                 if (ResourceUpdateSuccess != null)
                 {
