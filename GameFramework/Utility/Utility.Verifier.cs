@@ -7,7 +7,6 @@
 
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace GameFramework
 {
@@ -18,7 +17,8 @@ namespace GameFramework
         /// </summary>
         public static partial class Verifier
         {
-            private static readonly byte[] Zero = new byte[] { 0, 0, 0, 0 };
+            private static readonly Crc32 s_AlgorithmCrc32 = new Crc32();
+            private static readonly MD5 s_AlgorithmMD5 = new MD5CryptoServiceProvider();
 
             /// <summary>
             /// 计算二进制流的 CRC32。
@@ -27,39 +27,29 @@ namespace GameFramework
             /// <returns>计算后的 CRC32。</returns>
             public static byte[] GetCrc32(byte[] bytes)
             {
-                if (bytes == null)
-                {
-                    return Zero;
-                }
-
-                using (MemoryStream memoryStream = new MemoryStream(bytes))
-                {
-                    Crc32 calculator = new Crc32();
-                    byte[] result = calculator.ComputeHash(memoryStream);
-                    calculator.Clear();
-                    return result;
-                }
+                return s_AlgorithmCrc32.ComputeHash(bytes);
             }
 
             /// <summary>
-            /// 计算指定文件的 CRC32。
+            /// 计算二进制流的 CRC32。
             /// </summary>
-            /// <param name="fileName">指定文件的完全限定名称。</param>
+            /// <param name="bytes">指定的二进制流。</param>
+            /// <param name="offset">二进制流的偏移。</param>
+            /// <param name="length">二进制流的长度。</param>
             /// <returns>计算后的 CRC32。</returns>
-            public static byte[] GetCrc32(string fileName)
+            public static byte[] GetCrc32(byte[] bytes, int offset, int length)
             {
-                if (!File.Exists(fileName))
-                {
-                    return Zero;
-                }
+                return s_AlgorithmCrc32.ComputeHash(bytes, offset, length);
+            }
 
-                using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-                {
-                    Crc32 calculator = new Crc32();
-                    byte[] result = calculator.ComputeHash(fileStream);
-                    calculator.Clear();
-                    return result;
-                }
+            /// <summary>
+            /// 计算二进制流的 CRC32。
+            /// </summary>
+            /// <param name="stream">指定的二进制流。</param>
+            /// <returns>计算后的 CRC32。</returns>
+            public static byte[] GetCrc32(Stream stream)
+            {
+                return s_AlgorithmCrc32.ComputeHash(stream);
             }
 
             /// <summary>
@@ -67,17 +57,31 @@ namespace GameFramework
             /// </summary>
             /// <param name="bytes">指定的二进制流。</param>
             /// <returns>计算后的 MD5。</returns>
-            public static string GetMD5(byte[] bytes)
+            public static byte[] GetMD5(byte[] bytes)
             {
-                MD5 alg = new MD5CryptoServiceProvider();
-                byte[] data = alg.ComputeHash(bytes);
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < data.Length; i++)
-                {
-                    stringBuilder.Append(data[i].ToString("x2"));
-                }
+                return s_AlgorithmMD5.ComputeHash(bytes);
+            }
 
-                return stringBuilder.ToString();
+            /// <summary>
+            /// 计算二进制流的 MD5。
+            /// </summary>
+            /// <param name="bytes">指定的二进制流。</param>
+            /// <param name="offset">二进制流的偏移。</param>
+            /// <param name="length">二进制流的长度。</param>
+            /// <returns>计算后的 MD5。</returns>
+            public static byte[] GetMD5(byte[] bytes, int offset, int length)
+            {
+                return s_AlgorithmMD5.ComputeHash(bytes, offset, length);
+            }
+
+            /// <summary>
+            /// 计算二进制流的 MD5。
+            /// </summary>
+            /// <param name="stream">指定的二进制流。</param>
+            /// <returns>计算后的 MD5。</returns>
+            public static byte[] GetMD5(Stream stream)
+            {
+                return s_AlgorithmMD5.ComputeHash(stream);
             }
         }
     }

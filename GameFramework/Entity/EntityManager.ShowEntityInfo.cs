@@ -7,7 +7,7 @@
 
 namespace GameFramework.Entity
 {
-    internal partial class EntityManager
+    internal sealed partial class EntityManager : GameFrameworkModule, IEntityManager
     {
         private sealed class ShowEntityInfo
         {

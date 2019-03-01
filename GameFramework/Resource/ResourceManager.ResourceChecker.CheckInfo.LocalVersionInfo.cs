@@ -7,11 +7,11 @@
 
 namespace GameFramework.Resource
 {
-    internal partial class ResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
-        private partial class ResourceChecker
+        private sealed partial class ResourceChecker
         {
-            private partial class CheckInfo
+            private sealed partial class CheckInfo
             {
                 /// <summary>
                 /// 本地资源状态信息。

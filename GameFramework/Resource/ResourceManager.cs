@@ -9,6 +9,7 @@ using GameFramework.Download;
 using GameFramework.ObjectPool;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GameFramework.Resource
 {
@@ -25,12 +26,13 @@ namespace GameFramework.Resource
         private const string ResourceListFileName = "list";
         private const string BackupFileSuffixName = ".bak";
         private const byte ReadWriteListVersionHeader = 0;
+        private const int OneMegaBytes = 1024 * 1024;
 
-        private readonly Dictionary<string, AssetInfo> m_AssetInfos;
-        private readonly Dictionary<string, AssetDependencyInfo> m_AssetDependencyInfos;
-        private readonly Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
-        private readonly Dictionary<string, ResourceGroup> m_ResourceGroups;
+        private Dictionary<string, AssetInfo> m_AssetInfos;
+        private Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
         private readonly SortedDictionary<ResourceName, ReadWriteResourceInfo> m_ReadWriteResourceInfos;
+        private readonly byte[] m_CachedBytesForEncryptedString;
+
         private ResourceIniter m_ResourceIniter;
         private VersionListProcessor m_VersionListProcessor;
         private ResourceChecker m_ResourceChecker;
@@ -45,6 +47,8 @@ namespace GameFramework.Resource
         private string m_UpdatePrefixUri;
         private string m_ApplicableGameVersion;
         private int m_InternalResourceVersion;
+        private byte[] m_UpdateFileCache;
+        private Stream m_DecompressCache;
         private DecryptResourceCallback m_DecryptResourceCallback;
         private InitResourcesCompleteCallback m_InitResourcesCompleteCallback;
         private UpdateVersionListCallbacks m_UpdateVersionListCallbacks;
@@ -60,12 +64,10 @@ namespace GameFramework.Resource
         /// </summary>
         public ResourceManager()
         {
-            ResourceNameComparer resourceNameComparer = new ResourceNameComparer();
-            m_AssetInfos = new Dictionary<string, AssetInfo>();
-            m_AssetDependencyInfos = new Dictionary<string, AssetDependencyInfo>();
-            m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>(resourceNameComparer);
-            m_ResourceGroups = new Dictionary<string, ResourceGroup>();
-            m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>(resourceNameComparer);
+            m_AssetInfos = null;
+            m_ResourceInfos = null;
+            m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>(new ResourceNameComparer());
+            m_CachedBytesForEncryptedString = new byte[byte.MaxValue];
 
             m_ResourceIniter = null;
             m_VersionListProcessor = null;
@@ -82,6 +84,8 @@ namespace GameFramework.Resource
             m_UpdatePrefixUri = null;
             m_ApplicableGameVersion = null;
             m_InternalResourceVersion = 0;
+            m_UpdateFileCache = null;
+            m_DecompressCache = null;
             m_DecryptResourceCallback = null;
             m_InitResourcesCompleteCallback = null;
             m_UpdateVersionListCallbacks = null;
@@ -179,7 +183,7 @@ namespace GameFramework.Resource
         {
             get
             {
-                return m_AssetInfos.Count;
+                return m_AssetInfos != null ? m_AssetInfos.Count : 0;
             }
         }
 
@@ -190,18 +194,7 @@ namespace GameFramework.Resource
         {
             get
             {
-                return m_ResourceInfos.Count;
-            }
-        }
-
-        /// <summary>
-        /// 获取资源组数量。
-        /// </summary>
-        public int ResourceGroupCount
-        {
-            get
-            {
-                return m_ResourceGroups.Count;
+                return m_ResourceInfos != null ? m_ResourceInfos.Count : 0;
             }
         }
 
@@ -217,6 +210,51 @@ namespace GameFramework.Resource
             set
             {
                 m_UpdatePrefixUri = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置更新文件缓存大小。
+        /// </summary>
+        public int UpdateFileCacheLength
+        {
+            get
+            {
+                return m_UpdateFileCache != null ? m_UpdateFileCache.Length : 0;
+            }
+            set
+            {
+                if (m_ResourceUpdater == null)
+                {
+                    throw new GameFrameworkException("You can not use UpdateFileCacheLength at this time.");
+                }
+
+                if (m_UpdateFileCache != null && m_UpdateFileCache.Length == value)
+                {
+                    return;
+                }
+
+                m_UpdateFileCache = new byte[value];
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置每下载多少字节的资源，刷新一次资源列表。
+        /// </summary>
+        public int GenerateReadWriteListLength
+        {
+            get
+            {
+                return m_ResourceUpdater != null ? m_ResourceUpdater.GenerateReadWriteListLength : 0;
+            }
+            set
+            {
+                if (m_ResourceUpdater == null)
+                {
+                    throw new GameFrameworkException("You can not use GenerateReadWriteListLength at this time.");
+                }
+
+                m_ResourceUpdater.GenerateReadWriteListLength = value;
             }
         }
 
@@ -537,6 +575,12 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
+                m_UpdateFileCache = null;
+                if (m_DecompressCache != null)
+                {
+                    m_DecompressCache.Dispose();
+                    m_DecompressCache = null;
+                }
             }
 
             if (m_ResourceLoader != null)
@@ -545,10 +589,18 @@ namespace GameFramework.Resource
                 m_ResourceLoader = null;
             }
 
-            m_AssetInfos.Clear();
-            m_AssetDependencyInfos.Clear();
-            m_ResourceInfos.Clear();
-            m_ResourceGroups.Clear();
+            if (m_AssetInfos != null)
+            {
+                m_AssetInfos.Clear();
+                m_AssetInfos = null;
+            }
+
+            if (m_ResourceInfos != null)
+            {
+                m_ResourceInfos.Clear();
+                m_ResourceInfos = null;
+            }
+
             m_ReadWriteResourceInfos.Clear();
         }
 
@@ -1209,101 +1261,16 @@ namespace GameFramework.Resource
             m_ResourceLoader.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
         }
 
-        /// <summary>
-        /// 获取资源组是否准备完毕。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        public bool GetResourceGroupReady(string resourceGroupName)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
-            if (resourceGroup == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
-            }
-
-            return resourceGroup.Ready;
-        }
-
-        /// <summary>
-        /// 获取资源组资源数量。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        public int GetResourceGroupResourceCount(string resourceGroupName)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
-            if (resourceGroup == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
-            }
-
-            return resourceGroup.ResourceCount;
-        }
-
-        /// <summary>
-        /// 获取资源组已准备完成资源数量。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        public int GetResourceGroupReadyResourceCount(string resourceGroupName)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
-            if (resourceGroup == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
-            }
-
-            return resourceGroup.ReadyResourceCount;
-        }
-
-        /// <summary>
-        /// 获取资源组总大小。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        public int GetResourceGroupTotalLength(string resourceGroupName)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
-            if (resourceGroup == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
-            }
-
-            return resourceGroup.TotalLength;
-        }
-
-        /// <summary>
-        /// 获取资源组已准备完成总大小。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        public int GetResourceGroupTotalReadyLength(string resourceGroupName)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
-            if (resourceGroup == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
-            }
-
-            return resourceGroup.TotalReadyLength;
-        }
-
-        /// <summary>
-        /// 获取资源组准备进度。
-        /// </summary>
-        /// <param name="resourceGroupName">要检查的资源组名称。</param>
-        public float GetResourceGroupProgress(string resourceGroupName)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(resourceGroupName);
-            if (resourceGroup == null)
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
-            }
-
-            return resourceGroup.Progress;
-        }
-
         private AssetInfo? GetAssetInfo(string assetName)
         {
             if (string.IsNullOrEmpty(assetName))
             {
                 throw new GameFrameworkException("Asset name is invalid.");
+            }
+
+            if (m_AssetInfos == null)
+            {
+                return null;
             }
 
             AssetInfo assetInfo = default(AssetInfo);
@@ -1315,24 +1282,13 @@ namespace GameFramework.Resource
             return null;
         }
 
-        private AssetDependencyInfo? GetAssetDependencyInfo(string assetName)
-        {
-            if (string.IsNullOrEmpty(assetName))
-            {
-                throw new GameFrameworkException("Asset name is invalid.");
-            }
-
-            AssetDependencyInfo assetDependencyInfo = default(AssetDependencyInfo);
-            if (m_AssetDependencyInfos.TryGetValue(assetName, out assetDependencyInfo))
-            {
-                return assetDependencyInfo;
-            }
-
-            return null;
-        }
-
         private ResourceInfo? GetResourceInfo(ResourceName resourceName)
         {
+            if (m_ResourceInfos == null)
+            {
+                return null;
+            }
+
             ResourceInfo resourceInfo = default(ResourceInfo);
             if (m_ResourceInfos.TryGetValue(resourceName, out resourceInfo))
             {
@@ -1342,29 +1298,22 @@ namespace GameFramework.Resource
             return null;
         }
 
-        private ResourceGroup FindResourceGroup(string name)
+        private string GetEncryptedString(BinaryReader binaryReader, byte[] encryptBytes)
         {
-            ResourceGroup resourceGroup = null;
-            if (m_ResourceGroups.TryGetValue(name ?? string.Empty, out resourceGroup))
+            int length = binaryReader.ReadByte();
+            if (length <= 0)
             {
-                return resourceGroup;
+                return null;
             }
 
-            return null;
-        }
-
-        private ResourceGroup GetResourceGroup(string name)
-        {
-            ResourceGroup resourceGroup = FindResourceGroup(name);
-            if (resourceGroup != null)
+            for (int i = 0; i < length; i++)
             {
-                return resourceGroup;
+                m_CachedBytesForEncryptedString[i] = binaryReader.ReadByte();
             }
 
-            resourceGroup = new ResourceGroup(m_ResourceInfos);
-            m_ResourceGroups.Add(name ?? string.Empty, resourceGroup);
+            Utility.Encryption.GetSelfXorBytes(m_CachedBytesForEncryptedString, encryptBytes, length);
 
-            return resourceGroup;
+            return Utility.Converter.GetString(m_CachedBytesForEncryptedString, 0, length);
         }
 
         private void OnIniterResourceInitComplete()
@@ -1395,7 +1344,7 @@ namespace GameFramework.Resource
             m_ResourceUpdater.AddResourceUpdate(resourceName, loadType, length, hashCode, zipLength, zipHashCode, Utility.Path.GetCombinePath(m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(resourceName.FullName)), Utility.Path.GetRemotePath(m_UpdatePrefixUri, Utility.Path.GetResourceNameWithCrc32AndSuffix(resourceName.FullName, hashCode)), 0);
         }
 
-        private void OnCheckerResourceCheckComplete(int removedCount, int updateCount, int updateTotalLength, int updateTotalZipLength)
+        private void OnCheckerResourceCheckComplete(int removedCount, int updateCount, long updateTotalLength, long updateTotalZipLength)
         {
             m_VersionListProcessor.VersionListUpdateSuccess -= OnVersionListProcessorUpdateSuccess;
             m_VersionListProcessor.VersionListUpdateFailure -= OnVersionListProcessorUpdateFailure;
@@ -1419,6 +1368,12 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
+                m_UpdateFileCache = null;
+                if (m_DecompressCache != null)
+                {
+                    m_DecompressCache.Dispose();
+                    m_DecompressCache = null;
+                }
             }
 
             m_CheckResourcesCompleteCallback(updateCount > 0, removedCount, updateCount, updateTotalLength, updateTotalZipLength);
@@ -1466,6 +1421,12 @@ namespace GameFramework.Resource
             m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
             m_ResourceUpdater.Shutdown();
             m_ResourceUpdater = null;
+            m_UpdateFileCache = null;
+            if (m_DecompressCache != null)
+            {
+                m_DecompressCache.Dispose();
+                m_DecompressCache = null;
+            }
 
             m_UpdateResourcesCompleteCallback();
             m_UpdateResourcesCompleteCallback = null;

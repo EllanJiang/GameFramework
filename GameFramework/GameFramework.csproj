@@ -22,6 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\GameFramework.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\GameFramework.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -204,7 +206,6 @@
     <Compile Include="Resource\LoadSceneFailureCallback.cs" />
     <Compile Include="Resource\LoadSceneSuccessCallback.cs" />
     <Compile Include="Resource\LoadSceneUpdateCallback.cs" />
-    <Compile Include="Resource\ResourceManager.AssetDependencyInfo.cs" />
     <Compile Include="Resource\ResourceManager.AssetInfo.cs" />
     <Compile Include="Resource\ResourceManager.cs" />
     <Compile Include="Resource\ResourceManager.LoadType.cs" />
@@ -214,7 +215,6 @@
     <Compile Include="Resource\ResourceManager.ResourceChecker.CheckInfo.LocalVersionInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceChecker.CheckInfo.RemoteVersionInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceChecker.cs" />
-    <Compile Include="Resource\ResourceManager.ResourceGroup.cs" />
     <Compile Include="Resource\ResourceManager.ResourceInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceIniter.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.AssetObject.cs" />

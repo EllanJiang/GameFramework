@@ -7,7 +7,7 @@
 
 namespace GameFramework.WebRequest
 {
-    internal partial class WebRequestManager
+    internal sealed partial class WebRequestManager : GameFrameworkModule, IWebRequestManager
     {
         /// <summary>
         /// Web 请求任务。

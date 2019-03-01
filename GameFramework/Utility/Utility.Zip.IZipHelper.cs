@@ -5,6 +5,8 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System.IO;
+
 namespace GameFramework
 {
     public static partial class Utility
@@ -19,16 +21,22 @@ namespace GameFramework
                 /// <summary>
                 /// 压缩数据。
                 /// </summary>
-                /// <param name="bytes">要压缩的数据。</param>
-                /// <returns>压缩后的数据。</returns>
-                byte[] Compress(byte[] bytes);
+                /// <param name="bytes">要压缩的数据的二进制流。</param>
+                /// <param name="offset">要压缩的数据的二进制流的偏移。</param>
+                /// <param name="length">要压缩的数据的二进制流的长度。</param>
+                /// <param name="compressedStream">压缩后的数据的二进制流。</param>
+                /// <returns>是否压缩数据成功。</returns>
+                bool Compress(byte[] bytes, int offset, int length, Stream compressedStream);
 
                 /// <summary>
                 /// 解压缩数据。
                 /// </summary>
-                /// <param name="bytes">要解压缩的数据。</param>
-                /// <returns>解压缩后的数据。</returns>
-                byte[] Decompress(byte[] bytes);
+                /// <param name="bytes">要解压缩的数据的二进制流。</param>
+                /// <param name="offset">要解压缩的数据的二进制流的偏移。</param>
+                /// <param name="length">要解压缩的数据的二进制流的长度。</param>
+                /// <param name="decompressedStream">解压缩后的数据的二进制流。</param>
+                /// <returns>是否解压缩数据成功。</returns>
+                bool Decompress(byte[] bytes, int offset, int length, Stream decompressedStream);
             }
         }
     }

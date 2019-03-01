@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace GameFramework.UI
 {
-    internal partial class UIManager
+    internal sealed partial class UIManager : GameFrameworkModule, IUIManager
     {
         /// <summary>
         /// 界面组。

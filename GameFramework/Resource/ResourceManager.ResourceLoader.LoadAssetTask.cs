@@ -9,16 +9,16 @@ using System;
 
 namespace GameFramework.Resource
 {
-    internal partial class ResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
-        private partial class ResourceLoader
+        private sealed partial class ResourceLoader
         {
             private sealed class LoadAssetTask : LoadResourceTaskBase
             {
                 private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
 
-                public LoadAssetTask(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
-                    : base(assetName, assetType, priority, resourceInfo, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, userData)
+                public LoadAssetTask(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
+                    : base(assetName, assetType, priority, resourceInfo, dependencyAssetNames, userData)
                 {
                     m_LoadAssetCallbacks = loadAssetCallbacks;
                 }
@@ -61,9 +61,9 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public override void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset, object dependencyResource)
+                public override void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset)
                 {
-                    base.OnLoadDependencyAsset(agent, dependencyAssetName, dependencyAsset, dependencyResource);
+                    base.OnLoadDependencyAsset(agent, dependencyAssetName, dependencyAsset);
                     if (m_LoadAssetCallbacks.LoadAssetDependencyAssetCallback != null)
                     {
                         m_LoadAssetCallbacks.LoadAssetDependencyAssetCallback(AssetName, dependencyAssetName, LoadedDependencyAssetCount, TotalDependencyAssetCount, UserData);

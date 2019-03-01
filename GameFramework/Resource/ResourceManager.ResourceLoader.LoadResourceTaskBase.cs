@@ -10,9 +10,9 @@ using System.Collections.Generic;
 
 namespace GameFramework.Resource
 {
-    internal partial class ResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
-        private partial class ResourceLoader
+        private sealed partial class ResourceLoader
         {
             private abstract class LoadResourceTaskBase : ITask
             {
@@ -24,17 +24,14 @@ namespace GameFramework.Resource
                 private readonly string m_AssetName;
                 private readonly Type m_AssetType;
                 private readonly ResourceInfo m_ResourceInfo;
-                private readonly string m_ResourceChildName;
                 private readonly string[] m_DependencyAssetNames;
-                private readonly string[] m_ScatteredDependencyAssetNames;
                 private readonly object m_UserData;
                 private readonly List<object> m_DependencyAssets;
-                private readonly List<object> m_DependencyResources;
                 private ResourceObject m_ResourceObject;
                 private DateTime m_StartTime;
                 private int m_TotalDependencyAssetCount;
 
-                public LoadResourceTaskBase(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, object userData)
+                public LoadResourceTaskBase(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, object userData)
                 {
                     m_SerialId = s_Serial++;
                     m_Priority = priority;
@@ -42,12 +39,9 @@ namespace GameFramework.Resource
                     m_AssetName = assetName;
                     m_AssetType = assetType;
                     m_ResourceInfo = resourceInfo;
-                    m_ResourceChildName = resourceChildName;
                     m_DependencyAssetNames = dependencyAssetNames;
-                    m_ScatteredDependencyAssetNames = scatteredDependencyAssetNames;
                     m_UserData = userData;
                     m_DependencyAssets = new List<object>();
-                    m_DependencyResources = new List<object>();
                     m_ResourceObject = null;
                     m_StartTime = default(DateTime);
                     m_TotalDependencyAssetCount = 0;
@@ -102,14 +96,6 @@ namespace GameFramework.Resource
                     get
                     {
                         return m_ResourceInfo;
-                    }
-                }
-
-                public string ResourceChildName
-                {
-                    get
-                    {
-                        return m_ResourceChildName;
                     }
                 }
 
@@ -171,25 +157,15 @@ namespace GameFramework.Resource
                     return m_DependencyAssetNames;
                 }
 
-                public string[] GetScatteredDependencyAssetNames()
-                {
-                    return m_ScatteredDependencyAssetNames;
-                }
-
                 public object[] GetDependencyAssets()
                 {
                     return m_DependencyAssets.ToArray();
                 }
 
-                public List<object> GetDependencyResources()
-                {
-                    return m_DependencyResources;
-                }
-
                 public void LoadMain(LoadResourceAgent agent, ResourceObject resourceObject)
                 {
                     m_ResourceObject = resourceObject;
-                    agent.Helper.LoadAsset(resourceObject.Target, ResourceChildName, AssetType, IsScene);
+                    agent.Helper.LoadAsset(resourceObject.Target, AssetName, AssetType, IsScene);
                 }
 
                 public virtual void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)
@@ -207,13 +183,9 @@ namespace GameFramework.Resource
 
                 }
 
-                public virtual void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset, object dependencyResource)
+                public virtual void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset)
                 {
                     m_DependencyAssets.Add(dependencyAsset);
-                    if (dependencyResource != null && !m_DependencyResources.Contains(dependencyResource))
-                    {
-                        m_DependencyResources.Add(dependencyResource);
-                    }
                 }
             }
         }

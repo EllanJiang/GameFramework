@@ -7,16 +7,16 @@
 
 namespace GameFramework.Resource
 {
-    internal partial class ResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
-        private partial class ResourceLoader
+        private sealed partial class ResourceLoader
         {
             private sealed class LoadSceneTask : LoadResourceTaskBase
             {
                 private readonly LoadSceneCallbacks m_LoadSceneCallbacks;
 
-                public LoadSceneTask(string sceneAssetName, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, LoadSceneCallbacks loadSceneCallbacks, object userData)
-                    : base(sceneAssetName, null, priority, resourceInfo, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, userData)
+                public LoadSceneTask(string sceneAssetName, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadSceneCallbacks loadSceneCallbacks, object userData)
+                    : base(sceneAssetName, null, priority, resourceInfo, dependencyAssetNames, userData)
                 {
                     m_LoadSceneCallbacks = loadSceneCallbacks;
                 }
@@ -59,9 +59,9 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public override void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset, object dependencyResource)
+                public override void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset)
                 {
-                    base.OnLoadDependencyAsset(agent, dependencyAssetName, dependencyAsset, dependencyResource);
+                    base.OnLoadDependencyAsset(agent, dependencyAssetName, dependencyAsset);
                     if (m_LoadSceneCallbacks.LoadSceneDependencyAssetCallback != null)
                     {
                         m_LoadSceneCallbacks.LoadSceneDependencyAssetCallback(AssetName, dependencyAssetName, LoadedDependencyAssetCount, TotalDependencyAssetCount, UserData);

@@ -5,11 +5,13 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System;
+
 namespace GameFramework.Network
 {
-    internal partial class NetworkManager
+    internal sealed partial class NetworkManager : GameFrameworkModule, INetworkManager
     {
-        private partial class NetworkChannel
+        private sealed partial class NetworkChannel : INetworkChannel, IDisposable
         {
             private sealed class HeartBeatState
             {

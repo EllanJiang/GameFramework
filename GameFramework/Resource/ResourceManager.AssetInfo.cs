@@ -7,7 +7,7 @@
 
 namespace GameFramework.Resource
 {
-    internal partial class ResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 资源信息。
@@ -16,19 +16,19 @@ namespace GameFramework.Resource
         {
             private readonly string m_AssetName;
             private readonly ResourceName m_ResourceName;
-            private readonly string m_ResourceChildName;
+            private readonly string[] m_DependencyAssetNames;
 
             /// <summary>
             /// 初始化资源信息的新实例。
             /// </summary>
             /// <param name="assetName">资源名称。</param>
             /// <param name="resourceName">所在资源名称。</param>
-            /// <param name="resourceChildName">子资源名称。</param>
-            public AssetInfo(string assetName, ResourceName resourceName, string resourceChildName)
+            /// <param name="dependencyAssetNames">依赖资源名称。</param>
+            public AssetInfo(string assetName, ResourceName resourceName, string[] dependencyAssetNames)
             {
                 m_AssetName = assetName;
                 m_ResourceName = resourceName;
-                m_ResourceChildName = resourceChildName;
+                m_DependencyAssetNames = dependencyAssetNames;
             }
 
             /// <summary>
@@ -54,14 +54,12 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 获取子资源名称。
+            /// 获取依赖资源名称。
             /// </summary>
-            public string ResourceChildName
+            /// <returns>依赖资源名称。</returns>
+            public string[] GetDependencyAssetNames()
             {
-                get
-                {
-                    return m_ResourceChildName;
-                }
+                return m_DependencyAssetNames;
             }
         }
     }

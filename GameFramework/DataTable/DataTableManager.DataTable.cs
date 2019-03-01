@@ -12,7 +12,7 @@ using System.IO;
 
 namespace GameFramework.DataTable
 {
-    internal partial class DataTableManager
+    internal sealed partial class DataTableManager : GameFrameworkModule, IDataTableManager
     {
         /// <summary>
         /// 数据表。
