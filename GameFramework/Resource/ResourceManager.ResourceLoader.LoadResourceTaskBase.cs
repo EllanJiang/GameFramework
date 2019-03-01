@@ -27,7 +27,6 @@ namespace GameFramework.Resource
                 private readonly string[] m_DependencyAssetNames;
                 private readonly object m_UserData;
                 private readonly List<object> m_DependencyAssets;
-                private readonly List<object> m_DependencyResources;
                 private ResourceObject m_ResourceObject;
                 private DateTime m_StartTime;
                 private int m_TotalDependencyAssetCount;
@@ -43,7 +42,6 @@ namespace GameFramework.Resource
                     m_DependencyAssetNames = dependencyAssetNames;
                     m_UserData = userData;
                     m_DependencyAssets = new List<object>();
-                    m_DependencyResources = new List<object>();
                     m_ResourceObject = null;
                     m_StartTime = default(DateTime);
                     m_TotalDependencyAssetCount = 0;
@@ -164,11 +162,6 @@ namespace GameFramework.Resource
                     return m_DependencyAssets.ToArray();
                 }
 
-                public List<object> GetDependencyResources()
-                {
-                    return m_DependencyResources;
-                }
-
                 public void LoadMain(LoadResourceAgent agent, ResourceObject resourceObject)
                 {
                     m_ResourceObject = resourceObject;
@@ -190,13 +183,9 @@ namespace GameFramework.Resource
 
                 }
 
-                public virtual void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset, object dependencyResource)
+                public virtual void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset)
                 {
                     m_DependencyAssets.Add(dependencyAsset);
-                    if (dependencyResource != null && !m_DependencyResources.Contains(dependencyResource))
-                    {
-                        m_DependencyResources.Add(dependencyResource);
-                    }
                 }
             }
         }

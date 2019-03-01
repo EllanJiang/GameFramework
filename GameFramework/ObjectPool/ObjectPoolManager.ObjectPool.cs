@@ -288,18 +288,17 @@ namespace GameFramework.ObjectPool
                     throw new GameFrameworkException("Target is invalid.");
                 }
 
-                foreach (Object<T> obj in m_Objects)
+                Object<T> obj = GetObject(target);
+                if (obj != null)
                 {
-                    if (obj.Peek().Target == target)
-                    {
-                        GameFrameworkLog.Debug("Object pool '{0}' unspawn '{1}'.", Utility.Text.GetFullName<T>(Name), obj.Peek().Name);
-                        obj.Unspawn();
-                        Release();
-                        return;
-                    }
+                    GameFrameworkLog.Debug("Object pool '{0}' unspawn '{1}'.", Utility.Text.GetFullName<T>(Name), obj.Peek().Name);
+                    obj.Unspawn();
+                    Release();
                 }
-
-                throw new GameFrameworkException(Utility.Text.Format("Can not find target in object pool '{0}'.", Utility.Text.GetFullName<T>(Name)));
+                else
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not find target in object pool '{0}'.", Utility.Text.GetFullName<T>(Name)));
+                }
             }
 
             /// <summary>
@@ -329,17 +328,16 @@ namespace GameFramework.ObjectPool
                     throw new GameFrameworkException("Target is invalid.");
                 }
 
-                foreach (Object<T> obj in m_Objects)
+                Object<T> obj = GetObject(target);
+                if (obj != null)
                 {
-                    if (obj.Peek().Target == target)
-                    {
-                        GameFrameworkLog.Debug("Object pool '{0}' set locked '{1}' to '{2}.", Utility.Text.GetFullName<T>(Name), obj.Peek().Name, locked.ToString());
-                        obj.Locked = locked;
-                        return;
-                    }
+                    GameFrameworkLog.Debug("Object pool '{0}' set locked '{1}' to '{2}.", Utility.Text.GetFullName<T>(Name), obj.Peek().Name, locked.ToString());
+                    obj.Locked = locked;
                 }
-
-                throw new GameFrameworkException(Utility.Text.Format("Can not find target in object pool '{0}'.", Utility.Text.GetFullName<T>(Name)));
+                else
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not find target in object pool '{0}'.", Utility.Text.GetFullName<T>(Name)));
+                }
             }
 
             /// <summary>
@@ -369,17 +367,16 @@ namespace GameFramework.ObjectPool
                     throw new GameFrameworkException("Target is invalid.");
                 }
 
-                foreach (Object<T> obj in m_Objects)
+                Object<T> obj = GetObject(target);
+                if (obj != null)
                 {
-                    if (obj.Peek().Target == target)
-                    {
-                        GameFrameworkLog.Debug("Object pool '{0}' set priority '{1}' to '{2}.", Utility.Text.GetFullName<T>(Name), obj.Peek().Name, priority.ToString());
-                        obj.Priority = priority;
-                        return;
-                    }
+                    GameFrameworkLog.Debug("Object pool '{0}' set priority '{1}' to '{2}.", Utility.Text.GetFullName<T>(Name), obj.Peek().Name, priority.ToString());
+                    obj.Priority = priority;
                 }
-
-                throw new GameFrameworkException(Utility.Text.Format("Can not find target in object pool '{0}'.", Utility.Text.GetFullName<T>(Name)));
+                else
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not find target in object pool '{0}'.", Utility.Text.GetFullName<T>(Name)));
+                }
             }
 
             /// <summary>
@@ -530,6 +527,19 @@ namespace GameFramework.ObjectPool
                     GameFrameworkLog.Debug("Object pool '{0}' release '{1}'.", Utility.Text.GetFullName<T>(Name), current.Value.Name);
                     current = next;
                 }
+            }
+
+            private Object<T> GetObject(object target)
+            {
+                foreach (Object<T> obj in m_Objects)
+                {
+                    if (obj.Peek().Target == target)
+                    {
+                        return obj;
+                    }
+                }
+
+                return null;
             }
 
             private void GetCanReleaseObjects(List<T> results)

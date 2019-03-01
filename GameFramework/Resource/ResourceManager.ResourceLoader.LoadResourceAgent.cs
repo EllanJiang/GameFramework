@@ -5,7 +5,6 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework.ObjectPool;
 using System;
 using System.Collections.Generic;
 
@@ -25,8 +24,6 @@ namespace GameFramework.Resource
 
                 private readonly ILoadResourceAgentHelper m_Helper;
                 private readonly IResourceHelper m_ResourceHelper;
-                private readonly IObjectPool<AssetObject> m_AssetPool;
-                private readonly IObjectPool<ResourceObject> m_ResourcePool;
                 private readonly ResourceLoader m_ResourceLoader;
                 private readonly string m_ReadOnlyPath;
                 private readonly string m_ReadWritePath;
@@ -42,13 +39,11 @@ namespace GameFramework.Resource
                 /// </summary>
                 /// <param name="loadResourceAgentHelper">加载资源代理辅助器。</param>
                 /// <param name="resourceHelper">资源辅助器。</param>
-                /// <param name="assetPool">资源对象池。</param>
-                /// <param name="resourcePool">资源对象池。</param>
                 /// <param name="resourceLoader">加载资源器。</param>
                 /// <param name="readOnlyPath">资源只读区路径。</param>
                 /// <param name="readWritePath">资源读写区路径。</param>
                 /// <param name="decryptResourceCallback">解密资源回调函数。</param>
-                public LoadResourceAgent(ILoadResourceAgentHelper loadResourceAgentHelper, IResourceHelper resourceHelper, IObjectPool<AssetObject> assetPool, IObjectPool<ResourceObject> resourcePool, ResourceLoader resourceLoader, string readOnlyPath, string readWritePath, DecryptResourceCallback decryptResourceCallback)
+                public LoadResourceAgent(ILoadResourceAgentHelper loadResourceAgentHelper, IResourceHelper resourceHelper, ResourceLoader resourceLoader, string readOnlyPath, string readWritePath, DecryptResourceCallback decryptResourceCallback)
                 {
                     if (loadResourceAgentHelper == null)
                     {
@@ -58,16 +53,6 @@ namespace GameFramework.Resource
                     if (resourceHelper == null)
                     {
                         throw new GameFrameworkException("Resource helper is invalid.");
-                    }
-
-                    if (assetPool == null)
-                    {
-                        throw new GameFrameworkException("Asset pool is invalid.");
-                    }
-
-                    if (resourcePool == null)
-                    {
-                        throw new GameFrameworkException("Resource pool is invalid.");
                     }
 
                     if (resourceLoader == null)
@@ -82,8 +67,6 @@ namespace GameFramework.Resource
 
                     m_Helper = loadResourceAgentHelper;
                     m_ResourceHelper = resourceHelper;
-                    m_AssetPool = assetPool;
-                    m_ResourcePool = resourcePool;
                     m_ResourceLoader = resourceLoader;
                     m_ReadOnlyPath = readOnlyPath;
                     m_ReadWritePath = readWritePath;
@@ -147,7 +130,7 @@ namespace GameFramework.Resource
                         }
 
                         m_WaitingType = WaitingType.None;
-                        AssetObject assetObject = m_AssetPool.Spawn(m_Task.AssetName);
+                        AssetObject assetObject = m_ResourceLoader.m_AssetPool.Spawn(m_Task.AssetName);
                         if (assetObject == null)
                         {
                             TryLoadAsset();
@@ -166,7 +149,7 @@ namespace GameFramework.Resource
                             if (!IsAssetLoading(current.Value))
                             {
                                 LinkedListNode<string> next = current.Next;
-                                if (!m_AssetPool.CanSpawn(current.Value))
+                                if (!m_ResourceLoader.m_AssetPool.CanSpawn(current.Value))
                                 {
                                     OnError(LoadResourceStatus.DependencyError, Utility.Text.Format("Can not find dependency asset object named '{0}'.", current.Value));
                                     return;
@@ -197,7 +180,7 @@ namespace GameFramework.Resource
                             return;
                         }
 
-                        ResourceObject resourceObject = m_ResourcePool.Spawn(m_Task.ResourceInfo.ResourceName.Name);
+                        ResourceObject resourceObject = m_ResourceLoader.m_ResourcePool.Spawn(m_Task.ResourceInfo.ResourceName.Name);
                         if (resourceObject == null)
                         {
                             OnError(LoadResourceStatus.DependencyError, Utility.Text.Format("Can not find resource object named '{0}'.", m_Task.ResourceInfo.ResourceName.Name));
@@ -274,7 +257,7 @@ namespace GameFramework.Resource
                 {
                     if (!m_Task.IsScene)
                     {
-                        AssetObject assetObject = m_AssetPool.Spawn(m_Task.AssetName);
+                        AssetObject assetObject = m_ResourceLoader.m_AssetPool.Spawn(m_Task.AssetName);
                         if (assetObject != null)
                         {
                             OnAssetObjectReady(assetObject);
@@ -287,7 +270,7 @@ namespace GameFramework.Resource
 
                     foreach (string dependencyAssetName in m_Task.GetDependencyAssetNames())
                     {
-                        if (!m_AssetPool.CanSpawn(dependencyAssetName))
+                        if (!m_ResourceLoader.m_AssetPool.CanSpawn(dependencyAssetName))
                         {
                             if (!IsAssetLoading(dependencyAssetName))
                             {
@@ -330,7 +313,7 @@ namespace GameFramework.Resource
                         return;
                     }
 
-                    ResourceObject resourceObject = m_ResourcePool.Spawn(m_Task.ResourceInfo.ResourceName.Name);
+                    ResourceObject resourceObject = m_ResourceLoader.m_ResourcePool.Spawn(m_Task.ResourceInfo.ResourceName.Name);
                     if (resourceObject != null)
                     {
                         OnResourceObjectReady(resourceObject);
@@ -382,8 +365,8 @@ namespace GameFramework.Resource
 
                 private void OnLoadResourceAgentHelperReadFileComplete(object sender, LoadResourceAgentHelperReadFileCompleteEventArgs e)
                 {
-                    ResourceObject resourceObject = new ResourceObject(m_Task.ResourceInfo.ResourceName.Name, e.Resource, m_ResourceHelper, m_ResourceLoader.m_ResourceDependencyCount);
-                    m_ResourcePool.Register(resourceObject, true);
+                    ResourceObject resourceObject = new ResourceObject(m_Task.ResourceInfo.ResourceName.Name, e.Resource, m_ResourceHelper, m_ResourceLoader);
+                    m_ResourceLoader.m_ResourcePool.Register(resourceObject, true);
                     m_LoadingResource = false;
                     s_LoadingResourceNames.Remove(m_Task.ResourceInfo.ResourceName.Name);
                     OnResourceObjectReady(resourceObject);
@@ -403,8 +386,8 @@ namespace GameFramework.Resource
 
                 private void OnLoadResourceAgentHelperParseBytesComplete(object sender, LoadResourceAgentHelperParseBytesCompleteEventArgs e)
                 {
-                    ResourceObject resourceObject = new ResourceObject(m_Task.ResourceInfo.ResourceName.Name, e.Resource, m_ResourceHelper, m_ResourceLoader.m_ResourceDependencyCount);
-                    m_ResourcePool.Register(resourceObject, true);
+                    ResourceObject resourceObject = new ResourceObject(m_Task.ResourceInfo.ResourceName.Name, e.Resource, m_ResourceHelper, m_ResourceLoader);
+                    m_ResourceLoader.m_ResourcePool.Register(resourceObject, true);
                     m_LoadingResource = false;
                     s_LoadingResourceNames.Remove(m_Task.ResourceInfo.ResourceName.Name);
                     OnResourceObjectReady(resourceObject);
@@ -415,16 +398,26 @@ namespace GameFramework.Resource
                     AssetObject assetObject = null;
                     if (m_Task.IsScene)
                     {
-                        assetObject = m_AssetPool.Spawn(m_Task.AssetName);
+                        assetObject = m_ResourceLoader.m_AssetPool.Spawn(m_Task.AssetName);
                     }
 
                     if (assetObject == null)
                     {
-                        assetObject = new AssetObject(m_Task.AssetName, e.Asset, m_Task.GetDependencyAssets(), m_Task.ResourceObject.Target, m_AssetPool, m_ResourcePool, m_ResourceHelper, m_ResourceLoader.m_AssetDependencyCount);
-                        m_AssetPool.Register(assetObject, true);
-                        foreach (object dependencyResource in m_Task.GetDependencyResources())
+                        object[] dependencyAssets = m_Task.GetDependencyAssets();
+                        assetObject = new AssetObject(m_Task.AssetName, e.Asset, dependencyAssets, m_Task.ResourceObject.Target, m_ResourceHelper, m_ResourceLoader);
+                        m_ResourceLoader.m_AssetPool.Register(assetObject, true);
+                        m_ResourceLoader.m_AssetToResourceMap.Add(e.Asset, m_Task.ResourceObject.Target);
+                        foreach (object dependencyAsset in dependencyAssets)
                         {
-                            m_Task.ResourceObject.AddDependencyResource(dependencyResource);
+                            object dependencyResource = null;
+                            if (m_ResourceLoader.m_AssetToResourceMap.TryGetValue(dependencyAsset, out dependencyResource))
+                            {
+                                m_Task.ResourceObject.AddDependencyResource(dependencyResource);
+                            }
+                            else
+                            {
+                                throw new GameFrameworkException("Can not find dependency resource.");
+                            }
                         }
                     }
 

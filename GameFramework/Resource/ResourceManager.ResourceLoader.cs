@@ -22,6 +22,7 @@ namespace GameFramework.Resource
             private readonly TaskPool<LoadResourceTaskBase> m_TaskPool;
             private readonly Dictionary<object, int> m_AssetDependencyCount;
             private readonly Dictionary<object, int> m_ResourceDependencyCount;
+            private readonly Dictionary<object, object> m_AssetToResourceMap;
             private readonly Dictionary<string, object> m_SceneToAssetMap;
             private IObjectPool<AssetObject> m_AssetPool;
             private IObjectPool<ResourceObject> m_ResourcePool;
@@ -36,6 +37,7 @@ namespace GameFramework.Resource
                 m_TaskPool = new TaskPool<LoadResourceTaskBase>();
                 m_AssetDependencyCount = new Dictionary<object, int>();
                 m_ResourceDependencyCount = new Dictionary<object, int>();
+                m_AssetToResourceMap = new Dictionary<object, object>();
                 m_SceneToAssetMap = new Dictionary<string, object>();
                 m_AssetPool = null;
                 m_ResourcePool = null;
@@ -223,6 +225,7 @@ namespace GameFramework.Resource
                 m_TaskPool.Shutdown();
                 m_AssetDependencyCount.Clear();
                 m_ResourceDependencyCount.Clear();
+                m_AssetToResourceMap.Clear();
                 m_SceneToAssetMap.Clear();
             }
 
@@ -251,7 +254,7 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("You must set object pool manager first.");
                 }
 
-                LoadResourceAgent agent = new LoadResourceAgent(loadResourceAgentHelper, resourceHelper, m_AssetPool, m_ResourcePool, this, readOnlyPath, readWritePath, decryptResourceCallback ?? DefaultDecryptResourceCallback);
+                LoadResourceAgent agent = new LoadResourceAgent(loadResourceAgentHelper, resourceHelper, this, readOnlyPath, readWritePath, decryptResourceCallback ?? DefaultDecryptResourceCallback);
                 m_TaskPool.AddAgent(agent);
             }
 

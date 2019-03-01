@@ -21,9 +21,9 @@ namespace GameFramework.Resource
             {
                 private readonly List<object> m_DependencyResources;
                 private readonly IResourceHelper m_ResourceHelper;
-                private readonly Dictionary<object, int> m_ResourceDependencyCount;
+                private readonly ResourceLoader m_ResourceLoader;
 
-                public ResourceObject(string name, object target, IResourceHelper resourceHelper, Dictionary<object, int> resourceDependencyCount)
+                public ResourceObject(string name, object target, IResourceHelper resourceHelper, ResourceLoader resourceLoader)
                     : base(name, target)
                 {
                     if (resourceHelper == null)
@@ -31,14 +31,14 @@ namespace GameFramework.Resource
                         throw new GameFrameworkException("Resource helper is invalid.");
                     }
 
-                    if (resourceDependencyCount == null)
+                    if (resourceLoader == null)
                     {
-                        throw new GameFrameworkException("Resource dependency count is invalid.");
+                        throw new GameFrameworkException("Resource loader is invalid.");
                     }
 
                     m_DependencyResources = new List<object>();
                     m_ResourceHelper = resourceHelper;
-                    m_ResourceDependencyCount = resourceDependencyCount;
+                    m_ResourceLoader = resourceLoader;
                 }
 
                 public override bool CustomCanReleaseFlag
@@ -46,7 +46,7 @@ namespace GameFramework.Resource
                     get
                     {
                         int targetReferenceCount = 0;
-                        m_ResourceDependencyCount.TryGetValue(Target, out targetReferenceCount);
+                        m_ResourceLoader.m_ResourceDependencyCount.TryGetValue(Target, out targetReferenceCount);
                         return base.CustomCanReleaseFlag && targetReferenceCount <= 0;
                     }
                 }
@@ -61,13 +61,13 @@ namespace GameFramework.Resource
                     m_DependencyResources.Add(dependencyResource);
 
                     int referenceCount = 0;
-                    if (m_ResourceDependencyCount.TryGetValue(dependencyResource, out referenceCount))
+                    if (m_ResourceLoader.m_ResourceDependencyCount.TryGetValue(dependencyResource, out referenceCount))
                     {
-                        m_ResourceDependencyCount[dependencyResource] = referenceCount + 1;
+                        m_ResourceLoader.m_ResourceDependencyCount[dependencyResource] = referenceCount + 1;
                     }
                     else
                     {
-                        m_ResourceDependencyCount.Add(dependencyResource, 1);
+                        m_ResourceLoader.m_ResourceDependencyCount.Add(dependencyResource, 1);
                     }
                 }
 
@@ -76,7 +76,7 @@ namespace GameFramework.Resource
                     if (!isShutdown)
                     {
                         int targetReferenceCount = 0;
-                        if (m_ResourceDependencyCount.TryGetValue(Target, out targetReferenceCount) && targetReferenceCount > 0)
+                        if (m_ResourceLoader.m_ResourceDependencyCount.TryGetValue(Target, out targetReferenceCount) && targetReferenceCount > 0)
                         {
                             throw new GameFrameworkException(Utility.Text.Format("Resource target '{0}' reference count is '{1}' larger than 0.", Name, targetReferenceCount.ToString()));
                         }
@@ -84,9 +84,9 @@ namespace GameFramework.Resource
                         foreach (object dependencyResource in m_DependencyResources)
                         {
                             int referenceCount = 0;
-                            if (m_ResourceDependencyCount.TryGetValue(dependencyResource, out referenceCount))
+                            if (m_ResourceLoader.m_ResourceDependencyCount.TryGetValue(dependencyResource, out referenceCount))
                             {
-                                m_ResourceDependencyCount[dependencyResource] = referenceCount - 1;
+                                m_ResourceLoader.m_ResourceDependencyCount[dependencyResource] = referenceCount - 1;
                             }
                             else
                             {
@@ -95,7 +95,7 @@ namespace GameFramework.Resource
                         }
                     }
 
-                    m_ResourceDependencyCount.Remove(Target);
+                    m_ResourceLoader.m_ResourceDependencyCount.Remove(Target);
                     m_ResourceHelper.Release(Target);
                 }
             }
