@@ -63,6 +63,14 @@ namespace GameFramework.Resource
                     }
                 }
 
+                public bool CanStart
+                {
+                    get
+                    {
+                        return true;
+                    }
+                }
+
                 public bool Done
                 {
                     get

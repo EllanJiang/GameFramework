@@ -29,6 +29,14 @@ namespace GameFramework
         }
 
         /// <summary>
+        /// 获取任务是否可以开始。
+        /// </summary>
+        bool CanStart
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取任务是否完成。
         /// </summary>
         bool Done

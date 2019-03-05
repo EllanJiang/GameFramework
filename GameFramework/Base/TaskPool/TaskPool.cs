@@ -80,37 +80,8 @@ namespace GameFramework
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         public void Update(float elapseSeconds, float realElapseSeconds)
         {
-            LinkedListNode<ITaskAgent<T>> current = m_WorkingAgents.First;
-            while (current != null)
-            {
-                if (current.Value.Task.Done)
-                {
-                    LinkedListNode<ITaskAgent<T>> next = current.Next;
-                    current.Value.Reset();
-                    m_FreeAgents.Push(current.Value);
-                    m_WorkingAgents.Remove(current);
-                    current = next;
-                    continue;
-                }
-
-                current.Value.Update(elapseSeconds, realElapseSeconds);
-                current = current.Next;
-            }
-
-            while (FreeAgentCount > 0 && WaitingTaskCount > 0)
-            {
-                ITaskAgent<T> agent = m_FreeAgents.Pop();
-                LinkedListNode<ITaskAgent<T>> agentNode = m_WorkingAgents.AddLast(agent);
-                T task = m_WaitingTasks.First.Value;
-                m_WaitingTasks.RemoveFirst();
-                agent.Start(task);
-                if (task.Done)
-                {
-                    agent.Reset();
-                    m_FreeAgents.Push(agent);
-                    m_WorkingAgents.Remove(agentNode);
-                }
-            }
+            ProcessRunningTasks(elapseSeconds, realElapseSeconds);
+            ProcessWaitingTasks(elapseSeconds, realElapseSeconds);
         }
 
         /// <summary>
@@ -216,6 +187,54 @@ namespace GameFramework
                 m_FreeAgents.Push(workingAgent);
             }
             m_WorkingAgents.Clear();
+        }
+
+        private void ProcessRunningTasks(float elapseSeconds, float realElapseSeconds)
+        {
+            LinkedListNode<ITaskAgent<T>> current = m_WorkingAgents.First;
+            while (current != null)
+            {
+                if (!current.Value.Task.Done)
+                {
+                    current.Value.Update(elapseSeconds, realElapseSeconds);
+                    current = current.Next;
+                    continue;
+                }
+
+                LinkedListNode<ITaskAgent<T>> next = current.Next;
+                current.Value.Reset();
+                m_FreeAgents.Push(current.Value);
+                m_WorkingAgents.Remove(current);
+                current = next;
+            }
+        }
+
+        private void ProcessWaitingTasks(float elapseSeconds, float realElapseSeconds)
+        {
+            LinkedListNode<T> current = m_WaitingTasks.First;
+            while (current != null && FreeAgentCount > 0)
+            {
+                if (!current.Value.CanStart)
+                {
+                    current = current.Next;
+                    continue;
+                }
+
+                ITaskAgent<T> agent = m_FreeAgents.Pop();
+                LinkedListNode<ITaskAgent<T>> agentNode = m_WorkingAgents.AddLast(agent);
+                LinkedListNode<T> next = current.Next;
+                T task = current.Value;
+                m_WaitingTasks.Remove(current);
+                agent.Start(task);
+                if (task.Done)
+                {
+                    agent.Reset();
+                    m_FreeAgents.Push(agent);
+                    m_WorkingAgents.Remove(agentNode);
+                }
+
+                current = next;
+            }
         }
     }
 }
