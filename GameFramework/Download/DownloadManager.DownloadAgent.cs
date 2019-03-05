@@ -117,7 +117,7 @@ namespace GameFramework.Download
             /// <summary>
             /// 获取已经存盘的大小。
             /// </summary>
-            public long SavedLength
+            public int SavedLength
             {
                 get
                 {
