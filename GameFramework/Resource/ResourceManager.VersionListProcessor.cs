@@ -81,6 +81,11 @@ namespace GameFramework.Resource
             /// <returns>检查版本资源列表结果。</returns>
             public CheckVersionListResult CheckVersionList(int latestInternalResourceVersion)
             {
+                if (string.IsNullOrEmpty(m_ResourceManager.m_ReadWritePath))
+                {
+                    throw new GameFrameworkException("Read-write path is invalid.");
+                }
+
                 string applicableGameVersion = null;
                 int internalResourceVersion = 0;
 

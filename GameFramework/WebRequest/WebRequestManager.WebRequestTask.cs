@@ -68,17 +68,6 @@ namespace GameFramework.WebRequest
             }
 
             /// <summary>
-            /// 获取 Web 请求任务是否可以开始。
-            /// </summary>
-            public bool CanStart
-            {
-                get
-                {
-                    return true;
-                }
-            }
-
-            /// <summary>
             /// 获取或设置 Web 请求任务是否完成。
             /// </summary>
             public bool Done

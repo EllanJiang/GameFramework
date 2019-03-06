@@ -104,7 +104,8 @@ namespace GameFramework.WebRequest
             /// 开始处理 Web 请求任务。
             /// </summary>
             /// <param name="task">要处理的 Web 请求任务。</param>
-            public void Start(WebRequestTask task)
+            /// <returns>开始处理任务的状态。</returns>
+            public StartTaskStatus Start(WebRequestTask task)
             {
                 if (task == null)
                 {
@@ -130,6 +131,7 @@ namespace GameFramework.WebRequest
                 }
 
                 m_WaitTime = 0f;
+                return StartTaskStatus.CanResume;
             }
 
             /// <summary>

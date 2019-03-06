@@ -71,17 +71,6 @@ namespace GameFramework.Download
             }
 
             /// <summary>
-            /// 获取下载任务是否可以开始。
-            /// </summary>
-            public bool CanStart
-            {
-                get
-                {
-                    return true;
-                }
-            }
-
-            /// <summary>
             /// 获取或设置下载任务是否完成。
             /// </summary>
             public bool Done

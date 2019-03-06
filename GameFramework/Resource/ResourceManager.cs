@@ -776,6 +776,21 @@ namespace GameFramework.Resource
         /// <param name="loadResourceAgentHelper">要增加的加载资源代理辅助器。</param>
         public void AddLoadResourceAgentHelper(ILoadResourceAgentHelper loadResourceAgentHelper)
         {
+            if (m_ResourceHelper == null)
+            {
+                throw new GameFrameworkException("Resource helper is invalid.");
+            }
+
+            if (string.IsNullOrEmpty(m_ReadOnlyPath))
+            {
+                throw new GameFrameworkException("Readonly path is invalid.");
+            }
+
+            if (string.IsNullOrEmpty(m_ReadWritePath))
+            {
+                throw new GameFrameworkException("Read-write path is invalid.");
+            }
+
             m_ResourceLoader.AddLoadResourceAgentHelper(loadResourceAgentHelper, m_ResourceHelper, m_ReadOnlyPath, m_ReadWritePath, m_DecryptResourceCallback);
         }
 

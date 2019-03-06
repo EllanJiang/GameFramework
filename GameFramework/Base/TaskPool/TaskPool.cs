@@ -214,23 +214,20 @@ namespace GameFramework
             LinkedListNode<T> current = m_WaitingTasks.First;
             while (current != null && FreeAgentCount > 0)
             {
-                if (!current.Value.CanStart)
-                {
-                    current = current.Next;
-                    continue;
-                }
-
                 ITaskAgent<T> agent = m_FreeAgents.Pop();
                 LinkedListNode<ITaskAgent<T>> agentNode = m_WorkingAgents.AddLast(agent);
                 LinkedListNode<T> next = current.Next;
-                T task = current.Value;
-                m_WaitingTasks.Remove(current);
-                agent.Start(task);
-                if (task.Done)
+                StartTaskStatus status = agent.Start(current.Value);
+                if (status == StartTaskStatus.Done || status == StartTaskStatus.HasToWait || status == StartTaskStatus.UnknownError)
                 {
                     agent.Reset();
                     m_FreeAgents.Push(agent);
                     m_WorkingAgents.Remove(agentNode);
+                }
+
+                if (status == StartTaskStatus.Done || status == StartTaskStatus.CanResume || status == StartTaskStatus.UnknownError)
+                {
+                    m_WaitingTasks.Remove(current);
                 }
 
                 current = next;

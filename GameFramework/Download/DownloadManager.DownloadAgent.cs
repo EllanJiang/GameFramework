@@ -168,7 +168,8 @@ namespace GameFramework.Download
             /// 开始处理下载任务。
             /// </summary>
             /// <param name="task">要处理的下载任务。</param>
-            public void Start(DownloadTask task)
+            /// <returns>开始处理任务的状态。</returns>
+            public StartTaskStatus Start(DownloadTask task)
             {
                 if (task == null)
                 {
@@ -214,10 +215,13 @@ namespace GameFramework.Download
                     {
                         m_Helper.Download(m_Task.DownloadUri, m_Task.UserData);
                     }
+
+                    return StartTaskStatus.CanResume;
                 }
                 catch (Exception exception)
                 {
                     OnDownloadAgentHelperError(this, new DownloadAgentHelperErrorEventArgs(exception.Message));
+                    return StartTaskStatus.UnknownError;
                 }
             }
 

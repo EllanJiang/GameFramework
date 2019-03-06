@@ -8,32 +8,28 @@
 namespace GameFramework
 {
     /// <summary>
-    /// 任务接口。
+    /// 开始处理任务的状态。
     /// </summary>
-    internal interface ITask
+    public enum StartTaskStatus
     {
         /// <summary>
-        /// 获取任务的序列编号。
+        /// 可以立刻处理完成此任务。
         /// </summary>
-        int SerialId
-        {
-            get;
-        }
+        Done,
 
         /// <summary>
-        /// 获取任务的优先级。
+        /// 可以继续处理此任务。
         /// </summary>
-        int Priority
-        {
-            get;
-        }
+        CanResume,
 
         /// <summary>
-        /// 获取任务是否完成。
+        /// 不能继续处理此任务，需等待其它任务执行完成。
         /// </summary>
-        bool Done
-        {
-            get;
-        }
+        HasToWait,
+
+        /// <summary>
+        /// 不能继续处理此任务，出现未知错误。
+        /// </summary>
+        UnknownError,
     }
 }
