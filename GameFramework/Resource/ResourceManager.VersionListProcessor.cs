@@ -92,7 +92,6 @@ namespace GameFramework.Resource
                 string versionListFileName = Utility.Path.GetCombinePath(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName));
                 if (!File.Exists(versionListFileName))
                 {
-                    GameFrameworkLog.Debug("Latest internal resource version is '{0}', local resource version is not exist.", latestInternalResourceVersion.ToString());
                     return CheckVersionListResult.NeedUpdate;
                 }
 
@@ -105,7 +104,6 @@ namespace GameFramework.Resource
                         fileStream = null;
                         if (binaryReader.ReadChar() != VersionListHeader[0] || binaryReader.ReadChar() != VersionListHeader[1] || binaryReader.ReadChar() != VersionListHeader[2])
                         {
-                            GameFrameworkLog.Debug("Latest internal resource version is '{0}', local resource version is invalid.", latestInternalResourceVersion.ToString());
                             return CheckVersionListResult.NeedUpdate;
                         }
 
@@ -126,7 +124,6 @@ namespace GameFramework.Resource
                 }
                 catch
                 {
-                    GameFrameworkLog.Debug("Latest internal resource version is '{0}', local resource version is invalid.", latestInternalResourceVersion.ToString());
                     return CheckVersionListResult.NeedUpdate;
                 }
                 finally
@@ -140,11 +137,9 @@ namespace GameFramework.Resource
 
                 if (internalResourceVersion != latestInternalResourceVersion)
                 {
-                    GameFrameworkLog.Debug("Applicable game version is '{0}', latest internal resource version is '{1}', local resource version is '{2}'.", applicableGameVersion, latestInternalResourceVersion.ToString(), internalResourceVersion.ToString());
                     return CheckVersionListResult.NeedUpdate;
                 }
 
-                GameFrameworkLog.Debug("Applicable game version is '{0}', latest internal resource version is '{1}', local resource version is up-to-date.", applicableGameVersion, latestInternalResourceVersion.ToString());
                 return CheckVersionListResult.Updated;
             }
 

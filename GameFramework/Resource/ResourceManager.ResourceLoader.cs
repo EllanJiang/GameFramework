@@ -408,7 +408,6 @@ namespace GameFramework.Resource
 
                 if (!CheckAsset(assetName, out resourceInfo, out dependencyAssetNames))
                 {
-                    GameFrameworkLog.Debug("Can not load asset '{0}'.", assetName);
                     return false;
                 }
 
@@ -417,7 +416,6 @@ namespace GameFramework.Resource
                 {
                     if (!LoadDependencyAsset(dependencyAssetName, priority, dependencyTask, userData))
                     {
-                        GameFrameworkLog.Debug("Can not load dependency asset '{0}' when load dependency asset '{1}'.", dependencyAssetName, assetName);
                         return false;
                     }
                 }

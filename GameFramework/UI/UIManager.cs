@@ -968,7 +968,6 @@ namespace GameFramework.UI
             m_UIFormAssetNamesBeingLoaded.Remove(uiFormAssetName);
             if (m_UIFormsToReleaseOnLoad.Contains(openUIFormInfo.SerialId))
             {
-                GameFrameworkLog.Debug("Release UI form '{0}' on loading success.", openUIFormInfo.SerialId.ToString());
                 m_UIFormsToReleaseOnLoad.Remove(openUIFormInfo.SerialId);
                 m_UIFormHelper.ReleaseUIForm(uiFormAsset, null);
                 return;
