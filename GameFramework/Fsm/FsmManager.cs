@@ -16,7 +16,7 @@ namespace GameFramework.Fsm
     internal sealed class FsmManager : GameFrameworkModule, IFsmManager
     {
         private readonly Dictionary<string, FsmBase> m_Fsms;
-        private readonly List<FsmBase> m_CachedFsms;
+        private readonly List<FsmBase> m_TempFsms;
 
         /// <summary>
         /// 初始化有限状态机管理器的新实例。
@@ -24,7 +24,7 @@ namespace GameFramework.Fsm
         public FsmManager()
         {
             m_Fsms = new Dictionary<string, FsmBase>();
-            m_CachedFsms = new List<FsmBase>();
+            m_TempFsms = new List<FsmBase>();
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace GameFramework.Fsm
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
-            m_CachedFsms.Clear();
+            m_TempFsms.Clear();
             if (m_Fsms.Count <= 0)
             {
                 return;
@@ -65,10 +65,10 @@ namespace GameFramework.Fsm
 
             foreach (KeyValuePair<string, FsmBase> fsm in m_Fsms)
             {
-                m_CachedFsms.Add(fsm.Value);
+                m_TempFsms.Add(fsm.Value);
             }
 
-            foreach (FsmBase fsm in m_CachedFsms)
+            foreach (FsmBase fsm in m_TempFsms)
             {
                 if (fsm.IsDestroyed)
                 {
@@ -90,7 +90,7 @@ namespace GameFramework.Fsm
             }
 
             m_Fsms.Clear();
-            m_CachedFsms.Clear();
+            m_TempFsms.Clear();
         }
 
         /// <summary>
