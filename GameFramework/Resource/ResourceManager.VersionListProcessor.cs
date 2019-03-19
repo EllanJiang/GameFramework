@@ -181,6 +181,7 @@ namespace GameFramework.Resource
                     int length = (int)fileStream.Length;
                     if (length != m_VersionListZipLength)
                     {
+                        fileStream.Close();
                         string errorMessage = Utility.Text.Format("Latest version list zip length error, need '{0}', downloaded '{1}'.", m_VersionListZipLength.ToString(), length.ToString());
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;
@@ -208,6 +209,7 @@ namespace GameFramework.Resource
                     int hashCode = Utility.Converter.GetInt32(Utility.Verifier.GetCrc32(m_ResourceManager.m_UpdateFileCache, 0, length));
                     if (hashCode != m_VersionListZipHashCode)
                     {
+                        fileStream.Close();
                         string errorMessage = Utility.Text.Format("Latest version list zip hash code error, need '{0}', downloaded '{1}'.", m_VersionListZipHashCode.ToString("X8"), hashCode.ToString("X8"));
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;
@@ -224,6 +226,7 @@ namespace GameFramework.Resource
                         m_ResourceManager.m_DecompressCache.SetLength(0L);
                         if (!Utility.Zip.Decompress(m_ResourceManager.m_UpdateFileCache, 0, length, m_ResourceManager.m_DecompressCache))
                         {
+                            fileStream.Close();
                             string errorMessage = Utility.Text.Format("Unable to decompress latest version list '{0}'.", e.DownloadPath);
                             OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                             return;
@@ -231,6 +234,7 @@ namespace GameFramework.Resource
 
                         if (m_ResourceManager.m_DecompressCache.Length != m_VersionListLength)
                         {
+                            fileStream.Close();
                             string errorMessage = Utility.Text.Format("Latest version list length error, need '{0}', downloaded '{1}'.", m_VersionListLength.ToString(), m_ResourceManager.m_DecompressCache.Length.ToString());
                             OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                             return;
@@ -247,6 +251,7 @@ namespace GameFramework.Resource
                     }
                     catch (Exception exception)
                     {
+                        fileStream.Close();
                         string errorMessage = Utility.Text.Format("Unable to decompress latest version list '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;

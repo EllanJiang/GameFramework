@@ -389,6 +389,7 @@ namespace GameFramework.Resource
                     int length = (int)fileStream.Length;
                     if (length != updateInfo.ZipLength)
                     {
+                        fileStream.Close();
                         string errorMessage = Utility.Text.Format("Zip length error, need '{0}', downloaded '{1}'.", updateInfo.ZipLength.ToString(), length.ToString());
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;
@@ -429,6 +430,7 @@ namespace GameFramework.Resource
                     int hashCode = Utility.Converter.GetInt32(Utility.Verifier.GetCrc32(m_ResourceManager.m_UpdateFileCache, 0, length));
                     if (hashCode != updateInfo.ZipHashCode)
                     {
+                        fileStream.Close();
                         string errorMessage = Utility.Text.Format("Zip hash code error, need '{0}', downloaded '{1}'.", updateInfo.ZipHashCode.ToString("X8"), hashCode.ToString("X8"));
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;
@@ -447,6 +449,7 @@ namespace GameFramework.Resource
                             m_ResourceManager.m_DecompressCache.SetLength(0L);
                             if (!Utility.Zip.Decompress(m_ResourceManager.m_UpdateFileCache, 0, length, m_ResourceManager.m_DecompressCache))
                             {
+                                fileStream.Close();
                                 string errorMessage = Utility.Text.Format("Unable to decompress from file '{0}'.", e.DownloadPath);
                                 OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                                 return;
@@ -454,6 +457,7 @@ namespace GameFramework.Resource
 
                             if (m_ResourceManager.m_DecompressCache.Length != updateInfo.Length)
                             {
+                                fileStream.Close();
                                 string errorMessage = Utility.Text.Format("Resource length error, need '{0}', downloaded '{1}'.", updateInfo.Length.ToString(), m_ResourceManager.m_DecompressCache.Length.ToString());
                                 OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                                 return;
@@ -470,6 +474,7 @@ namespace GameFramework.Resource
                         }
                         catch (Exception exception)
                         {
+                            fileStream.Close();
                             string errorMessage = Utility.Text.Format("Unable to decompress from file '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
                             OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                             return;
