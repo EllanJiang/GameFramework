@@ -124,24 +124,24 @@ namespace GameFramework
         /// <param name="task">要增加的任务。</param>
         public void AddTask(T task)
         {
-            LinkedListNode<T> current = m_WaitingTasks.First;
+            LinkedListNode<T> current = m_WaitingTasks.Last;
             while (current != null)
             {
-                if (task.Priority > current.Value.Priority)
+                if (task.Priority <= current.Value.Priority)
                 {
                     break;
                 }
 
-                current = current.Next;
+                current = current.Previous;
             }
 
             if (current != null)
             {
-                m_WaitingTasks.AddBefore(current, task);
+                m_WaitingTasks.AddAfter(current, task);
             }
             else
             {
-                m_WaitingTasks.AddLast(task);
+                m_WaitingTasks.AddFirst(task);
             }
         }
 
