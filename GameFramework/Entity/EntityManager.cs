@@ -21,7 +21,7 @@ namespace GameFramework.Entity
         private readonly Dictionary<string, EntityGroup> m_EntityGroups;
         private readonly Dictionary<int, int> m_EntitiesBeingLoaded;
         private readonly HashSet<int> m_EntitiesToReleaseOnLoad;
-        private readonly LinkedList<EntityInfo> m_RecycleQueue;
+        private readonly Queue<EntityInfo> m_RecycleQueue;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
         private IObjectPoolManager m_ObjectPoolManager;
         private IResourceManager m_ResourceManager;
@@ -42,7 +42,7 @@ namespace GameFramework.Entity
             m_EntityGroups = new Dictionary<string, EntityGroup>();
             m_EntitiesBeingLoaded = new Dictionary<int, int>();
             m_EntitiesToReleaseOnLoad = new HashSet<int>();
-            m_RecycleQueue = new LinkedList<EntityInfo>();
+            m_RecycleQueue = new Queue<EntityInfo>();
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadEntitySuccessCallback, LoadEntityFailureCallback, LoadEntityUpdateCallback, LoadEntityDependencyAssetCallback);
             m_ObjectPoolManager = null;
             m_ResourceManager = null;
@@ -161,8 +161,7 @@ namespace GameFramework.Entity
         {
             while (m_RecycleQueue.Count > 0)
             {
-                EntityInfo entityInfo = m_RecycleQueue.First.Value;
-                m_RecycleQueue.RemoveFirst();
+                EntityInfo entityInfo = m_RecycleQueue.Dequeue();
                 IEntity entity = entityInfo.Entity;
                 EntityGroup entityGroup = (EntityGroup)entity.EntityGroup;
                 if (entityGroup == null)
@@ -1188,7 +1187,7 @@ namespace GameFramework.Entity
                 m_HideEntityCompleteEventHandler(this, new HideEntityCompleteEventArgs(entity.Id, entity.EntityAssetName, entityGroup, userData));
             }
 
-            m_RecycleQueue.AddLast(entityInfo);
+            m_RecycleQueue.Enqueue(entityInfo);
         }
 
         private void LoadEntitySuccessCallback(string entityAssetName, object entityAsset, float duration, object userData)

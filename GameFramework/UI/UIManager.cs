@@ -21,7 +21,7 @@ namespace GameFramework.UI
         private readonly List<int> m_UIFormsBeingLoaded;
         private readonly List<string> m_UIFormAssetNamesBeingLoaded;
         private readonly HashSet<int> m_UIFormsToReleaseOnLoad;
-        private readonly LinkedList<IUIForm> m_RecycleQueue;
+        private readonly Queue<IUIForm> m_RecycleQueue;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
         private IObjectPoolManager m_ObjectPoolManager;
         private IResourceManager m_ResourceManager;
@@ -43,7 +43,7 @@ namespace GameFramework.UI
             m_UIFormsBeingLoaded = new List<int>();
             m_UIFormAssetNamesBeingLoaded = new List<string>();
             m_UIFormsToReleaseOnLoad = new HashSet<int>();
-            m_RecycleQueue = new LinkedList<IUIForm>();
+            m_RecycleQueue = new Queue<IUIForm>();
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadUIFormSuccessCallback, LoadUIFormFailureCallback, LoadUIFormUpdateCallback, LoadUIFormDependencyAssetCallback);
             m_ObjectPoolManager = null;
             m_ResourceManager = null;
@@ -212,8 +212,7 @@ namespace GameFramework.UI
         {
             while (m_RecycleQueue.Count > 0)
             {
-                IUIForm uiForm = m_RecycleQueue.First.Value;
-                m_RecycleQueue.RemoveFirst();
+                IUIForm uiForm = m_RecycleQueue.Dequeue();
                 uiForm.OnRecycle();
                 m_InstancePool.Unspawn(uiForm.Handle);
             }
@@ -822,7 +821,7 @@ namespace GameFramework.UI
                 m_CloseUIFormCompleteEventHandler(this, new CloseUIFormCompleteEventArgs(uiForm.SerialId, uiForm.UIFormAssetName, uiGroup, userData));
             }
 
-            m_RecycleQueue.AddLast(uiForm);
+            m_RecycleQueue.Enqueue(uiForm);
         }
 
         /// <summary>
