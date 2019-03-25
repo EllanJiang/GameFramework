@@ -87,6 +87,17 @@ namespace GameFramework.Network
             }
 
             /// <summary>
+            /// 获取网络频道所使用的 Socket。
+            /// </summary>
+            public Socket Socket
+            {
+                get
+                {
+                    return m_Socket;
+                }
+            }
+
+            /// <summary>
             /// 获取是否已连接。
             /// </summary>
             public bool Connected
@@ -110,94 +121,6 @@ namespace GameFramework.Network
                 get
                 {
                     return m_NetworkType;
-                }
-            }
-
-            /// <summary>
-            /// 获取本地终结点的 IP 地址。
-            /// </summary>
-            public IPAddress LocalIPAddress
-            {
-                get
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.LocalEndPoint;
-                    if (ipEndPoint == null)
-                    {
-                        throw new GameFrameworkException("Local end point is invalid.");
-                    }
-
-                    return ipEndPoint.Address;
-                }
-            }
-
-            /// <summary>
-            /// 获取本地终结点的端口号。
-            /// </summary>
-            public int LocalPort
-            {
-                get
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.LocalEndPoint;
-                    if (ipEndPoint == null)
-                    {
-                        throw new GameFrameworkException("Local end point is invalid.");
-                    }
-
-                    return ipEndPoint.Port;
-                }
-            }
-
-            /// <summary>
-            /// 获取远程终结点的 IP 地址。
-            /// </summary>
-            public IPAddress RemoteIPAddress
-            {
-                get
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.RemoteEndPoint;
-                    if (ipEndPoint == null)
-                    {
-                        throw new GameFrameworkException("Remote end point is invalid.");
-                    }
-
-                    return ipEndPoint.Address;
-                }
-            }
-
-            /// <summary>
-            /// 获取远程终结点的端口号。
-            /// </summary>
-            public int RemotePort
-            {
-                get
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.RemoteEndPoint;
-                    if (ipEndPoint == null)
-                    {
-                        throw new GameFrameworkException("Remote end point is invalid.");
-                    }
-
-                    return ipEndPoint.Port;
                 }
             }
 
@@ -294,56 +217,6 @@ namespace GameFramework.Network
                 get
                 {
                     return m_HeartBeatState.HeartBeatElapseSeconds;
-                }
-            }
-
-            /// <summary>
-            /// 获取或设置接收缓冲区字节数。
-            /// </summary>
-            public int ReceiveBufferSize
-            {
-                get
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    return m_Socket.ReceiveBufferSize;
-                }
-                set
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    m_Socket.ReceiveBufferSize = value;
-                }
-            }
-
-            /// <summary>
-            /// 获取或设置发送缓冲区字节数。
-            /// </summary>
-            public int SendBufferSize
-            {
-                get
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    return m_Socket.SendBufferSize;
-                }
-                set
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    m_Socket.SendBufferSize = value;
                 }
             }
 
