@@ -18,8 +18,7 @@ namespace GameFramework.UI
     internal sealed partial class UIManager : GameFrameworkModule, IUIManager
     {
         private readonly Dictionary<string, UIGroup> m_UIGroups;
-        private readonly List<int> m_UIFormsBeingLoaded;
-        private readonly List<string> m_UIFormAssetNamesBeingLoaded;
+        private readonly Dictionary<int, string> m_UIFormsBeingLoaded;
         private readonly HashSet<int> m_UIFormsToReleaseOnLoad;
         private readonly Queue<IUIForm> m_RecycleQueue;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
@@ -40,8 +39,7 @@ namespace GameFramework.UI
         public UIManager()
         {
             m_UIGroups = new Dictionary<string, UIGroup>();
-            m_UIFormsBeingLoaded = new List<int>();
-            m_UIFormAssetNamesBeingLoaded = new List<string>();
+            m_UIFormsBeingLoaded = new Dictionary<int, string>();
             m_UIFormsToReleaseOnLoad = new HashSet<int>();
             m_RecycleQueue = new Queue<IUIForm>();
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadUIFormSuccessCallback, LoadUIFormFailureCallback, LoadUIFormUpdateCallback, LoadUIFormDependencyAssetCallback);
@@ -231,7 +229,6 @@ namespace GameFramework.UI
             CloseAllLoadedUIForms();
             m_UIGroups.Clear();
             m_UIFormsBeingLoaded.Clear();
-            m_UIFormAssetNamesBeingLoaded.Clear();
             m_UIFormsToReleaseOnLoad.Clear();
             m_RecycleQueue.Clear();
         }
@@ -557,7 +554,14 @@ namespace GameFramework.UI
         /// <returns>所有正在加载界面的序列编号。</returns>
         public int[] GetAllLoadingUIFormSerialIds()
         {
-            return m_UIFormsBeingLoaded.ToArray();
+            int index = 0;
+            int[] results = new int[m_UIFormsBeingLoaded.Count];
+            foreach (KeyValuePair<int, string> uiFormBeingLoaded in m_UIFormsBeingLoaded)
+            {
+                results[index++] = uiFormBeingLoaded.Key;
+            }
+
+            return results;
         }
 
         /// <summary>
@@ -572,7 +576,10 @@ namespace GameFramework.UI
             }
 
             results.Clear();
-            results.AddRange(m_UIFormsBeingLoaded);
+            foreach (KeyValuePair<int, string> uiFormBeingLoaded in m_UIFormsBeingLoaded)
+            {
+                results.Add(uiFormBeingLoaded.Key);
+            }
         }
 
         /// <summary>
@@ -582,7 +589,7 @@ namespace GameFramework.UI
         /// <returns>是否正在加载界面。</returns>
         public bool IsLoadingUIForm(int serialId)
         {
-            return m_UIFormsBeingLoaded.Contains(serialId);
+            return m_UIFormsBeingLoaded.ContainsKey(serialId);
         }
 
         /// <summary>
@@ -597,7 +604,7 @@ namespace GameFramework.UI
                 throw new GameFrameworkException("UI form asset name is invalid.");
             }
 
-            return m_UIFormAssetNamesBeingLoaded.Contains(uiFormAssetName);
+            return m_UIFormsBeingLoaded.ContainsValue(uiFormAssetName);
         }
 
         /// <summary>
@@ -742,8 +749,7 @@ namespace GameFramework.UI
             UIFormInstanceObject uiFormInstanceObject = m_InstancePool.Spawn(uiFormAssetName);
             if (uiFormInstanceObject == null)
             {
-                m_UIFormsBeingLoaded.Add(serialId);
-                m_UIFormAssetNamesBeingLoaded.Add(uiFormAssetName);
+                m_UIFormsBeingLoaded.Add(serialId, uiFormAssetName);
                 m_ResourceManager.LoadAsset(uiFormAssetName, priority, m_LoadAssetCallbacks, new OpenUIFormInfo(serialId, uiGroup, pauseCoveredUIForm, userData));
             }
             else
@@ -773,6 +779,7 @@ namespace GameFramework.UI
             if (IsLoadingUIForm(serialId))
             {
                 m_UIFormsToReleaseOnLoad.Add(serialId);
+                m_UIFormsBeingLoaded.Remove(serialId);
                 return;
             }
 
@@ -855,10 +862,12 @@ namespace GameFramework.UI
         /// </summary>
         public void CloseAllLoadingUIForms()
         {
-            foreach (int serialId in m_UIFormsBeingLoaded)
+            foreach (KeyValuePair<int, string> uiFormBeingLoaded in m_UIFormsBeingLoaded)
             {
-                m_UIFormsToReleaseOnLoad.Add(serialId);
+                m_UIFormsToReleaseOnLoad.Add(uiFormBeingLoaded.Key);
             }
+
+            m_UIFormsBeingLoaded.Clear();
         }
 
         /// <summary>
@@ -964,7 +973,6 @@ namespace GameFramework.UI
             }
 
             m_UIFormsBeingLoaded.Remove(openUIFormInfo.SerialId);
-            m_UIFormAssetNamesBeingLoaded.Remove(uiFormAssetName);
             if (m_UIFormsToReleaseOnLoad.Contains(openUIFormInfo.SerialId))
             {
                 m_UIFormsToReleaseOnLoad.Remove(openUIFormInfo.SerialId);
@@ -987,7 +995,6 @@ namespace GameFramework.UI
             }
 
             m_UIFormsBeingLoaded.Remove(openUIFormInfo.SerialId);
-            m_UIFormAssetNamesBeingLoaded.Remove(uiFormAssetName);
             m_UIFormsToReleaseOnLoad.Remove(openUIFormInfo.SerialId);
             string appendErrorMessage = Utility.Text.Format("Load UI form failure, asset name '{0}', status '{1}', error message '{2}'.", uiFormAssetName, status.ToString(), errorMessage);
             if (m_OpenUIFormFailureEventHandler != null)
