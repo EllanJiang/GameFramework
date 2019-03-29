@@ -669,13 +669,7 @@ namespace GameFramework.Entity
         {
             if (IsLoadingEntity(entityId))
             {
-                int serialId = 0;
-                if (!m_EntitiesBeingLoaded.TryGetValue(entityId, out serialId))
-                {
-                    throw new GameFrameworkException(Utility.Text.Format("Can not find entity '{0}'.", entityId.ToString()));
-                }
-
-                m_EntitiesToReleaseOnLoad.Add(serialId);
+                m_EntitiesToReleaseOnLoad.Add(m_EntitiesBeingLoaded[entityId]);
                 m_EntitiesBeingLoaded.Remove(entityId);
                 return;
             }
