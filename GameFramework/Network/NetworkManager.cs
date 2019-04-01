@@ -228,7 +228,7 @@ namespace GameFramework.Network
                 throw new GameFrameworkException("Network channel helper is invalid.");
             }
 
-            if (networkChannelHelper.PacketHeaderLength <= 0)
+            if (networkChannelHelper.PacketHeaderLength < 0)
             {
                 throw new GameFrameworkException("Packet header length is invalid.");
             }
