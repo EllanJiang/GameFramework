@@ -125,6 +125,14 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 获取更新失败资源数量。
+        /// </summary>
+        int UpdateFailureCount
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取正在更新资源数量。
         /// </summary>
         int UpdatingCount
