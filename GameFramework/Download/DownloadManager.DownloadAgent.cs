@@ -278,13 +278,20 @@ namespace GameFramework.Download
                 m_Disposed = true;
             }
 
-            private void SaveBytes(byte[] bytes)
+            private void OnDownloadAgentHelperUpdate(object sender, DownloadAgentHelperUpdateEventArgs e)
             {
-                if (bytes == null)
+                m_WaitTime = 0f;
+                m_DownloadedLength += e.DeltaLength;
+                if (DownloadAgentUpdate != null)
                 {
-                    return;
+                    DownloadAgentUpdate(this, e.DeltaLength);
                 }
+            }
 
+            private void OnDownloadAgentHelperComplete(object sender, DownloadAgentHelperCompleteEventArgs e)
+            {
+                m_WaitTime = 0f;
+                byte[] bytes = e.GetBytes();
                 try
                 {
                     int length = bytes.Length;
@@ -302,32 +309,8 @@ namespace GameFramework.Download
                 {
                     OnDownloadAgentHelperError(this, new DownloadAgentHelperErrorEventArgs(exception.Message));
                 }
-            }
 
-            private void OnDownloadAgentHelperUpdate(object sender, DownloadAgentHelperUpdateEventArgs e)
-            {
-                m_WaitTime = 0f;
-
-                byte[] bytes = e.GetBytes();
-                SaveBytes(bytes);
-
-                m_DownloadedLength = e.Length;
-
-                if (DownloadAgentUpdate != null)
-                {
-                    DownloadAgentUpdate(this, bytes != null ? bytes.Length : 0);
-                }
-            }
-
-            private void OnDownloadAgentHelperComplete(object sender, DownloadAgentHelperCompleteEventArgs e)
-            {
-                m_WaitTime = 0f;
-
-                byte[] bytes = e.GetBytes();
-                SaveBytes(bytes);
-
-                m_DownloadedLength = e.Length;
-
+                m_DownloadedLength = bytes.Length;
                 if (m_SavedLength != CurrentLength)
                 {
                     throw new GameFrameworkException("Internal download error.");
