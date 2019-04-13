@@ -18,6 +18,11 @@ namespace GameFramework.Download
         /// <param name="deltaLength">下载的增量数据大小。</param>
         public DownloadAgentHelperUpdateLengthEventArgs(int deltaLength)
         {
+            if (deltaLength <= 0)
+            {
+                throw new GameFrameworkException("Delta length is invalid.");
+            }
+
             DeltaLength = deltaLength;
         }
 

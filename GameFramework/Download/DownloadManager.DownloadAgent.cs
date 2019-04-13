@@ -282,19 +282,12 @@ namespace GameFramework.Download
 
             private void OnDownloadAgentHelperUpdateBytes(object sender, DownloadAgentHelperUpdateBytesEventArgs e)
             {
-                byte[] bytes = e.GetBytes();
-                if (bytes == null)
-                {
-                    throw new GameFrameworkException("Bytes is invalid.");
-                }
-
                 m_WaitTime = 0f;
                 try
                 {
-                    int bytesLength = bytes.Length;
-                    m_FileStream.Write(bytes, 0, bytesLength);
-                    m_WaitFlushSize += bytesLength;
-                    m_SavedLength += bytesLength;
+                    m_FileStream.Write(e.GetBytes(), e.Offset, e.Length);
+                    m_WaitFlushSize += e.Length;
+                    m_SavedLength += e.Length;
 
                     if (m_WaitFlushSize >= m_Task.FlushSize)
                     {
@@ -310,11 +303,6 @@ namespace GameFramework.Download
 
             private void OnDownloadAgentHelperUpdateLength(object sender, DownloadAgentHelperUpdateLengthEventArgs e)
             {
-                if (e.DeltaLength <= 0)
-                {
-                    throw new GameFrameworkException("Delta length is invalid.");
-                }
-
                 m_WaitTime = 0f;
                 m_DownloadedLength += e.DeltaLength;
                 if (DownloadAgentUpdate != null)

@@ -216,6 +216,22 @@ namespace GameFramework.Resource
                 {
                     GenerateReadWriteList();
                 }
+
+                int maxLength = 0;
+                foreach (UpdateInfo updateInfo in m_UpdateWaitingInfo)
+                {
+                    if (updateInfo.Length <= maxLength)
+                    {
+                        continue;
+                    }
+
+                    maxLength = updateInfo.Length;
+                }
+
+                if (m_ResourceManager.UpdateFileCacheLength < maxLength)
+                {
+                    m_ResourceManager.UpdateFileCacheLength = (maxLength / OneMegaBytes + 1) * OneMegaBytes;
+                }
             }
 
             /// <summary>
@@ -416,9 +432,9 @@ namespace GameFramework.Resource
                         return;
                     }
 
-                    if (m_ResourceManager.m_UpdateFileCache == null || m_ResourceManager.m_UpdateFileCache.Length < length)
+                    if (m_ResourceManager.UpdateFileCacheLength < length)
                     {
-                        m_ResourceManager.m_UpdateFileCache = new byte[(length / OneMegaBytes + 1) * OneMegaBytes];
+                        m_ResourceManager.UpdateFileCacheLength = (length / OneMegaBytes + 1) * OneMegaBytes;
                     }
 
                     int offset = 0;

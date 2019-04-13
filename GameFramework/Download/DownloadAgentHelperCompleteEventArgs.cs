@@ -18,6 +18,11 @@ namespace GameFramework.Download
         /// <param name="length">下载的数据大小。</param>
         public DownloadAgentHelperCompleteEventArgs(int length)
         {
+            if (length <= 0)
+            {
+                throw new GameFrameworkException("Length is invalid.");
+            }
+
             Length = length;
         }
 

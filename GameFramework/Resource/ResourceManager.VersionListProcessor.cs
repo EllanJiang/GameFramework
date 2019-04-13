@@ -187,9 +187,9 @@ namespace GameFramework.Resource
                         return;
                     }
 
-                    if (m_ResourceManager.m_UpdateFileCache == null || m_ResourceManager.m_UpdateFileCache.Length < length)
+                    if (m_ResourceManager.UpdateFileCacheLength < length)
                     {
-                        m_ResourceManager.m_UpdateFileCache = new byte[(length / OneMegaBytes + 1) * OneMegaBytes];
+                        m_ResourceManager.UpdateFileCacheLength = (length / OneMegaBytes + 1) * OneMegaBytes;
                     }
 
                     int offset = 0;
