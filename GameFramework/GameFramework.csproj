@@ -100,7 +100,8 @@
     <Compile Include="Download\Constant.cs" />
     <Compile Include="Download\DownloadAgentHelperCompleteEventArgs.cs" />
     <Compile Include="Download\DownloadAgentHelperErrorEventArgs.cs" />
-    <Compile Include="Download\DownloadAgentHelperUpdateEventArgs.cs" />
+    <Compile Include="Download\DownloadAgentHelperUpdateBytesEventArgs.cs" />
+    <Compile Include="Download\DownloadAgentHelperUpdateLengthEventArgs.cs" />
     <Compile Include="Download\DownloadFailureEventArgs.cs" />
     <Compile Include="Download\DownloadManager.cs" />
     <Compile Include="Download\DownloadManager.DownloadAgent.cs" />

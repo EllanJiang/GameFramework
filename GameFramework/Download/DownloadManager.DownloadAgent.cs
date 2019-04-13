@@ -130,7 +130,8 @@ namespace GameFramework.Download
             /// </summary>
             public void Initialize()
             {
-                m_Helper.DownloadAgentHelperUpdate += OnDownloadAgentHelperUpdate;
+                m_Helper.DownloadAgentHelperUpdateBytes += OnDownloadAgentHelperUpdateBytes;
+                m_Helper.DownloadAgentHelperUpdateLength += OnDownloadAgentHelperUpdateLength;
                 m_Helper.DownloadAgentHelperComplete += OnDownloadAgentHelperComplete;
                 m_Helper.DownloadAgentHelperError += OnDownloadAgentHelperError;
             }
@@ -159,7 +160,8 @@ namespace GameFramework.Download
             {
                 Dispose();
 
-                m_Helper.DownloadAgentHelperUpdate -= OnDownloadAgentHelperUpdate;
+                m_Helper.DownloadAgentHelperUpdateBytes -= OnDownloadAgentHelperUpdateBytes;
+                m_Helper.DownloadAgentHelperUpdateLength -= OnDownloadAgentHelperUpdateLength;
                 m_Helper.DownloadAgentHelperComplete -= OnDownloadAgentHelperComplete;
                 m_Helper.DownloadAgentHelperError -= OnDownloadAgentHelperError;
             }
@@ -278,26 +280,21 @@ namespace GameFramework.Download
                 m_Disposed = true;
             }
 
-            private void OnDownloadAgentHelperUpdate(object sender, DownloadAgentHelperUpdateEventArgs e)
+            private void OnDownloadAgentHelperUpdateBytes(object sender, DownloadAgentHelperUpdateBytesEventArgs e)
             {
-                m_WaitTime = 0f;
-                m_DownloadedLength += e.DeltaLength;
-                if (DownloadAgentUpdate != null)
-                {
-                    DownloadAgentUpdate(this, e.DeltaLength);
-                }
-            }
-
-            private void OnDownloadAgentHelperComplete(object sender, DownloadAgentHelperCompleteEventArgs e)
-            {
-                m_WaitTime = 0f;
                 byte[] bytes = e.GetBytes();
+                if (bytes == null)
+                {
+                    throw new GameFrameworkException("Bytes is invalid.");
+                }
+
+                m_WaitTime = 0f;
                 try
                 {
-                    int length = bytes.Length;
-                    m_FileStream.Write(bytes, 0, length);
-                    m_WaitFlushSize += length;
-                    m_SavedLength += length;
+                    int bytesLength = bytes.Length;
+                    m_FileStream.Write(bytes, 0, bytesLength);
+                    m_WaitFlushSize += bytesLength;
+                    m_SavedLength += bytesLength;
 
                     if (m_WaitFlushSize >= m_Task.FlushSize)
                     {
@@ -309,8 +306,27 @@ namespace GameFramework.Download
                 {
                     OnDownloadAgentHelperError(this, new DownloadAgentHelperErrorEventArgs(exception.Message));
                 }
+            }
 
-                m_DownloadedLength = bytes.Length;
+            private void OnDownloadAgentHelperUpdateLength(object sender, DownloadAgentHelperUpdateLengthEventArgs e)
+            {
+                if (e.DeltaLength <= 0)
+                {
+                    throw new GameFrameworkException("Delta length is invalid.");
+                }
+
+                m_WaitTime = 0f;
+                m_DownloadedLength += e.DeltaLength;
+                if (DownloadAgentUpdate != null)
+                {
+                    DownloadAgentUpdate(this, e.DeltaLength);
+                }
+            }
+
+            private void OnDownloadAgentHelperComplete(object sender, DownloadAgentHelperCompleteEventArgs e)
+            {
+                m_WaitTime = 0f;
+                m_DownloadedLength = e.Length;
                 if (m_SavedLength != CurrentLength)
                 {
                     throw new GameFrameworkException("Internal download error.");
@@ -331,7 +347,7 @@ namespace GameFramework.Download
 
                 if (DownloadAgentSuccess != null)
                 {
-                    DownloadAgentSuccess(this, bytes != null ? bytes.Length : 0);
+                    DownloadAgentSuccess(this, e.Length);
                 }
 
                 m_Task.Done = true;

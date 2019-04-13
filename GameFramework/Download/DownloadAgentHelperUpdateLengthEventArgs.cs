@@ -8,21 +8,21 @@
 namespace GameFramework.Download
 {
     /// <summary>
-    ///  下载代理辅助器更新事件。
+    ///  下载代理辅助器更新数据大小事件。
     /// </summary>
-    public sealed class DownloadAgentHelperUpdateEventArgs : GameFrameworkEventArgs
+    public sealed class DownloadAgentHelperUpdateLengthEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
-        /// 初始化下载代理辅助器更新事件的新实例。
+        /// 初始化下载代理辅助器更新数据大小事件的新实例。
         /// </summary>
-        /// <param name="deltaLength">下载的数据增量大小。</param>
-        public DownloadAgentHelperUpdateEventArgs(int deltaLength)
+        /// <param name="deltaLength">下载的增量数据大小。</param>
+        public DownloadAgentHelperUpdateLengthEventArgs(int deltaLength)
         {
             DeltaLength = deltaLength;
         }
 
         /// <summary>
-        /// 获取下载的数据增量大小。
+        /// 获取下载的增量数据大小。
         /// </summary>
         public int DeltaLength
         {

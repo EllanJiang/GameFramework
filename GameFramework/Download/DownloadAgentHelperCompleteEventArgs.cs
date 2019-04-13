@@ -12,23 +12,22 @@ namespace GameFramework.Download
     /// </summary>
     public sealed class DownloadAgentHelperCompleteEventArgs : GameFrameworkEventArgs
     {
-        private readonly byte[] m_Bytes;
-
         /// <summary>
         /// 初始化下载代理辅助器完成事件的新实例。
         /// </summary>
-        /// <param name="bytes">下载的数据流。</param>
-        public DownloadAgentHelperCompleteEventArgs(byte[] bytes)
+        /// <param name="length">下载的数据大小。</param>
+        public DownloadAgentHelperCompleteEventArgs(int length)
         {
-            m_Bytes = bytes;
+            Length = length;
         }
 
         /// <summary>
-        /// 获取下载的数据流。
+        /// 获取下载的数据大小。
         /// </summary>
-        public byte[] GetBytes()
+        public int Length
         {
-            return m_Bytes;
+            get;
+            private set;
         }
     }
 }
