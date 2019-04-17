@@ -82,6 +82,7 @@ namespace GameFramework.ObjectPool
             {
                 get
                 {
+                    GetCanReleaseObjects(m_CachedCanReleaseObjects);
                     return m_CachedCanReleaseObjects.Count;
                 }
             }
