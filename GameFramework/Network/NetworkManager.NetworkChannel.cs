@@ -241,6 +241,11 @@ namespace GameFramework.Network
                     int missHeartBeatCount = 0;
                     lock (m_HeartBeatState)
                     {
+                        if (m_Socket == null || !m_Active)
+                        {
+                            return;
+                        }
+
                         m_HeartBeatState.HeartBeatElapseSeconds += realElapseSeconds;
                         if (m_HeartBeatState.HeartBeatElapseSeconds >= m_HeartBeatInterval)
                         {
@@ -383,16 +388,8 @@ namespace GameFramework.Network
                         return;
                     }
 
-                    lock (m_SendPacketPool)
-                    {
-                        m_SendPacketPool.Clear();
-                    }
-
-                    m_ReceivePacketPool.Clear();
-
                     m_Active = false;
-                    m_SentPacketCount = 0;
-                    m_ReceivedPacketCount = 0;
+
                     try
                     {
                         m_Socket.Shutdown(SocketShutdown.Both);
@@ -409,6 +406,21 @@ namespace GameFramework.Network
                         {
                             NetworkChannelClosed(this);
                         }
+                    }
+
+                    m_SentPacketCount = 0;
+                    m_ReceivedPacketCount = 0;
+
+                    lock (m_SendPacketPool)
+                    {
+                        m_SendPacketPool.Clear();
+                    }
+
+                    m_ReceivePacketPool.Clear();
+
+                    lock (m_HeartBeatState)
+                    {
+                        m_HeartBeatState.Reset(true);
                     }
                 }
             }
@@ -688,8 +700,16 @@ namespace GameFramework.Network
                 }
 
                 m_Active = true;
+
                 m_SentPacketCount = 0;
                 m_ReceivedPacketCount = 0;
+
+                lock (m_SendPacketPool)
+                {
+                    m_SendPacketPool.Clear();
+                }
+
+                m_ReceivePacketPool.Clear();
 
                 lock (m_HeartBeatState)
                 {
