@@ -323,9 +323,11 @@ namespace GameFramework.Network
                     case AddressFamily.InterNetwork:
                         m_NetworkType = NetworkType.IPv4;
                         break;
+
                     case AddressFamily.InterNetworkV6:
                         m_NetworkType = NetworkType.IPv6;
                         break;
+
                     default:
                         string errorMessage = Utility.Text.Format("Not supported address family '{0}'.", ipAddress.AddressFamily.ToString());
                         if (NetworkChannelError != null)

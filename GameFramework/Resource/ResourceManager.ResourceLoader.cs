@@ -457,8 +457,10 @@ namespace GameFramework.Resource
                 {
                     case LoadType.LoadFromMemoryAndQuickDecrypt:
                         return Utility.Encryption.GetQuickSelfXorBytes(bytes, Utility.Converter.GetBytes(hashCode));
+
                     case LoadType.LoadFromMemoryAndDecrypt:
                         return Utility.Encryption.GetSelfXorBytes(bytes, Utility.Converter.GetBytes(hashCode));
+
                     default:
                         return bytes;
                 }

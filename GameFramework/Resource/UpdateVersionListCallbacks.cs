@@ -22,7 +22,6 @@ namespace GameFramework.Resource
         public UpdateVersionListCallbacks(UpdateVersionListSuccessCallback updateVersionListSuccessCallback)
             : this(updateVersionListSuccessCallback, null)
         {
-
         }
 
         /// <summary>
@@ -62,6 +61,5 @@ namespace GameFramework.Resource
                 return m_UpdateVersionListFailureCallback;
             }
         }
-
     }
 }

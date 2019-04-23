@@ -12,6 +12,5 @@ namespace GameFramework
     /// </summary>
     public static partial class Utility
     {
-
     }
 }

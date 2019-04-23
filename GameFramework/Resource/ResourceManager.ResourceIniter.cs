@@ -41,7 +41,6 @@ namespace GameFramework.Resource
             /// </summary>
             public void Shutdown()
             {
-
             }
 
             /// <summary>

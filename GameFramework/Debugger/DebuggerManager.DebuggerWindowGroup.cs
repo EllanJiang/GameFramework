@@ -75,7 +75,6 @@ namespace GameFramework.Debugger
             /// <param name="args">初始化调试组参数。</param>
             public void Initialize(params object[] args)
             {
-
             }
 
             /// <summary>
@@ -122,7 +121,6 @@ namespace GameFramework.Debugger
             /// </summary>
             public void OnDraw()
             {
-
             }
 
             private void RefreshDebuggerWindowNames()

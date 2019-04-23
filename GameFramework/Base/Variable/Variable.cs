@@ -19,7 +19,6 @@ namespace GameFramework
         /// </summary>
         protected Variable()
         {
-
         }
 
         /// <summary>

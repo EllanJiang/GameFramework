@@ -12,6 +12,5 @@ namespace GameFramework.Sound
     /// </summary>
     public interface ISoundGroupHelper
     {
-
     }
 }

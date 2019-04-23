@@ -24,7 +24,6 @@ namespace GameFramework.Resource
         public LoadSceneCallbacks(LoadSceneSuccessCallback loadSceneSuccessCallback)
             : this(loadSceneSuccessCallback, null, null, null)
         {
-
         }
 
         /// <summary>
@@ -35,7 +34,6 @@ namespace GameFramework.Resource
         public LoadSceneCallbacks(LoadSceneSuccessCallback loadSceneSuccessCallback, LoadSceneFailureCallback loadSceneFailureCallback)
             : this(loadSceneSuccessCallback, loadSceneFailureCallback, null, null)
         {
-
         }
 
         /// <summary>
@@ -46,7 +44,6 @@ namespace GameFramework.Resource
         public LoadSceneCallbacks(LoadSceneSuccessCallback loadSceneSuccessCallback, LoadSceneUpdateCallback loadSceneUpdateCallback)
             : this(loadSceneSuccessCallback, null, loadSceneUpdateCallback, null)
         {
-
         }
 
         /// <summary>
@@ -57,7 +54,6 @@ namespace GameFramework.Resource
         public LoadSceneCallbacks(LoadSceneSuccessCallback loadSceneSuccessCallback, LoadSceneDependencyAssetCallback loadSceneDependencyAssetCallback)
             : this(loadSceneSuccessCallback, null, null, loadSceneDependencyAssetCallback)
         {
-
         }
 
         /// <summary>
@@ -69,7 +65,6 @@ namespace GameFramework.Resource
         public LoadSceneCallbacks(LoadSceneSuccessCallback loadSceneSuccessCallback, LoadSceneFailureCallback loadSceneFailureCallback, LoadSceneUpdateCallback loadSceneUpdateCallback)
             : this(loadSceneSuccessCallback, loadSceneFailureCallback, loadSceneUpdateCallback, null)
         {
-
         }
 
         /// <summary>
@@ -81,7 +76,6 @@ namespace GameFramework.Resource
         public LoadSceneCallbacks(LoadSceneSuccessCallback loadSceneSuccessCallback, LoadSceneFailureCallback loadSceneFailureCallback, LoadSceneDependencyAssetCallback loadSceneDependencyAssetCallback)
             : this(loadSceneSuccessCallback, loadSceneFailureCallback, null, loadSceneDependencyAssetCallback)
         {
-
         }
 
         /// <summary>

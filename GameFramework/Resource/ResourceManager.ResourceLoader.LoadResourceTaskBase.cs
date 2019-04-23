@@ -170,17 +170,14 @@ namespace GameFramework.Resource
 
                 public virtual void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)
                 {
-
                 }
 
                 public virtual void OnLoadAssetFailure(LoadResourceAgent agent, LoadResourceStatus status, string errorMessage)
                 {
-
                 }
 
                 public virtual void OnLoadAssetUpdate(LoadResourceAgent agent, LoadResourceProgress type, float progress)
                 {
-
                 }
 
                 public virtual void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset)

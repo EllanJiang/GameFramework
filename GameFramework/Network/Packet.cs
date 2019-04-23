@@ -12,6 +12,5 @@ namespace GameFramework.Network
     /// </summary>
     public abstract class Packet : BaseEventArgs
     {
-
     }
 }

@@ -22,7 +22,6 @@ namespace GameFramework.ObjectPool
         public ObjectPoolBase()
             : this(null)
         {
-
         }
 
         /// <summary>

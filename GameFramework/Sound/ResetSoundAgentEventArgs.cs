@@ -17,7 +17,6 @@ namespace GameFramework.Sound
         /// </summary>
         public ResetSoundAgentEventArgs()
         {
-
         }
     }
 }
