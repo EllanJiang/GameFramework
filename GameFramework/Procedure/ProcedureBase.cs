@@ -31,7 +31,6 @@ namespace GameFramework.Procedure
         protected internal override void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
-            GameFrameworkLog.Debug("Enter '{0}' procedure.", GetType().FullName);
         }
 
         /// <summary>
@@ -53,7 +52,6 @@ namespace GameFramework.Procedure
         protected internal override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
             base.OnLeave(procedureOwner, isShutdown);
-            GameFrameworkLog.Debug("Leave '{0}' procedure.", GetType().FullName);
         }
 
         /// <summary>

@@ -108,7 +108,7 @@ namespace GameFramework.Download
 
                 while (m_DownloadCounterNodes.Count > 0 && m_DownloadCounterNodes.Peek().ElapseSeconds >= m_RecordInterval)
                 {
-                    m_DownloadCounterNodes.Dequeue();
+                    ReferencePool.Release(m_DownloadCounterNodes.Dequeue());
                 }
 
                 if (m_DownloadCounterNodes.Count <= 0)
@@ -137,7 +137,9 @@ namespace GameFramework.Download
                     return;
                 }
 
-                m_DownloadCounterNodes.Enqueue(new DownloadCounterNode(downloadedLength));
+                DownloadCounterNode downloadCounterNode = ReferencePool.Acquire<DownloadCounterNode>();
+                downloadCounterNode.DownloadedLength = downloadedLength;
+                m_DownloadCounterNodes.Enqueue(downloadCounterNode);
             }
 
             private void Reset()

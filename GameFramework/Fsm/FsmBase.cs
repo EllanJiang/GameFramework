@@ -22,7 +22,6 @@ namespace GameFramework.Fsm
         public FsmBase()
             : this(null)
         {
-
         }
 
         /// <summary>

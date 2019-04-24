@@ -11,6 +11,7 @@
     <AssemblyName>GameFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,6 +62,7 @@
     <Compile Include="Base\ReferencePool\ReferencePoolInfo.cs" />
     <Compile Include="Base\TaskPool\ITask.cs" />
     <Compile Include="Base\TaskPool\ITaskAgent.cs" />
+    <Compile Include="Base\TaskPool\StartTaskStatus.cs" />
     <Compile Include="Base\TaskPool\TaskPool.cs" />
     <Compile Include="Base\Variable\GenericVariable.cs" />
     <Compile Include="Base\Variable\Variable.cs" />
@@ -99,7 +101,8 @@
     <Compile Include="Download\Constant.cs" />
     <Compile Include="Download\DownloadAgentHelperCompleteEventArgs.cs" />
     <Compile Include="Download\DownloadAgentHelperErrorEventArgs.cs" />
-    <Compile Include="Download\DownloadAgentHelperUpdateEventArgs.cs" />
+    <Compile Include="Download\DownloadAgentHelperUpdateBytesEventArgs.cs" />
+    <Compile Include="Download\DownloadAgentHelperUpdateLengthEventArgs.cs" />
     <Compile Include="Download\DownloadFailureEventArgs.cs" />
     <Compile Include="Download\DownloadManager.cs" />
     <Compile Include="Download\DownloadManager.DownloadAgent.cs" />
@@ -222,7 +225,6 @@
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadAssetTask.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadDependencyAssetTask.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadResourceAgent.cs" />
-    <Compile Include="Resource\ResourceManager.ResourceLoader.LoadResourceAgent.WaitingType.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadResourceTaskBase.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadSceneTask.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.ResourceObject.cs" />

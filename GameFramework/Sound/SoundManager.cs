@@ -124,7 +124,6 @@ namespace GameFramework.Sound
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
-
         }
 
         /// <summary>
@@ -614,7 +613,6 @@ namespace GameFramework.Sound
             m_SoundsBeingLoaded.Remove(playSoundInfo.SerialId);
             if (m_SoundsToReleaseOnLoad.Contains(playSoundInfo.SerialId))
             {
-                GameFrameworkLog.Debug("Release sound '{0}' on loading success.", playSoundInfo.SerialId.ToString());
                 m_SoundsToReleaseOnLoad.Remove(playSoundInfo.SerialId);
                 m_SoundHelper.ReleaseSoundAsset(soundAsset);
                 return;

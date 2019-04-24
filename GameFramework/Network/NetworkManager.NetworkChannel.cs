@@ -87,6 +87,17 @@ namespace GameFramework.Network
             }
 
             /// <summary>
+            /// 获取网络频道所使用的 Socket。
+            /// </summary>
+            public Socket Socket
+            {
+                get
+                {
+                    return m_Socket;
+                }
+            }
+
+            /// <summary>
             /// 获取是否已连接。
             /// </summary>
             public bool Connected
@@ -110,94 +121,6 @@ namespace GameFramework.Network
                 get
                 {
                     return m_NetworkType;
-                }
-            }
-
-            /// <summary>
-            /// 获取本地终结点的 IP 地址。
-            /// </summary>
-            public IPAddress LocalIPAddress
-            {
-                get
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.LocalEndPoint;
-                    if (ipEndPoint == null)
-                    {
-                        throw new GameFrameworkException("Local end point is invalid.");
-                    }
-
-                    return ipEndPoint.Address;
-                }
-            }
-
-            /// <summary>
-            /// 获取本地终结点的端口号。
-            /// </summary>
-            public int LocalPort
-            {
-                get
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.LocalEndPoint;
-                    if (ipEndPoint == null)
-                    {
-                        throw new GameFrameworkException("Local end point is invalid.");
-                    }
-
-                    return ipEndPoint.Port;
-                }
-            }
-
-            /// <summary>
-            /// 获取远程终结点的 IP 地址。
-            /// </summary>
-            public IPAddress RemoteIPAddress
-            {
-                get
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.RemoteEndPoint;
-                    if (ipEndPoint == null)
-                    {
-                        throw new GameFrameworkException("Remote end point is invalid.");
-                    }
-
-                    return ipEndPoint.Address;
-                }
-            }
-
-            /// <summary>
-            /// 获取远程终结点的端口号。
-            /// </summary>
-            public int RemotePort
-            {
-                get
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    IPEndPoint ipEndPoint = (IPEndPoint)m_Socket.RemoteEndPoint;
-                    if (ipEndPoint == null)
-                    {
-                        throw new GameFrameworkException("Remote end point is invalid.");
-                    }
-
-                    return ipEndPoint.Port;
                 }
             }
 
@@ -298,56 +221,6 @@ namespace GameFramework.Network
             }
 
             /// <summary>
-            /// 获取或设置接收缓冲区字节数。
-            /// </summary>
-            public int ReceiveBufferSize
-            {
-                get
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    return m_Socket.ReceiveBufferSize;
-                }
-                set
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    m_Socket.ReceiveBufferSize = value;
-                }
-            }
-
-            /// <summary>
-            /// 获取或设置发送缓冲区字节数。
-            /// </summary>
-            public int SendBufferSize
-            {
-                get
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    return m_Socket.SendBufferSize;
-                }
-                set
-                {
-                    if (m_Socket == null)
-                    {
-                        throw new GameFrameworkException("You must connect first.");
-                    }
-
-                    m_Socket.SendBufferSize = value;
-                }
-            }
-
-            /// <summary>
             /// 网络频道轮询。
             /// </summary>
             /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
@@ -368,6 +241,11 @@ namespace GameFramework.Network
                     int missHeartBeatCount = 0;
                     lock (m_HeartBeatState)
                     {
+                        if (m_Socket == null || !m_Active)
+                        {
+                            return;
+                        }
+
                         m_HeartBeatState.HeartBeatElapseSeconds += realElapseSeconds;
                         if (m_HeartBeatState.HeartBeatElapseSeconds >= m_HeartBeatInterval)
                         {
@@ -450,9 +328,11 @@ namespace GameFramework.Network
                     case AddressFamily.InterNetwork:
                         m_NetworkType = NetworkType.IPv4;
                         break;
+
                     case AddressFamily.InterNetworkV6:
                         m_NetworkType = NetworkType.IPv6;
                         break;
+
                     default:
                         string errorMessage = Utility.Text.Format("Not supported address family '{0}'.", ipAddress.AddressFamily.ToString());
                         if (NetworkChannelError != null)
@@ -508,16 +388,8 @@ namespace GameFramework.Network
                         return;
                     }
 
-                    lock (m_SendPacketPool)
-                    {
-                        m_SendPacketPool.Clear();
-                    }
-
-                    m_ReceivePacketPool.Clear();
-
                     m_Active = false;
-                    m_SentPacketCount = 0;
-                    m_ReceivedPacketCount = 0;
+
                     try
                     {
                         m_Socket.Shutdown(SocketShutdown.Both);
@@ -534,6 +406,21 @@ namespace GameFramework.Network
                         {
                             NetworkChannelClosed(this);
                         }
+                    }
+
+                    m_SentPacketCount = 0;
+                    m_ReceivedPacketCount = 0;
+
+                    lock (m_SendPacketPool)
+                    {
+                        m_SendPacketPool.Clear();
+                    }
+
+                    m_ReceivePacketPool.Clear();
+
+                    lock (m_HeartBeatState)
+                    {
+                        m_HeartBeatState.Reset(true);
                     }
                 }
             }
@@ -732,7 +619,7 @@ namespace GameFramework.Network
                     m_ReceiveState.PrepareForPacket(packetHeader);
                     if (packetHeader.PacketLength <= 0)
                     {
-                        ProcessPacket();
+                        return ProcessPacket();
                     }
                 }
                 catch (Exception exception)
@@ -813,8 +700,16 @@ namespace GameFramework.Network
                 }
 
                 m_Active = true;
+
                 m_SentPacketCount = 0;
                 m_ReceivedPacketCount = 0;
+
+                lock (m_SendPacketPool)
+                {
+                    m_SendPacketPool.Clear();
+                }
+
+                m_ReceivePacketPool.Clear();
 
                 lock (m_HeartBeatState)
                 {
@@ -832,14 +727,15 @@ namespace GameFramework.Network
             private void SendCallback(IAsyncResult ar)
             {
                 Socket socket = (Socket)ar.AsyncState;
+                if (!socket.Connected)
+                {
+                    return;
+                }
+
                 int bytesSent = 0;
                 try
                 {
                     bytesSent = socket.EndSend(ar);
-                }
-                catch (ObjectDisposedException)
-                {
-                    return;
                 }
                 catch (Exception exception)
                 {
@@ -867,14 +763,15 @@ namespace GameFramework.Network
             private void ReceiveCallback(IAsyncResult ar)
             {
                 Socket socket = (Socket)ar.AsyncState;
+                if (!socket.Connected)
+                {
+                    return;
+                }
+
                 int bytesReceived = 0;
                 try
                 {
                     bytesReceived = socket.EndReceive(ar);
-                }
-                catch (ObjectDisposedException)
-                {
-                    return;
                 }
                 catch (Exception exception)
                 {

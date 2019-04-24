@@ -12,6 +12,5 @@ namespace GameFramework.Entity
     /// </summary>
     public interface IEntityGroupHelper
     {
-
     }
 }

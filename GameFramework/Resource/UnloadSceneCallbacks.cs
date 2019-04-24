@@ -22,7 +22,6 @@ namespace GameFramework.Resource
         public UnloadSceneCallbacks(UnloadSceneSuccessCallback unloadSceneSuccessCallback)
             : this(unloadSceneSuccessCallback, null)
         {
-
         }
 
         /// <summary>

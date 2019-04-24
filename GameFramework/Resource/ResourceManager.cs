@@ -290,6 +290,17 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 获取更新失败资源数量。
+        /// </summary>
+        public int UpdateFailureCount
+        {
+            get
+            {
+                return m_ResourceUpdater != null ? m_ResourceUpdater.UpdateFailureCount : 0;
+            }
+        }
+
+        /// <summary>
         /// 获取正在更新资源数量。
         /// </summary>
         public int UpdatingCount
@@ -776,6 +787,21 @@ namespace GameFramework.Resource
         /// <param name="loadResourceAgentHelper">要增加的加载资源代理辅助器。</param>
         public void AddLoadResourceAgentHelper(ILoadResourceAgentHelper loadResourceAgentHelper)
         {
+            if (m_ResourceHelper == null)
+            {
+                throw new GameFrameworkException("Resource helper is invalid.");
+            }
+
+            if (string.IsNullOrEmpty(m_ReadOnlyPath))
+            {
+                throw new GameFrameworkException("Readonly path is invalid.");
+            }
+
+            if (string.IsNullOrEmpty(m_ReadWritePath))
+            {
+                throw new GameFrameworkException("Read-write path is invalid.");
+            }
+
             m_ResourceLoader.AddLoadResourceAgentHelper(loadResourceAgentHelper, m_ResourceHelper, m_ReadOnlyPath, m_ReadWritePath, m_DecryptResourceCallback);
         }
 
@@ -1341,7 +1367,7 @@ namespace GameFramework.Resource
 
         private void OnCheckerResourceNeedUpdate(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode)
         {
-            m_ResourceUpdater.AddResourceUpdate(resourceName, loadType, length, hashCode, zipLength, zipHashCode, Utility.Path.GetCombinePath(m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(resourceName.FullName)), Utility.Path.GetRemotePath(m_UpdatePrefixUri, Utility.Path.GetResourceNameWithCrc32AndSuffix(resourceName.FullName, hashCode)), 0);
+            m_ResourceUpdater.AddResourceUpdate(resourceName, loadType, length, hashCode, zipLength, zipHashCode, Utility.Path.GetCombinePath(m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(resourceName.FullName)));
         }
 
         private void OnCheckerResourceCheckComplete(int removedCount, int updateCount, long updateTotalLength, long updateTotalZipLength)
@@ -1412,23 +1438,26 @@ namespace GameFramework.Resource
             }
         }
 
-        private void OnUpdaterResourceUpdateAllComplete()
+        private void OnUpdaterResourceUpdateAllComplete(bool result)
         {
-            m_ResourceUpdater.ResourceUpdateStart -= OnUpdaterResourceUpdateStart;
-            m_ResourceUpdater.ResourceUpdateChanged -= OnUpdaterResourceUpdateChanged;
-            m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
-            m_ResourceUpdater.ResourceUpdateFailure -= OnUpdaterResourceUpdateFailure;
-            m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
-            m_ResourceUpdater.Shutdown();
-            m_ResourceUpdater = null;
-            m_UpdateFileCache = null;
-            if (m_DecompressCache != null)
+            if (result)
             {
-                m_DecompressCache.Dispose();
-                m_DecompressCache = null;
+                m_ResourceUpdater.ResourceUpdateStart -= OnUpdaterResourceUpdateStart;
+                m_ResourceUpdater.ResourceUpdateChanged -= OnUpdaterResourceUpdateChanged;
+                m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
+                m_ResourceUpdater.ResourceUpdateFailure -= OnUpdaterResourceUpdateFailure;
+                m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
+                m_ResourceUpdater.Shutdown();
+                m_ResourceUpdater = null;
+                m_UpdateFileCache = null;
+                if (m_DecompressCache != null)
+                {
+                    m_DecompressCache.Dispose();
+                    m_DecompressCache = null;
+                }
             }
 
-            m_UpdateResourcesCompleteCallback();
+            m_UpdateResourcesCompleteCallback(result);
             m_UpdateResourcesCompleteCallback = null;
         }
     }

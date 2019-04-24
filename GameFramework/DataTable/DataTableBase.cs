@@ -23,7 +23,6 @@ namespace GameFramework.DataTable
         public DataTableBase()
             : this(null)
         {
-
         }
 
         /// <summary>

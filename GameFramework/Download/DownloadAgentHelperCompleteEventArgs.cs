@@ -12,17 +12,18 @@ namespace GameFramework.Download
     /// </summary>
     public sealed class DownloadAgentHelperCompleteEventArgs : GameFrameworkEventArgs
     {
-        private readonly byte[] m_Bytes;
-
         /// <summary>
         /// 初始化下载代理辅助器完成事件的新实例。
         /// </summary>
         /// <param name="length">下载的数据大小。</param>
-        /// <param name="bytes">下载的数据流。</param>
-        public DownloadAgentHelperCompleteEventArgs(int length, byte[] bytes)
+        public DownloadAgentHelperCompleteEventArgs(int length)
         {
+            if (length <= 0)
+            {
+                throw new GameFrameworkException("Length is invalid.");
+            }
+
             Length = length;
-            m_Bytes = bytes;
         }
 
         /// <summary>
@@ -32,14 +33,6 @@ namespace GameFramework.Download
         {
             get;
             private set;
-        }
-
-        /// <summary>
-        /// 获取下载的数据流。
-        /// </summary>
-        public byte[] GetBytes()
-        {
-            return m_Bytes;
         }
     }
 }

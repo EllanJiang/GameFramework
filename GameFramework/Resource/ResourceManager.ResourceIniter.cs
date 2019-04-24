@@ -41,7 +41,6 @@ namespace GameFramework.Resource
             /// </summary>
             public void Shutdown()
             {
-
             }
 
             /// <summary>
@@ -54,6 +53,11 @@ namespace GameFramework.Resource
                 if (m_ResourceManager.m_ResourceHelper == null)
                 {
                     throw new GameFrameworkException("Resource helper is invalid.");
+                }
+
+                if (string.IsNullOrEmpty(m_ResourceManager.m_ReadOnlyPath))
+                {
+                    throw new GameFrameworkException("Readonly path is invalid.");
                 }
 
                 m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(m_ResourceManager.m_ReadOnlyPath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName)), ParsePackageList);

@@ -81,13 +81,17 @@ namespace GameFramework.Resource
             /// <returns>检查版本资源列表结果。</returns>
             public CheckVersionListResult CheckVersionList(int latestInternalResourceVersion)
             {
+                if (string.IsNullOrEmpty(m_ResourceManager.m_ReadWritePath))
+                {
+                    throw new GameFrameworkException("Read-write path is invalid.");
+                }
+
                 string applicableGameVersion = null;
                 int internalResourceVersion = 0;
 
                 string versionListFileName = Utility.Path.GetCombinePath(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName));
                 if (!File.Exists(versionListFileName))
                 {
-                    GameFrameworkLog.Debug("Latest internal resource version is '{0}', local resource version is not exist.", latestInternalResourceVersion.ToString());
                     return CheckVersionListResult.NeedUpdate;
                 }
 
@@ -100,7 +104,6 @@ namespace GameFramework.Resource
                         fileStream = null;
                         if (binaryReader.ReadChar() != VersionListHeader[0] || binaryReader.ReadChar() != VersionListHeader[1] || binaryReader.ReadChar() != VersionListHeader[2])
                         {
-                            GameFrameworkLog.Debug("Latest internal resource version is '{0}', local resource version is invalid.", latestInternalResourceVersion.ToString());
                             return CheckVersionListResult.NeedUpdate;
                         }
 
@@ -121,7 +124,6 @@ namespace GameFramework.Resource
                 }
                 catch
                 {
-                    GameFrameworkLog.Debug("Latest internal resource version is '{0}', local resource version is invalid.", latestInternalResourceVersion.ToString());
                     return CheckVersionListResult.NeedUpdate;
                 }
                 finally
@@ -135,11 +137,9 @@ namespace GameFramework.Resource
 
                 if (internalResourceVersion != latestInternalResourceVersion)
                 {
-                    GameFrameworkLog.Debug("Applicable game version is '{0}', latest internal resource version is '{1}', local resource version is '{2}'.", applicableGameVersion, latestInternalResourceVersion.ToString(), internalResourceVersion.ToString());
                     return CheckVersionListResult.NeedUpdate;
                 }
 
-                GameFrameworkLog.Debug("Applicable game version is '{0}', latest internal resource version is '{1}', local resource version is up-to-date.", applicableGameVersion, latestInternalResourceVersion.ToString());
                 return CheckVersionListResult.Updated;
             }
 
@@ -181,14 +181,15 @@ namespace GameFramework.Resource
                     int length = (int)fileStream.Length;
                     if (length != m_VersionListZipLength)
                     {
+                        fileStream.Close();
                         string errorMessage = Utility.Text.Format("Latest version list zip length error, need '{0}', downloaded '{1}'.", m_VersionListZipLength.ToString(), length.ToString());
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;
                     }
 
-                    if (m_ResourceManager.m_UpdateFileCache == null || m_ResourceManager.m_UpdateFileCache.Length < length)
+                    if (m_ResourceManager.UpdateFileCacheLength < length)
                     {
-                        m_ResourceManager.m_UpdateFileCache = new byte[(length / OneMegaBytes + 1) * OneMegaBytes];
+                        m_ResourceManager.UpdateFileCacheLength = (length / OneMegaBytes + 1) * OneMegaBytes;
                     }
 
                     int offset = 0;
@@ -208,6 +209,7 @@ namespace GameFramework.Resource
                     int hashCode = Utility.Converter.GetInt32(Utility.Verifier.GetCrc32(m_ResourceManager.m_UpdateFileCache, 0, length));
                     if (hashCode != m_VersionListZipHashCode)
                     {
+                        fileStream.Close();
                         string errorMessage = Utility.Text.Format("Latest version list zip hash code error, need '{0}', downloaded '{1}'.", m_VersionListZipHashCode.ToString("X8"), hashCode.ToString("X8"));
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;
@@ -224,6 +226,7 @@ namespace GameFramework.Resource
                         m_ResourceManager.m_DecompressCache.SetLength(0L);
                         if (!Utility.Zip.Decompress(m_ResourceManager.m_UpdateFileCache, 0, length, m_ResourceManager.m_DecompressCache))
                         {
+                            fileStream.Close();
                             string errorMessage = Utility.Text.Format("Unable to decompress latest version list '{0}'.", e.DownloadPath);
                             OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                             return;
@@ -231,6 +234,7 @@ namespace GameFramework.Resource
 
                         if (m_ResourceManager.m_DecompressCache.Length != m_VersionListLength)
                         {
+                            fileStream.Close();
                             string errorMessage = Utility.Text.Format("Latest version list length error, need '{0}', downloaded '{1}'.", m_VersionListLength.ToString(), m_ResourceManager.m_DecompressCache.Length.ToString());
                             OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                             return;
@@ -247,6 +251,7 @@ namespace GameFramework.Resource
                     }
                     catch (Exception exception)
                     {
+                        fileStream.Close();
                         string errorMessage = Utility.Text.Format("Unable to decompress latest version list '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
                         OnDownloadFailure(this, new DownloadFailureEventArgs(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData));
                         return;

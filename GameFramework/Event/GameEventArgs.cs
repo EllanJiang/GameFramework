@@ -12,6 +12,5 @@ namespace GameFramework.Event
     /// </summary>
     public abstract class GameEventArgs : BaseEventArgs
     {
-
     }
 }
