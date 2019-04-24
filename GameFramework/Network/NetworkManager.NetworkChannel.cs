@@ -619,7 +619,7 @@ namespace GameFramework.Network
                     m_ReceiveState.PrepareForPacket(packetHeader);
                     if (packetHeader.PacketLength <= 0)
                     {
-                        ProcessPacket();
+                        return ProcessPacket();
                     }
                 }
                 catch (Exception exception)
@@ -727,14 +727,15 @@ namespace GameFramework.Network
             private void SendCallback(IAsyncResult ar)
             {
                 Socket socket = (Socket)ar.AsyncState;
+                if (!socket.Connected)
+                {
+                    return;
+                }
+
                 int bytesSent = 0;
                 try
                 {
                     bytesSent = socket.EndSend(ar);
-                }
-                catch (ObjectDisposedException)
-                {
-                    return;
                 }
                 catch (Exception exception)
                 {
@@ -762,14 +763,15 @@ namespace GameFramework.Network
             private void ReceiveCallback(IAsyncResult ar)
             {
                 Socket socket = (Socket)ar.AsyncState;
+                if (!socket.Connected)
+                {
+                    return;
+                }
+
                 int bytesReceived = 0;
                 try
                 {
                     bytesReceived = socket.EndReceive(ar);
-                }
-                catch (ObjectDisposedException)
-                {
-                    return;
                 }
                 catch (Exception exception)
                 {
