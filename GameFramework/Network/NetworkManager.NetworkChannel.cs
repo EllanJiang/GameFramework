@@ -40,7 +40,7 @@ namespace GameFramework.Network
             public GameFrameworkAction<NetworkChannel, object> NetworkChannelConnected;
             public GameFrameworkAction<NetworkChannel> NetworkChannelClosed;
             public GameFrameworkAction<NetworkChannel, int> NetworkChannelMissHeartBeat;
-            public GameFrameworkAction<NetworkChannel, NetworkErrorCode, string> NetworkChannelError;
+            public GameFrameworkAction<NetworkChannel, NetworkErrorCode, SocketError, string> NetworkChannelError;
             public GameFrameworkAction<NetworkChannel, object> NetworkChannelCustomError;
 
             /// <summary>
@@ -337,7 +337,7 @@ namespace GameFramework.Network
                         string errorMessage = Utility.Text.Format("Not supported address family '{0}'.", ipAddress.AddressFamily.ToString());
                         if (NetworkChannelError != null)
                         {
-                            NetworkChannelError(this, NetworkErrorCode.AddressFamilyError, errorMessage);
+                            NetworkChannelError(this, NetworkErrorCode.AddressFamilyError, SocketError.Success, errorMessage);
                             return;
                         }
 
@@ -350,7 +350,7 @@ namespace GameFramework.Network
                     string errorMessage = "Initialize network channel failure.";
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.SocketError, errorMessage);
+                        NetworkChannelError(this, NetworkErrorCode.SocketError, SocketError.Success, errorMessage);
                         return;
                     }
 
@@ -368,7 +368,8 @@ namespace GameFramework.Network
                 {
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.ConnectError, exception.Message);
+                        SocketException socketException = exception as SocketException;
+                        NetworkChannelError(this, NetworkErrorCode.ConnectError, socketException != null ? socketException.SocketErrorCode : SocketError.Success, exception.Message);
                         return;
                     }
 
@@ -437,7 +438,7 @@ namespace GameFramework.Network
                     string errorMessage = "You must connect first.";
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.SendError, errorMessage);
+                        NetworkChannelError(this, NetworkErrorCode.SendError, SocketError.Success, errorMessage);
                         return;
                     }
 
@@ -449,7 +450,7 @@ namespace GameFramework.Network
                     string errorMessage = "Socket is not active.";
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.SendError, errorMessage);
+                        NetworkChannelError(this, NetworkErrorCode.SendError, SocketError.Success, errorMessage);
                         return;
                     }
 
@@ -461,7 +462,7 @@ namespace GameFramework.Network
                     string errorMessage = "Packet is invalid.";
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.SendError, errorMessage);
+                        NetworkChannelError(this, NetworkErrorCode.SendError, SocketError.Success, errorMessage);
                         return;
                     }
 
@@ -515,7 +516,8 @@ namespace GameFramework.Network
                     m_Active = false;
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.SendError, exception.Message);
+                        SocketException socketException = exception as SocketException;
+                        NetworkChannelError(this, NetworkErrorCode.SendError, socketException != null ? socketException.SocketErrorCode : SocketError.Success, exception.Message);
                         return;
                     }
 
@@ -534,7 +536,8 @@ namespace GameFramework.Network
                     m_Active = false;
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.ReceiveError, exception.Message);
+                        SocketException socketException = exception as SocketException;
+                        NetworkChannelError(this, NetworkErrorCode.ReceiveError, socketException != null ? socketException.SocketErrorCode : SocketError.Success, exception.Message);
                         return;
                     }
 
@@ -567,7 +570,8 @@ namespace GameFramework.Network
                         m_Active = false;
                         if (NetworkChannelError != null)
                         {
-                            NetworkChannelError(this, NetworkErrorCode.SerializeError, exception.ToString());
+                            SocketException socketException = exception as SocketException;
+                            NetworkChannelError(this, NetworkErrorCode.SerializeError, socketException != null ? socketException.SocketErrorCode : SocketError.Success, exception.ToString());
                             return;
                         }
 
@@ -579,7 +583,7 @@ namespace GameFramework.Network
                         string errorMessage = "Serialized packet failure.";
                         if (NetworkChannelError != null)
                         {
-                            NetworkChannelError(this, NetworkErrorCode.SerializeError, errorMessage);
+                            NetworkChannelError(this, NetworkErrorCode.SerializeError, SocketError.Success, errorMessage);
                             return;
                         }
 
@@ -609,7 +613,7 @@ namespace GameFramework.Network
                         string errorMessage = "Packet header is invalid.";
                         if (NetworkChannelError != null)
                         {
-                            NetworkChannelError(this, NetworkErrorCode.DeserializePacketHeaderError, errorMessage);
+                            NetworkChannelError(this, NetworkErrorCode.DeserializePacketHeaderError, SocketError.Success, errorMessage);
                             return false;
                         }
 
@@ -627,7 +631,8 @@ namespace GameFramework.Network
                     m_Active = false;
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.DeserializePacketHeaderError, exception.ToString());
+                        SocketException socketException = exception as SocketException;
+                        NetworkChannelError(this, NetworkErrorCode.DeserializePacketHeaderError, socketException != null ? socketException.SocketErrorCode : SocketError.Success, exception.ToString());
                         return false;
                     }
 
@@ -666,7 +671,8 @@ namespace GameFramework.Network
                     m_Active = false;
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.DeserializePacketError, exception.ToString());
+                        SocketException socketException = exception as SocketException;
+                        NetworkChannelError(this, NetworkErrorCode.DeserializePacketError, socketException != null ? socketException.SocketErrorCode : SocketError.Success, exception.ToString());
                         return false;
                     }
 
@@ -692,7 +698,8 @@ namespace GameFramework.Network
                     m_Active = false;
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.ConnectError, exception.Message);
+                        SocketException socketException = exception as SocketException;
+                        NetworkChannelError(this, NetworkErrorCode.ConnectError, socketException != null ? socketException.SocketErrorCode : SocketError.Success, exception.Message);
                         return;
                     }
 
@@ -742,7 +749,8 @@ namespace GameFramework.Network
                     m_Active = false;
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.SendError, exception.Message);
+                        SocketException socketException = exception as SocketException;
+                        NetworkChannelError(this, NetworkErrorCode.SendError, socketException != null ? socketException.SocketErrorCode : SocketError.Success, exception.Message);
                         return;
                     }
 
@@ -778,7 +786,8 @@ namespace GameFramework.Network
                     m_Active = false;
                     if (NetworkChannelError != null)
                     {
-                        NetworkChannelError(this, NetworkErrorCode.ReceiveError, exception.Message);
+                        SocketException socketException = exception as SocketException;
+                        NetworkChannelError(this, NetworkErrorCode.ReceiveError, socketException != null ? socketException.SocketErrorCode : SocketError.Success, exception.Message);
                         return;
                     }
 
