@@ -518,7 +518,7 @@ namespace GameFramework.Config
             {
                 if (m_LoadConfigFailureEventHandler != null)
                 {
-                    m_LoadConfigFailureEventHandler(this, new LoadConfigFailureEventArgs(configAssetName, exception.ToString(), loadConfigInfo.UserData));
+                    m_LoadConfigFailureEventHandler(this, new LoadConfigFailureEventArgs(configAssetName, loadConfigInfo.LoadType, exception.ToString(), loadConfigInfo.UserData));
                     return;
                 }
 
@@ -531,7 +531,7 @@ namespace GameFramework.Config
 
             if (m_LoadConfigSuccessEventHandler != null)
             {
-                m_LoadConfigSuccessEventHandler(this, new LoadConfigSuccessEventArgs(configAssetName, duration, loadConfigInfo.UserData));
+                m_LoadConfigSuccessEventHandler(this, new LoadConfigSuccessEventArgs(configAssetName, loadConfigInfo.LoadType, duration, loadConfigInfo.UserData));
             }
         }
 
@@ -546,7 +546,7 @@ namespace GameFramework.Config
             string appendErrorMessage = Utility.Text.Format("Load config failure, asset name '{0}', status '{1}', error message '{2}'.", configAssetName, status.ToString(), errorMessage);
             if (m_LoadConfigFailureEventHandler != null)
             {
-                m_LoadConfigFailureEventHandler(this, new LoadConfigFailureEventArgs(configAssetName, appendErrorMessage, loadConfigInfo.UserData));
+                m_LoadConfigFailureEventHandler(this, new LoadConfigFailureEventArgs(configAssetName, loadConfigInfo.LoadType, appendErrorMessage, loadConfigInfo.UserData));
                 return;
             }
 
@@ -563,7 +563,7 @@ namespace GameFramework.Config
 
             if (m_LoadConfigUpdateEventHandler != null)
             {
-                m_LoadConfigUpdateEventHandler(this, new LoadConfigUpdateEventArgs(configAssetName, progress, loadConfigInfo.UserData));
+                m_LoadConfigUpdateEventHandler(this, new LoadConfigUpdateEventArgs(configAssetName, loadConfigInfo.LoadType, progress, loadConfigInfo.UserData));
             }
         }
 

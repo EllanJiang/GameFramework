@@ -16,11 +16,13 @@ namespace GameFramework.DataTable
         /// 初始化加载数据表成功事件的新实例。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
+        /// <param name="loadType">数据表加载方式。</param>
         /// <param name="duration">加载持续时间。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public LoadDataTableSuccessEventArgs(string dataTableAssetName, float duration, object userData)
+        public LoadDataTableSuccessEventArgs(string dataTableAssetName, LoadType loadType, float duration, object userData)
         {
             DataTableAssetName = dataTableAssetName;
+            LoadType = loadType;
             Duration = duration;
             UserData = userData;
         }
@@ -29,6 +31,15 @@ namespace GameFramework.DataTable
         /// 获取数据表资源名称。
         /// </summary>
         public string DataTableAssetName
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取数据表加载方式。
+        /// </summary>
+        public LoadType LoadType
         {
             get;
             private set;

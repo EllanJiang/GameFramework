@@ -16,11 +16,13 @@ namespace GameFramework.Config
         /// 初始化加载配置更新事件的新实例。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="loadType">配置加载方式。</param>
         /// <param name="progress">加载配置进度。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public LoadConfigUpdateEventArgs(string configAssetName, float progress, object userData)
+        public LoadConfigUpdateEventArgs(string configAssetName, LoadType loadType, float progress, object userData)
         {
             ConfigAssetName = configAssetName;
+            LoadType = loadType;
             Progress = progress;
             UserData = userData;
         }
@@ -29,6 +31,15 @@ namespace GameFramework.Config
         /// 获取配置资源名称。
         /// </summary>
         public string ConfigAssetName
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取配置加载方式。
+        /// </summary>
+        public LoadType LoadType
         {
             get;
             private set;

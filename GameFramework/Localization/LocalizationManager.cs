@@ -599,7 +599,7 @@ namespace GameFramework.Localization
             {
                 if (m_LoadDictionaryFailureEventHandler != null)
                 {
-                    m_LoadDictionaryFailureEventHandler(this, new LoadDictionaryFailureEventArgs(dictionaryAssetName, exception.ToString(), loadDictionaryInfo.UserData));
+                    m_LoadDictionaryFailureEventHandler(this, new LoadDictionaryFailureEventArgs(dictionaryAssetName, loadDictionaryInfo.LoadType, exception.ToString(), loadDictionaryInfo.UserData));
                     return;
                 }
 
@@ -612,7 +612,7 @@ namespace GameFramework.Localization
 
             if (m_LoadDictionarySuccessEventHandler != null)
             {
-                m_LoadDictionarySuccessEventHandler(this, new LoadDictionarySuccessEventArgs(dictionaryAssetName, duration, loadDictionaryInfo.UserData));
+                m_LoadDictionarySuccessEventHandler(this, new LoadDictionarySuccessEventArgs(dictionaryAssetName, loadDictionaryInfo.LoadType, duration, loadDictionaryInfo.UserData));
             }
         }
 
@@ -627,7 +627,7 @@ namespace GameFramework.Localization
             string appendErrorMessage = Utility.Text.Format("Load dictionary failure, asset name '{0}', status '{1}', error message '{2}'.", dictionaryAssetName, status.ToString(), errorMessage);
             if (m_LoadDictionaryFailureEventHandler != null)
             {
-                m_LoadDictionaryFailureEventHandler(this, new LoadDictionaryFailureEventArgs(dictionaryAssetName, appendErrorMessage, loadDictionaryInfo.UserData));
+                m_LoadDictionaryFailureEventHandler(this, new LoadDictionaryFailureEventArgs(dictionaryAssetName, loadDictionaryInfo.LoadType, appendErrorMessage, loadDictionaryInfo.UserData));
                 return;
             }
 
@@ -644,7 +644,7 @@ namespace GameFramework.Localization
 
             if (m_LoadDictionaryUpdateEventHandler != null)
             {
-                m_LoadDictionaryUpdateEventHandler(this, new LoadDictionaryUpdateEventArgs(dictionaryAssetName, progress, loadDictionaryInfo.UserData));
+                m_LoadDictionaryUpdateEventHandler(this, new LoadDictionaryUpdateEventArgs(dictionaryAssetName, loadDictionaryInfo.LoadType, progress, loadDictionaryInfo.UserData));
             }
         }
 
