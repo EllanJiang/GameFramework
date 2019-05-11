@@ -623,7 +623,7 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException("Entity group name is invalid.");
             }
 
-            if (m_EntityInfos.ContainsKey(entityId))
+            if (HasEntity(entityId))
             {
                 throw new GameFrameworkException(Utility.Text.Format("Entity id '{0}' is already exist.", entityId.ToString()));
             }
@@ -1192,7 +1192,6 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException("Show entity info is invalid.");
             }
 
-            m_EntitiesBeingLoaded.Remove(showEntityInfo.EntityId);
             if (m_EntitiesToReleaseOnLoad.Contains(showEntityInfo.SerialId))
             {
                 m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.SerialId);
@@ -1200,6 +1199,7 @@ namespace GameFramework.Entity
                 return;
             }
 
+            m_EntitiesBeingLoaded.Remove(showEntityInfo.EntityId);
             EntityInstanceObject entityInstanceObject = new EntityInstanceObject(entityAssetName, entityAsset, m_EntityHelper.InstantiateEntity(entityAsset), m_EntityHelper);
             showEntityInfo.EntityGroup.RegisterEntityInstanceObject(entityInstanceObject, true);
 
@@ -1214,8 +1214,13 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException("Show entity info is invalid.");
             }
 
+            if (m_EntitiesToReleaseOnLoad.Contains(showEntityInfo.SerialId))
+            {
+                m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.SerialId);
+                return;
+            }
+
             m_EntitiesBeingLoaded.Remove(showEntityInfo.EntityId);
-            m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.SerialId);
             string appendErrorMessage = Utility.Text.Format("Load entity failure, asset name '{0}', status '{1}', error message '{2}'.", entityAssetName, status.ToString(), errorMessage);
             if (m_ShowEntityFailureEventHandler != null)
             {
