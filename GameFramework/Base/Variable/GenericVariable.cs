@@ -75,13 +75,7 @@ namespace GameFramework
         /// <param name="value">变量值。</param>
         public override void SetValue(object value)
         {
-            if (value is T)
-            {
-                m_Value = (T)value;
-                return;
-            }
-
-            throw new GameFrameworkException("Value type is invalid.");
+            m_Value = (T)value;
         }
 
         /// <summary>
