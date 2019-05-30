@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -9,16 +9,16 @@ using System;
 
 namespace GameFramework.Resource
 {
-    internal partial class ResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
-        private partial class ResourceLoader
+        private sealed partial class ResourceLoader
         {
             private sealed class LoadAssetTask : LoadResourceTaskBase
             {
                 private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
 
-                public LoadAssetTask(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
-                    : base(assetName, assetType, priority, resourceInfo, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, userData)
+                public LoadAssetTask(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
+                    : base(assetName, assetType, priority, resourceInfo, dependencyAssetNames, userData)
                 {
                     m_LoadAssetCallbacks = loadAssetCallbacks;
                 }

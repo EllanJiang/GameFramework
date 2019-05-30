@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -31,7 +31,6 @@ namespace GameFramework.Setting
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
-
         }
 
         /// <summary>
@@ -39,7 +38,6 @@ namespace GameFramework.Setting
         /// </summary>
         internal override void Shutdown()
         {
-
         }
 
         /// <summary>

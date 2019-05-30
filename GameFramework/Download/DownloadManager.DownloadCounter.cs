@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace GameFramework.Download
 {
-    internal partial class DownloadManager
+    internal sealed partial class DownloadManager : GameFrameworkModule, IDownloadManager
     {
         private sealed partial class DownloadCounter
         {
@@ -108,7 +108,7 @@ namespace GameFramework.Download
 
                 while (m_DownloadCounterNodes.Count > 0 && m_DownloadCounterNodes.Peek().ElapseSeconds >= m_RecordInterval)
                 {
-                    m_DownloadCounterNodes.Dequeue();
+                    ReferencePool.Release(m_DownloadCounterNodes.Dequeue());
                 }
 
                 if (m_DownloadCounterNodes.Count <= 0)
@@ -137,7 +137,9 @@ namespace GameFramework.Download
                     return;
                 }
 
-                m_DownloadCounterNodes.Enqueue(new DownloadCounterNode(downloadedLength));
+                DownloadCounterNode downloadCounterNode = ReferencePool.Acquire<DownloadCounterNode>();
+                downloadCounterNode.DownloadedLength = downloadedLength;
+                m_DownloadCounterNodes.Enqueue(downloadCounterNode);
             }
 
             private void Reset()

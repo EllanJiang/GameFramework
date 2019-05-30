@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -16,6 +16,7 @@ namespace GameFramework.ObjectPool
     {
         private readonly string m_Name;
         private readonly bool m_Locked;
+        private readonly bool m_CustomCanReleaseFlag;
         private readonly int m_Priority;
         private readonly DateTime m_LastUseTime;
         private readonly int m_SpawnCount;
@@ -25,13 +26,15 @@ namespace GameFramework.ObjectPool
         /// </summary>
         /// <param name="name">对象名称。</param>
         /// <param name="locked">对象是否被加锁。</param>
+        /// <param name="customCanReleaseFlag">对象自定义释放检查标记。</param>
         /// <param name="priority">对象的优先级。</param>
         /// <param name="lastUseTime">对象上次使用时间。</param>
         /// <param name="spawnCount">对象的获取计数。</param>
-        public ObjectInfo(string name, bool locked, int priority, DateTime lastUseTime, int spawnCount)
+        public ObjectInfo(string name, bool locked, bool customCanReleaseFlag, int priority, DateTime lastUseTime, int spawnCount)
         {
             m_Name = name;
             m_Locked = locked;
+            m_CustomCanReleaseFlag = customCanReleaseFlag;
             m_Priority = priority;
             m_LastUseTime = lastUseTime;
             m_SpawnCount = spawnCount;
@@ -56,6 +59,17 @@ namespace GameFramework.ObjectPool
             get
             {
                 return m_Locked;
+            }
+        }
+
+        /// <summary>
+        /// 获取对象自定义释放检查标记。
+        /// </summary>
+        public bool CustomCanReleaseFlag
+        {
+            get
+            {
+                return m_CustomCanReleaseFlag;
             }
         }
 

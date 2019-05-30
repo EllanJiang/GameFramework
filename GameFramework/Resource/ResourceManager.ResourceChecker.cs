@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -8,10 +8,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace GameFramework.Resource
 {
-    internal partial class ResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 资源检查器。
@@ -26,7 +27,7 @@ namespace GameFramework.Resource
             private bool m_ReadWriteListReady;
 
             public GameFrameworkAction<ResourceName, LoadType, int, int, int, int> ResourceNeedUpdate;
-            public GameFrameworkAction<int, int, int, int> ResourceCheckComplete;
+            public GameFrameworkAction<int, int, long, long> ResourceCheckComplete;
 
             /// <summary>
             /// 初始化资源检查器的新实例。
@@ -62,6 +63,16 @@ namespace GameFramework.Resource
                 if (m_ResourceManager.m_ResourceHelper == null)
                 {
                     throw new GameFrameworkException("Resource helper is invalid.");
+                }
+
+                if (string.IsNullOrEmpty(m_ResourceManager.m_ReadOnlyPath))
+                {
+                    throw new GameFrameworkException("Readonly path is invalid.");
+                }
+
+                if (string.IsNullOrEmpty(m_ResourceManager.m_ReadWritePath))
+                {
+                    throw new GameFrameworkException("Read-write path is invalid.");
                 }
 
                 m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName)), ParseVersionList);
@@ -107,8 +118,8 @@ namespace GameFramework.Resource
 
                 int removedCount = 0;
                 int updateCount = 0;
-                int updateTotalLength = 0;
-                int updateTotalZipLength = 0;
+                long updateTotalLength = 0L;
+                long updateTotalZipLength = 0L;
                 foreach (KeyValuePair<ResourceName, CheckInfo> checkInfo in m_CheckInfos)
                 {
                     CheckInfo ci = checkInfo.Value;
@@ -210,12 +221,11 @@ namespace GameFramework.Resource
                 MemoryStream memoryStream = null;
                 try
                 {
-                    memoryStream = new MemoryStream(bytes);
-                    using (BinaryReader binaryReader = new BinaryReader(memoryStream))
+                    memoryStream = new MemoryStream(bytes, false);
+                    using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                     {
                         memoryStream = null;
-                        char[] header = binaryReader.ReadChars(3);
-                        if (header[0] != VersionListHeader[0] || header[1] != VersionListHeader[1] || header[2] != VersionListHeader[2])
+                        if (binaryReader.ReadChar() != VersionListHeader[0] || binaryReader.ReadChar() != VersionListHeader[1] || binaryReader.ReadChar() != VersionListHeader[2])
                         {
                             throw new GameFrameworkException("Version list header is invalid.");
                         }
@@ -225,82 +235,47 @@ namespace GameFramework.Resource
                         if (listVersion == 0)
                         {
                             byte[] encryptBytes = binaryReader.ReadBytes(4);
-                            m_ResourceManager.m_ApplicableGameVersion = Utility.Converter.GetString(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
+
+                            m_ResourceManager.m_ApplicableGameVersion = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
                             m_ResourceManager.m_InternalResourceVersion = binaryReader.ReadInt32();
 
+                            int assetCount = binaryReader.ReadInt32();
+                            m_ResourceManager.m_AssetInfos = new Dictionary<string, AssetInfo>(assetCount);
                             int resourceCount = binaryReader.ReadInt32();
-                            string[] names = new string[resourceCount];
-                            string[] variants = new string[resourceCount];
-                            int[] lengths = new int[resourceCount];
-                            Dictionary<string, string[]> dependencyAssetNamesCollection = new Dictionary<string, string[]>();
+                            m_ResourceManager.m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>(resourceCount, new ResourceNameComparer());
+
                             for (int i = 0; i < resourceCount; i++)
                             {
-                                names[i] = Utility.Converter.GetString(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
-
-                                variants[i] = null;
-                                byte variantLength = binaryReader.ReadByte();
-                                if (variantLength > 0)
-                                {
-                                    variants[i] = Utility.Converter.GetString(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(variantLength), encryptBytes));
-                                }
+                                string name = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
+                                string variant = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
+                                ResourceName resourceName = new ResourceName(name, variant);
 
                                 LoadType loadType = (LoadType)binaryReader.ReadByte();
-                                lengths[i] = binaryReader.ReadInt32();
+                                int length = binaryReader.ReadInt32();
                                 int hashCode = binaryReader.ReadInt32();
+                                byte[] hashCodeBytes = Utility.Converter.GetBytes(hashCode);
                                 int zipLength = binaryReader.ReadInt32();
                                 int zipHashCode = binaryReader.ReadInt32();
 
                                 int assetNamesCount = binaryReader.ReadInt32();
-                                string[] assetNames = new string[assetNamesCount];
                                 for (int j = 0; j < assetNamesCount; j++)
                                 {
-                                    assetNames[j] = Utility.Converter.GetString(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), Utility.Converter.GetBytes(hashCode)));
+                                    string assetName = m_ResourceManager.GetEncryptedString(binaryReader, hashCodeBytes);
 
                                     int dependencyAssetNamesCount = binaryReader.ReadInt32();
                                     string[] dependencyAssetNames = new string[dependencyAssetNamesCount];
                                     for (int k = 0; k < dependencyAssetNamesCount; k++)
                                     {
-                                        dependencyAssetNames[k] = Utility.Converter.GetString(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), Utility.Converter.GetBytes(hashCode)));
+                                        dependencyAssetNames[k] = m_ResourceManager.GetEncryptedString(binaryReader, hashCodeBytes);
                                     }
 
-                                    if (variants[i] == null || variants[i] == m_CurrentVariant)
+                                    if (variant == null || variant == m_CurrentVariant)
                                     {
-                                        dependencyAssetNamesCollection.Add(assetNames[j], dependencyAssetNames);
+                                        m_ResourceManager.m_AssetInfos.Add(assetName, new AssetInfo(assetName, resourceName, dependencyAssetNames));
                                     }
                                 }
 
-                                ResourceName resourceName = new ResourceName(names[i], variants[i]);
-                                SetVersionInfo(resourceName, loadType, lengths[i], hashCode, zipLength, zipHashCode);
-                                if (variants[i] == null || variants[i] == m_CurrentVariant)
-                                {
-                                    ProcessAssetInfo(resourceName, assetNames);
-                                }
-                            }
-
-                            ProcessAssetDependencyInfo(dependencyAssetNamesCollection);
-
-                            ResourceGroup resourceGroupAll = m_ResourceManager.GetResourceGroup(string.Empty);
-                            for (int i = 0; i < resourceCount; i++)
-                            {
-                                resourceGroupAll.AddResource(names[i], variants[i], lengths[i]);
-                            }
-
-                            int resourceGroupCount = binaryReader.ReadInt32();
-                            for (int i = 0; i < resourceGroupCount; i++)
-                            {
-                                string groupName = Utility.Converter.GetString(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
-                                ResourceGroup resourceGroup = m_ResourceManager.GetResourceGroup(groupName);
-                                int groupResourceCount = binaryReader.ReadInt32();
-                                for (int j = 0; j < groupResourceCount; j++)
-                                {
-                                    ushort versionIndex = binaryReader.ReadUInt16();
-                                    if (versionIndex >= resourceCount)
-                                    {
-                                        throw new GameFrameworkException(Utility.Text.Format("Version index '{0}' is invalid, resource count is '{1}'.", versionIndex, resourceCount));
-                                    }
-
-                                    resourceGroup.AddResource(names[versionIndex], variants[versionIndex], lengths[versionIndex]);
-                                }
+                                SetVersionInfo(resourceName, loadType, length, hashCode, zipLength, zipHashCode);
                             }
                         }
                         else
@@ -354,12 +329,11 @@ namespace GameFramework.Resource
                 MemoryStream memoryStream = null;
                 try
                 {
-                    memoryStream = new MemoryStream(bytes);
-                    using (BinaryReader binaryReader = new BinaryReader(memoryStream))
+                    memoryStream = new MemoryStream(bytes, false);
+                    using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                     {
                         memoryStream = null;
-                        char[] header = binaryReader.ReadChars(3);
-                        if (header[0] != ReadOnlyListHeader[0] || header[1] != ReadOnlyListHeader[1] || header[2] != ReadOnlyListHeader[2])
+                        if (binaryReader.ReadChar() != ReadOnlyListHeader[0] || binaryReader.ReadChar() != ReadOnlyListHeader[1] || binaryReader.ReadChar() != ReadOnlyListHeader[2])
                         {
                             throw new GameFrameworkException("Readonly list header is invalid.");
                         }
@@ -373,14 +347,8 @@ namespace GameFramework.Resource
                             int resourceCount = binaryReader.ReadInt32();
                             for (int i = 0; i < resourceCount; i++)
                             {
-                                string name = Utility.Converter.GetString(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
-
-                                string variant = null;
-                                byte variantLength = binaryReader.ReadByte();
-                                if (variantLength > 0)
-                                {
-                                    variant = Utility.Converter.GetString(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(variantLength), encryptBytes));
-                                }
+                                string name = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
+                                string variant = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
 
                                 LoadType loadType = (LoadType)binaryReader.ReadByte();
                                 int length = binaryReader.ReadInt32();
@@ -440,12 +408,11 @@ namespace GameFramework.Resource
                 MemoryStream memoryStream = null;
                 try
                 {
-                    memoryStream = new MemoryStream(bytes);
-                    using (BinaryReader binaryReader = new BinaryReader(memoryStream))
+                    memoryStream = new MemoryStream(bytes, false);
+                    using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                     {
                         memoryStream = null;
-                        char[] header = binaryReader.ReadChars(3);
-                        if (header[0] != ReadWriteListHeader[0] || header[1] != ReadWriteListHeader[1] || header[2] != ReadWriteListHeader[2])
+                        if (binaryReader.ReadChar() != ReadWriteListHeader[0] || binaryReader.ReadChar() != ReadWriteListHeader[1] || binaryReader.ReadChar() != ReadWriteListHeader[2])
                         {
                             throw new GameFrameworkException("Read-write list header is invalid.");
                         }
@@ -459,14 +426,8 @@ namespace GameFramework.Resource
                             int resourceCount = binaryReader.ReadInt32();
                             for (int i = 0; i < resourceCount; i++)
                             {
-                                string name = Utility.Converter.GetString(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(binaryReader.ReadByte()), encryptBytes));
-
-                                string variant = null;
-                                byte variantLength = binaryReader.ReadByte();
-                                if (variantLength > 0)
-                                {
-                                    variant = Utility.Converter.GetString(Utility.Encryption.GetXorBytes(binaryReader.ReadBytes(variantLength), encryptBytes));
-                                }
+                                string name = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
+                                string variant = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
 
                                 LoadType loadType = (LoadType)binaryReader.ReadByte();
                                 int length = binaryReader.ReadInt32();
@@ -508,37 +469,6 @@ namespace GameFramework.Resource
                         memoryStream.Dispose();
                         memoryStream = null;
                     }
-                }
-            }
-
-            private void ProcessAssetInfo(ResourceName resourceName, string[] assetNames)
-            {
-                foreach (string assetName in assetNames)
-                {
-                    m_ResourceManager.m_AssetInfos.Add(assetName, new AssetInfo(assetName, resourceName));
-                }
-            }
-
-            private void ProcessAssetDependencyInfo(Dictionary<string, string[]> dependencyAssetNamesCollection)
-            {
-                foreach (KeyValuePair<string, string[]> dependencyAssetNamesCollectionItem in dependencyAssetNamesCollection)
-                {
-                    List<string> dependencyAssetNames = new List<string>();
-                    List<string> scatteredDependencyAssetNames = new List<string>();
-                    foreach (string dependencyAssetName in dependencyAssetNamesCollectionItem.Value)
-                    {
-                        AssetInfo? assetInfo = m_ResourceManager.GetAssetInfo(dependencyAssetName);
-                        if (assetInfo.HasValue)
-                        {
-                            dependencyAssetNames.Add(dependencyAssetName);
-                        }
-                        else
-                        {
-                            scatteredDependencyAssetNames.Add(dependencyAssetName);
-                        }
-                    }
-
-                    m_ResourceManager.m_AssetDependencyInfos.Add(dependencyAssetNamesCollectionItem.Key, new AssetDependencyInfo(dependencyAssetNamesCollectionItem.Key, dependencyAssetNames.ToArray(), scatteredDependencyAssetNames.ToArray()));
                 }
             }
 

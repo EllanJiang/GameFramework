@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -135,7 +135,7 @@ namespace GameFramework.ObjectPool
         /// <summary>
         /// 回收对象。
         /// </summary>
-        /// <param name="obj">要回收的内部对象。</param>
+        /// <param name="obj">要回收的对象。</param>
         void Unspawn(T obj);
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace GameFramework.ObjectPool
         /// <summary>
         /// 设置对象是否被加锁。
         /// </summary>
-        /// <param name="obj">要设置被加锁的内部对象。</param>
+        /// <param name="obj">要设置被加锁的对象。</param>
         /// <param name="locked">是否被加锁。</param>
         void SetLocked(T obj, bool locked);
 
@@ -161,7 +161,7 @@ namespace GameFramework.ObjectPool
         /// <summary>
         /// 设置对象的优先级。
         /// </summary>
-        /// <param name="obj">要设置优先级的内部对象。</param>
+        /// <param name="obj">要设置优先级的对象。</param>
         /// <param name="priority">优先级。</param>
         void SetPriority(T obj, int priority);
 

@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -124,7 +124,6 @@ namespace GameFramework.Sound
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
-
         }
 
         /// <summary>
@@ -273,10 +272,13 @@ namespace GameFramework.Sound
                 return false;
             }
 
-            SoundGroup soundGroup = new SoundGroup(soundGroupName, soundGroupHelper);
-            soundGroup.AvoidBeingReplacedBySamePriority = soundGroupAvoidBeingReplacedBySamePriority;
-            soundGroup.Mute = soundGroupMute;
-            soundGroup.Volume = soundGroupVolume;
+            SoundGroup soundGroup = new SoundGroup(soundGroupName, soundGroupHelper)
+            {
+                AvoidBeingReplacedBySamePriority = soundGroupAvoidBeingReplacedBySamePriority,
+                Mute = soundGroupMute,
+                Volume = soundGroupVolume
+            };
+
             m_SoundGroups.Add(soundGroupName, soundGroup);
 
             return true;
@@ -611,7 +613,6 @@ namespace GameFramework.Sound
             m_SoundsBeingLoaded.Remove(playSoundInfo.SerialId);
             if (m_SoundsToReleaseOnLoad.Contains(playSoundInfo.SerialId))
             {
-                GameFrameworkLog.Debug("Release sound '{0}' on loading success.", playSoundInfo.SerialId.ToString());
                 m_SoundsToReleaseOnLoad.Remove(playSoundInfo.SerialId);
                 m_SoundHelper.ReleaseSoundAsset(soundAsset);
                 return;

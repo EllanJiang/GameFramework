@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace GameFramework.Debugger
 {
-    internal partial class DebuggerManager
+    internal sealed partial class DebuggerManager : GameFrameworkModule, IDebuggerManager
     {
         /// <summary>
         /// 调试窗口组。
@@ -75,7 +75,6 @@ namespace GameFramework.Debugger
             /// <param name="args">初始化调试组参数。</param>
             public void Initialize(params object[] args)
             {
-
             }
 
             /// <summary>
@@ -122,7 +121,6 @@ namespace GameFramework.Debugger
             /// </summary>
             public void OnDraw()
             {
-
             }
 
             private void RefreshDebuggerWindowNames()

@@ -1,12 +1,13 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 using GameFramework.Resource;
 using System;
+using System.IO;
 
 namespace GameFramework.Config
 {
@@ -59,29 +60,33 @@ namespace GameFramework.Config
         /// 加载配置。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
-        void LoadConfig(string configAssetName);
+        /// <param name="loadType">配置加载方式。</param>
+        void LoadConfig(string configAssetName, LoadType loadType);
 
         /// <summary>
         /// 加载配置。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="loadType">配置加载方式。</param>
         /// <param name="priority">加载配置资源的优先级。</param>
-        void LoadConfig(string configAssetName, int priority);
+        void LoadConfig(string configAssetName, LoadType loadType, int priority);
 
         /// <summary>
         /// 加载配置。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="loadType">配置加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadConfig(string configAssetName, object userData);
+        void LoadConfig(string configAssetName, LoadType loadType, object userData);
 
         /// <summary>
         /// 加载配置。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="loadType">配置加载方式。</param>
         /// <param name="priority">加载配置资源的优先级。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadConfig(string configAssetName, int priority, object userData);
+        void LoadConfig(string configAssetName, LoadType loadType, int priority, object userData);
 
         /// <summary>
         /// 解析配置。
@@ -97,6 +102,36 @@ namespace GameFramework.Config
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析配置成功。</returns>
         bool ParseConfig(string text, object userData);
+
+        /// <summary>
+        /// 解析配置。
+        /// </summary>
+        /// <param name="bytes">要解析的配置二进制流。</param>
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(byte[] bytes);
+
+        /// <summary>
+        /// 解析配置。
+        /// </summary>
+        /// <param name="bytes">要解析的配置二进制流。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(byte[] bytes, object userData);
+
+        /// <summary>
+        /// 解析配置。
+        /// </summary>
+        /// <param name="stream">要解析的配置二进制流。</param>
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(Stream stream);
+
+        /// <summary>
+        /// 解析配置。
+        /// </summary>
+        /// <param name="stream">要解析的配置二进制流。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析配置成功。</returns>
+        bool ParseConfig(Stream stream, object userData);
 
         /// <summary>
         /// 检查是否存在指定配置项。

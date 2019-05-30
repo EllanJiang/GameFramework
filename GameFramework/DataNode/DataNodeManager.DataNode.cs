@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace GameFramework.DataNode
 {
-    internal partial class DataNodeManager
+    internal sealed partial class DataNodeManager : GameFrameworkModule, IDataNodeManager
     {
         /// <summary>
         /// 数据结点。
@@ -59,7 +59,7 @@ namespace GameFramework.DataNode
             {
                 get
                 {
-                    return m_Parent == null ? m_Name : Utility.Text.Format("{0}{1}{2}", m_Parent.FullName, PathSplit[0], m_Name);
+                    return m_Parent == null ? m_Name : Utility.Text.Format("{0}{1}{2}", m_Parent.FullName, PathSplitSeparator[0], m_Name);
                 }
             }
 
@@ -307,9 +307,9 @@ namespace GameFramework.DataNode
                     return false;
                 }
 
-                foreach (string pathSplit in PathSplit)
+                foreach (string pathSplitSeparator in PathSplitSeparator)
                 {
-                    if (name.Contains(pathSplit))
+                    if (name.Contains(pathSplitSeparator))
                     {
                         return false;
                     }

@@ -1,22 +1,22 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Resource
 {
-    internal partial class ResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
-        private partial class ResourceLoader
+        private sealed partial class ResourceLoader
         {
             private sealed class LoadDependencyAssetTask : LoadResourceTaskBase
             {
                 private readonly LoadResourceTaskBase m_MainTask;
 
-                public LoadDependencyAssetTask(string assetName, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, LoadResourceTaskBase mainTask, object userData)
-                    : base(assetName, null, priority, resourceInfo, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, userData)
+                public LoadDependencyAssetTask(string assetName, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadResourceTaskBase mainTask, object userData)
+                    : base(assetName, null, priority, resourceInfo, dependencyAssetNames, userData)
                 {
                     m_MainTask = mainTask;
                     m_MainTask.TotalDependencyAssetCount++;

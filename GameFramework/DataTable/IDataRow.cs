@@ -1,9 +1,11 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
+
+using System.IO;
 
 namespace GameFramework.DataTable
 {
@@ -21,9 +23,24 @@ namespace GameFramework.DataTable
         }
 
         /// <summary>
-        /// 数据表行文本内容解析器。
+        /// 数据表行文本解析器。
         /// </summary>
-        /// <param name="dataRowText">要解析的文本内容。</param>
-        void ParseDataRow(string dataRowText);
+        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <returns>是否解析数据表行成功。</returns>
+        bool ParseDataRow(GameFrameworkSegment<string> dataRowSegment);
+
+        /// <summary>
+        /// 数据表行二进制流解析器。
+        /// </summary>
+        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <returns>是否解析数据表行成功。</returns>
+        bool ParseDataRow(GameFrameworkSegment<byte[]> dataRowSegment);
+
+        /// <summary>
+        /// 数据表行二进制流解析器。
+        /// </summary>
+        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <returns>是否解析数据表行成功。</returns>
+        bool ParseDataRow(GameFrameworkSegment<Stream> dataRowSegment);
     }
 }

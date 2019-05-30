@@ -1,22 +1,22 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Resource
 {
-    internal partial class ResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
-        private partial class ResourceLoader
+        private sealed partial class ResourceLoader
         {
             private sealed class LoadSceneTask : LoadResourceTaskBase
             {
                 private readonly LoadSceneCallbacks m_LoadSceneCallbacks;
 
-                public LoadSceneTask(string sceneAssetName, int priority, ResourceInfo resourceInfo, string resourceChildName, string[] dependencyAssetNames, string[] scatteredDependencyAssetNames, LoadSceneCallbacks loadSceneCallbacks, object userData)
-                    : base(sceneAssetName, null, priority, resourceInfo, resourceChildName, dependencyAssetNames, scatteredDependencyAssetNames, userData)
+                public LoadSceneTask(string sceneAssetName, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadSceneCallbacks loadSceneCallbacks, object userData)
+                    : base(sceneAssetName, null, priority, resourceInfo, dependencyAssetNames, userData)
                 {
                     m_LoadSceneCallbacks = loadSceneCallbacks;
                 }

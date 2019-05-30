@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -24,7 +24,6 @@ namespace GameFramework.Resource
         public LoadAssetCallbacks(LoadAssetSuccessCallback loadAssetSuccessCallback)
             : this(loadAssetSuccessCallback, null, null, null)
         {
-
         }
 
         /// <summary>
@@ -35,7 +34,6 @@ namespace GameFramework.Resource
         public LoadAssetCallbacks(LoadAssetSuccessCallback loadAssetSuccessCallback, LoadAssetFailureCallback loadAssetFailureCallback)
             : this(loadAssetSuccessCallback, loadAssetFailureCallback, null, null)
         {
-
         }
 
         /// <summary>
@@ -46,7 +44,6 @@ namespace GameFramework.Resource
         public LoadAssetCallbacks(LoadAssetSuccessCallback loadAssetSuccessCallback, LoadAssetUpdateCallback loadAssetUpdateCallback)
             : this(loadAssetSuccessCallback, null, loadAssetUpdateCallback, null)
         {
-
         }
 
         /// <summary>
@@ -57,7 +54,6 @@ namespace GameFramework.Resource
         public LoadAssetCallbacks(LoadAssetSuccessCallback loadAssetSuccessCallback, LoadAssetDependencyAssetCallback loadAssetDependencyAssetCallback)
             : this(loadAssetSuccessCallback, null, null, loadAssetDependencyAssetCallback)
         {
-
         }
 
         /// <summary>
@@ -69,7 +65,6 @@ namespace GameFramework.Resource
         public LoadAssetCallbacks(LoadAssetSuccessCallback loadAssetSuccessCallback, LoadAssetFailureCallback loadAssetFailureCallback, LoadAssetUpdateCallback loadAssetUpdateCallback)
             : this(loadAssetSuccessCallback, loadAssetFailureCallback, loadAssetUpdateCallback, null)
         {
-
         }
 
         /// <summary>
@@ -81,7 +76,6 @@ namespace GameFramework.Resource
         public LoadAssetCallbacks(LoadAssetSuccessCallback loadAssetSuccessCallback, LoadAssetFailureCallback loadAssetFailureCallback, LoadAssetDependencyAssetCallback loadAssetDependencyAssetCallback)
             : this(loadAssetSuccessCallback, loadAssetFailureCallback, null, loadAssetDependencyAssetCallback)
         {
-
         }
 
         /// <summary>

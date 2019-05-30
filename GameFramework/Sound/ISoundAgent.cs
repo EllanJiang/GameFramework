@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -32,6 +32,14 @@ namespace GameFramework.Sound
         /// 获取当前是否正在播放。
         /// </summary>
         bool IsPlaying
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取声音长度。
+        /// </summary>
+        float Length
         {
             get;
         }

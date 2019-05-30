@@ -1,13 +1,13 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.WebRequest
 {
-    internal partial class WebRequestManager
+    internal sealed partial class WebRequestManager : GameFrameworkModule, IWebRequestManager
     {
         /// <summary>
         /// Web 请求代理。
@@ -104,7 +104,8 @@ namespace GameFramework.WebRequest
             /// 开始处理 Web 请求任务。
             /// </summary>
             /// <param name="task">要处理的 Web 请求任务。</param>
-            public void Start(WebRequestTask task)
+            /// <returns>开始处理任务的状态。</returns>
+            public StartTaskStatus Start(WebRequestTask task)
             {
                 if (task == null)
                 {
@@ -130,6 +131,7 @@ namespace GameFramework.WebRequest
                 }
 
                 m_WaitTime = 0f;
+                return StartTaskStatus.CanResume;
             }
 
             /// <summary>

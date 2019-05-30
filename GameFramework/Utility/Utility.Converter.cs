@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -101,13 +101,46 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 以字节数组的形式返回指定的布尔值。
+            /// 以字节数组的形式获取指定的布尔值。
             /// </summary>
             /// <param name="value">要转换的布尔值。</param>
-            /// <returns>长度为 1 的字节数组。</returns>
+            /// <returns>用于存放结果的字节数组。</returns>
             public static byte[] GetBytes(bool value)
             {
-                return BitConverter.GetBytes(value);
+                byte[] buffer = new byte[1];
+                GetBytes(value, buffer, 0);
+                return buffer;
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的布尔值。
+            /// </summary>
+            /// <param name="value">要转换的布尔值。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            public static void GetBytes(bool value, byte[] buffer)
+            {
+                GetBytes(value, buffer, 0);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的布尔值。
+            /// </summary>
+            /// <param name="value">要转换的布尔值。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            /// <param name="startIndex">buffer 内的起始位置。</param>
+            public static void GetBytes(bool value, byte[] buffer, int startIndex)
+            {
+                if (buffer == null)
+                {
+                    throw new GameFrameworkException("Buffer is invalid.");
+                }
+
+                if (startIndex < 0 || startIndex + 1 > buffer.Length)
+                {
+                    throw new GameFrameworkException("Start index is invalid.");
+                }
+
+                buffer[startIndex] = value ? (byte)1 : (byte)0;
             }
 
             /// <summary>
@@ -132,13 +165,36 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 以字节数组的形式返回指定的 Unicode 字符值。
+            /// 以字节数组的形式获取指定的 Unicode 字符值。
             /// </summary>
             /// <param name="value">要转换的字符。</param>
-            /// <returns>长度为 2 的字节数组。</returns>
+            /// <returns>用于存放结果的字节数组。</returns>
             public static byte[] GetBytes(char value)
             {
-                return BitConverter.GetBytes(value);
+                byte[] buffer = new byte[2];
+                GetBytes((short)value, buffer, 0);
+                return buffer;
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 Unicode 字符值。
+            /// </summary>
+            /// <param name="value">要转换的字符。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            public static void GetBytes(char value, byte[] buffer)
+            {
+                GetBytes((short)value, buffer, 0);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 Unicode 字符值。
+            /// </summary>
+            /// <param name="value">要转换的字符。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            /// <param name="startIndex">buffer 内的起始位置。</param>
+            public static void GetBytes(char value, byte[] buffer, int startIndex)
+            {
+                GetBytes((short)value, buffer, startIndex);
             }
 
             /// <summary>
@@ -163,13 +219,49 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 以字节数组的形式返回指定的 16 位有符号整数值。
+            /// 以字节数组的形式获取指定的 16 位有符号整数值。
             /// </summary>
             /// <param name="value">要转换的数字。</param>
-            /// <returns>长度为 2 的字节数组。</returns>
+            /// <returns>用于存放结果的字节数组。</returns>
             public static byte[] GetBytes(short value)
             {
-                return BitConverter.GetBytes(value);
+                byte[] buffer = new byte[2];
+                GetBytes(value, buffer, 0);
+                return buffer;
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 16 位有符号整数值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            public static void GetBytes(short value, byte[] buffer)
+            {
+                GetBytes(value, buffer, 0);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 16 位有符号整数值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            /// <param name="startIndex">buffer 内的起始位置。</param>
+            public static unsafe void GetBytes(short value, byte[] buffer, int startIndex)
+            {
+                if (buffer == null)
+                {
+                    throw new GameFrameworkException("Buffer is invalid.");
+                }
+
+                if (startIndex < 0 || startIndex + 2 > buffer.Length)
+                {
+                    throw new GameFrameworkException("Start index is invalid.");
+                }
+
+                fixed (byte* valueRef = buffer)
+                {
+                    *(short*)(valueRef + startIndex) = value;
+                }
             }
 
             /// <summary>
@@ -194,13 +286,36 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 以字节数组的形式返回指定的 16 位无符号整数值。
+            /// 以字节数组的形式获取指定的 16 位无符号整数值。
             /// </summary>
             /// <param name="value">要转换的数字。</param>
-            /// <returns>长度为 2 的字节数组。</returns>
+            /// <returns>用于存放结果的字节数组。</returns>
             public static byte[] GetBytes(ushort value)
             {
-                return BitConverter.GetBytes(value);
+                byte[] buffer = new byte[2];
+                GetBytes((short)value, buffer, 0);
+                return buffer;
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 16 位无符号整数值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            public static void GetBytes(ushort value, byte[] buffer)
+            {
+                GetBytes((short)value, buffer, 0);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 16 位无符号整数值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            /// <param name="startIndex">buffer 内的起始位置。</param>
+            public static void GetBytes(ushort value, byte[] buffer, int startIndex)
+            {
+                GetBytes((short)value, buffer, startIndex);
             }
 
             /// <summary>
@@ -225,13 +340,49 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 以字节数组的形式返回指定的 32 位有符号整数值。
+            /// 以字节数组的形式获取指定的 32 位有符号整数值。
             /// </summary>
             /// <param name="value">要转换的数字。</param>
-            /// <returns>长度为 4 的字节数组。</returns>
+            /// <returns>用于存放结果的字节数组。</returns>
             public static byte[] GetBytes(int value)
             {
-                return BitConverter.GetBytes(value);
+                byte[] buffer = new byte[4];
+                GetBytes(value, buffer, 0);
+                return buffer;
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 32 位有符号整数值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            public static void GetBytes(int value, byte[] buffer)
+            {
+                GetBytes(value, buffer, 0);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 32 位有符号整数值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            /// <param name="startIndex">buffer 内的起始位置。</param>
+            public static unsafe void GetBytes(int value, byte[] buffer, int startIndex)
+            {
+                if (buffer == null)
+                {
+                    throw new GameFrameworkException("Buffer is invalid.");
+                }
+
+                if (startIndex < 0 || startIndex + 4 > buffer.Length)
+                {
+                    throw new GameFrameworkException("Start index is invalid.");
+                }
+
+                fixed (byte* valueRef = buffer)
+                {
+                    *(int*)(valueRef + startIndex) = value;
+                }
             }
 
             /// <summary>
@@ -256,13 +407,36 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 以字节数组的形式返回指定的 32 位无符号整数值。
+            /// 以字节数组的形式获取指定的 32 位无符号整数值。
             /// </summary>
             /// <param name="value">要转换的数字。</param>
-            /// <returns>长度为 4 的字节数组。</returns>
+            /// <returns>用于存放结果的字节数组。</returns>
             public static byte[] GetBytes(uint value)
             {
-                return BitConverter.GetBytes(value);
+                byte[] buffer = new byte[4];
+                GetBytes((int)value, buffer, 0);
+                return buffer;
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 32 位无符号整数值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            public static void GetBytes(uint value, byte[] buffer)
+            {
+                GetBytes((int)value, buffer, 0);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 32 位无符号整数值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            /// <param name="startIndex">buffer 内的起始位置。</param>
+            public static void GetBytes(uint value, byte[] buffer, int startIndex)
+            {
+                GetBytes((int)value, buffer, startIndex);
             }
 
             /// <summary>
@@ -287,13 +461,49 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 以字节数组的形式返回指定的 64 位有符号整数值。
+            /// 以字节数组的形式获取指定的 64 位有符号整数值。
             /// </summary>
             /// <param name="value">要转换的数字。</param>
-            /// <returns>长度为 8 的字节数组。</returns>
+            /// <returns>用于存放结果的字节数组。</returns>
             public static byte[] GetBytes(long value)
             {
-                return BitConverter.GetBytes(value);
+                byte[] buffer = new byte[8];
+                GetBytes(value, buffer, 0);
+                return buffer;
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 64 位有符号整数值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            public static void GetBytes(long value, byte[] buffer)
+            {
+                GetBytes(value, buffer, 0);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 64 位有符号整数值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            /// <param name="startIndex">buffer 内的起始位置。</param>
+            public static unsafe void GetBytes(long value, byte[] buffer, int startIndex)
+            {
+                if (buffer == null)
+                {
+                    throw new GameFrameworkException("Buffer is invalid.");
+                }
+
+                if (startIndex < 0 || startIndex + 8 > buffer.Length)
+                {
+                    throw new GameFrameworkException("Start index is invalid.");
+                }
+
+                fixed (byte* valueRef = buffer)
+                {
+                    *(long*)(valueRef + startIndex) = value;
+                }
             }
 
             /// <summary>
@@ -318,13 +528,36 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 以字节数组的形式返回指定的 64 位无符号整数值。
+            /// 以字节数组的形式获取指定的 64 位无符号整数值。
             /// </summary>
             /// <param name="value">要转换的数字。</param>
-            /// <returns>长度为 8 的字节数组。</returns>
+            /// <returns>用于存放结果的字节数组。</returns>
             public static byte[] GetBytes(ulong value)
             {
-                return BitConverter.GetBytes(value);
+                byte[] buffer = new byte[8];
+                GetBytes((long)value, buffer, 0);
+                return buffer;
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 64 位无符号整数值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            public static void GetBytes(ulong value, byte[] buffer)
+            {
+                GetBytes((long)value, buffer, 0);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的 64 位无符号整数值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            /// <param name="startIndex">buffer 内的起始位置。</param>
+            public static void GetBytes(ulong value, byte[] buffer, int startIndex)
+            {
+                GetBytes((long)value, buffer, startIndex);
             }
 
             /// <summary>
@@ -349,13 +582,36 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 以字节数组的形式返回指定的单精度浮点值。
+            /// 以字节数组的形式获取指定的单精度浮点值。
             /// </summary>
             /// <param name="value">要转换的数字。</param>
-            /// <returns>长度为 4 的字节数组。</returns>
-            public static byte[] GetBytes(float value)
+            /// <returns>用于存放结果的字节数组。</returns>
+            public static unsafe byte[] GetBytes(float value)
             {
-                return BitConverter.GetBytes(value);
+                byte[] buffer = new byte[4];
+                GetBytes(*(int*)&value, buffer, 0);
+                return buffer;
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的单精度浮点值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            public static unsafe void GetBytes(float value, byte[] buffer)
+            {
+                GetBytes(*(int*)&value, buffer, 0);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的单精度浮点值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            /// <param name="startIndex">buffer 内的起始位置。</param>
+            public static unsafe void GetBytes(float value, byte[] buffer, int startIndex)
+            {
+                GetBytes(*(int*)&value, buffer, startIndex);
             }
 
             /// <summary>
@@ -380,13 +636,36 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 以字节数组的形式返回指定的双精度浮点值。
+            /// 以字节数组的形式获取指定的双精度浮点值。
             /// </summary>
             /// <param name="value">要转换的数字。</param>
-            /// <returns>长度为 8 的字节数组。</returns>
-            public static byte[] GetBytes(double value)
+            /// <returns>用于存放结果的字节数组。</returns>
+            public static unsafe byte[] GetBytes(double value)
             {
-                return BitConverter.GetBytes(value);
+                byte[] buffer = new byte[8];
+                GetBytes(*(long*)&value, buffer, 0);
+                return buffer;
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的双精度浮点值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            public static unsafe void GetBytes(double value, byte[] buffer)
+            {
+                GetBytes(*(long*)&value, buffer, 0);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定的双精度浮点值。
+            /// </summary>
+            /// <param name="value">要转换的数字。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            /// <param name="startIndex">buffer 内的起始位置。</param>
+            public static unsafe void GetBytes(double value, byte[] buffer, int startIndex)
+            {
+                GetBytes(*(long*)&value, buffer, startIndex);
             }
 
             /// <summary>
@@ -411,20 +690,20 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 以 UTF-8 字节数组的形式返回指定的字符串。
+            /// 以字节数组的形式获取指定的 UTF-8 字符串。
             /// </summary>
             /// <param name="value">要转换的字符串。</param>
-            /// <returns>UTF-8 字节数组。</returns>
+            /// <returns>用于存放结果的字节数组。</returns>
             public static byte[] GetBytes(string value)
             {
                 return Encoding.UTF8.GetBytes(value);
             }
 
             /// <summary>
-            /// 返回由 UTF-8 字节数组转换来的字符串。
+            /// 返回由字节数组转换来的 UTF-8 字符串。
             /// </summary>
-            /// <param name="value">UTF-8 字节数组。</param>
-            /// <returns>字符串。</returns>
+            /// <param name="value">字节数组。</param>
+            /// <returns>UTF-8 字符串。</returns>
             public static string GetString(byte[] value)
             {
                 if (value == null)
@@ -432,7 +711,24 @@ namespace GameFramework
                     throw new GameFrameworkException("Value is invalid.");
                 }
 
-                return Encoding.UTF8.GetString(value, 0, value.Length);
+                return Encoding.UTF8.GetString(value);
+            }
+
+            /// <summary>
+            /// 返回由字节数组转换来的 UTF-8 字符串。
+            /// </summary>
+            /// <param name="value">字节数组。</param>
+            /// <param name="startIndex">value 内的起始位置。</param>
+            /// <param name="length">长度。</param>
+            /// <returns>UTF-8 字符串。</returns>
+            public static string GetString(byte[] value, int startIndex, int length)
+            {
+                if (value == null)
+                {
+                    throw new GameFrameworkException("Value is invalid.");
+                }
+
+                return Encoding.UTF8.GetString(value, startIndex, length);
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -42,7 +42,8 @@ namespace GameFramework
         /// 开始处理任务。
         /// </summary>
         /// <param name="task">要处理的任务。</param>
-        void Start(T task);
+        /// <returns>开始处理任务的状态。</returns>
+        StartTaskStatus Start(T task);
 
         /// <summary>
         /// 停止正在处理的任务并重置任务代理。

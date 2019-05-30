@@ -1,13 +1,13 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework
 {
-    internal partial class EventPool<T>
+    internal sealed partial class EventPool<T> where T : BaseEventArgs
     {
         /// <summary>
         /// 事件结点。

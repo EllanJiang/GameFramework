@@ -1,12 +1,13 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 using System;
 using System.Net;
+using System.Net.Sockets;
 
 namespace GameFramework.Network
 {
@@ -24,6 +25,14 @@ namespace GameFramework.Network
         }
 
         /// <summary>
+        /// 获取网络频道所使用的 Socket。
+        /// </summary>
+        Socket Socket
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取是否已连接。
         /// </summary>
         bool Connected
@@ -35,38 +44,6 @@ namespace GameFramework.Network
         /// 获取网络类型。
         /// </summary>
         NetworkType NetworkType
-        {
-            get;
-        }
-
-        /// <summary>
-        /// 获取本地终结点的 IP 地址。
-        /// </summary>
-        IPAddress LocalIPAddress
-        {
-            get;
-        }
-
-        /// <summary>
-        /// 获取本地终结点的端口号。
-        /// </summary>
-        int LocalPort
-        {
-            get;
-        }
-
-        /// <summary>
-        /// 获取远程终结点的 IP 地址。
-        /// </summary>
-        IPAddress RemoteIPAddress
-        {
-            get;
-        }
-
-        /// <summary>
-        /// 获取远程终结点的端口号。
-        /// </summary>
-        int RemotePort
         {
             get;
         }
@@ -135,24 +112,6 @@ namespace GameFramework.Network
         float HeartBeatElapseSeconds
         {
             get;
-        }
-
-        /// <summary>
-        /// 获取或设置接收缓冲区字节数。
-        /// </summary>
-        int ReceiveBufferSize
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// 获取或设置发送缓冲区字节数。
-        /// </summary>
-        int SendBufferSize
-        {
-            get;
-            set;
         }
 
         /// <summary>

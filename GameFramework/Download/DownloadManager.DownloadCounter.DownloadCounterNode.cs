@@ -1,24 +1,24 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Download
 {
-    internal partial class DownloadManager
+    internal sealed partial class DownloadManager : GameFrameworkModule, IDownloadManager
     {
-        private partial class DownloadCounter
+        private sealed partial class DownloadCounter
         {
-            private sealed class DownloadCounterNode
+            private sealed class DownloadCounterNode : IReference
             {
-                private readonly int m_DownloadedLength;
+                private int m_DownloadedLength;
                 private float m_ElapseSeconds;
 
-                public DownloadCounterNode(int downloadedLength)
+                public DownloadCounterNode()
                 {
-                    m_DownloadedLength = downloadedLength;
+                    m_DownloadedLength = 0;
                     m_ElapseSeconds = 0f;
                 }
 
@@ -27,6 +27,10 @@ namespace GameFramework.Download
                     get
                     {
                         return m_DownloadedLength;
+                    }
+                    set
+                    {
+                        m_DownloadedLength = value;
                     }
                 }
 
@@ -41,6 +45,12 @@ namespace GameFramework.Download
                 public void Update(float elapseSeconds, float realElapseSeconds)
                 {
                     m_ElapseSeconds += realElapseSeconds;
+                }
+
+                public void Clear()
+                {
+                    m_DownloadedLength = 0;
+                    m_ElapseSeconds = 0f;
                 }
             }
         }

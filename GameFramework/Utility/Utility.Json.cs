@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -39,7 +39,19 @@ namespace GameFramework
                     throw new GameFrameworkException("JSON helper is invalid.");
                 }
 
-                return s_JsonHelper.ToJson(obj);
+                try
+                {
+                    return s_JsonHelper.ToJson(obj);
+                }
+                catch (Exception exception)
+                {
+                    if (exception is GameFrameworkException)
+                    {
+                        throw;
+                    }
+
+                    throw new GameFrameworkException(Text.Format("Can not convert to JSON with exception '{0}'.", exception.ToString()), exception);
+                }
             }
 
             /// <summary>
@@ -65,7 +77,19 @@ namespace GameFramework
                     throw new GameFrameworkException("JSON helper is invalid.");
                 }
 
-                return s_JsonHelper.ToObject<T>(json);
+                try
+                {
+                    return s_JsonHelper.ToObject<T>(json);
+                }
+                catch (Exception exception)
+                {
+                    if (exception is GameFrameworkException)
+                    {
+                        throw;
+                    }
+
+                    throw new GameFrameworkException(Text.Format("Can not convert to object with exception '{0}'.", exception.ToString()), exception);
+                }
             }
 
             /// <summary>
@@ -86,7 +110,19 @@ namespace GameFramework
                     throw new GameFrameworkException("Object type is invalid.");
                 }
 
-                return s_JsonHelper.ToObject(objectType, json);
+                try
+                {
+                    return s_JsonHelper.ToObject(objectType, json);
+                }
+                catch (Exception exception)
+                {
+                    if (exception is GameFrameworkException)
+                    {
+                        throw;
+                    }
+
+                    throw new GameFrameworkException(Text.Format("Can not convert to object with exception '{0}'.", exception.ToString()), exception);
+                }
             }
 
             /// <summary>

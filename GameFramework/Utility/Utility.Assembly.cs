@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -94,7 +94,7 @@ namespace GameFramework
 
                 foreach (System.Reflection.Assembly assembly in s_Assemblies)
                 {
-                    type = Type.GetType(Utility.Text.Format("{0}, {1}", typeName, assembly.FullName));
+                    type = Type.GetType(Text.Format("{0}, {1}", typeName, assembly.FullName));
                     if (type != null)
                     {
                         s_CachedTypes.Add(typeName, type);

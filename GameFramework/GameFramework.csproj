@@ -11,6 +11,7 @@
     <AssemblyName>GameFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\GameFramework.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,12 +34,14 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\GameFramework.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\DataStruct\LoadType.cs" />
     <Compile Include="Base\EventPool\BaseEventArgs.cs" />
     <Compile Include="Base\EventPool\EventPool.cs" />
     <Compile Include="Base\EventPool\EventPool.Event.cs" />
@@ -48,6 +52,7 @@
     <Compile Include="Base\GameFrameworkException.cs" />
     <Compile Include="Base\GameFrameworkFunc.cs" />
     <Compile Include="Base\GameFrameworkModule.cs" />
+    <Compile Include="Base\GameFrameworkSegment.cs" />
     <Compile Include="Base\Log\GameFrameworkLog.cs" />
     <Compile Include="Base\Log\GameFrameworkLog.ILogHelper.cs" />
     <Compile Include="Base\Log\GameFrameworkLogLevel.cs" />
@@ -57,6 +62,7 @@
     <Compile Include="Base\ReferencePool\ReferencePoolInfo.cs" />
     <Compile Include="Base\TaskPool\ITask.cs" />
     <Compile Include="Base\TaskPool\ITaskAgent.cs" />
+    <Compile Include="Base\TaskPool\StartTaskStatus.cs" />
     <Compile Include="Base\TaskPool\TaskPool.cs" />
     <Compile Include="Base\Variable\GenericVariable.cs" />
     <Compile Include="Base\Variable\Variable.cs" />
@@ -64,6 +70,7 @@
     <Compile Include="Base\Version\Version.IVersionHelper.cs" />
     <Compile Include="Config\ConfigManager.ConfigData.cs" />
     <Compile Include="Config\ConfigManager.cs" />
+    <Compile Include="Config\ConfigManager.LoadConfigInfo.cs" />
     <Compile Include="Config\IConfigHelper.cs" />
     <Compile Include="Config\IConfigManager.cs" />
     <Compile Include="Config\LoadConfigDependencyAssetEventArgs.cs" />
@@ -77,6 +84,7 @@
     <Compile Include="DataTable\DataTableBase.cs" />
     <Compile Include="DataTable\DataTableManager.cs" />
     <Compile Include="DataTable\DataTableManager.DataTable.cs" />
+    <Compile Include="DataTable\DataTableManager.LoadDataTableInfo.cs" />
     <Compile Include="DataTable\IDataRow.cs" />
     <Compile Include="DataTable\IDataTable.cs" />
     <Compile Include="DataTable\IDataTableHelper.cs" />
@@ -93,7 +101,8 @@
     <Compile Include="Download\Constant.cs" />
     <Compile Include="Download\DownloadAgentHelperCompleteEventArgs.cs" />
     <Compile Include="Download\DownloadAgentHelperErrorEventArgs.cs" />
-    <Compile Include="Download\DownloadAgentHelperUpdateEventArgs.cs" />
+    <Compile Include="Download\DownloadAgentHelperUpdateBytesEventArgs.cs" />
+    <Compile Include="Download\DownloadAgentHelperUpdateLengthEventArgs.cs" />
     <Compile Include="Download\DownloadFailureEventArgs.cs" />
     <Compile Include="Download\DownloadManager.cs" />
     <Compile Include="Download\DownloadManager.DownloadAgent.cs" />
@@ -140,6 +149,7 @@
     <Compile Include="Localization\LoadDictionarySuccessEventArgs.cs" />
     <Compile Include="Localization\LoadDictionaryUpdateEventArgs.cs" />
     <Compile Include="Localization\LocalizationManager.cs" />
+    <Compile Include="Localization\LocalizationManager.LoadDictionaryInfo.cs" />
     <Compile Include="Network\INetworkChannel.cs" />
     <Compile Include="Network\INetworkChannelHelper.cs" />
     <Compile Include="Network\INetworkManager.cs" />
@@ -199,7 +209,6 @@
     <Compile Include="Resource\LoadSceneFailureCallback.cs" />
     <Compile Include="Resource\LoadSceneSuccessCallback.cs" />
     <Compile Include="Resource\LoadSceneUpdateCallback.cs" />
-    <Compile Include="Resource\ResourceManager.AssetDependencyInfo.cs" />
     <Compile Include="Resource\ResourceManager.AssetInfo.cs" />
     <Compile Include="Resource\ResourceManager.cs" />
     <Compile Include="Resource\ResourceManager.LoadType.cs" />
@@ -209,7 +218,6 @@
     <Compile Include="Resource\ResourceManager.ResourceChecker.CheckInfo.LocalVersionInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceChecker.CheckInfo.RemoteVersionInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceChecker.cs" />
-    <Compile Include="Resource\ResourceManager.ResourceGroup.cs" />
     <Compile Include="Resource\ResourceManager.ResourceInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceIniter.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.AssetObject.cs" />
@@ -217,7 +225,6 @@
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadAssetTask.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadDependencyAssetTask.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadResourceAgent.cs" />
-    <Compile Include="Resource\ResourceManager.ResourceLoader.LoadResourceAgent.WaitingType.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadResourceTaskBase.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadSceneTask.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.ResourceObject.cs" />
@@ -267,6 +274,11 @@
     <Compile Include="Sound\SoundManager.PlaySoundInfo.cs" />
     <Compile Include="Sound\SoundManager.SoundAgent.cs" />
     <Compile Include="Sound\SoundManager.SoundGroup.cs" />
+    <Compile Include="Task\ConditionalTask.cs" />
+    <Compile Include="Task\ITaskManager.cs" />
+    <Compile Include="Task\TaskBase.cs" />
+    <Compile Include="Task\TaskManager.cs" />
+    <Compile Include="Task\TaskStatus.cs" />
     <Compile Include="UI\CloseUIFormCompleteEventArgs.cs" />
     <Compile Include="UI\IUIForm.cs" />
     <Compile Include="UI\IUIFormHelper.cs" />

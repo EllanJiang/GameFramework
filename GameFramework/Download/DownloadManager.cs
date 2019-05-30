@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -14,6 +14,8 @@ namespace GameFramework.Download
     /// </summary>
     internal sealed partial class DownloadManager : GameFrameworkModule, IDownloadManager
     {
+        private const int OneMegaBytes = 1024 * 1024;
+
         private readonly TaskPool<DownloadTask> m_TaskPool;
         private readonly DownloadCounter m_DownloadCounter;
         private int m_FlushSize;
@@ -29,8 +31,8 @@ namespace GameFramework.Download
         public DownloadManager()
         {
             m_TaskPool = new TaskPool<DownloadTask>();
-            m_DownloadCounter = new DownloadCounter(1f, 30f);
-            m_FlushSize = 1024 * 1024;
+            m_DownloadCounter = new DownloadCounter(1f, 10f);
+            m_FlushSize = OneMegaBytes;
             m_Timeout = 30f;
             m_DownloadStartEventHandler = null;
             m_DownloadUpdateEventHandler = null;

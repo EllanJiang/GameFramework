@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -9,7 +9,7 @@ using System;
 
 namespace GameFramework.Sound
 {
-    internal partial class SoundManager
+    internal sealed partial class SoundManager : GameFrameworkModule, ISoundManager
     {
         /// <summary>
         /// 声音代理。
@@ -91,6 +91,17 @@ namespace GameFramework.Sound
                 get
                 {
                     return m_SoundAgentHelper.IsPlaying;
+                }
+            }
+
+            /// <summary>
+            /// 获取声音长度。
+            /// </summary>
+            public float Length
+            {
+                get
+                {
+                    return m_SoundAgentHelper.Length;
                 }
             }
 

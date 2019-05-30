@@ -1,13 +1,13 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Resource
 {
-    internal partial class ResourceManager
+    internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         /// <summary>
         /// 资源信息。
@@ -16,16 +16,19 @@ namespace GameFramework.Resource
         {
             private readonly string m_AssetName;
             private readonly ResourceName m_ResourceName;
+            private readonly string[] m_DependencyAssetNames;
 
             /// <summary>
             /// 初始化资源信息的新实例。
             /// </summary>
             /// <param name="assetName">资源名称。</param>
             /// <param name="resourceName">所在资源名称。</param>
-            public AssetInfo(string assetName, ResourceName resourceName)
+            /// <param name="dependencyAssetNames">依赖资源名称。</param>
+            public AssetInfo(string assetName, ResourceName resourceName, string[] dependencyAssetNames)
             {
                 m_AssetName = assetName;
                 m_ResourceName = resourceName;
+                m_DependencyAssetNames = dependencyAssetNames;
             }
 
             /// <summary>
@@ -48,6 +51,15 @@ namespace GameFramework.Resource
                 {
                     return m_ResourceName;
                 }
+            }
+
+            /// <summary>
+            /// 获取依赖资源名称。
+            /// </summary>
+            /// <returns>依赖资源名称。</returns>
+            public string[] GetDependencyAssetNames()
+            {
+                return m_DependencyAssetNames;
             }
         }
     }

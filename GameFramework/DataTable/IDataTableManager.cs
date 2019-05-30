@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -8,6 +8,7 @@
 using GameFramework.Resource;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GameFramework.DataTable
 {
@@ -60,29 +61,33 @@ namespace GameFramework.DataTable
         /// 加载数据表。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
-        void LoadDataTable(string dataTableAssetName);
+        /// <param name="loadType">数据表加载方式。</param>
+        void LoadDataTable(string dataTableAssetName, LoadType loadType);
 
         /// <summary>
         /// 加载数据表。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
+        /// <param name="loadType">数据表加载方式。</param>
         /// <param name="priority">加载数据表资源的优先级。</param>
-        void LoadDataTable(string dataTableAssetName, int priority);
+        void LoadDataTable(string dataTableAssetName, LoadType loadType, int priority);
 
         /// <summary>
         /// 加载数据表。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
+        /// <param name="loadType">数据表加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadDataTable(string dataTableAssetName, object userData);
+        void LoadDataTable(string dataTableAssetName, LoadType loadType, object userData);
 
         /// <summary>
         /// 加载数据表。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
+        /// <param name="loadType">数据表加载方式。</param>
         /// <param name="priority">加载数据表资源的优先级。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadDataTable(string dataTableAssetName, int priority, object userData);
+        void LoadDataTable(string dataTableAssetName, LoadType loadType, int priority, object userData);
 
         /// <summary>
         /// 是否存在数据表。
@@ -189,6 +194,74 @@ namespace GameFramework.DataTable
         /// <param name="text">要解析的数据表文本。</param>
         /// <returns>要创建的数据表。</returns>
         DataTableBase CreateDataTable(Type dataRowType, string name, string text);
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <param name="bytes">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        IDataTable<T> CreateDataTable<T>(byte[] bytes) where T : class, IDataRow, new();
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="bytes">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        DataTableBase CreateDataTable(Type dataRowType, byte[] bytes);
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <param name="name">数据表名称。</param>
+        /// <param name="bytes">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        IDataTable<T> CreateDataTable<T>(string name, byte[] bytes) where T : class, IDataRow, new();
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="name">数据表名称。</param>
+        /// <param name="bytes">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        DataTableBase CreateDataTable(Type dataRowType, string name, byte[] bytes);
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <param name="stream">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        IDataTable<T> CreateDataTable<T>(Stream stream) where T : class, IDataRow, new();
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="stream">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        DataTableBase CreateDataTable(Type dataRowType, Stream stream);
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <param name="name">数据表名称。</param>
+        /// <param name="stream">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        IDataTable<T> CreateDataTable<T>(string name, Stream stream) where T : class, IDataRow, new();
+
+        /// <summary>
+        /// 创建数据表。
+        /// </summary>
+        /// <param name="dataRowType">数据表行的类型。</param>
+        /// <param name="name">数据表名称。</param>
+        /// <param name="stream">要解析的数据表二进制流。</param>
+        /// <returns>要创建的数据表。</returns>
+        DataTableBase CreateDataTable(Type dataRowType, string name, Stream stream);
 
         /// <summary>
         /// 销毁数据表。

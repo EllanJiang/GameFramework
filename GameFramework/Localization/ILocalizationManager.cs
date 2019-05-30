@@ -1,12 +1,13 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 using GameFramework.Resource;
 using System;
+using System.IO;
 
 namespace GameFramework.Localization
 {
@@ -76,29 +77,33 @@ namespace GameFramework.Localization
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
-        void LoadDictionary(string dictionaryAssetName);
+        /// <param name="loadType">字典加载方式。</param>
+        void LoadDictionary(string dictionaryAssetName, LoadType loadType);
 
         /// <summary>
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="loadType">字典加载方式。</param>
         /// <param name="priority">加载字典资源的优先级。</param>
-        void LoadDictionary(string dictionaryAssetName, int priority);
+        void LoadDictionary(string dictionaryAssetName, LoadType loadType, int priority);
 
         /// <summary>
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="loadType">字典加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadDictionary(string dictionaryAssetName, object userData);
+        void LoadDictionary(string dictionaryAssetName, LoadType loadType, object userData);
 
         /// <summary>
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="loadType">字典加载方式。</param>
         /// <param name="priority">加载字典资源的优先级。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadDictionary(string dictionaryAssetName, int priority, object userData);
+        void LoadDictionary(string dictionaryAssetName, LoadType loadType, int priority, object userData);
 
         /// <summary>
         /// 解析字典。
@@ -114,6 +119,36 @@ namespace GameFramework.Localization
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析字典成功。</returns>
         bool ParseDictionary(string text, object userData);
+
+        /// <summary>
+        /// 解析字典。
+        /// </summary>
+        /// <param name="bytes">要解析的字典二进制流。</param>
+        /// <returns>是否解析字典成功。</returns>
+        bool ParseDictionary(byte[] bytes);
+
+        /// <summary>
+        /// 解析字典。
+        /// </summary>
+        /// <param name="bytes">要解析的字典二进制流。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析字典成功。</returns>
+        bool ParseDictionary(byte[] bytes, object userData);
+
+        /// <summary>
+        /// 解析字典。
+        /// </summary>
+        /// <param name="stream">要解析的字典二进制流。</param>
+        /// <returns>是否解析字典成功。</returns>
+        bool ParseDictionary(Stream stream);
+
+        /// <summary>
+        /// 解析字典。
+        /// </summary>
+        /// <param name="stream">要解析的字典二进制流。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析字典成功。</returns>
+        bool ParseDictionary(Stream stream, object userData);
 
         /// <summary>
         /// 根据字典主键获取字典内容字符串。

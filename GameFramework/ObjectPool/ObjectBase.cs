@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -21,13 +21,12 @@ namespace GameFramework.ObjectPool
         private DateTime m_LastUseTime;
 
         /// <summary>
-        /// 初始化对象的新实例。
+        /// 初始化对象基类的新实例。
         /// </summary>
         /// <param name="target">对象。</param>
         public ObjectBase(object target)
             : this(null, target, false, 0)
         {
-
         }
 
         /// <summary>
@@ -38,7 +37,6 @@ namespace GameFramework.ObjectPool
         public ObjectBase(string name, object target)
             : this(name, target, false, 0)
         {
-
         }
 
         /// <summary>
@@ -50,7 +48,6 @@ namespace GameFramework.ObjectPool
         public ObjectBase(string name, object target, bool locked)
             : this(name, target, locked, 0)
         {
-
         }
 
         /// <summary>
@@ -62,7 +59,6 @@ namespace GameFramework.ObjectPool
         public ObjectBase(string name, object target, int priority)
             : this(name, target, false, priority)
         {
-
         }
 
         /// <summary>
@@ -169,7 +165,6 @@ namespace GameFramework.ObjectPool
         /// </summary>
         protected internal virtual void OnSpawn()
         {
-
         }
 
         /// <summary>
@@ -177,7 +172,6 @@ namespace GameFramework.ObjectPool
         /// </summary>
         protected internal virtual void OnUnspawn()
         {
-
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -14,8 +14,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jiang Yin")]
 [assembly: AssemblyProduct("Game Framework")]
-[assembly: AssemblyCopyright("Copyright © 2013-2018 Jiang Yin")]
-[assembly: AssemblyTrademark("Copyright © 2013-2018 Jiang Yin")]
+[assembly: AssemblyCopyright("Copyright © 2013-2019 Jiang Yin")]
+[assembly: AssemblyTrademark("Copyright © 2013-2019 Jiang Yin")]
 [assembly: AssemblyCulture("")]
 
 // 将 ComVisible 设置为 false 将使此程序集中的类型对 COM 组件不可见。

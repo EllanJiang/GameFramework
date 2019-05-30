@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework v3.x
-// Copyright © 2013-2018 Jiang Yin. All rights reserved.
+// Game Framework
+// Copyright © 2013-2019 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -32,7 +32,6 @@ namespace GameFramework.Fsm
         /// <param name="fsm">有限状态机引用。</param>
         protected internal virtual void OnInit(IFsm<T> fsm)
         {
-
         }
 
         /// <summary>
@@ -41,7 +40,6 @@ namespace GameFramework.Fsm
         /// <param name="fsm">有限状态机引用。</param>
         protected internal virtual void OnEnter(IFsm<T> fsm)
         {
-
         }
 
         /// <summary>
@@ -52,7 +50,6 @@ namespace GameFramework.Fsm
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         protected internal virtual void OnUpdate(IFsm<T> fsm, float elapseSeconds, float realElapseSeconds)
         {
-
         }
 
         /// <summary>
@@ -62,7 +59,6 @@ namespace GameFramework.Fsm
         /// <param name="isShutdown">是否是关闭有限状态机时触发。</param>
         protected internal virtual void OnLeave(IFsm<T> fsm, bool isShutdown)
         {
-
         }
 
         /// <summary>
