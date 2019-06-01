@@ -292,10 +292,10 @@ namespace GameFramework.Resource
                             int resourceGroupCount = binaryReader.ReadInt32();
                             for (int i = 0; i < resourceGroupCount; i++)
                             {
-                                string groupName = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
-                                ResourceGroup resourceGroup = m_ResourceManager.GetOrAddResourceGroup(groupName);
-                                int groupResourceCount = binaryReader.ReadInt32();
-                                for (int j = 0; j < groupResourceCount; j++)
+                                string resourceGroupName = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
+                                ResourceGroup resourceGroup = m_ResourceManager.GetOrAddResourceGroup(resourceGroupName);
+                                int resourceGroupResourceCount = binaryReader.ReadInt32();
+                                for (int j = 0; j < resourceGroupResourceCount; j++)
                                 {
                                     ushort index = binaryReader.ReadUInt16();
                                     if (index >= resourceCount)
