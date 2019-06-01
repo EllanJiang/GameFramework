@@ -1524,6 +1524,8 @@ namespace GameFramework.Resource
 
         private void OnUpdaterResourceUpdateAllComplete(ResourceGroup resourceGroup, bool result, bool isAllDone)
         {
+            m_UpdateResourcesCompleteCallback(resourceGroup, result);
+
             if (isAllDone)
             {
                 m_ResourceUpdater.ResourceUpdateStart -= OnUpdaterResourceUpdateStart;
@@ -1539,10 +1541,9 @@ namespace GameFramework.Resource
                     m_DecompressCache.Dispose();
                     m_DecompressCache = null;
                 }
-            }
 
-            m_UpdateResourcesCompleteCallback(resourceGroup, result);
-            m_UpdateResourcesCompleteCallback = null;
+                m_UpdateResourcesCompleteCallback = null;
+            }
         }
     }
 }

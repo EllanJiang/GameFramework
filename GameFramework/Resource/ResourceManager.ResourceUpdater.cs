@@ -161,13 +161,14 @@ namespace GameFramework.Resource
                 }
                 else if (m_UpdatingCount <= 0)
                 {
+                    ResourceGroup updatingResourceGroup = m_UpdatingResourceGroup;
+                    m_UpdatingResourceGroup = null;
+
                     Utility.Path.RemoveEmptyDirectory(m_ResourceManager.m_ReadWritePath);
                     if (ResourceUpdateAllComplete != null)
                     {
-                        ResourceUpdateAllComplete(m_UpdatingResourceGroup, !m_FailureFlag, m_UpdateCandidateInfo.Count <= 0);
+                        ResourceUpdateAllComplete(updatingResourceGroup, !m_FailureFlag, m_UpdateCandidateInfo.Count <= 0);
                     }
-
-                    m_UpdatingResourceGroup = null;
                 }
             }
 
