@@ -335,7 +335,6 @@ namespace GameFramework.Download
 
         private void OnDownloadAgentSuccess(DownloadAgent sender, int lastDownloadedLength)
         {
-            m_DownloadCounter.RecordDownloadedLength(lastDownloadedLength);
             if (m_DownloadSuccessEventHandler != null)
             {
                 m_DownloadSuccessEventHandler(this, new DownloadSuccessEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData));
