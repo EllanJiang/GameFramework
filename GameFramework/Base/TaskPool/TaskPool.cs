@@ -18,6 +18,7 @@ namespace GameFramework
         private readonly Stack<ITaskAgent<T>> m_FreeAgents;
         private readonly LinkedList<ITaskAgent<T>> m_WorkingAgents;
         private readonly LinkedList<T> m_WaitingTasks;
+        private bool m_Paused;
 
         /// <summary>
         /// 初始化任务池的新实例。
@@ -27,6 +28,22 @@ namespace GameFramework
             m_FreeAgents = new Stack<ITaskAgent<T>>();
             m_WorkingAgents = new LinkedList<ITaskAgent<T>>();
             m_WaitingTasks = new LinkedList<T>();
+            m_Paused = false;
+        }
+
+        /// <summary>
+        /// 获取或设置任务池是否被暂停。
+        /// </summary>
+        public bool Paused
+        {
+            get
+            {
+                return m_Paused;
+            }
+            set
+            {
+                m_Paused = value;
+            }
         }
 
         /// <summary>
@@ -80,6 +97,11 @@ namespace GameFramework
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         public void Update(float elapseSeconds, float realElapseSeconds)
         {
+            if (m_Paused)
+            {
+                return;
+            }
+
             ProcessRunningTasks(elapseSeconds, realElapseSeconds);
             ProcessWaitingTasks(elapseSeconds, realElapseSeconds);
         }

@@ -15,6 +15,15 @@ namespace GameFramework.Download
     public interface IDownloadManager
     {
         /// <summary>
+        /// 获取或设置下载是否被暂停。
+        /// </summary>
+        bool Paused
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 获取下载代理总数量。
         /// </summary>
         int TotalAgentCount
