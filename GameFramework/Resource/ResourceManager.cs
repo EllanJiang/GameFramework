@@ -1339,6 +1339,15 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 获取默认资源组。
+        /// </summary>
+        /// <returns>默认资源组。</returns>
+        public IResourceGroup GetResourceGroup()
+        {
+            return GetResourceGroup(string.Empty);
+        }
+
+        /// <summary>
         /// 获取资源组。
         /// </summary>
         /// <param name="resourceGroupName">要获取的资源组名称。</param>
