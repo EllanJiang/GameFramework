@@ -18,7 +18,7 @@ namespace GameFramework
         public static class Text
         {
             [ThreadStatic]
-            private static StringBuilder s_CachedStringBuilder = new StringBuilder(1024);
+            private static StringBuilder s_CachedStringBuilder = null;
 
             /// <summary>
             /// 获取格式化字符串。
@@ -33,6 +33,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Format is invalid.");
                 }
 
+                CheckCachedStringBuilder();
                 s_CachedStringBuilder.Length = 0;
                 s_CachedStringBuilder.AppendFormat(format, arg0);
                 return s_CachedStringBuilder.ToString();
@@ -52,6 +53,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Format is invalid.");
                 }
 
+                CheckCachedStringBuilder();
                 s_CachedStringBuilder.Length = 0;
                 s_CachedStringBuilder.AppendFormat(format, arg0, arg1);
                 return s_CachedStringBuilder.ToString();
@@ -72,6 +74,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Format is invalid.");
                 }
 
+                CheckCachedStringBuilder();
                 s_CachedStringBuilder.Length = 0;
                 s_CachedStringBuilder.AppendFormat(format, arg0, arg1, arg2);
                 return s_CachedStringBuilder.ToString();
@@ -95,6 +98,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Args is invalid.");
                 }
 
+                CheckCachedStringBuilder();
                 s_CachedStringBuilder.Length = 0;
                 s_CachedStringBuilder.AppendFormat(format, args);
                 return s_CachedStringBuilder.ToString();
@@ -126,6 +130,14 @@ namespace GameFramework
 
                 string typeName = type.FullName;
                 return string.IsNullOrEmpty(name) ? typeName : Format("{0}.{1}", typeName, name);
+            }
+
+            private static void CheckCachedStringBuilder()
+            {
+                if (s_CachedStringBuilder == null)
+                {
+                    s_CachedStringBuilder = new StringBuilder(1024);
+                }
             }
         }
     }
