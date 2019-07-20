@@ -101,6 +101,7 @@ namespace GameFramework.Resource
                             m_ResourceManager.m_AssetInfos = new Dictionary<string, AssetInfo>(assetCount);
                             int resourceCount = binaryReader.ReadInt32();
                             m_ResourceManager.m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>(resourceCount, new ResourceNameComparer());
+                            ResourceLength[] resourceLengths = new ResourceLength[resourceCount];
 
                             for (int i = 0; i < resourceCount; i++)
                             {
@@ -112,6 +113,7 @@ namespace GameFramework.Resource
                                 int length = binaryReader.ReadInt32();
                                 int hashCode = binaryReader.ReadInt32();
                                 byte[] hashCodeBytes = Utility.Converter.GetBytes(hashCode);
+                                resourceLengths[i] = new ResourceLength(resourceName, length, length);
 
                                 int assetNamesCount = binaryReader.ReadInt32();
                                 for (int j = 0; j < assetNamesCount; j++)
@@ -134,6 +136,36 @@ namespace GameFramework.Resource
                                 if (variant == null || variant == m_CurrentVariant)
                                 {
                                     ProcessResourceInfo(resourceName, loadType, length, hashCode);
+                                }
+                            }
+
+                            ResourceGroup defaultResourceGroup = m_ResourceManager.GetOrAddResourceGroup(string.Empty);
+                            for (int i = 0; i < resourceCount; i++)
+                            {
+                                if (resourceLengths[i].ResourceName.Variant == null || resourceLengths[i].ResourceName.Variant == m_CurrentVariant)
+                                {
+                                    defaultResourceGroup.AddResource(resourceLengths[i].ResourceName, resourceLengths[i].Length, resourceLengths[i].ZipLength);
+                                }
+                            }
+
+                            int resourceGroupCount = binaryReader.ReadInt32();
+                            for (int i = 0; i < resourceGroupCount; i++)
+                            {
+                                string resourceGroupName = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
+                                ResourceGroup resourceGroup = m_ResourceManager.GetOrAddResourceGroup(resourceGroupName);
+                                int resourceGroupResourceCount = binaryReader.ReadInt32();
+                                for (int j = 0; j < resourceGroupResourceCount; j++)
+                                {
+                                    ushort index = binaryReader.ReadUInt16();
+                                    if (index >= resourceCount)
+                                    {
+                                        throw new GameFrameworkException(Utility.Text.Format("Package index '{0}' is invalid, resource count is '{1}'.", index.ToString(), resourceCount.ToString()));
+                                    }
+
+                                    if (resourceLengths[index].ResourceName.Variant == null || resourceLengths[index].ResourceName.Variant == m_CurrentVariant)
+                                    {
+                                        resourceGroup.AddResource(resourceLengths[index].ResourceName, resourceLengths[index].Length, resourceLengths[index].ZipLength);
+                                    }
                                 }
                             }
                         }

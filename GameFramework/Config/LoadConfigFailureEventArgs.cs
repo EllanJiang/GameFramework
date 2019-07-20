@@ -16,11 +16,13 @@ namespace GameFramework.Config
         /// 初始化加载配置失败事件的新实例。
         /// </summary>
         /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="loadType">配置加载方式。</param>
         /// <param name="errorMessage">错误信息。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public LoadConfigFailureEventArgs(string configAssetName, string errorMessage, object userData)
+        public LoadConfigFailureEventArgs(string configAssetName, LoadType loadType, string errorMessage, object userData)
         {
             ConfigAssetName = configAssetName;
+            LoadType = loadType;
             ErrorMessage = errorMessage;
             UserData = userData;
         }
@@ -29,6 +31,15 @@ namespace GameFramework.Config
         /// 获取配置资源名称。
         /// </summary>
         public string ConfigAssetName
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取配置加载方式。
+        /// </summary>
+        public LoadType LoadType
         {
             get;
             private set;

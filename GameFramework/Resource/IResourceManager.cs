@@ -81,6 +81,14 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 获取资源组数量。
+        /// </summary>
+        int ResourceGroupCount
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取或设置资源更新下载地址。
         /// </summary>
         string UpdatePrefixUri
@@ -117,6 +125,14 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 获取正在更新的资源组。
+        /// </summary>
+        IResourceGroup UpdatingResourceGroup
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取等待更新资源数量。
         /// </summary>
         int UpdateWaitingCount
@@ -125,9 +141,9 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取更新失败资源数量。
+        /// 获取候选更新资源数量。
         /// </summary>
-        int UpdateFailureCount
+        int UpdateCandidateCount
         {
             get;
         }
@@ -322,7 +338,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 使用单机模式并初始化资源。
         /// </summary>
-        /// <param name="initResourcesCompleteCallback">使用单机模式并初始化资源完成的回调函数。</param>
+        /// <param name="initResourcesCompleteCallback">使用单机模式并初始化资源完成时的回调函数。</param>
         void InitResources(InitResourcesCompleteCallback initResourcesCompleteCallback);
 
         /// <summary>
@@ -345,14 +361,21 @@ namespace GameFramework.Resource
         /// <summary>
         /// 使用可更新模式并检查资源。
         /// </summary>
-        /// <param name="checkResourcesCompleteCallback">使用可更新模式并检查资源完成的回调函数。</param>
+        /// <param name="checkResourcesCompleteCallback">使用可更新模式并检查资源完成时的回调函数。</param>
         void CheckResources(CheckResourcesCompleteCallback checkResourcesCompleteCallback);
 
         /// <summary>
-        /// 使用可更新模式并更新资源。
+        /// 使用可更新模式并更新全部资源。
         /// </summary>
-        /// <param name="updateResourcesCompleteCallback">使用可更新模式并更新资源全部完成的回调函数。</param>
+        /// <param name="updateResourcesCompleteCallback">使用可更新模式并更新默认资源组完成时的回调函数。</param>
         void UpdateResources(UpdateResourcesCompleteCallback updateResourcesCompleteCallback);
+
+        /// <summary>
+        /// 使用可更新模式并更新指定资源组的资源。
+        /// </summary>
+        /// <param name="resourceGroupName">要更新的资源组名称。</param>
+        /// <param name="updateResourcesCompleteCallback">使用可更新模式并更新指定资源组完成时的回调函数。</param>
+        void UpdateResources(string resourceGroupName, UpdateResourcesCompleteCallback updateResourcesCompleteCallback);
 
         /// <summary>
         /// 检查资源是否存在。
@@ -481,5 +504,25 @@ namespace GameFramework.Resource
         /// <param name="unloadSceneCallbacks">卸载场景回调函数集。</param>
         /// <param name="userData">用户自定义数据。</param>
         void UnloadScene(string sceneAssetName, UnloadSceneCallbacks unloadSceneCallbacks, object userData);
+
+        /// <summary>
+        /// 检查资源组是否存在。
+        /// </summary>
+        /// <param name="resourceGroupName">要检查资源组的名称。</param>
+        /// <returns>资源组是否存在。</returns>
+        bool HasResourceGroup(string resourceGroupName);
+
+        /// <summary>
+        /// 获取默认资源组。
+        /// </summary>
+        /// <returns>默认资源组。</returns>
+        IResourceGroup GetResourceGroup();
+
+        /// <summary>
+        /// 获取资源组。
+        /// </summary>
+        /// <param name="resourceGroupName">要获取的资源组名称。</param>
+        /// <returns>要获取的资源组。</returns>
+        IResourceGroup GetResourceGroup(string resourceGroupName);
     }
 }

@@ -793,7 +793,7 @@ namespace GameFramework.DataTable
             {
                 if (m_LoadDataTableFailureEventHandler != null)
                 {
-                    m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, exception.ToString(), loadDataTableInfo.UserData));
+                    m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, loadDataTableInfo.LoadType, exception.ToString(), loadDataTableInfo.UserData));
                     return;
                 }
 
@@ -806,7 +806,7 @@ namespace GameFramework.DataTable
 
             if (m_LoadDataTableSuccessEventHandler != null)
             {
-                m_LoadDataTableSuccessEventHandler(this, new LoadDataTableSuccessEventArgs(dataTableAssetName, duration, loadDataTableInfo.UserData));
+                m_LoadDataTableSuccessEventHandler(this, new LoadDataTableSuccessEventArgs(dataTableAssetName, loadDataTableInfo.LoadType, duration, loadDataTableInfo.UserData));
             }
         }
 
@@ -821,7 +821,7 @@ namespace GameFramework.DataTable
             string appendErrorMessage = Utility.Text.Format("Load data table failure, asset name '{0}', status '{1}', error message '{2}'.", dataTableAssetName, status.ToString(), errorMessage);
             if (m_LoadDataTableFailureEventHandler != null)
             {
-                m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, appendErrorMessage, loadDataTableInfo.UserData));
+                m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, loadDataTableInfo.LoadType, appendErrorMessage, loadDataTableInfo.UserData));
                 return;
             }
 
@@ -838,7 +838,7 @@ namespace GameFramework.DataTable
 
             if (m_LoadDataTableUpdateEventHandler != null)
             {
-                m_LoadDataTableUpdateEventHandler(this, new LoadDataTableUpdateEventArgs(dataTableAssetName, progress, loadDataTableInfo.UserData));
+                m_LoadDataTableUpdateEventHandler(this, new LoadDataTableUpdateEventArgs(dataTableAssetName, loadDataTableInfo.LoadType, progress, loadDataTableInfo.UserData));
             }
         }
 

@@ -16,11 +16,13 @@ namespace GameFramework.Localization
         /// 初始化加载字典更新事件的新实例。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="loadType">字典加载方式。</param>
         /// <param name="progress">加载字典进度。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public LoadDictionaryUpdateEventArgs(string dictionaryAssetName, float progress, object userData)
+        public LoadDictionaryUpdateEventArgs(string dictionaryAssetName, LoadType loadType, float progress, object userData)
         {
             DictionaryAssetName = dictionaryAssetName;
+            LoadType = loadType;
             Progress = progress;
             UserData = userData;
         }
@@ -29,6 +31,15 @@ namespace GameFramework.Localization
         /// 获取字典资源名称。
         /// </summary>
         public string DictionaryAssetName
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取字典加载方式。
+        /// </summary>
+        public LoadType LoadType
         {
             get;
             private set;

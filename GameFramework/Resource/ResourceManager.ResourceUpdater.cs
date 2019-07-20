@@ -22,20 +22,21 @@ namespace GameFramework.Resource
         {
             private readonly ResourceManager m_ResourceManager;
             private readonly List<UpdateInfo> m_UpdateWaitingInfo;
-            private readonly List<UpdateInfo> m_UpdateFailureInfo;
+            private readonly List<UpdateInfo> m_UpdateCandidateInfo;
             private IDownloadManager m_DownloadManager;
             private bool m_CheckResourcesComplete;
-            private bool m_UpdateAllowed;
+            private ResourceGroup m_UpdatingResourceGroup;
             private int m_GenerateReadWriteListLength;
             private int m_CurrentGenerateReadWriteListLength;
-            private int m_RetryCount;
+            private int m_UpdateRetryCount;
             private int m_UpdatingCount;
+            private bool m_FailureFlag;
 
             public GameFrameworkAction<ResourceName, string, string, int, int, int> ResourceUpdateStart;
             public GameFrameworkAction<ResourceName, string, string, int, int> ResourceUpdateChanged;
             public GameFrameworkAction<ResourceName, string, string, int, int> ResourceUpdateSuccess;
             public GameFrameworkAction<ResourceName, string, int, int, string> ResourceUpdateFailure;
-            public GameFrameworkAction<bool> ResourceUpdateAllComplete;
+            public GameFrameworkAction<ResourceGroup, bool, bool> ResourceUpdateAllComplete;
 
             /// <summary>
             /// 初始化资源更新器的新实例。
@@ -45,14 +46,15 @@ namespace GameFramework.Resource
             {
                 m_ResourceManager = resourceManager;
                 m_UpdateWaitingInfo = new List<UpdateInfo>();
-                m_UpdateFailureInfo = new List<UpdateInfo>();
+                m_UpdateCandidateInfo = new List<UpdateInfo>();
                 m_DownloadManager = null;
                 m_CheckResourcesComplete = false;
-                m_UpdateAllowed = false;
+                m_UpdatingResourceGroup = null;
                 m_GenerateReadWriteListLength = 0;
                 m_CurrentGenerateReadWriteListLength = 0;
-                m_RetryCount = 3;
+                m_UpdateRetryCount = 3;
                 m_UpdatingCount = 0;
+                m_FailureFlag = false;
 
                 ResourceUpdateStart = null;
                 ResourceUpdateChanged = null;
@@ -79,15 +81,26 @@ namespace GameFramework.Resource
             /// <summary>
             /// 获取或设置资源更新重试次数。
             /// </summary>
-            public int RetryCount
+            public int UpdateRetryCount
             {
                 get
                 {
-                    return m_RetryCount;
+                    return m_UpdateRetryCount;
                 }
                 set
                 {
-                    m_RetryCount = value;
+                    m_UpdateRetryCount = value;
+                }
+            }
+
+            /// <summary>
+            /// 获取正在更新的资源组。
+            /// </summary>
+            public IResourceGroup UpdatingResourceGroup
+            {
+                get
+                {
+                    return m_UpdatingResourceGroup;
                 }
             }
 
@@ -103,13 +116,13 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 获取更新失败资源数量。
+            /// 获取候选更新资源数量。
             /// </summary>
-            public int UpdateFailureCount
+            public int UpdateCandidateCount
             {
                 get
                 {
-                    return m_UpdateFailureInfo.Count;
+                    return m_UpdateCandidateInfo.Count;
                 }
             }
 
@@ -131,26 +144,30 @@ namespace GameFramework.Resource
             /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
             public void Update(float elapseSeconds, float realElapseSeconds)
             {
-                if (m_UpdateAllowed)
+                if (m_UpdatingResourceGroup == null)
                 {
-                    if (m_UpdateWaitingInfo.Count > 0)
+                    return;
+                }
+
+                if (m_UpdateWaitingInfo.Count > 0)
+                {
+                    if (m_DownloadManager.FreeAgentCount > 0)
                     {
-                        if (m_DownloadManager.FreeAgentCount > 0)
-                        {
-                            UpdateInfo updateInfo = m_UpdateWaitingInfo[0];
-                            m_UpdateWaitingInfo.RemoveAt(0);
-                            m_DownloadManager.AddDownload(updateInfo.ResourcePath, Utility.Path.GetRemotePath(m_ResourceManager.m_UpdatePrefixUri, Utility.Path.GetResourceNameWithCrc32AndSuffix(updateInfo.ResourceName.FullName, updateInfo.HashCode)), updateInfo);
-                            m_UpdatingCount++;
-                        }
+                        UpdateInfo updateInfo = m_UpdateWaitingInfo[0];
+                        m_UpdateWaitingInfo.RemoveAt(0);
+                        m_DownloadManager.AddDownload(updateInfo.ResourcePath, Utility.Path.GetRemotePath(m_ResourceManager.m_UpdatePrefixUri, Utility.Path.GetResourceNameWithCrc32AndSuffix(updateInfo.ResourceName.FullName, updateInfo.HashCode)), updateInfo);
+                        m_UpdatingCount++;
                     }
-                    else if (m_UpdatingCount <= 0)
+                }
+                else if (m_UpdatingCount <= 0)
+                {
+                    ResourceGroup updatingResourceGroup = m_UpdatingResourceGroup;
+                    m_UpdatingResourceGroup = null;
+
+                    Utility.Path.RemoveEmptyDirectory(m_ResourceManager.m_ReadWritePath);
+                    if (ResourceUpdateAllComplete != null)
                     {
-                        m_UpdateAllowed = false;
-                        Utility.Path.RemoveEmptyDirectory(m_ResourceManager.m_ReadWritePath);
-                        if (ResourceUpdateAllComplete != null)
-                        {
-                            ResourceUpdateAllComplete(UpdateFailureCount <= 0);
-                        }
+                        ResourceUpdateAllComplete(updatingResourceGroup, !m_FailureFlag, m_UpdateCandidateInfo.Count <= 0);
                     }
                 }
             }
@@ -169,7 +186,7 @@ namespace GameFramework.Resource
                 }
 
                 m_UpdateWaitingInfo.Clear();
-                m_UpdateFailureInfo.Clear();
+                m_UpdateCandidateInfo.Clear();
             }
 
             /// <summary>
@@ -202,7 +219,7 @@ namespace GameFramework.Resource
             /// <param name="resourcePath">资源路径。</param>
             public void AddResourceUpdate(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode, string resourcePath)
             {
-                m_UpdateWaitingInfo.Add(new UpdateInfo(resourceName, loadType, length, hashCode, zipLength, zipHashCode, resourcePath));
+                m_UpdateCandidateInfo.Add(new UpdateInfo(resourceName, loadType, length, hashCode, zipLength, zipHashCode, resourcePath));
             }
 
             /// <summary>
@@ -218,7 +235,7 @@ namespace GameFramework.Resource
                 }
 
                 int maxLength = 0;
-                foreach (UpdateInfo updateInfo in m_UpdateWaitingInfo)
+                foreach (UpdateInfo updateInfo in m_UpdateCandidateInfo)
                 {
                     if (updateInfo.Length <= maxLength)
                     {
@@ -235,9 +252,10 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 更新资源。
+            /// 更新指定资源组的资源。
             /// </summary>
-            public void UpdateResources()
+            /// <param name="resourceGroup">要更新的资源组。</param>
+            public void UpdateResources(ResourceGroup resourceGroup)
             {
                 if (m_DownloadManager == null)
                 {
@@ -249,18 +267,34 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("You must check resources complete first.");
                 }
 
-                if (UpdateFailureCount > 0)
+                if (m_UpdatingResourceGroup != null)
                 {
-                    foreach (UpdateInfo updateInfo in m_UpdateFailureInfo)
-                    {
-                        updateInfo.RetryCount = 0;
-                        m_UpdateWaitingInfo.Add(updateInfo);
-                    }
-
-                    m_UpdateFailureInfo.Clear();
+                    throw new GameFrameworkException(Utility.Text.Format("There is already a resource group '{0}' being updated.", m_UpdatingResourceGroup.Name));
                 }
 
-                m_UpdateAllowed = true;
+                if (string.IsNullOrEmpty(resourceGroup.Name))
+                {
+                    m_UpdateWaitingInfo.AddRange(m_UpdateCandidateInfo);
+                    m_UpdateCandidateInfo.Clear();
+                }
+                else
+                {
+                    int index = 0;
+                    while (index < m_UpdateCandidateInfo.Count)
+                    {
+                        if (!resourceGroup.HasResource(m_UpdateCandidateInfo[index].ResourceName))
+                        {
+                            index++;
+                            continue;
+                        }
+
+                        m_UpdateWaitingInfo.Add(m_UpdateCandidateInfo[index]);
+                        m_UpdateCandidateInfo.RemoveAt(index);
+                    }
+                }
+
+                m_UpdatingResourceGroup = resourceGroup;
+                m_FailureFlag = false;
             }
 
             private void GenerateReadWriteList()
@@ -565,17 +599,19 @@ namespace GameFramework.Resource
 
                 if (ResourceUpdateFailure != null)
                 {
-                    ResourceUpdateFailure(updateInfo.ResourceName, e.DownloadUri, updateInfo.RetryCount, m_RetryCount, e.ErrorMessage);
+                    ResourceUpdateFailure(updateInfo.ResourceName, e.DownloadUri, updateInfo.RetryCount, m_UpdateRetryCount, e.ErrorMessage);
                 }
 
-                if (updateInfo.RetryCount < m_RetryCount)
+                if (updateInfo.RetryCount < m_UpdateRetryCount)
                 {
                     updateInfo.RetryCount++;
                     m_UpdateWaitingInfo.Add(updateInfo);
                 }
                 else
                 {
-                    m_UpdateFailureInfo.Add(updateInfo);
+                    m_FailureFlag = true;
+                    updateInfo.RetryCount = 0;
+                    m_UpdateCandidateInfo.Add(updateInfo);
                 }
             }
         }

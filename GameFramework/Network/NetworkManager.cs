@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 
 namespace GameFramework.Network
 {
@@ -303,13 +304,13 @@ namespace GameFramework.Network
             }
         }
 
-        private void OnNetworkChannelError(NetworkChannel networkChannel, NetworkErrorCode errorCode, string errorMessage)
+        private void OnNetworkChannelError(NetworkChannel networkChannel, NetworkErrorCode errorCode, SocketError socketErrorCode, string errorMessage)
         {
             if (m_NetworkErrorEventHandler != null)
             {
                 lock (m_NetworkErrorEventHandler)
                 {
-                    m_NetworkErrorEventHandler(this, new NetworkErrorEventArgs(networkChannel, errorCode, errorMessage));
+                    m_NetworkErrorEventHandler(this, new NetworkErrorEventArgs(networkChannel, errorCode, socketErrorCode, errorMessage));
                 }
             }
         }

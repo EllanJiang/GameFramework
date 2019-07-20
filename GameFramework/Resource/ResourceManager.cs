@@ -30,6 +30,7 @@ namespace GameFramework.Resource
 
         private Dictionary<string, AssetInfo> m_AssetInfos;
         private Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
+        private readonly Dictionary<string, ResourceGroup> m_ResourceGroups;
         private readonly SortedDictionary<ResourceName, ReadWriteResourceInfo> m_ReadWriteResourceInfos;
         private readonly byte[] m_CachedBytesForEncryptedString;
 
@@ -66,6 +67,7 @@ namespace GameFramework.Resource
         {
             m_AssetInfos = null;
             m_ResourceInfos = null;
+            m_ResourceGroups = new Dictionary<string, ResourceGroup>();
             m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>(new ResourceNameComparer());
             m_CachedBytesForEncryptedString = new byte[byte.MaxValue];
 
@@ -199,6 +201,17 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 获取资源组数量。
+        /// </summary>
+        public int ResourceGroupCount
+        {
+            get
+            {
+                return m_ResourceGroups.Count;
+            }
+        }
+
+        /// <summary>
         /// 获取或设置资源更新下载地址前缀。
         /// </summary>
         public string UpdatePrefixUri
@@ -265,7 +278,7 @@ namespace GameFramework.Resource
         {
             get
             {
-                return m_ResourceUpdater != null ? m_ResourceUpdater.RetryCount : 0;
+                return m_ResourceUpdater != null ? m_ResourceUpdater.UpdateRetryCount : 0;
             }
             set
             {
@@ -274,7 +287,18 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("You can not use UpdateRetryCount at this time.");
                 }
 
-                m_ResourceUpdater.RetryCount = value;
+                m_ResourceUpdater.UpdateRetryCount = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取正在更新的资源组。
+        /// </summary>
+        public IResourceGroup UpdatingResourceGroup
+        {
+            get
+            {
+                return m_ResourceUpdater != null ? m_ResourceUpdater.UpdatingResourceGroup : null;
             }
         }
 
@@ -290,13 +314,13 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取更新失败资源数量。
+        /// 获取候选更新资源数量。
         /// </summary>
-        public int UpdateFailureCount
+        public int UpdateCandidateCount
         {
             get
             {
-                return m_ResourceUpdater != null ? m_ResourceUpdater.UpdateFailureCount : 0;
+                return m_ResourceUpdater != null ? m_ResourceUpdater.UpdateCandidateCount : 0;
             }
         }
 
@@ -612,6 +636,7 @@ namespace GameFramework.Resource
                 m_ResourceInfos = null;
             }
 
+            m_ResourceGroups.Clear();
             m_ReadWriteResourceInfos.Clear();
         }
 
@@ -808,7 +833,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 使用单机模式并初始化资源。
         /// </summary>
-        /// <param name="initResourcesCompleteCallback">使用单机模式并初始化资源完成的回调函数。</param>
+        /// <param name="initResourcesCompleteCallback">使用单机模式并初始化资源完成时的回调函数。</param>
         public void InitResources(InitResourcesCompleteCallback initResourcesCompleteCallback)
         {
             if (initResourcesCompleteCallback == null)
@@ -898,7 +923,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 使用可更新模式并检查资源。
         /// </summary>
-        /// <param name="checkResourcesCompleteCallback">使用可更新模式并检查资源完成的回调函数。</param>
+        /// <param name="checkResourcesCompleteCallback">使用可更新模式并检查资源完成时的回调函数。</param>
         public void CheckResources(CheckResourcesCompleteCallback checkResourcesCompleteCallback)
         {
             if (checkResourcesCompleteCallback == null)
@@ -927,10 +952,20 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 使用可更新模式并更新资源。
+        /// 使用可更新模式并更新全部资源。
         /// </summary>
-        /// <param name="updateResourcesCompleteCallback">使用可更新模式并更新资源全部完成的回调函数。</param>
+        /// <param name="updateResourcesCompleteCallback">使用可更新模式并更新默认资源组完成时的回调函数。</param>
         public void UpdateResources(UpdateResourcesCompleteCallback updateResourcesCompleteCallback)
+        {
+            UpdateResources(string.Empty, updateResourcesCompleteCallback);
+        }
+
+        /// <summary>
+        /// 使用可更新模式并更新指定资源组的资源。
+        /// </summary>
+        /// <param name="resourceGroupName">要更新的资源组名称。</param>
+        /// <param name="updateResourcesCompleteCallback">使用可更新模式并更新指定资源组完成时的回调函数。</param>
+        public void UpdateResources(string resourceGroupName, UpdateResourcesCompleteCallback updateResourcesCompleteCallback)
         {
             if (updateResourcesCompleteCallback == null)
             {
@@ -952,8 +987,14 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("You can not use UpdateResources at this time.");
             }
 
+            ResourceGroup resourceGroup = (ResourceGroup)GetResourceGroup(resourceGroupName);
+            if (resourceGroup == null)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Can not find resource group '{0}'.", resourceGroupName));
+            }
+
             m_UpdateResourcesCompleteCallback = updateResourcesCompleteCallback;
-            m_ResourceUpdater.UpdateResources();
+            m_ResourceUpdater.UpdateResources(resourceGroup);
         }
 
         /// <summary>
@@ -1287,6 +1328,58 @@ namespace GameFramework.Resource
             m_ResourceLoader.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
         }
 
+        /// <summary>
+        /// 检查资源组是否存在。
+        /// </summary>
+        /// <param name="resourceGroupName">要检查资源组的名称。</param>
+        /// <returns>资源组是否存在。</returns>
+        public bool HasResourceGroup(string resourceGroupName)
+        {
+            return m_ResourceGroups.ContainsKey(resourceGroupName ?? string.Empty);
+        }
+
+        /// <summary>
+        /// 获取默认资源组。
+        /// </summary>
+        /// <returns>默认资源组。</returns>
+        public IResourceGroup GetResourceGroup()
+        {
+            return GetResourceGroup(string.Empty);
+        }
+
+        /// <summary>
+        /// 获取资源组。
+        /// </summary>
+        /// <param name="resourceGroupName">要获取的资源组名称。</param>
+        /// <returns>要获取的资源组。</returns>
+        public IResourceGroup GetResourceGroup(string resourceGroupName)
+        {
+            ResourceGroup resourceGroup = null;
+            if (m_ResourceGroups.TryGetValue(resourceGroupName ?? string.Empty, out resourceGroup))
+            {
+                return resourceGroup;
+            }
+
+            return null;
+        }
+
+        private ResourceGroup GetOrAddResourceGroup(string resourceGroupName)
+        {
+            if (resourceGroupName == null)
+            {
+                resourceGroupName = string.Empty;
+            }
+
+            ResourceGroup resourceGroup = null;
+            if (!m_ResourceGroups.TryGetValue(resourceGroupName, out resourceGroup))
+            {
+                resourceGroup = new ResourceGroup(resourceGroupName, m_ResourceInfos);
+                m_ResourceGroups.Add(resourceGroupName, resourceGroup);
+            }
+
+            return resourceGroup;
+        }
+
         private AssetInfo? GetAssetInfo(string assetName)
         {
             if (string.IsNullOrEmpty(assetName))
@@ -1402,7 +1495,7 @@ namespace GameFramework.Resource
                 }
             }
 
-            m_CheckResourcesCompleteCallback(updateCount > 0, removedCount, updateCount, updateTotalLength, updateTotalZipLength);
+            m_CheckResourcesCompleteCallback(removedCount, updateCount, updateTotalLength, updateTotalZipLength);
             m_CheckResourcesCompleteCallback = null;
         }
 
@@ -1438,9 +1531,11 @@ namespace GameFramework.Resource
             }
         }
 
-        private void OnUpdaterResourceUpdateAllComplete(bool result)
+        private void OnUpdaterResourceUpdateAllComplete(ResourceGroup resourceGroup, bool result, bool isAllDone)
         {
-            if (result)
+            m_UpdateResourcesCompleteCallback(resourceGroup, result);
+
+            if (isAllDone)
             {
                 m_ResourceUpdater.ResourceUpdateStart -= OnUpdaterResourceUpdateStart;
                 m_ResourceUpdater.ResourceUpdateChanged -= OnUpdaterResourceUpdateChanged;
@@ -1455,10 +1550,9 @@ namespace GameFramework.Resource
                     m_DecompressCache.Dispose();
                     m_DecompressCache = null;
                 }
-            }
 
-            m_UpdateResourcesCompleteCallback(result);
-            m_UpdateResourcesCompleteCallback = null;
+                m_UpdateResourcesCompleteCallback = null;
+            }
         }
     }
 }

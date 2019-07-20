@@ -503,6 +503,7 @@ namespace GameFramework.Sound
             if (IsLoadingSound(serialId))
             {
                 m_SoundsToReleaseOnLoad.Add(serialId);
+                m_SoundsBeingLoaded.Remove(serialId);
                 return true;
             }
 
@@ -610,13 +611,14 @@ namespace GameFramework.Sound
                 throw new GameFrameworkException("Play sound info is invalid.");
             }
 
-            m_SoundsBeingLoaded.Remove(playSoundInfo.SerialId);
             if (m_SoundsToReleaseOnLoad.Contains(playSoundInfo.SerialId))
             {
                 m_SoundsToReleaseOnLoad.Remove(playSoundInfo.SerialId);
                 m_SoundHelper.ReleaseSoundAsset(soundAsset);
                 return;
             }
+
+            m_SoundsBeingLoaded.Remove(playSoundInfo.SerialId);
 
             PlaySoundErrorCode? errorCode = null;
             ISoundAgent soundAgent = playSoundInfo.SoundGroup.PlaySound(playSoundInfo.SerialId, soundAsset, playSoundInfo.PlaySoundParams, out errorCode);
@@ -650,8 +652,13 @@ namespace GameFramework.Sound
                 throw new GameFrameworkException("Play sound info is invalid.");
             }
 
+            if (m_SoundsToReleaseOnLoad.Contains(playSoundInfo.SerialId))
+            {
+                m_SoundsToReleaseOnLoad.Remove(playSoundInfo.SerialId);
+                return;
+            }
+
             m_SoundsBeingLoaded.Remove(playSoundInfo.SerialId);
-            m_SoundsToReleaseOnLoad.Remove(playSoundInfo.SerialId);
             string appendErrorMessage = Utility.Text.Format("Load sound failure, asset name '{0}', status '{1}', error message '{2}'.", soundAssetName, status.ToString(), errorMessage);
             if (m_PlaySoundFailureEventHandler != null)
             {

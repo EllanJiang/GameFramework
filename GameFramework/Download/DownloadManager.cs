@@ -53,6 +53,21 @@ namespace GameFramework.Download
         }
 
         /// <summary>
+        /// 获取或设置下载是否被暂停。
+        /// </summary>
+        public bool Paused
+        {
+            get
+            {
+                return m_TaskPool.Paused;
+            }
+            set
+            {
+                m_TaskPool.Paused = value;
+            }
+        }
+
+        /// <summary>
         /// 获取下载代理总数量。
         /// </summary>
         public int TotalAgentCount
@@ -335,7 +350,6 @@ namespace GameFramework.Download
 
         private void OnDownloadAgentSuccess(DownloadAgent sender, int lastDownloadedLength)
         {
-            m_DownloadCounter.RecordDownloadedLength(lastDownloadedLength);
             if (m_DownloadSuccessEventHandler != null)
             {
                 m_DownloadSuccessEventHandler(this, new DownloadSuccessEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData));
