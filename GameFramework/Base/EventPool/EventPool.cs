@@ -20,6 +20,7 @@ namespace GameFramework
         private readonly Queue<Event> m_Events;
         private readonly EventPoolMode m_EventPoolMode;
         private EventHandler<T> m_DefaultHandler;
+        private LinkedListNode<EventHandler<T>> m_CachedNode;
 
         /// <summary>
         /// 初始化事件池的新实例。
@@ -31,6 +32,7 @@ namespace GameFramework
             m_Events = new Queue<Event>();
             m_EventPoolMode = mode;
             m_DefaultHandler = null;
+            m_CachedNode = null;
         }
 
         /// <summary>
@@ -80,6 +82,7 @@ namespace GameFramework
             Clear();
             m_EventHandlers.Clear();
             m_DefaultHandler = null;
+            m_CachedNode = null;
         }
 
         /// <summary>
@@ -182,6 +185,11 @@ namespace GameFramework
                 throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not exists any handler.", id.ToString()));
             }
 
+            if (m_CachedNode != null && m_CachedNode.Value == handler)
+            {
+                m_CachedNode = m_CachedNode.Next;
+            }
+
             if (!handlers.Remove(handler))
             {
                 throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not exists specified handler.", id.ToString()));
@@ -236,9 +244,9 @@ namespace GameFramework
                 LinkedListNode<EventHandler<T>> current = handlers.First;
                 while (current != null)
                 {
-                    LinkedListNode<EventHandler<T>> next = current.Next;
+                    m_CachedNode = current.Next;
                     current.Value(sender, e);
-                    current = next;
+                    current = m_CachedNode;
                 }
             }
             else if (m_DefaultHandler != null)
