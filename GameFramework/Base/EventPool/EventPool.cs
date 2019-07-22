@@ -18,9 +18,10 @@ namespace GameFramework
     {
         private readonly Dictionary<int, LinkedList<EventHandler<T>>> m_EventHandlers;
         private readonly Queue<Event> m_Events;
+        private readonly Dictionary<object, LinkedListNode<EventHandler<T>>> m_CachedNodes;
+        private readonly Dictionary<object, LinkedListNode<EventHandler<T>>> m_TempNodes;
         private readonly EventPoolMode m_EventPoolMode;
         private EventHandler<T> m_DefaultHandler;
-        private LinkedListNode<EventHandler<T>> m_CachedNode;
 
         /// <summary>
         /// 初始化事件池的新实例。
@@ -30,9 +31,10 @@ namespace GameFramework
         {
             m_EventHandlers = new Dictionary<int, LinkedList<EventHandler<T>>>();
             m_Events = new Queue<Event>();
+            m_CachedNodes = new Dictionary<object, LinkedListNode<EventHandler<T>>>();
+            m_TempNodes = new Dictionary<object, LinkedListNode<EventHandler<T>>>();
             m_EventPoolMode = mode;
             m_DefaultHandler = null;
-            m_CachedNode = null;
         }
 
         /// <summary>
@@ -81,8 +83,9 @@ namespace GameFramework
         {
             Clear();
             m_EventHandlers.Clear();
+            m_CachedNodes.Clear();
+            m_TempNodes.Clear();
             m_DefaultHandler = null;
-            m_CachedNode = null;
         }
 
         /// <summary>
@@ -185,9 +188,25 @@ namespace GameFramework
                 throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not exists any handler.", id.ToString()));
             }
 
-            if (m_CachedNode != null && m_CachedNode.Value == handler)
+            if (m_CachedNodes.Count > 0)
             {
-                m_CachedNode = m_CachedNode.Next;
+                foreach (KeyValuePair<object, LinkedListNode<EventHandler<T>>> cachedNode in m_CachedNodes)
+                {
+                    if (cachedNode.Value != null && cachedNode.Value.Value == handler)
+                    {
+                        m_TempNodes.Add(cachedNode.Key, cachedNode.Value);
+                    }
+                }
+
+                if (m_TempNodes.Count > 0)
+                {
+                    foreach (KeyValuePair<object, LinkedListNode<EventHandler<T>>> cachedNode in m_TempNodes)
+                    {
+                        m_CachedNodes[cachedNode.Key] = cachedNode.Value.Next;
+                    }
+
+                    m_TempNodes.Clear();
+                }
             }
 
             if (!handlers.Remove(handler))
@@ -241,20 +260,15 @@ namespace GameFramework
             LinkedList<EventHandler<T>> handlers = null;
             if (m_EventHandlers.TryGetValue(eventId, out handlers) && handlers.Count > 0)
             {
-                if (m_CachedNode != null)
-                {
-                    throw new GameFrameworkException(Utility.Text.Format("Can not handle event '{0}' right now.", eventId.ToString()));
-                }
-
                 LinkedListNode<EventHandler<T>> current = handlers.First;
                 while (current != null)
                 {
-                    m_CachedNode = current.Next;
+                    m_CachedNodes[e] = current.Next;
                     current.Value(sender, e);
-                    current = m_CachedNode;
+                    current = m_CachedNodes[e];
                 }
 
-                m_CachedNode = null;
+                m_CachedNodes.Remove(e);
             }
             else if (m_DefaultHandler != null)
             {
