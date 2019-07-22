@@ -241,6 +241,11 @@ namespace GameFramework
             LinkedList<EventHandler<T>> handlers = null;
             if (m_EventHandlers.TryGetValue(eventId, out handlers) && handlers.Count > 0)
             {
+                if (m_CachedNode != null)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not handle event '{0}' right now.", eventId.ToString()));
+                }
+
                 LinkedListNode<EventHandler<T>> current = handlers.First;
                 while (current != null)
                 {
@@ -248,6 +253,8 @@ namespace GameFramework
                     current.Value(sender, e);
                     current = m_CachedNode;
                 }
+
+                m_CachedNode = null;
             }
             else if (m_DefaultHandler != null)
             {
