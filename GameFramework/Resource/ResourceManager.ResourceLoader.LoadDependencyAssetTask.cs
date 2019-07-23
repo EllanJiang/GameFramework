@@ -13,13 +13,11 @@ namespace GameFramework.Resource
         {
             private sealed class LoadDependencyAssetTask : LoadResourceTaskBase
             {
-                private readonly LoadResourceTaskBase m_MainTask;
+                private LoadResourceTaskBase m_MainTask;
 
-                public LoadDependencyAssetTask(string assetName, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadResourceTaskBase mainTask, object userData)
-                    : base(assetName, null, priority, resourceInfo, dependencyAssetNames, userData)
+                public LoadDependencyAssetTask()
                 {
-                    m_MainTask = mainTask;
-                    m_MainTask.TotalDependencyAssetCount++;
+                    m_MainTask = null;
                 }
 
                 public override bool IsScene
@@ -28,6 +26,19 @@ namespace GameFramework.Resource
                     {
                         return false;
                     }
+                }
+
+                public void Initialize(string assetName, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadResourceTaskBase mainTask, object userData)
+                {
+                    base.Initialize(assetName, null, priority, resourceInfo, dependencyAssetNames, userData);
+                    m_MainTask = mainTask;
+                    m_MainTask.TotalDependencyAssetCount++;
+                }
+
+                public override void Clear()
+                {
+                    base.Clear();
+                    m_MainTask = null;
                 }
 
                 public override void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)

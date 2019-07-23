@@ -90,7 +90,6 @@ namespace GameFramework.Task
         {
             m_SerialId = serialId;
             m_Priority = priority;
-            m_Status = TaskStatus.Free;
         }
 
         /// <summary>

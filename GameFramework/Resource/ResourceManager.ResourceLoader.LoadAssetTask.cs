@@ -15,12 +15,11 @@ namespace GameFramework.Resource
         {
             private sealed class LoadAssetTask : LoadResourceTaskBase
             {
-                private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
+                private LoadAssetCallbacks m_LoadAssetCallbacks;
 
-                public LoadAssetTask(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
-                    : base(assetName, assetType, priority, resourceInfo, dependencyAssetNames, userData)
+                public LoadAssetTask()
                 {
-                    m_LoadAssetCallbacks = loadAssetCallbacks;
+                    m_LoadAssetCallbacks = null;
                 }
 
                 public override bool IsScene
@@ -29,6 +28,18 @@ namespace GameFramework.Resource
                     {
                         return false;
                     }
+                }
+
+                public void Initialize(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
+                {
+                    base.Initialize(assetName, assetType, priority, resourceInfo, dependencyAssetNames, userData);
+                    m_LoadAssetCallbacks = loadAssetCallbacks;
+                }
+
+                public override void Clear()
+                {
+                    base.Clear();
+                    m_LoadAssetCallbacks = null;
                 }
 
                 public override void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)

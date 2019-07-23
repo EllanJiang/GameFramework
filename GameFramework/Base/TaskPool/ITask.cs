@@ -10,7 +10,7 @@ namespace GameFramework
     /// <summary>
     /// 任务接口。
     /// </summary>
-    internal interface ITask
+    internal interface ITask : IReference
     {
         /// <summary>
         /// 获取任务的序列编号。

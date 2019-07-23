@@ -264,7 +264,8 @@ namespace GameFramework.WebRequest
                 throw new GameFrameworkException("You must add web request agent first.");
             }
 
-            WebRequestTask webRequestTask = new WebRequestTask(webRequestUri, postData, priority, m_Timeout, userData);
+            WebRequestTask webRequestTask = ReferencePool.Acquire<WebRequestTask>();
+            webRequestTask.Initialize(webRequestUri, postData, priority, m_Timeout, userData);
             m_TaskPool.AddTask(webRequestTask);
 
             return webRequestTask.SerialId;
@@ -277,7 +278,7 @@ namespace GameFramework.WebRequest
         /// <returns>是否移除 Web 请求任务成功。</returns>
         public bool RemoveWebRequest(int serialId)
         {
-            return m_TaskPool.RemoveTask(serialId) != null;
+            return m_TaskPool.RemoveTask(serialId);
         }
 
         /// <summary>

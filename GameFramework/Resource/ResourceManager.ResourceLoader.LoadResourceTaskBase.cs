@@ -18,29 +18,29 @@ namespace GameFramework.Resource
             {
                 private static int s_Serial = 0;
 
-                private readonly int m_SerialId;
-                private readonly int m_Priority;
+                private int m_SerialId;
+                private int m_Priority;
                 private bool m_Done;
-                private readonly string m_AssetName;
-                private readonly Type m_AssetType;
-                private readonly ResourceInfo m_ResourceInfo;
-                private readonly string[] m_DependencyAssetNames;
-                private readonly object m_UserData;
-                private readonly List<object> m_DependencyAssets;
+                private string m_AssetName;
+                private Type m_AssetType;
+                private ResourceInfo m_ResourceInfo;
+                private string[] m_DependencyAssetNames;
+                private object m_UserData;
+                private List<object> m_DependencyAssets;
                 private ResourceObject m_ResourceObject;
                 private DateTime m_StartTime;
                 private int m_TotalDependencyAssetCount;
 
-                public LoadResourceTaskBase(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, object userData)
+                public LoadResourceTaskBase()
                 {
-                    m_SerialId = s_Serial++;
-                    m_Priority = priority;
+                    m_SerialId = 0;
+                    m_Priority = 0;
                     m_Done = false;
-                    m_AssetName = assetName;
-                    m_AssetType = assetType;
-                    m_ResourceInfo = resourceInfo;
-                    m_DependencyAssetNames = dependencyAssetNames;
-                    m_UserData = userData;
+                    m_AssetName = null;
+                    m_AssetType = null;
+                    m_ResourceInfo = default(ResourceInfo);
+                    m_DependencyAssetNames = null;
+                    m_UserData = null;
                     m_DependencyAssets = new List<object>();
                     m_ResourceObject = null;
                     m_StartTime = default(DateTime);
@@ -150,6 +150,33 @@ namespace GameFramework.Resource
                     {
                         m_TotalDependencyAssetCount = value;
                     }
+                }
+
+                public void Initialize(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, object userData)
+                {
+                    m_SerialId = s_Serial++;
+                    m_Priority = priority;
+                    m_AssetName = assetName;
+                    m_AssetType = assetType;
+                    m_ResourceInfo = resourceInfo;
+                    m_DependencyAssetNames = dependencyAssetNames;
+                    m_UserData = userData;
+                }
+
+                public virtual void Clear()
+                {
+                    m_SerialId = 0;
+                    m_Priority = 0;
+                    m_Done = false;
+                    m_AssetName = null;
+                    m_AssetType = null;
+                    m_ResourceInfo = default(ResourceInfo);
+                    m_DependencyAssetNames = null;
+                    m_UserData = null;
+                    m_DependencyAssets.Clear();
+                    m_ResourceObject = null;
+                    m_StartTime = default(DateTime);
+                    m_TotalDependencyAssetCount = 0;
                 }
 
                 public string[] GetDependencyAssetNames()
