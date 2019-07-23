@@ -20,7 +20,7 @@ namespace GameFramework.Entity
             private readonly string m_Name;
             private readonly IEntityGroupHelper m_EntityGroupHelper;
             private readonly IObjectPool<EntityInstanceObject> m_InstancePool;
-            private readonly LinkedList<IEntity> m_Entities;
+            private readonly GameFrameworkLinkedList<IEntity> m_Entities;
 
             /// <summary>
             /// 初始化实体组的新实例。
@@ -48,7 +48,7 @@ namespace GameFramework.Entity
                 m_EntityGroupHelper = entityGroupHelper;
                 m_InstancePool = objectPoolManager.CreateSingleSpawnObjectPool<EntityInstanceObject>(Utility.Text.Format("Entity Instance Pool ({0})", name), instanceCapacity, instanceExpireTime, instancePriority);
                 m_InstancePool.AutoReleaseInterval = instanceAutoReleaseInterval;
-                m_Entities = new LinkedList<IEntity>();
+                m_Entities = new GameFrameworkLinkedList<IEntity>();
             }
 
             /// <summary>

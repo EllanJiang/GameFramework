@@ -16,8 +16,8 @@ namespace GameFramework
     internal sealed class TaskPool<T> where T : ITask
     {
         private readonly Stack<ITaskAgent<T>> m_FreeAgents;
-        private readonly LinkedList<ITaskAgent<T>> m_WorkingAgents;
-        private readonly LinkedList<T> m_WaitingTasks;
+        private readonly GameFrameworkLinkedList<ITaskAgent<T>> m_WorkingAgents;
+        private readonly GameFrameworkLinkedList<T> m_WaitingTasks;
         private bool m_Paused;
 
         /// <summary>
@@ -26,8 +26,8 @@ namespace GameFramework
         public TaskPool()
         {
             m_FreeAgents = new Stack<ITaskAgent<T>>();
-            m_WorkingAgents = new LinkedList<ITaskAgent<T>>();
-            m_WaitingTasks = new LinkedList<T>();
+            m_WorkingAgents = new GameFrameworkLinkedList<ITaskAgent<T>>();
+            m_WaitingTasks = new GameFrameworkLinkedList<T>();
             m_Paused = false;
         }
 

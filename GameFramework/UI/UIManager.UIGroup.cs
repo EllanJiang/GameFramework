@@ -20,7 +20,7 @@ namespace GameFramework.UI
             private int m_Depth;
             private bool m_Pause;
             private readonly IUIGroupHelper m_UIGroupHelper;
-            private readonly LinkedList<UIFormInfo> m_UIFormInfos;
+            private readonly GameFrameworkLinkedList<UIFormInfo> m_UIFormInfos;
 
             /// <summary>
             /// 初始化界面组的新实例。
@@ -43,7 +43,7 @@ namespace GameFramework.UI
                 m_Name = name;
                 m_Pause = false;
                 m_UIGroupHelper = uiGroupHelper;
-                m_UIFormInfos = new LinkedList<UIFormInfo>();
+                m_UIFormInfos = new GameFrameworkLinkedList<UIFormInfo>();
                 Depth = depth;
             }
 

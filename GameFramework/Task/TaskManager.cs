@@ -14,7 +14,7 @@ namespace GameFramework.Task
     /// </summary>
     internal sealed class TaskManager : GameFrameworkModule, ITaskManager
     {
-        private readonly LinkedList<TaskBase> m_Tasks;
+        private readonly GameFrameworkLinkedList<TaskBase> m_Tasks;
         private int m_Serial;
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace GameFramework.Task
         /// </summary>
         public TaskManager()
         {
-            m_Tasks = new LinkedList<TaskBase>();
+            m_Tasks = new GameFrameworkLinkedList<TaskBase>();
             m_Serial = 0;
         }
 
