@@ -42,10 +42,6 @@ namespace GameFramework.Task
             {
                 return m_SerialId;
             }
-            internal set
-            {
-                m_SerialId = value;
-            }
         }
 
         /// <summary>
@@ -56,10 +52,6 @@ namespace GameFramework.Task
             get
             {
                 return m_Priority;
-            }
-            internal set
-            {
-                m_Priority = value;
             }
         }
 
@@ -87,6 +79,18 @@ namespace GameFramework.Task
             {
                 m_UserData = value;
             }
+        }
+
+        /// <summary>
+        /// 初始化任务基类。
+        /// </summary>
+        /// <param name="serialId">任务的序列编号。</param>
+        /// <param name="priority">任务的优先级。</param>
+        public void Initialize(int serialId, int priority)
+        {
+            m_SerialId = serialId;
+            m_Priority = priority;
+            m_Status = TaskStatus.Free;
         }
 
         /// <summary>

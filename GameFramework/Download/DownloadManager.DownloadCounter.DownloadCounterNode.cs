@@ -28,10 +28,6 @@ namespace GameFramework.Download
                     {
                         return m_DownloadedLength;
                     }
-                    set
-                    {
-                        m_DownloadedLength = value;
-                    }
                 }
 
                 public float ElapseSeconds
@@ -40,6 +36,11 @@ namespace GameFramework.Download
                     {
                         return m_ElapseSeconds;
                     }
+                }
+
+                public void Initialize(int downloadedLength)
+                {
+                    m_DownloadedLength = downloadedLength;
                 }
 
                 public void Update(float elapseSeconds, float realElapseSeconds)
