@@ -18,7 +18,7 @@ namespace GameFramework
     public class GameFrameworkLinkedList<T> : ICollection<T>, IEnumerable<T>, ICollection, IEnumerable
     {
         private readonly LinkedList<T> m_LinkedList;
-        private readonly Queue<LinkedListNode<T>> m_CacheNodes;
+        private readonly Queue<LinkedListNode<T>> m_CachedNodes;
 
         /// <summary>
         /// 初始化游戏框架链表类的新实例。
@@ -26,7 +26,7 @@ namespace GameFramework
         public GameFrameworkLinkedList()
         {
             m_LinkedList = new LinkedList<T>();
-            m_CacheNodes = new Queue<LinkedListNode<T>>();
+            m_CachedNodes = new Queue<LinkedListNode<T>>();
         }
 
         /// <summary>
@@ -43,11 +43,11 @@ namespace GameFramework
         /// <summary>
         /// 获取链表结点缓存数量。
         /// </summary>
-        public int CacheCount
+        public int CachedNodeCount
         {
             get
             {
-                return m_CacheNodes.Count;
+                return m_CachedNodes.Count;
             }
         }
 
@@ -221,9 +221,9 @@ namespace GameFramework
         /// <summary>
         /// 清除链表结点缓存。
         /// </summary>
-        public void ClearCache()
+        public void ClearCachedNodes()
         {
-            m_CacheNodes.Clear();
+            m_CachedNodes.Clear();
         }
 
         /// <summary>
@@ -346,9 +346,9 @@ namespace GameFramework
         private LinkedListNode<T> AcquireNode(T value)
         {
             LinkedListNode<T> node = null;
-            if (m_CacheNodes.Count > 0)
+            if (m_CachedNodes.Count > 0)
             {
-                node = m_CacheNodes.Dequeue();
+                node = m_CachedNodes.Dequeue();
                 node.Value = value;
             }
             else
@@ -362,7 +362,7 @@ namespace GameFramework
         private void ReleaseNode(LinkedListNode<T> node)
         {
             node.Value = default(T);
-            m_CacheNodes.Enqueue(node);
+            m_CachedNodes.Enqueue(node);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
