@@ -18,7 +18,7 @@ namespace GameFramework
     public class GameFrameworkLinkedList<T> : ICollection<T>, IEnumerable<T>, ICollection, IEnumerable
     {
         private readonly LinkedList<T> m_LinkedList;
-        private readonly Queue<LinkedListNode<T>> m_CachedNode;
+        private readonly Queue<LinkedListNode<T>> m_CacheNodes;
 
         /// <summary>
         /// 初始化游戏框架链表类的新实例。
@@ -26,11 +26,11 @@ namespace GameFramework
         public GameFrameworkLinkedList()
         {
             m_LinkedList = new LinkedList<T>();
-            m_CachedNode = new Queue<LinkedListNode<T>>();
+            m_CacheNodes = new Queue<LinkedListNode<T>>();
         }
 
         /// <summary>
-        /// 获取链表中实际包含的节点数。
+        /// 获取链表中实际包含的结点数。
         /// </summary>
         public int Count
         {
@@ -41,7 +41,18 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 获取链表的第一个节点。
+        /// 获取链表结点缓存数量。
+        /// </summary>
+        public int CacheCount
+        {
+            get
+            {
+                return m_CacheNodes.Count;
+            }
+        }
+
+        /// <summary>
+        /// 获取链表的第一个结点。
         /// </summary>
         public LinkedListNode<T> First
         {
@@ -52,7 +63,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 获取链表的最后一个节点。
+        /// 获取链表的最后一个结点。
         /// </summary>
         public LinkedListNode<T> Last
         {
@@ -105,11 +116,11 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 在链表中指定的现有节点后添加包含指定值的新节点。
+        /// 在链表中指定的现有结点后添加包含指定值的新结点。
         /// </summary>
-        /// <param name="node">指定的现有节点。</param>
+        /// <param name="node">指定的现有结点。</param>
         /// <param name="value">指定值。</param>
-        /// <returns>包含指定值的新节点。</returns>
+        /// <returns>包含指定值的新结点。</returns>
         public LinkedListNode<T> AddAfter(LinkedListNode<T> node, T value)
         {
             LinkedListNode<T> newNode = AcquireNode(value);
@@ -118,21 +129,21 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 在链表中指定的现有节点后添加指定的新节点。
+        /// 在链表中指定的现有结点后添加指定的新结点。
         /// </summary>
-        /// <param name="node">指定的现有节点。</param>
-        /// <param name="newNode">指定的新节点。</param>
+        /// <param name="node">指定的现有结点。</param>
+        /// <param name="newNode">指定的新结点。</param>
         public void AddAfter(LinkedListNode<T> node, LinkedListNode<T> newNode)
         {
             m_LinkedList.AddAfter(node, newNode);
         }
 
         /// <summary>
-        /// 在链表中指定的现有节点前添加包含指定值的新节点。
+        /// 在链表中指定的现有结点前添加包含指定值的新结点。
         /// </summary>
-        /// <param name="node">指定的现有节点。</param>
+        /// <param name="node">指定的现有结点。</param>
         /// <param name="value">指定值。</param>
-        /// <returns>包含指定值的新节点。</returns>
+        /// <returns>包含指定值的新结点。</returns>
         public LinkedListNode<T> AddBefore(LinkedListNode<T> node, T value)
         {
             LinkedListNode<T> newNode = AcquireNode(value);
@@ -141,20 +152,20 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 在链表中指定的现有节点前添加指定的新节点。
+        /// 在链表中指定的现有结点前添加指定的新结点。
         /// </summary>
-        /// <param name="node">指定的现有节点。</param>
-        /// <param name="newNode">指定的新节点。</param>
+        /// <param name="node">指定的现有结点。</param>
+        /// <param name="newNode">指定的新结点。</param>
         public void AddBefore(LinkedListNode<T> node, LinkedListNode<T> newNode)
         {
             m_LinkedList.AddBefore(node, newNode);
         }
 
         /// <summary>
-        /// 在链表的开头处添加包含指定值的新节点。
+        /// 在链表的开头处添加包含指定值的新结点。
         /// </summary>
         /// <param name="value">指定值。</param>
-        /// <returns>包含指定值的新节点。</returns>
+        /// <returns>包含指定值的新结点。</returns>
         public LinkedListNode<T> AddFirst(T value)
         {
             LinkedListNode<T> node = AcquireNode(value);
@@ -163,19 +174,19 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 在链表的开头处添加指定的新节点。
+        /// 在链表的开头处添加指定的新结点。
         /// </summary>
-        /// <param name="node">指定的新节点。</param>
+        /// <param name="node">指定的新结点。</param>
         public void AddFirst(LinkedListNode<T> node)
         {
             m_LinkedList.AddFirst(node);
         }
 
         /// <summary>
-        /// 在链表的结尾处添加包含指定值的新节点。
+        /// 在链表的结尾处添加包含指定值的新结点。
         /// </summary>
         /// <param name="value">指定值。</param>
-        /// <returns>包含指定值的新节点。</returns>
+        /// <returns>包含指定值的新结点。</returns>
         public LinkedListNode<T> AddLast(T value)
         {
             LinkedListNode<T> node = AcquireNode(value);
@@ -184,16 +195,16 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 在链表的结尾处添加指定的新节点。
+        /// 在链表的结尾处添加指定的新结点。
         /// </summary>
-        /// <param name="node">指定的新节点。</param>
+        /// <param name="node">指定的新结点。</param>
         public void AddLast(LinkedListNode<T> node)
         {
             m_LinkedList.AddLast(node);
         }
 
         /// <summary>
-        /// 从链表中移除所有节点。
+        /// 从链表中移除所有结点。
         /// </summary>
         public void Clear()
         {
@@ -205,6 +216,14 @@ namespace GameFramework
             }
 
             m_LinkedList.Clear();
+        }
+
+        /// <summary>
+        /// 清除链表结点缓存。
+        /// </summary>
+        public void ClearCache()
+        {
+            m_CacheNodes.Clear();
         }
 
         /// <summary>
@@ -238,31 +257,23 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 查找包含指定值的第一个节点。
+        /// 查找包含指定值的第一个结点。
         /// </summary>
         /// <param name="value">要查找的指定值。</param>
-        /// <returns>包含指定值的第一个节点。</returns>
+        /// <returns>包含指定值的第一个结点。</returns>
         public LinkedListNode<T> Find(T value)
         {
             return m_LinkedList.Find(value);
         }
 
         /// <summary>
-        /// 查找包含指定值的最后一个节点。
+        /// 查找包含指定值的最后一个结点。
         /// </summary>
         /// <param name="value">要查找的指定值。</param>
-        /// <returns>包含指定值的最后一个节点。</returns>
+        /// <returns>包含指定值的最后一个结点。</returns>
         public LinkedListNode<T> FindLast(T value)
         {
             return m_LinkedList.FindLast(value);
-        }
-
-        /// <summary>
-        /// 清除链表结点缓存。
-        /// </summary>
-        public void Free()
-        {
-            m_CachedNode.Clear();
         }
 
         /// <summary>
@@ -293,9 +304,9 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 从链表中移除指定的节点。
+        /// 从链表中移除指定的结点。
         /// </summary>
-        /// <param name="node">指定的节点。</param>
+        /// <param name="node">指定的结点。</param>
         public void Remove(LinkedListNode<T> node)
         {
             m_LinkedList.Remove(node);
@@ -303,7 +314,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 移除位于链表开头处的节点。
+        /// 移除位于链表开头处的结点。
         /// </summary>
         public void RemoveFirst()
         {
@@ -318,7 +329,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 移除位于链表结尾处的节点。
+        /// 移除位于链表结尾处的结点。
         /// </summary>
         public void RemoveLast()
         {
@@ -335,9 +346,9 @@ namespace GameFramework
         private LinkedListNode<T> AcquireNode(T value)
         {
             LinkedListNode<T> node = null;
-            if (m_CachedNode.Count > 0)
+            if (m_CacheNodes.Count > 0)
             {
-                node = m_CachedNode.Dequeue();
+                node = m_CacheNodes.Dequeue();
                 node.Value = value;
             }
             else
@@ -351,7 +362,7 @@ namespace GameFramework
         private void ReleaseNode(LinkedListNode<T> node)
         {
             node.Value = default(T);
-            m_CachedNode.Enqueue(node);
+            m_CacheNodes.Enqueue(node);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

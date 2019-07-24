@@ -52,7 +52,7 @@ namespace GameFramework.Debugger
         }
 
         /// <summary>
-        /// 调试窗口根节点。
+        /// 调试窗口根结点。
         /// </summary>
         public IDebuggerWindowGroup DebuggerWindowRoot
         {

@@ -298,7 +298,7 @@ namespace GameFramework.DataNode
             /// <summary>
             /// 检测数据结点名称是否合法。
             /// </summary>
-            /// <param name="name">要检测的数据节点名称。</param>
+            /// <param name="name">要检测的数据结点名称。</param>
             /// <returns>是否是合法的数据结点名称。</returns>
             private static bool IsValidName(string name)
             {
