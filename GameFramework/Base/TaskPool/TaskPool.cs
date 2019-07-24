@@ -168,12 +168,12 @@ namespace GameFramework
         /// <returns>移除任务是否成功。</returns>
         public bool RemoveTask(int serialId)
         {
-            foreach (T waitingTask in m_WaitingTasks)
+            foreach (T task in m_WaitingTasks)
             {
-                if (waitingTask.SerialId == serialId)
+                if (task.SerialId == serialId)
                 {
-                    m_WaitingTasks.Remove(waitingTask);
-                    ReferencePool.Release(waitingTask);
+                    m_WaitingTasks.Remove(task);
+                    ReferencePool.Release(task);
                     return true;
                 }
             }
@@ -182,11 +182,11 @@ namespace GameFramework
             {
                 if (workingAgent.Task.SerialId == serialId)
                 {
-                    T waitingTask = workingAgent.Task;
+                    T task = workingAgent.Task;
                     workingAgent.Reset();
                     m_FreeAgents.Push(workingAgent);
                     m_WorkingAgents.Remove(workingAgent);
-                    ReferencePool.Release(waitingTask);
+                    ReferencePool.Release(task);
                     return true;
                 }
             }
@@ -199,19 +199,19 @@ namespace GameFramework
         /// </summary>
         public void RemoveAllTasks()
         {
-            foreach (T waitingTask in m_WaitingTasks)
+            foreach (T task in m_WaitingTasks)
             {
-                ReferencePool.Release(waitingTask);
+                ReferencePool.Release(task);
             }
 
             m_WaitingTasks.Clear();
 
             foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
             {
-                T waitingTask = workingAgent.Task;
+                T task = workingAgent.Task;
                 workingAgent.Reset();
                 m_FreeAgents.Push(workingAgent);
-                ReferencePool.Release(waitingTask);
+                ReferencePool.Release(task);
             }
 
             m_WorkingAgents.Clear();
@@ -222,8 +222,8 @@ namespace GameFramework
             LinkedListNode<ITaskAgent<T>> current = m_WorkingAgents.First;
             while (current != null)
             {
-                T workingTask = current.Value.Task;
-                if (!workingTask.Done)
+                T task = current.Value.Task;
+                if (!task.Done)
                 {
                     current.Value.Update(elapseSeconds, realElapseSeconds);
                     current = current.Next;
@@ -234,7 +234,7 @@ namespace GameFramework
                 current.Value.Reset();
                 m_FreeAgents.Push(current.Value);
                 m_WorkingAgents.Remove(current);
-                ReferencePool.Release(workingTask);
+                ReferencePool.Release(task);
                 current = next;
             }
         }
@@ -246,8 +246,9 @@ namespace GameFramework
             {
                 ITaskAgent<T> agent = m_FreeAgents.Pop();
                 LinkedListNode<ITaskAgent<T>> agentNode = m_WorkingAgents.AddLast(agent);
+                T task = current.Value;
                 LinkedListNode<T> next = current.Next;
-                StartTaskStatus status = agent.Start(current.Value);
+                StartTaskStatus status = agent.Start(task);
                 if (status == StartTaskStatus.Done || status == StartTaskStatus.HasToWait || status == StartTaskStatus.UnknownError)
                 {
                     agent.Reset();
@@ -262,7 +263,7 @@ namespace GameFramework
 
                 if (status == StartTaskStatus.Done || status == StartTaskStatus.UnknownError)
                 {
-                    ReferencePool.Release(current.Value);
+                    ReferencePool.Release(task);
                 }
 
                 current = next;
