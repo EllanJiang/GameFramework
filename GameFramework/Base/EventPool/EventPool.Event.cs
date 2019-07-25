@@ -12,15 +12,15 @@ namespace GameFramework
         /// <summary>
         /// 事件结点。
         /// </summary>
-        private sealed class Event
+        private sealed class Event : IReference
         {
-            private readonly object m_Sender;
-            private readonly T m_EventArgs;
+            private object m_Sender;
+            private T m_EventArgs;
 
-            public Event(object sender, T e)
+            public Event()
             {
-                m_Sender = sender;
-                m_EventArgs = e;
+                m_Sender = null;
+                m_EventArgs = null;
             }
 
             public object Sender
@@ -37,6 +37,18 @@ namespace GameFramework
                 {
                     return m_EventArgs;
                 }
+            }
+
+            public void Initialize(object sender, T e)
+            {
+                m_Sender = sender;
+                m_EventArgs = e;
+            }
+
+            public void Clear()
+            {
+                m_Sender = null;
+                m_EventArgs = null;
             }
         }
     }
