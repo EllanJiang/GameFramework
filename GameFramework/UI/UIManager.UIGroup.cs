@@ -388,18 +388,31 @@ namespace GameFramework.UI
                 {
                     LinkedListNode<UIFormInfo> next = current.Next;
                     current.Value.UIForm.OnDepthChanged(Depth, depth--);
+                    if (current.Value == null)
+                    {
+                        return;
+                    }
+
                     if (pause)
                     {
                         if (!current.Value.Covered)
                         {
                             current.Value.Covered = true;
                             current.Value.UIForm.OnCover();
+                            if (current.Value == null)
+                            {
+                                return;
+                            }
                         }
 
                         if (!current.Value.Paused)
                         {
                             current.Value.Paused = true;
                             current.Value.UIForm.OnPause();
+                            if (current.Value == null)
+                            {
+                                return;
+                            }
                         }
                     }
                     else
@@ -408,6 +421,10 @@ namespace GameFramework.UI
                         {
                             current.Value.Paused = false;
                             current.Value.UIForm.OnResume();
+                            if (current.Value == null)
+                            {
+                                return;
+                            }
                         }
 
                         if (current.Value.UIForm.PauseCoveredUIForm)
@@ -421,6 +438,10 @@ namespace GameFramework.UI
                             {
                                 current.Value.Covered = true;
                                 current.Value.UIForm.OnCover();
+                                if (current.Value == null)
+                                {
+                                    return;
+                                }
                             }
                         }
                         else
@@ -429,6 +450,10 @@ namespace GameFramework.UI
                             {
                                 current.Value.Covered = false;
                                 current.Value.UIForm.OnReveal();
+                                if (current.Value == null)
+                                {
+                                    return;
+                                }
                             }
 
                             cover = true;
