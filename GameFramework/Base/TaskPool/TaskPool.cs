@@ -173,7 +173,7 @@ namespace GameFramework
                 if (task.SerialId == serialId)
                 {
                     m_WaitingTasks.Remove(task);
-                    ReferencePool.Release(task);
+                    ReferencePool.Release((IReference)task);
                     return true;
                 }
             }
@@ -186,7 +186,7 @@ namespace GameFramework
                     workingAgent.Reset();
                     m_FreeAgents.Push(workingAgent);
                     m_WorkingAgents.Remove(workingAgent);
-                    ReferencePool.Release(task);
+                    ReferencePool.Release((IReference)task);
                     return true;
                 }
             }
@@ -201,7 +201,7 @@ namespace GameFramework
         {
             foreach (T task in m_WaitingTasks)
             {
-                ReferencePool.Release(task);
+                ReferencePool.Release((IReference)task);
             }
 
             m_WaitingTasks.Clear();
@@ -211,7 +211,7 @@ namespace GameFramework
                 T task = workingAgent.Task;
                 workingAgent.Reset();
                 m_FreeAgents.Push(workingAgent);
-                ReferencePool.Release(task);
+                ReferencePool.Release((IReference)task);
             }
 
             m_WorkingAgents.Clear();
@@ -234,7 +234,7 @@ namespace GameFramework
                 current.Value.Reset();
                 m_FreeAgents.Push(current.Value);
                 m_WorkingAgents.Remove(current);
-                ReferencePool.Release(task);
+                ReferencePool.Release((IReference)task);
                 current = next;
             }
         }
@@ -263,7 +263,7 @@ namespace GameFramework
 
                 if (status == StartTaskStatus.Done || status == StartTaskStatus.UnknownError)
                 {
-                    ReferencePool.Release(task);
+                    ReferencePool.Release((IReference)task);
                 }
 
                 current = next;
