@@ -137,9 +137,7 @@ namespace GameFramework.Download
                     return;
                 }
 
-                DownloadCounterNode downloadCounterNode = ReferencePool.Acquire<DownloadCounterNode>();
-                downloadCounterNode.Initialize(downloadedLength);
-                m_DownloadCounterNodes.Enqueue(downloadCounterNode);
+                m_DownloadCounterNodes.Enqueue(DownloadCounterNode.Create(downloadedLength));
             }
 
             private void Reset()

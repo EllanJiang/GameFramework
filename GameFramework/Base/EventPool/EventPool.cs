@@ -234,8 +234,7 @@ namespace GameFramework
         /// <param name="e">事件参数。</param>
         public void Fire(object sender, T e)
         {
-            Event eventNode = ReferencePool.Acquire<Event>();
-            eventNode.Initialize(sender, e);
+            Event eventNode = Event.Create(sender, e);
             lock (m_Events)
             {
                 m_Events.Enqueue(eventNode);

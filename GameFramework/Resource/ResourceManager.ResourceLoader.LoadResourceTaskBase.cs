@@ -26,7 +26,7 @@ namespace GameFramework.Resource
                 private ResourceInfo m_ResourceInfo;
                 private string[] m_DependencyAssetNames;
                 private object m_UserData;
-                private List<object> m_DependencyAssets;
+                private readonly List<object> m_DependencyAssets;
                 private ResourceObject m_ResourceObject;
                 private DateTime m_StartTime;
                 private int m_TotalDependencyAssetCount;
@@ -152,17 +152,6 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public void Initialize(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, object userData)
-                {
-                    m_SerialId = s_Serial++;
-                    m_Priority = priority;
-                    m_AssetName = assetName;
-                    m_AssetType = assetType;
-                    m_ResourceInfo = resourceInfo;
-                    m_DependencyAssetNames = dependencyAssetNames;
-                    m_UserData = userData;
-                }
-
                 public virtual void Clear()
                 {
                     m_SerialId = 0;
@@ -210,6 +199,17 @@ namespace GameFramework.Resource
                 public virtual void OnLoadDependencyAsset(LoadResourceAgent agent, string dependencyAssetName, object dependencyAsset)
                 {
                     m_DependencyAssets.Add(dependencyAsset);
+                }
+
+                protected void Initialize(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, object userData)
+                {
+                    m_SerialId = s_Serial++;
+                    m_Priority = priority;
+                    m_AssetName = assetName;
+                    m_AssetType = assetType;
+                    m_ResourceInfo = resourceInfo;
+                    m_DependencyAssetNames = dependencyAssetNames;
+                    m_UserData = userData;
                 }
             }
         }

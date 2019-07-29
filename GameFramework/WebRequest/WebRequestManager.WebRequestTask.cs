@@ -123,21 +123,24 @@ namespace GameFramework.WebRequest
             }
 
             /// <summary>
-            /// 初始化 Web 请求任务。
+            /// 创建 Web 请求任务。
             /// </summary>
             /// <param name="webRequestUri">要发送的远程地址。</param>
             /// <param name="postData">要发送的数据流。</param>
             /// <param name="priority">Web 请求任务的优先级。</param>
             /// <param name="timeout">下载超时时长，以秒为单位。</param>
             /// <param name="userData">用户自定义数据。</param>
-            public void Initialize(string webRequestUri, byte[] postData, int priority, float timeout, object userData)
+            /// <returns>创建的 Web 请求任务。</returns>
+            public static WebRequestTask Create(string webRequestUri, byte[] postData, int priority, float timeout, object userData)
             {
-                m_SerialId = s_Serial++;
-                m_Priority = priority;
-                m_WebRequestUri = webRequestUri;
-                m_PostData = postData;
-                m_Timeout = timeout;
-                m_UserData = userData;
+                WebRequestTask webRequestTask = ReferencePool.Acquire<WebRequestTask>();
+                webRequestTask.m_SerialId = s_Serial++;
+                webRequestTask.m_Priority = priority;
+                webRequestTask.m_WebRequestUri = webRequestUri;
+                webRequestTask.m_PostData = postData;
+                webRequestTask.m_Timeout = timeout;
+                webRequestTask.m_UserData = userData;
+                return webRequestTask;
             }
 
             /// <summary>

@@ -38,9 +38,11 @@ namespace GameFramework.Download
                     }
                 }
 
-                public void Initialize(int downloadedLength)
+                public static DownloadCounterNode Create(int downloadedLength)
                 {
-                    m_DownloadedLength = downloadedLength;
+                    DownloadCounterNode downloadCounterNode = ReferencePool.Acquire<DownloadCounterNode>();
+                    downloadCounterNode.m_DownloadedLength = downloadedLength;
+                    return downloadCounterNode;
                 }
 
                 public void Update(float elapseSeconds, float realElapseSeconds)

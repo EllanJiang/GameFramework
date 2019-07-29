@@ -28,11 +28,13 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public void Initialize(string assetName, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadResourceTaskBase mainTask, object userData)
+                public static LoadDependencyAssetTask Create(string assetName, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadResourceTaskBase mainTask, object userData)
                 {
-                    Initialize(assetName, null, priority, resourceInfo, dependencyAssetNames, userData);
-                    m_MainTask = mainTask;
-                    m_MainTask.TotalDependencyAssetCount++;
+                    LoadDependencyAssetTask loadDependencyAssetTask = ReferencePool.Acquire<LoadDependencyAssetTask>();
+                    loadDependencyAssetTask.Initialize(assetName, null, priority, resourceInfo, dependencyAssetNames, userData);
+                    loadDependencyAssetTask.m_MainTask = mainTask;
+                    loadDependencyAssetTask.m_MainTask.TotalDependencyAssetCount++;
+                    return loadDependencyAssetTask;
                 }
 
                 public override void Clear()

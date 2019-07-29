@@ -39,10 +39,12 @@ namespace GameFramework
                 }
             }
 
-            public void Initialize(object sender, T e)
+            public static Event Create(object sender, T e)
             {
-                m_Sender = sender;
-                m_EventArgs = e;
+                Event eventNode = ReferencePool.Acquire<Event>();
+                eventNode.m_Sender = sender;
+                eventNode.m_EventArgs = e;
+                return eventNode;
             }
 
             public void Clear()

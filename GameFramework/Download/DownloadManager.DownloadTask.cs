@@ -150,7 +150,7 @@ namespace GameFramework.Download
             }
 
             /// <summary>
-            /// 初始化下载任务。
+            /// 创建下载任务。
             /// </summary>
             /// <param name="downloadPath">下载后存放路径。</param>
             /// <param name="downloadUri">原始下载地址。</param>
@@ -158,15 +158,18 @@ namespace GameFramework.Download
             /// <param name="flushSize">将缓冲区写入磁盘的临界大小。</param>
             /// <param name="timeout">下载超时时长，以秒为单位。</param>
             /// <param name="userData">用户自定义数据。</param>
-            public void Initialize(string downloadPath, string downloadUri, int priority, int flushSize, float timeout, object userData)
+            /// <returns>创建的下载任务。</returns>
+            public static DownloadTask Create(string downloadPath, string downloadUri, int priority, int flushSize, float timeout, object userData)
             {
-                m_SerialId = s_Serial++;
-                m_Priority = priority;
-                m_DownloadPath = downloadPath;
-                m_DownloadUri = downloadUri;
-                m_FlushSize = flushSize;
-                m_Timeout = timeout;
-                m_UserData = userData;
+                DownloadTask downloadTask = ReferencePool.Acquire<DownloadTask>();
+                downloadTask.m_SerialId = s_Serial++;
+                downloadTask.m_Priority = priority;
+                downloadTask.m_DownloadPath = downloadPath;
+                downloadTask.m_DownloadUri = downloadUri;
+                downloadTask.m_FlushSize = flushSize;
+                downloadTask.m_Timeout = timeout;
+                downloadTask.m_UserData = userData;
+                return downloadTask;
             }
 
             /// <summary>

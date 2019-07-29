@@ -307,10 +307,8 @@ namespace GameFramework.Download
                 throw new GameFrameworkException("You must add download agent first.");
             }
 
-            DownloadTask downloadTask = ReferencePool.Acquire<DownloadTask>();
-            downloadTask.Initialize(downloadPath, downloadUri, priority, m_FlushSize, m_Timeout, userData);
+            DownloadTask downloadTask = DownloadTask.Create(downloadPath, downloadUri, priority, m_FlushSize, m_Timeout, userData);
             m_TaskPool.AddTask(downloadTask);
-
             return downloadTask.SerialId;
         }
 

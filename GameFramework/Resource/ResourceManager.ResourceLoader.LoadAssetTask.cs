@@ -30,10 +30,12 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public void Initialize(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
+                public static LoadAssetTask Create(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
                 {
-                    Initialize(assetName, assetType, priority, resourceInfo, dependencyAssetNames, userData);
-                    m_LoadAssetCallbacks = loadAssetCallbacks;
+                    LoadAssetTask loadAssetTask = ReferencePool.Acquire<LoadAssetTask>();
+                    loadAssetTask.Initialize(assetName, assetType, priority, resourceInfo, dependencyAssetNames, userData);
+                    loadAssetTask.m_LoadAssetCallbacks = loadAssetCallbacks;
+                    return loadAssetTask;
                 }
 
                 public override void Clear()
