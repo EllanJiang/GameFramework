@@ -15,7 +15,7 @@ namespace GameFramework
     /// </summary>
     public static partial class ReferencePool
     {
-        private static readonly IDictionary<string, ReferenceCollection> s_ReferenceCollections = new Dictionary<string, ReferenceCollection>();
+        private static readonly IDictionary<Type, ReferenceCollection> s_ReferenceCollections = new Dictionary<Type, ReferenceCollection>();
 
         /// <summary>
         /// 获取引用池的数量。
@@ -40,9 +40,9 @@ namespace GameFramework
             lock (s_ReferenceCollections)
             {
                 results = new ReferencePoolInfo[s_ReferenceCollections.Count];
-                foreach (KeyValuePair<string, ReferenceCollection> referenceCollection in s_ReferenceCollections)
+                foreach (KeyValuePair<Type, ReferenceCollection> referenceCollection in s_ReferenceCollections)
                 {
-                    results[index++] = new ReferencePoolInfo(referenceCollection.Key, referenceCollection.Value.UnusedReferenceCount, referenceCollection.Value.UsingReferenceCount, referenceCollection.Value.AcquireReferenceCount, referenceCollection.Value.ReleaseReferenceCount, referenceCollection.Value.AddReferenceCount, referenceCollection.Value.RemoveReferenceCount);
+                    results[index++] = new ReferencePoolInfo(referenceCollection.Key.FullName, referenceCollection.Value.UnusedReferenceCount, referenceCollection.Value.UsingReferenceCount, referenceCollection.Value.AcquireReferenceCount, referenceCollection.Value.ReleaseReferenceCount, referenceCollection.Value.AddReferenceCount, referenceCollection.Value.RemoveReferenceCount);
                 }
             }
 
@@ -56,7 +56,7 @@ namespace GameFramework
         {
             lock (s_ReferenceCollections)
             {
-                foreach (KeyValuePair<string, ReferenceCollection> referenceCollection in s_ReferenceCollections)
+                foreach (KeyValuePair<Type, ReferenceCollection> referenceCollection in s_ReferenceCollections)
                 {
                     referenceCollection.Value.RemoveAll();
                 }
@@ -202,14 +202,13 @@ namespace GameFramework
                 throw new GameFrameworkException("ReferenceType is invalid.");
             }
 
-            string fullName = referenceType.FullName;
             ReferenceCollection referenceCollection = null;
             lock (s_ReferenceCollections)
             {
-                if (!s_ReferenceCollections.TryGetValue(fullName, out referenceCollection))
+                if (!s_ReferenceCollections.TryGetValue(referenceType, out referenceCollection))
                 {
                     referenceCollection = new ReferenceCollection(referenceType);
-                    s_ReferenceCollections.Add(fullName, referenceCollection);
+                    s_ReferenceCollections.Add(referenceType, referenceCollection);
                 }
             }
 
