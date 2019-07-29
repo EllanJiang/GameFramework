@@ -14,23 +14,14 @@ namespace GameFramework.Fsm
     /// </summary>
     public abstract class FsmBase
     {
-        private readonly string m_Name;
+        private string m_Name;
 
         /// <summary>
         /// 初始化有限状态机基类的新实例。
         /// </summary>
         public FsmBase()
-            : this(null)
         {
-        }
-
-        /// <summary>
-        /// 初始化有限状态机基类的新实例。
-        /// </summary>
-        /// <param name="name">有限状态机名称。</param>
-        public FsmBase(string name)
-        {
-            m_Name = name ?? string.Empty;
+            m_Name = string.Empty;
         }
 
         /// <summary>
@@ -41,6 +32,10 @@ namespace GameFramework.Fsm
             get
             {
                 return m_Name;
+            }
+            protected set
+            {
+                m_Name = value ?? string.Empty;
             }
         }
 

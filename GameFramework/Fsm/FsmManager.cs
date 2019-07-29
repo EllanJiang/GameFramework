@@ -258,7 +258,7 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", Utility.Text.GetFullName<T>(name)));
             }
 
-            Fsm<T> fsm = new Fsm<T>(name, owner, states);
+            Fsm<T> fsm = Fsm<T>.Create(name, owner, states);
             m_Fsms.Add(Utility.Text.GetFullName<T>(name), fsm);
             return fsm;
         }
