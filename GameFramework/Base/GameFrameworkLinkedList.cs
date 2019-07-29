@@ -280,9 +280,9 @@ namespace GameFramework
         /// 返回循环访问集合的枚举数。
         /// </summary>
         /// <returns>循环访问集合的枚举数。</returns>
-        public IEnumerator<T> GetEnumerator()
+        public Enumerator GetEnumerator()
         {
-            return ((ICollection<T>)m_LinkedList).GetEnumerator();
+            return new Enumerator(m_LinkedList);
         }
 
         /// <summary>
@@ -365,9 +365,68 @@ namespace GameFramework
             m_CachedNodes.Enqueue(node);
         }
 
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((ICollection<T>)m_LinkedList).GetEnumerator();
+            return GetEnumerator();
+        }
+
+        /// <summary>
+        /// 循环访问集合的枚举数。
+        /// </summary>
+        public struct Enumerator : IEnumerator<T>, IEnumerator
+        {
+            private LinkedList<T>.Enumerator m_Enumerator;
+
+            internal Enumerator(LinkedList<T> linkedList)
+            {
+                m_Enumerator = linkedList.GetEnumerator();
+            }
+
+            /// <summary>
+            /// 获取当前结点。
+            /// </summary>
+            public T Current
+            {
+                get
+                {
+                    return m_Enumerator.Current;
+                }
+            }
+
+            object IEnumerator.Current
+            {
+                get
+                {
+                    return m_Enumerator.Current;
+                }
+            }
+
+            /// <summary>
+            /// 清理枚举数。
+            /// </summary>
+            public void Dispose()
+            {
+                m_Enumerator.Dispose();
+            }
+
+            /// <summary>
+            /// 获取下一个结点。
+            /// </summary>
+            /// <returns></returns>
+            public bool MoveNext()
+            {
+                return m_Enumerator.MoveNext();
+            }
+
+            void IEnumerator.Reset()
+            {
+                ((IEnumerator<T>)m_Enumerator).Reset();
+            }
         }
     }
 }
