@@ -17,7 +17,7 @@ namespace GameFramework.Fsm
     internal sealed class Fsm<T> : FsmBase, IFsm<T> where T : class
     {
         private readonly T m_Owner;
-        private readonly Dictionary<string, FsmState<T>> m_States;
+        private readonly Dictionary<Type, FsmState<T>> m_States;
         private readonly Dictionary<string, Variable> m_Datas;
         private FsmState<T> m_CurrentState;
         private float m_CurrentStateTime;
@@ -43,7 +43,7 @@ namespace GameFramework.Fsm
             }
 
             m_Owner = owner;
-            m_States = new Dictionary<string, FsmState<T>>();
+            m_States = new Dictionary<Type, FsmState<T>>();
             m_Datas = new Dictionary<string, Variable>();
 
             foreach (FsmState<T> state in states)
@@ -53,13 +53,13 @@ namespace GameFramework.Fsm
                     throw new GameFrameworkException("FSM states is invalid.");
                 }
 
-                string stateName = state.GetType().FullName;
-                if (m_States.ContainsKey(stateName))
+                Type stateType = state.GetType();
+                if (m_States.ContainsKey(stateType))
                 {
-                    throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' state '{1}' is already exist.", Utility.Text.GetFullName<T>(name), stateName));
+                    throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' state '{1}' is already exist.", Utility.Text.GetFullName<T>(name), stateType));
                 }
 
-                m_States.Add(stateName, state);
+                m_States.Add(stateType, state);
                 state.OnInit(this);
             }
 
@@ -217,7 +217,7 @@ namespace GameFramework.Fsm
         /// <returns>是否存在有限状态机状态。</returns>
         public bool HasState<TState>() where TState : FsmState<T>
         {
-            return m_States.ContainsKey(typeof(TState).FullName);
+            return m_States.ContainsKey(typeof(TState));
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException(Utility.Text.Format("State type '{0}' is invalid.", stateType.FullName));
             }
 
-            return m_States.ContainsKey(stateType.FullName);
+            return m_States.ContainsKey(stateType);
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace GameFramework.Fsm
         public TState GetState<TState>() where TState : FsmState<T>
         {
             FsmState<T> state = null;
-            if (m_States.TryGetValue(typeof(TState).FullName, out state))
+            if (m_States.TryGetValue(typeof(TState), out state))
             {
                 return (TState)state;
             }
@@ -274,7 +274,7 @@ namespace GameFramework.Fsm
             }
 
             FsmState<T> state = null;
-            if (m_States.TryGetValue(stateType.FullName, out state))
+            if (m_States.TryGetValue(stateType, out state))
             {
                 return state;
             }
@@ -290,7 +290,7 @@ namespace GameFramework.Fsm
         {
             int index = 0;
             FsmState<T>[] results = new FsmState<T>[m_States.Count];
-            foreach (KeyValuePair<string, FsmState<T>> state in m_States)
+            foreach (KeyValuePair<Type, FsmState<T>> state in m_States)
             {
                 results[index++] = state.Value;
             }
@@ -310,7 +310,7 @@ namespace GameFramework.Fsm
             }
 
             results.Clear();
-            foreach (KeyValuePair<string, FsmState<T>> state in m_States)
+            foreach (KeyValuePair<Type, FsmState<T>> state in m_States)
             {
                 results.Add(state.Value);
             }
@@ -468,7 +468,7 @@ namespace GameFramework.Fsm
                 m_CurrentStateTime = 0f;
             }
 
-            foreach (KeyValuePair<string, FsmState<T>> state in m_States)
+            foreach (KeyValuePair<Type, FsmState<T>> state in m_States)
             {
                 state.Value.OnDestroy(this);
             }
