@@ -30,7 +30,7 @@ namespace GameFramework.Resource
 
                 public void Initialize(string sceneAssetName, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadSceneCallbacks loadSceneCallbacks, object userData)
                 {
-                    base.Initialize(sceneAssetName, null, priority, resourceInfo, dependencyAssetNames, userData);
+                    Initialize(sceneAssetName, null, priority, resourceInfo, dependencyAssetNames, userData);
                     m_LoadSceneCallbacks = loadSceneCallbacks;
                 }
 

@@ -30,7 +30,7 @@ namespace GameFramework.Resource
 
                 public void Initialize(string assetName, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadResourceTaskBase mainTask, object userData)
                 {
-                    base.Initialize(assetName, null, priority, resourceInfo, dependencyAssetNames, userData);
+                    Initialize(assetName, null, priority, resourceInfo, dependencyAssetNames, userData);
                     m_MainTask = mainTask;
                     m_MainTask.TotalDependencyAssetCount++;
                 }

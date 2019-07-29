@@ -32,7 +32,7 @@ namespace GameFramework.Resource
 
                 public void Initialize(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
                 {
-                    base.Initialize(assetName, assetType, priority, resourceInfo, dependencyAssetNames, userData);
+                    Initialize(assetName, assetType, priority, resourceInfo, dependencyAssetNames, userData);
                     m_LoadAssetCallbacks = loadAssetCallbacks;
                 }
 
