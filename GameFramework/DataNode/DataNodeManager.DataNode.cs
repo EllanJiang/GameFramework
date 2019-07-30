@@ -14,31 +14,40 @@ namespace GameFramework.DataNode
         /// <summary>
         /// 数据结点。
         /// </summary>
-        private sealed class DataNode : IDataNode
+        private sealed class DataNode : IDataNode, IReference
         {
             private static readonly DataNode[] EmptyArray = new DataNode[] { };
 
-            private readonly string m_Name;
+            private string m_Name;
             private Variable m_Data;
-            private readonly DataNode m_Parent;
+            private DataNode m_Parent;
             private List<DataNode> m_Childs;
 
+            public DataNode()
+            {
+                m_Name = null;
+                m_Data = null;
+                m_Parent = null;
+                m_Childs = null;
+            }
+
             /// <summary>
-            /// 初始化数据结点的新实例。
+            /// 创建数据结点。
             /// </summary>
             /// <param name="name">数据结点名称。</param>
             /// <param name="parent">父数据结点。</param>
-            public DataNode(string name, DataNode parent)
+            /// <returns>创建的数据结点。</returns>
+            public static DataNode Create(string name, DataNode parent)
             {
                 if (!IsValidName(name))
                 {
                     throw new GameFrameworkException("Name of data node is invalid.");
                 }
 
-                m_Name = name;
-                m_Data = null;
-                m_Parent = parent;
-                m_Childs = null;
+                DataNode node = ReferencePool.Acquire<DataNode>();
+                node.m_Name = name;
+                node.m_Parent = parent;
+                return node;
             }
 
             /// <summary>
@@ -174,7 +183,7 @@ namespace GameFramework.DataNode
                     return node;
                 }
 
-                node = new DataNode(name, this);
+                node = Create(name, this);
 
                 if (m_Childs == null)
                 {
@@ -235,8 +244,8 @@ namespace GameFramework.DataNode
                     return;
                 }
 
-                node.Clear();
                 m_Childs.Remove(node);
+                ReferencePool.Release(node);
             }
 
             /// <summary>
@@ -251,13 +260,10 @@ namespace GameFramework.DataNode
                     return;
                 }
 
-                node.Clear();
                 m_Childs.Remove(node);
+                ReferencePool.Release(node);
             }
 
-            /// <summary>
-            /// 移除当前数据结点的数据和所有子数据结点。
-            /// </summary>
             public void Clear()
             {
                 m_Data = null;
@@ -265,7 +271,7 @@ namespace GameFramework.DataNode
                 {
                     foreach (DataNode child in m_Childs)
                     {
-                        child.Clear();
+                        ReferencePool.Release(child);
                     }
 
                     m_Childs.Clear();
@@ -316,6 +322,13 @@ namespace GameFramework.DataNode
                 }
 
                 return true;
+            }
+
+            void IReference.Clear()
+            {
+                m_Name = null;
+                m_Parent = null;
+                Clear();
             }
         }
     }

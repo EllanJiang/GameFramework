@@ -25,7 +25,7 @@ namespace GameFramework.DataNode
         /// </summary>
         public DataNodeManager()
         {
-            m_Root = new DataNode(RootName, null);
+            m_Root = DataNode.Create(RootName, null);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace GameFramework.DataNode
         /// </summary>
         internal override void Shutdown()
         {
-            Clear();
+            ReferencePool.Release(m_Root);
             m_Root = null;
         }
 
