@@ -15,7 +15,7 @@ namespace GameFramework
     /// </summary>
     public static partial class ReferencePool
     {
-        private static readonly IDictionary<Type, ReferenceCollection> s_ReferenceCollections = new Dictionary<Type, ReferenceCollection>();
+        private static readonly Dictionary<Type, ReferenceCollection> s_ReferenceCollections = new Dictionary<Type, ReferenceCollection>();
 
         /// <summary>
         /// 获取引用池的数量。
