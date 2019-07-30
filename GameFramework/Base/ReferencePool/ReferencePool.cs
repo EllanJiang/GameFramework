@@ -69,6 +69,7 @@ namespace GameFramework
         /// 从引用池获取引用。
         /// </summary>
         /// <typeparam name="T">引用类型。</typeparam>
+        /// <returns>引用。</returns>
         public static T Acquire<T>() where T : class, IReference, new()
         {
             return GetReferenceCollection(typeof(T)).Acquire<T>();
@@ -78,7 +79,7 @@ namespace GameFramework
         /// 从引用池获取引用。
         /// </summary>
         /// <param name="referenceType">引用类型。</param>
-        /// <returns></returns>
+        /// <returns>引用。</returns>
         public static IReference Acquire(Type referenceType)
         {
             InternalCheckReferenceType(referenceType);
