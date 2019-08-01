@@ -448,7 +448,7 @@ namespace GameFramework.Sound
 
             if (playSoundParams == null)
             {
-                playSoundParams = new PlaySoundParams();
+                playSoundParams = PlaySoundParams.Create();
             }
 
             int serialId = m_Serial++;
@@ -471,6 +471,11 @@ namespace GameFramework.Sound
                 if (m_PlaySoundFailureEventHandler != null)
                 {
                     m_PlaySoundFailureEventHandler(this, new PlaySoundFailureEventArgs(serialId, soundAssetName, soundGroupName, playSoundParams, errorCode.Value, errorMessage, userData));
+                    if (playSoundParams.Referenced)
+                    {
+                        ReferencePool.Release(playSoundParams);
+                    }
+
                     return serialId;
                 }
 
@@ -614,6 +619,11 @@ namespace GameFramework.Sound
             if (m_SoundsToReleaseOnLoad.Contains(playSoundInfo.SerialId))
             {
                 m_SoundsToReleaseOnLoad.Remove(playSoundInfo.SerialId);
+                if (playSoundInfo.PlaySoundParams.Referenced)
+                {
+                    ReferencePool.Release(playSoundInfo.PlaySoundParams);
+                }
+
                 ReferencePool.Release(playSoundInfo);
                 m_SoundHelper.ReleaseSoundAsset(soundAsset);
                 return;
@@ -630,6 +640,11 @@ namespace GameFramework.Sound
                     m_PlaySoundSuccessEventHandler(this, new PlaySoundSuccessEventArgs(playSoundInfo.SerialId, soundAssetName, soundAgent, duration, playSoundInfo.UserData));
                 }
 
+                if (playSoundInfo.PlaySoundParams.Referenced)
+                {
+                    ReferencePool.Release(playSoundInfo.PlaySoundParams);
+                }
+
                 ReferencePool.Release(playSoundInfo);
                 return;
             }
@@ -640,8 +655,18 @@ namespace GameFramework.Sound
             if (m_PlaySoundFailureEventHandler != null)
             {
                 m_PlaySoundFailureEventHandler(this, new PlaySoundFailureEventArgs(playSoundInfo.SerialId, soundAssetName, playSoundInfo.SoundGroup.Name, playSoundInfo.PlaySoundParams, errorCode.Value, errorMessage, playSoundInfo.UserData));
+                if (playSoundInfo.PlaySoundParams.Referenced)
+                {
+                    ReferencePool.Release(playSoundInfo.PlaySoundParams);
+                }
+
                 ReferencePool.Release(playSoundInfo);
                 return;
+            }
+
+            if (playSoundInfo.PlaySoundParams.Referenced)
+            {
+                ReferencePool.Release(playSoundInfo.PlaySoundParams);
             }
 
             ReferencePool.Release(playSoundInfo);
@@ -659,6 +684,11 @@ namespace GameFramework.Sound
             if (m_SoundsToReleaseOnLoad.Contains(playSoundInfo.SerialId))
             {
                 m_SoundsToReleaseOnLoad.Remove(playSoundInfo.SerialId);
+                if (playSoundInfo.PlaySoundParams.Referenced)
+                {
+                    ReferencePool.Release(playSoundInfo.PlaySoundParams);
+                }
+
                 ReferencePool.Release(playSoundInfo);
                 return;
             }
@@ -668,6 +698,11 @@ namespace GameFramework.Sound
             if (m_PlaySoundFailureEventHandler != null)
             {
                 m_PlaySoundFailureEventHandler(this, new PlaySoundFailureEventArgs(playSoundInfo.SerialId, soundAssetName, playSoundInfo.SoundGroup.Name, playSoundInfo.PlaySoundParams, PlaySoundErrorCode.LoadAssetFailure, appendErrorMessage, playSoundInfo.UserData));
+                if (playSoundInfo.PlaySoundParams.Referenced)
+                {
+                    ReferencePool.Release(playSoundInfo.PlaySoundParams);
+                }
+
                 ReferencePool.Release(playSoundInfo);
                 return;
             }
