@@ -167,6 +167,24 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
+            /// 获取资源组包含的资源名称列表。
+            /// </summary>
+            /// <param name="results">资源组包含的资源名称列表。</param>
+            public void GetResourceNames(List<string> results)
+            {
+                if (results == null)
+                {
+                    throw new GameFrameworkException("Results is invalid.");
+                }
+
+                results.Clear();
+                foreach (ResourceName resourceName in m_ResourceNames)
+                {
+                    results.Add(resourceName.FullName);
+                }
+            }
+
+            /// <summary>
             /// 检查指定资源是否属于资源组。
             /// </summary>
             /// <param name="resourceName">要检查的资源的名称。</param>

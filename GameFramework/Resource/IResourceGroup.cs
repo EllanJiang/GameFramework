@@ -5,6 +5,8 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace GameFramework.Resource
 {
     /// <summary>
@@ -81,5 +83,11 @@ namespace GameFramework.Resource
         /// </summary>
         /// <returns>资源组包含的资源名称列表。</returns>
         string[] GetResourceNames();
+
+        /// <summary>
+        /// 获取资源组包含的资源名称列表。
+        /// </summary>
+        /// <param name="results">资源组包含的资源名称列表。</param>
+        void GetResourceNames(List<string> results);
     }
 }
