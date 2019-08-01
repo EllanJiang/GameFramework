@@ -9,19 +9,19 @@ namespace GameFramework.Entity
 {
     internal sealed partial class EntityManager : GameFrameworkModule, IEntityManager
     {
-        private sealed class ShowEntityInfo
+        private sealed class ShowEntityInfo : IReference
         {
-            private readonly int m_SerialId;
-            private readonly int m_EntityId;
-            private readonly EntityGroup m_EntityGroup;
-            private readonly object m_UserData;
+            private int m_SerialId;
+            private int m_EntityId;
+            private EntityGroup m_EntityGroup;
+            private object m_UserData;
 
-            public ShowEntityInfo(int serialId, int entityId, EntityGroup entityGroup, object userData)
+            public ShowEntityInfo()
             {
-                m_SerialId = serialId;
-                m_EntityId = entityId;
-                m_EntityGroup = entityGroup;
-                m_UserData = userData;
+                m_SerialId = 0;
+                m_EntityId = 0;
+                m_EntityGroup = null;
+                m_UserData = null;
             }
 
             public int SerialId
@@ -54,6 +54,24 @@ namespace GameFramework.Entity
                 {
                     return m_UserData;
                 }
+            }
+
+            public static ShowEntityInfo Create(int serialId, int entityId, EntityGroup entityGroup, object userData)
+            {
+                ShowEntityInfo showEntityInfo = ReferencePool.Acquire<ShowEntityInfo>();
+                showEntityInfo.m_SerialId = serialId;
+                showEntityInfo.m_EntityId = entityId;
+                showEntityInfo.m_EntityGroup = entityGroup;
+                showEntityInfo.m_UserData = userData;
+                return showEntityInfo;
+            }
+
+            public void Clear()
+            {
+                m_SerialId = 0;
+                m_EntityId = 0;
+                m_EntityGroup = null;
+                m_UserData = null;
             }
         }
     }

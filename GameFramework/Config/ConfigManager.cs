@@ -207,7 +207,7 @@ namespace GameFramework.Config
                 throw new GameFrameworkException("You must set config helper first.");
             }
 
-            m_ResourceManager.LoadAsset(configAssetName, priority, m_LoadAssetCallbacks, new LoadConfigInfo(loadType, userData));
+            m_ResourceManager.LoadAsset(configAssetName, priority, m_LoadAssetCallbacks, LoadConfigInfo.Create(loadType, userData));
         }
 
         /// <summary>
@@ -513,6 +513,11 @@ namespace GameFramework.Config
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load config failure in helper, asset name '{0}'.", configAssetName));
                 }
+
+                if (m_LoadConfigSuccessEventHandler != null)
+                {
+                    m_LoadConfigSuccessEventHandler(this, new LoadConfigSuccessEventArgs(configAssetName, loadConfigInfo.LoadType, duration, loadConfigInfo.UserData));
+                }
             }
             catch (Exception exception)
             {
@@ -526,12 +531,8 @@ namespace GameFramework.Config
             }
             finally
             {
+                ReferencePool.Release(loadConfigInfo);
                 m_ConfigHelper.ReleaseConfigAsset(configAsset);
-            }
-
-            if (m_LoadConfigSuccessEventHandler != null)
-            {
-                m_LoadConfigSuccessEventHandler(this, new LoadConfigSuccessEventArgs(configAssetName, loadConfigInfo.LoadType, duration, loadConfigInfo.UserData));
             }
         }
 
@@ -547,9 +548,11 @@ namespace GameFramework.Config
             if (m_LoadConfigFailureEventHandler != null)
             {
                 m_LoadConfigFailureEventHandler(this, new LoadConfigFailureEventArgs(configAssetName, loadConfigInfo.LoadType, appendErrorMessage, loadConfigInfo.UserData));
+                ReferencePool.Release(loadConfigInfo);
                 return;
             }
 
+            ReferencePool.Release(loadConfigInfo);
             throw new GameFrameworkException(appendErrorMessage);
         }
 

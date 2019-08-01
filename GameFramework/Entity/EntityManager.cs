@@ -644,7 +644,7 @@ namespace GameFramework.Entity
             {
                 int serialId = m_Serial++;
                 m_EntitiesBeingLoaded.Add(entityId, serialId);
-                m_ResourceManager.LoadAsset(entityAssetName, priority, m_LoadAssetCallbacks, new ShowEntityInfo(serialId, entityId, entityGroup, userData));
+                m_ResourceManager.LoadAsset(entityAssetName, priority, m_LoadAssetCallbacks, ShowEntityInfo.Create(serialId, entityId, entityGroup, userData));
                 return;
             }
 
@@ -1195,6 +1195,7 @@ namespace GameFramework.Entity
             if (m_EntitiesToReleaseOnLoad.Contains(showEntityInfo.SerialId))
             {
                 m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.SerialId);
+                ReferencePool.Release(showEntityInfo);
                 m_EntityHelper.ReleaseEntity(entityAsset, null);
                 return;
             }
@@ -1204,6 +1205,7 @@ namespace GameFramework.Entity
             showEntityInfo.EntityGroup.RegisterEntityInstanceObject(entityInstanceObject, true);
 
             InternalShowEntity(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroup, entityInstanceObject.Target, true, duration, showEntityInfo.UserData);
+            ReferencePool.Release(showEntityInfo);
         }
 
         private void LoadEntityFailureCallback(string entityAssetName, LoadResourceStatus status, string errorMessage, object userData)
@@ -1217,6 +1219,7 @@ namespace GameFramework.Entity
             if (m_EntitiesToReleaseOnLoad.Contains(showEntityInfo.SerialId))
             {
                 m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.SerialId);
+                ReferencePool.Release(showEntityInfo);
                 return;
             }
 
@@ -1225,9 +1228,11 @@ namespace GameFramework.Entity
             if (m_ShowEntityFailureEventHandler != null)
             {
                 m_ShowEntityFailureEventHandler(this, new ShowEntityFailureEventArgs(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroup.Name, appendErrorMessage, showEntityInfo.UserData));
+                ReferencePool.Release(showEntityInfo);
                 return;
             }
 
+            ReferencePool.Release(showEntityInfo);
             throw new GameFrameworkException(appendErrorMessage);
         }
 

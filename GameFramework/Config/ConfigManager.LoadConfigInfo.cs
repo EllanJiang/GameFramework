@@ -9,15 +9,15 @@ namespace GameFramework.Config
 {
     internal sealed partial class ConfigManager : GameFrameworkModule, IConfigManager
     {
-        private sealed class LoadConfigInfo
+        private sealed class LoadConfigInfo : IReference
         {
-            private readonly LoadType m_LoadType;
-            private readonly object m_UserData;
+            private LoadType m_LoadType;
+            private object m_UserData;
 
-            public LoadConfigInfo(LoadType loadType, object userData)
+            public LoadConfigInfo()
             {
-                m_LoadType = loadType;
-                m_UserData = userData;
+                m_LoadType = LoadType.Text;
+                m_UserData = null;
             }
 
             public LoadType LoadType
@@ -34,6 +34,20 @@ namespace GameFramework.Config
                 {
                     return m_UserData;
                 }
+            }
+
+            public static LoadConfigInfo Create(LoadType loadType, object userData)
+            {
+                LoadConfigInfo loadConfigInfo = ReferencePool.Acquire<LoadConfigInfo>();
+                loadConfigInfo.m_LoadType = loadType;
+                loadConfigInfo.m_UserData = userData;
+                return loadConfigInfo;
+            }
+
+            public void Clear()
+            {
+                m_LoadType = LoadType.Text;
+                m_UserData = null;
             }
         }
     }

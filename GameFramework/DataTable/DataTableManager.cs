@@ -213,7 +213,7 @@ namespace GameFramework.DataTable
                 throw new GameFrameworkException("You must set data table helper first.");
             }
 
-            m_ResourceManager.LoadAsset(dataTableAssetName, priority, m_LoadAssetCallbacks, new LoadDataTableInfo(loadType, userData));
+            m_ResourceManager.LoadAsset(dataTableAssetName, priority, m_LoadAssetCallbacks, LoadDataTableInfo.Create(loadType, userData));
         }
 
         /// <summary>
@@ -788,6 +788,11 @@ namespace GameFramework.DataTable
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load data table failure in helper, asset name '{0}'.", dataTableAssetName));
                 }
+
+                if (m_LoadDataTableSuccessEventHandler != null)
+                {
+                    m_LoadDataTableSuccessEventHandler(this, new LoadDataTableSuccessEventArgs(dataTableAssetName, loadDataTableInfo.LoadType, duration, loadDataTableInfo.UserData));
+                }
             }
             catch (Exception exception)
             {
@@ -801,12 +806,8 @@ namespace GameFramework.DataTable
             }
             finally
             {
+                ReferencePool.Release(loadDataTableInfo);
                 m_DataTableHelper.ReleaseDataTableAsset(dataTableAsset);
-            }
-
-            if (m_LoadDataTableSuccessEventHandler != null)
-            {
-                m_LoadDataTableSuccessEventHandler(this, new LoadDataTableSuccessEventArgs(dataTableAssetName, loadDataTableInfo.LoadType, duration, loadDataTableInfo.UserData));
             }
         }
 
@@ -822,9 +823,11 @@ namespace GameFramework.DataTable
             if (m_LoadDataTableFailureEventHandler != null)
             {
                 m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, loadDataTableInfo.LoadType, appendErrorMessage, loadDataTableInfo.UserData));
+                ReferencePool.Release(loadDataTableInfo);
                 return;
             }
 
+            ReferencePool.Release(loadDataTableInfo);
             throw new GameFrameworkException(appendErrorMessage);
         }
 

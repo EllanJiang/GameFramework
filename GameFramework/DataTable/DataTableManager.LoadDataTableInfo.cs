@@ -9,15 +9,15 @@ namespace GameFramework.DataTable
 {
     internal sealed partial class DataTableManager : GameFrameworkModule, IDataTableManager
     {
-        private sealed class LoadDataTableInfo
+        private sealed class LoadDataTableInfo : IReference
         {
-            private readonly LoadType m_LoadType;
-            private readonly object m_UserData;
+            private LoadType m_LoadType;
+            private object m_UserData;
 
-            public LoadDataTableInfo(LoadType loadType, object userData)
+            public LoadDataTableInfo()
             {
-                m_LoadType = loadType;
-                m_UserData = userData;
+                m_LoadType = LoadType.Text;
+                m_UserData = null;
             }
 
             public LoadType LoadType
@@ -34,6 +34,20 @@ namespace GameFramework.DataTable
                 {
                     return m_UserData;
                 }
+            }
+
+            public static LoadDataTableInfo Create(LoadType loadType, object userData)
+            {
+                LoadDataTableInfo loadDataTableInfo = ReferencePool.Acquire<LoadDataTableInfo>();
+                loadDataTableInfo.m_LoadType = loadType;
+                loadDataTableInfo.m_UserData = userData;
+                return loadDataTableInfo;
+            }
+
+            public void Clear()
+            {
+                m_LoadType = LoadType.Text;
+                m_UserData = null;
             }
         }
     }

@@ -245,7 +245,7 @@ namespace GameFramework.Localization
                 throw new GameFrameworkException("You must set localization helper first.");
             }
 
-            m_ResourceManager.LoadAsset(dictionaryAssetName, priority, m_LoadAssetCallbacks, new LoadDictionaryInfo(loadType, userData));
+            m_ResourceManager.LoadAsset(dictionaryAssetName, priority, m_LoadAssetCallbacks, LoadDictionaryInfo.Create(loadType, userData));
         }
 
         /// <summary>
@@ -594,6 +594,11 @@ namespace GameFramework.Localization
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load dictionary failure in helper, asset name '{0}'.", dictionaryAssetName));
                 }
+
+                if (m_LoadDictionarySuccessEventHandler != null)
+                {
+                    m_LoadDictionarySuccessEventHandler(this, new LoadDictionarySuccessEventArgs(dictionaryAssetName, loadDictionaryInfo.LoadType, duration, loadDictionaryInfo.UserData));
+                }
             }
             catch (Exception exception)
             {
@@ -607,12 +612,8 @@ namespace GameFramework.Localization
             }
             finally
             {
+                ReferencePool.Release(loadDictionaryInfo);
                 m_LocalizationHelper.ReleaseDictionaryAsset(dictionaryAsset);
-            }
-
-            if (m_LoadDictionarySuccessEventHandler != null)
-            {
-                m_LoadDictionarySuccessEventHandler(this, new LoadDictionarySuccessEventArgs(dictionaryAssetName, loadDictionaryInfo.LoadType, duration, loadDictionaryInfo.UserData));
             }
         }
 
@@ -628,9 +629,11 @@ namespace GameFramework.Localization
             if (m_LoadDictionaryFailureEventHandler != null)
             {
                 m_LoadDictionaryFailureEventHandler(this, new LoadDictionaryFailureEventArgs(dictionaryAssetName, loadDictionaryInfo.LoadType, appendErrorMessage, loadDictionaryInfo.UserData));
+                ReferencePool.Release(loadDictionaryInfo);
                 return;
             }
 
+            ReferencePool.Release(loadDictionaryInfo);
             throw new GameFrameworkException(appendErrorMessage);
         }
 
