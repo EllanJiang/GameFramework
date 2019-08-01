@@ -254,7 +254,8 @@ namespace GameFramework.Resource
                                 LoadType loadType = (LoadType)binaryReader.ReadByte();
                                 int length = binaryReader.ReadInt32();
                                 int hashCode = binaryReader.ReadInt32();
-                                byte[] hashCodeBytes = Utility.Converter.GetBytes(hashCode);
+                                byte[] hashCodeBytes = new byte[4];
+                                Utility.Converter.GetBytes(hashCode, hashCodeBytes);
                                 int zipLength = binaryReader.ReadInt32();
                                 int zipHashCode = binaryReader.ReadInt32();
                                 resourceLengths[i] = new ResourceLength(resourceName, length, zipLength);

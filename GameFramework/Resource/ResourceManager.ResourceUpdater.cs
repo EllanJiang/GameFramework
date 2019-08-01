@@ -20,12 +20,12 @@ namespace GameFramework.Resource
         /// </summary>
         private sealed partial class ResourceUpdater
         {
-            private const int EncryptCodeLength = 4;
+            private const int CachedHashBytesLength = 4;
 
             private readonly ResourceManager m_ResourceManager;
             private readonly List<UpdateInfo> m_UpdateWaitingInfo;
             private readonly List<UpdateInfo> m_UpdateCandidateInfo;
-            private readonly byte[] m_EncryptCode;
+            private readonly byte[] m_CachedHashBytes;
             private IDownloadManager m_DownloadManager;
             private bool m_CheckResourcesComplete;
             private ResourceGroup m_UpdatingResourceGroup;
@@ -50,7 +50,7 @@ namespace GameFramework.Resource
                 m_ResourceManager = resourceManager;
                 m_UpdateWaitingInfo = new List<UpdateInfo>();
                 m_UpdateCandidateInfo = new List<UpdateInfo>();
-                m_EncryptCode = new byte[EncryptCodeLength];
+                m_CachedHashBytes = new byte[CachedHashBytesLength];
                 m_DownloadManager = null;
                 m_CheckResourcesComplete = false;
                 m_UpdatingResourceGroup = null;
@@ -324,15 +324,16 @@ namespace GameFramework.Resource
                     using (BinaryWriter binaryWriter = new BinaryWriter(fileStream, Encoding.UTF8))
                     {
                         fileStream = null;
-                        Utility.Random.GetRandomBytes(m_EncryptCode);
+                        Utility.Random.GetRandomBytes(m_CachedHashBytes);
 
                         binaryWriter.Write(ReadWriteListHeader);
                         binaryWriter.Write(ReadWriteListVersionHeader);
-                        binaryWriter.Write(m_EncryptCode);
+                        binaryWriter.Write(m_CachedHashBytes);
                         binaryWriter.Write(m_ResourceManager.m_ReadWriteResourceInfos.Count);
                         foreach (KeyValuePair<ResourceName, ReadWriteResourceInfo> i in m_ResourceManager.m_ReadWriteResourceInfos)
                         {
-                            byte[] nameBytes = Utility.Encryption.GetSelfXorBytes(Utility.Converter.GetBytes(i.Key.Name), m_EncryptCode);
+                            byte[] nameBytes = Utility.Converter.GetBytes(i.Key.Name);
+                            Utility.Encryption.GetSelfXorBytes(nameBytes, m_CachedHashBytes);
                             binaryWriter.Write((byte)nameBytes.Length);
                             binaryWriter.Write(nameBytes);
 
@@ -342,7 +343,8 @@ namespace GameFramework.Resource
                             }
                             else
                             {
-                                byte[] variantBytes = Utility.Encryption.GetSelfXorBytes(Utility.Converter.GetBytes(i.Key.Variant), m_EncryptCode);
+                                byte[] variantBytes = Utility.Converter.GetBytes(i.Key.Variant);
+                                Utility.Encryption.GetSelfXorBytes(variantBytes, m_CachedHashBytes);
                                 binaryWriter.Write((byte)variantBytes.Length);
                                 binaryWriter.Write(variantBytes);
                             }
@@ -352,7 +354,7 @@ namespace GameFramework.Resource
                             binaryWriter.Write(i.Value.HashCode);
                         }
 
-                        Array.Clear(m_EncryptCode, 0, EncryptCodeLength);
+                        Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
                     }
 
                     if (!string.IsNullOrEmpty(backupFile))
@@ -492,15 +494,17 @@ namespace GameFramework.Resource
 
                     if (!zip)
                     {
-                        byte[] hashBytes = Utility.Converter.GetBytes(updateInfo.HashCode);
+                        Utility.Converter.GetBytes(updateInfo.HashCode, m_CachedHashBytes);
                         if (updateInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt)
                         {
-                            Utility.Encryption.GetQuickSelfXorBytes(m_ResourceManager.m_UpdateFileCache, hashBytes);
+                            Utility.Encryption.GetQuickSelfXorBytes(m_ResourceManager.m_UpdateFileCache, m_CachedHashBytes);
                         }
                         else if (updateInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt)
                         {
-                            Utility.Encryption.GetSelfXorBytes(m_ResourceManager.m_UpdateFileCache, hashBytes, length);
+                            Utility.Encryption.GetSelfXorBytes(m_ResourceManager.m_UpdateFileCache, m_CachedHashBytes, length);
                         }
+
+                        Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
                     }
 
                     int hashCode = Utility.Converter.GetInt32(Utility.Verifier.GetCrc32(m_ResourceManager.m_UpdateFileCache, 0, length));

@@ -34,10 +34,9 @@ namespace GameFramework
             /// </summary>
             /// <param name="bytes">原始及异或后的二进制流。</param>
             /// <param name="code">异或二进制流。</param>
-            /// <returns>异或后的二进制流。</returns>
-            public static byte[] GetQuickSelfXorBytes(byte[] bytes, byte[] code)
+            public static void GetQuickSelfXorBytes(byte[] bytes, byte[] code)
             {
-                return GetSelfXorBytes(bytes, code, QuickEncryptLength);
+                GetSelfXorBytes(bytes, code, QuickEncryptLength);
             }
 
             /// <summary>
@@ -56,10 +55,9 @@ namespace GameFramework
             /// </summary>
             /// <param name="bytes">原始及异或后的二进制流。</param>
             /// <param name="code">异或二进制流。</param>
-            /// <returns>异或后的二进制流。</returns>
-            public static byte[] GetSelfXorBytes(byte[] bytes, byte[] code)
+            public static void GetSelfXorBytes(byte[] bytes, byte[] code)
             {
-                return GetSelfXorBytes(bytes, code, -1);
+                GetSelfXorBytes(bytes, code, -1);
             }
 
             /// <summary>
@@ -84,7 +82,8 @@ namespace GameFramework
 
                 byte[] results = new byte[bytesLength];
                 Buffer.BlockCopy(bytes, 0, results, 0, bytesLength);
-                return GetSelfXorBytes(results, code, length);
+                GetSelfXorBytes(results, code, length);
+                return results;
             }
 
             /// <summary>
@@ -93,12 +92,11 @@ namespace GameFramework
             /// <param name="bytes">原始及异或后的二进制流。</param>
             /// <param name="code">异或二进制流。</param>
             /// <param name="length">异或计算长度，若小于 0，则计算整个二进制流。</param>
-            /// <returns>异或后的二进制流。</returns>
-            public static byte[] GetSelfXorBytes(byte[] bytes, byte[] code, int length)
+            public static void GetSelfXorBytes(byte[] bytes, byte[] code, int length)
             {
                 if (bytes == null)
                 {
-                    return null;
+                    return;
                 }
 
                 if (code == null)
@@ -124,8 +122,6 @@ namespace GameFramework
                     bytes[i] ^= code[codeIndex++];
                     codeIndex = codeIndex % codeLength;
                 }
-
-                return bytes;
             }
         }
     }

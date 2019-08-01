@@ -18,12 +18,15 @@ namespace GameFramework.Resource
         /// </summary>
         private sealed partial class ResourceLoader
         {
+            private const int CachedHashBytesLength = 4;
+
             private readonly ResourceManager m_ResourceManager;
             private readonly TaskPool<LoadResourceTaskBase> m_TaskPool;
             private readonly Dictionary<object, int> m_AssetDependencyCount;
             private readonly Dictionary<object, int> m_ResourceDependencyCount;
             private readonly Dictionary<object, object> m_AssetToResourceMap;
             private readonly Dictionary<string, object> m_SceneToAssetMap;
+            private readonly byte[] m_CachedHashBytes;
             private IObjectPool<AssetObject> m_AssetPool;
             private IObjectPool<ResourceObject> m_ResourcePool;
 
@@ -39,6 +42,7 @@ namespace GameFramework.Resource
                 m_ResourceDependencyCount = new Dictionary<object, int>();
                 m_AssetToResourceMap = new Dictionary<object, object>();
                 m_SceneToAssetMap = new Dictionary<string, object>();
+                m_CachedHashBytes = new byte[CachedHashBytesLength];
                 m_AssetPool = null;
                 m_ResourcePool = null;
             }
@@ -456,10 +460,16 @@ namespace GameFramework.Resource
                 switch ((LoadType)loadType)
                 {
                     case LoadType.LoadFromMemoryAndQuickDecrypt:
-                        return Utility.Encryption.GetQuickSelfXorBytes(bytes, Utility.Converter.GetBytes(hashCode));
+                        Utility.Converter.GetBytes(hashCode, m_CachedHashBytes);
+                        Utility.Encryption.GetQuickSelfXorBytes(bytes, m_CachedHashBytes);
+                        Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
+                        return bytes;
 
                     case LoadType.LoadFromMemoryAndDecrypt:
-                        return Utility.Encryption.GetSelfXorBytes(bytes, Utility.Converter.GetBytes(hashCode));
+                        Utility.Converter.GetBytes(hashCode, m_CachedHashBytes);
+                        Utility.Encryption.GetSelfXorBytes(bytes, m_CachedHashBytes);
+                        Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
+                        return bytes;
 
                     default:
                         return bytes;
