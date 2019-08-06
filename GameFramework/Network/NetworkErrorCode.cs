@@ -13,6 +13,11 @@ namespace GameFramework.Network
     public enum NetworkErrorCode
     {
         /// <summary>
+        /// 未知错误。
+        /// </summary>
+        Unknown = 0,
+
+        /// <summary>
         /// 地址族错误。
         /// </summary>
         AddressFamilyError,

@@ -277,7 +277,9 @@ namespace GameFramework.Network
             {
                 lock (m_NetworkConnectedEventHandler)
                 {
-                    m_NetworkConnectedEventHandler(this, new NetworkConnectedEventArgs(networkChannel, userData));
+                    NetworkConnectedEventArgs networkConnectedEventArgs = NetworkConnectedEventArgs.Create(networkChannel, userData);
+                    m_NetworkConnectedEventHandler(this, networkConnectedEventArgs);
+                    ReferencePool.Release(networkConnectedEventArgs);
                 }
             }
         }
@@ -288,7 +290,9 @@ namespace GameFramework.Network
             {
                 lock (m_NetworkClosedEventHandler)
                 {
-                    m_NetworkClosedEventHandler(this, new NetworkClosedEventArgs(networkChannel));
+                    NetworkClosedEventArgs networkClosedEventArgs = NetworkClosedEventArgs.Create(networkChannel);
+                    m_NetworkClosedEventHandler(this, networkClosedEventArgs);
+                    ReferencePool.Release(networkClosedEventArgs);
                 }
             }
         }
@@ -299,7 +303,9 @@ namespace GameFramework.Network
             {
                 lock (m_NetworkMissHeartBeatEventHandler)
                 {
-                    m_NetworkMissHeartBeatEventHandler(this, new NetworkMissHeartBeatEventArgs(networkChannel, missHeartBeatCount));
+                    NetworkMissHeartBeatEventArgs networkMissHeartBeatEventArgs = NetworkMissHeartBeatEventArgs.Create(networkChannel, missHeartBeatCount);
+                    m_NetworkMissHeartBeatEventHandler(this, networkMissHeartBeatEventArgs);
+                    ReferencePool.Release(networkMissHeartBeatEventArgs);
                 }
             }
         }
@@ -310,7 +316,9 @@ namespace GameFramework.Network
             {
                 lock (m_NetworkErrorEventHandler)
                 {
-                    m_NetworkErrorEventHandler(this, new NetworkErrorEventArgs(networkChannel, errorCode, socketErrorCode, errorMessage));
+                    NetworkErrorEventArgs networkErrorEventArgs = NetworkErrorEventArgs.Create(networkChannel, errorCode, socketErrorCode, errorMessage);
+                    m_NetworkErrorEventHandler(this, networkErrorEventArgs);
+                    ReferencePool.Release(networkErrorEventArgs);
                 }
             }
         }
@@ -321,7 +329,9 @@ namespace GameFramework.Network
             {
                 lock (m_NetworkCustomErrorEventHandler)
                 {
-                    m_NetworkCustomErrorEventHandler(this, new NetworkCustomErrorEventArgs(networkChannel, customErrorData));
+                    NetworkCustomErrorEventArgs networkCustomErrorEventArgs = NetworkCustomErrorEventArgs.Create(networkChannel, customErrorData);
+                    m_NetworkCustomErrorEventHandler(this, networkCustomErrorEventArgs);
+                    ReferencePool.Release(networkCustomErrorEventArgs);
                 }
             }
         }

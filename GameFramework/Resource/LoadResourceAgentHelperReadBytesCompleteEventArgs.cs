@@ -12,17 +12,15 @@ namespace GameFramework.Resource
     /// </summary>
     public sealed class LoadResourceAgentHelperReadBytesCompleteEventArgs : GameFrameworkEventArgs
     {
-        private readonly byte[] m_Bytes;
+        private byte[] m_Bytes;
 
         /// <summary>
         /// 初始化加载资源代理辅助器异步读取资源二进制流完成事件的新实例。
         /// </summary>
-        /// <param name="bytes">资源的二进制流。</param>
-        /// <param name="loadType">资源加载方式。</param>
-        public LoadResourceAgentHelperReadBytesCompleteEventArgs(byte[] bytes, int loadType)
+        public LoadResourceAgentHelperReadBytesCompleteEventArgs()
         {
-            m_Bytes = bytes;
-            LoadType = loadType;
+            m_Bytes = null;
+            LoadType = 0;
         }
 
         /// <summary>
@@ -32,6 +30,29 @@ namespace GameFramework.Resource
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建加载资源代理辅助器异步读取资源二进制流完成事件。
+        /// </summary>
+        /// <param name="bytes">资源的二进制流。</param>
+        /// <param name="loadType">资源加载方式。</param>
+        /// <returns></returns>
+        public static LoadResourceAgentHelperReadBytesCompleteEventArgs Create(byte[] bytes, int loadType)
+        {
+            LoadResourceAgentHelperReadBytesCompleteEventArgs loadResourceAgentHelperReadBytesCompleteEventArgs = ReferencePool.Acquire<LoadResourceAgentHelperReadBytesCompleteEventArgs>();
+            loadResourceAgentHelperReadBytesCompleteEventArgs.m_Bytes = bytes;
+            loadResourceAgentHelperReadBytesCompleteEventArgs.LoadType = loadType;
+            return loadResourceAgentHelperReadBytesCompleteEventArgs;
+        }
+
+        /// <summary>
+        /// 清理加载资源代理辅助器异步读取资源二进制流完成事件。
+        /// </summary>
+        public override void Clear()
+        {
+            m_Bytes = null;
+            LoadType = 0;
         }
 
         /// <summary>

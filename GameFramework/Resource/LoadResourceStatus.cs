@@ -15,7 +15,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 加载资源完成。
         /// </summary>
-        Ok = 0,
+        Success = 0,
 
         /// <summary>
         /// 资源尚未准备完毕。

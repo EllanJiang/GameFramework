@@ -15,16 +15,12 @@ namespace GameFramework.Localization
         /// <summary>
         /// 初始化加载字典更新事件的新实例。
         /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
-        /// <param name="progress">加载字典进度。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public LoadDictionaryUpdateEventArgs(string dictionaryAssetName, LoadType loadType, float progress, object userData)
+        public LoadDictionaryUpdateEventArgs()
         {
-            DictionaryAssetName = dictionaryAssetName;
-            LoadType = loadType;
-            Progress = progress;
-            UserData = userData;
+            DictionaryAssetName = null;
+            LoadType = LoadType.Text;
+            Progress = 0f;
+            UserData = null;
         }
 
         /// <summary>
@@ -61,6 +57,35 @@ namespace GameFramework.Localization
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建加载字典更新事件。
+        /// </summary>
+        /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="loadType">字典加载方式。</param>
+        /// <param name="progress">加载字典进度。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的加载字典更新事件。</returns>
+        public static LoadDictionaryUpdateEventArgs Create(string dictionaryAssetName, LoadType loadType, float progress, object userData)
+        {
+            LoadDictionaryUpdateEventArgs loadDictionaryUpdateEventArgs = ReferencePool.Acquire<LoadDictionaryUpdateEventArgs>();
+            loadDictionaryUpdateEventArgs.DictionaryAssetName = dictionaryAssetName;
+            loadDictionaryUpdateEventArgs.LoadType = loadType;
+            loadDictionaryUpdateEventArgs.Progress = progress;
+            loadDictionaryUpdateEventArgs.UserData = userData;
+            return loadDictionaryUpdateEventArgs;
+        }
+
+        /// <summary>
+        /// 清理加载字典更新事件。
+        /// </summary>
+        public override void Clear()
+        {
+            DictionaryAssetName = null;
+            LoadType = LoadType.Text;
+            Progress = 0f;
+            UserData = null;
         }
     }
 }

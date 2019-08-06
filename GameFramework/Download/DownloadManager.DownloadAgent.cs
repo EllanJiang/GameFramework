@@ -148,7 +148,9 @@ namespace GameFramework.Download
                     m_WaitTime += realElapseSeconds;
                     if (m_WaitTime >= m_Task.Timeout)
                     {
-                        OnDownloadAgentHelperError(this, new DownloadAgentHelperErrorEventArgs("Timeout"));
+                        DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = DownloadAgentHelperErrorEventArgs.Create("Timeout");
+                        OnDownloadAgentHelperError(this, downloadAgentHelperErrorEventArgs);
+                        ReferencePool.Release(downloadAgentHelperErrorEventArgs);
                     }
                 }
             }
@@ -222,7 +224,9 @@ namespace GameFramework.Download
                 }
                 catch (Exception exception)
                 {
-                    OnDownloadAgentHelperError(this, new DownloadAgentHelperErrorEventArgs(exception.Message));
+                    DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = DownloadAgentHelperErrorEventArgs.Create(exception.Message);
+                    OnDownloadAgentHelperError(this, downloadAgentHelperErrorEventArgs);
+                    ReferencePool.Release(downloadAgentHelperErrorEventArgs);
                     return StartTaskStatus.UnknownError;
                 }
             }
@@ -297,7 +301,9 @@ namespace GameFramework.Download
                 }
                 catch (Exception exception)
                 {
-                    OnDownloadAgentHelperError(this, new DownloadAgentHelperErrorEventArgs(exception.Message));
+                    DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = DownloadAgentHelperErrorEventArgs.Create(exception.Message);
+                    OnDownloadAgentHelperError(this, downloadAgentHelperErrorEventArgs);
+                    ReferencePool.Release(downloadAgentHelperErrorEventArgs);
                 }
             }
 

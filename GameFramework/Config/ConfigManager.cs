@@ -516,14 +516,18 @@ namespace GameFramework.Config
 
                 if (m_LoadConfigSuccessEventHandler != null)
                 {
-                    m_LoadConfigSuccessEventHandler(this, new LoadConfigSuccessEventArgs(configAssetName, loadConfigInfo.LoadType, duration, loadConfigInfo.UserData));
+                    LoadConfigSuccessEventArgs loadConfigSuccessEventArgs = LoadConfigSuccessEventArgs.Create(configAssetName, loadConfigInfo.LoadType, duration, loadConfigInfo.UserData);
+                    m_LoadConfigSuccessEventHandler(this, loadConfigSuccessEventArgs);
+                    ReferencePool.Release(loadConfigSuccessEventArgs);
                 }
             }
             catch (Exception exception)
             {
                 if (m_LoadConfigFailureEventHandler != null)
                 {
-                    m_LoadConfigFailureEventHandler(this, new LoadConfigFailureEventArgs(configAssetName, loadConfigInfo.LoadType, exception.ToString(), loadConfigInfo.UserData));
+                    LoadConfigFailureEventArgs loadConfigFailureEventArgs = LoadConfigFailureEventArgs.Create(configAssetName, loadConfigInfo.LoadType, exception.ToString(), loadConfigInfo.UserData);
+                    m_LoadConfigFailureEventHandler(this, loadConfigFailureEventArgs);
+                    ReferencePool.Release(loadConfigFailureEventArgs);
                     return;
                 }
 
@@ -547,7 +551,9 @@ namespace GameFramework.Config
             string appendErrorMessage = Utility.Text.Format("Load config failure, asset name '{0}', status '{1}', error message '{2}'.", configAssetName, status.ToString(), errorMessage);
             if (m_LoadConfigFailureEventHandler != null)
             {
-                m_LoadConfigFailureEventHandler(this, new LoadConfigFailureEventArgs(configAssetName, loadConfigInfo.LoadType, appendErrorMessage, loadConfigInfo.UserData));
+                LoadConfigFailureEventArgs loadConfigFailureEventArgs = LoadConfigFailureEventArgs.Create(configAssetName, loadConfigInfo.LoadType, appendErrorMessage, loadConfigInfo.UserData);
+                m_LoadConfigFailureEventHandler(this, loadConfigFailureEventArgs);
+                ReferencePool.Release(loadConfigFailureEventArgs);
                 ReferencePool.Release(loadConfigInfo);
                 return;
             }
@@ -566,7 +572,9 @@ namespace GameFramework.Config
 
             if (m_LoadConfigUpdateEventHandler != null)
             {
-                m_LoadConfigUpdateEventHandler(this, new LoadConfigUpdateEventArgs(configAssetName, loadConfigInfo.LoadType, progress, loadConfigInfo.UserData));
+                LoadConfigUpdateEventArgs loadConfigUpdateEventArgs = LoadConfigUpdateEventArgs.Create(configAssetName, loadConfigInfo.LoadType, progress, loadConfigInfo.UserData);
+                m_LoadConfigUpdateEventHandler(this, loadConfigUpdateEventArgs);
+                ReferencePool.Release(loadConfigUpdateEventArgs);
             }
         }
 
@@ -580,7 +588,9 @@ namespace GameFramework.Config
 
             if (m_LoadConfigDependencyAssetEventHandler != null)
             {
-                m_LoadConfigDependencyAssetEventHandler(this, new LoadConfigDependencyAssetEventArgs(configAssetName, dependencyAssetName, loadedCount, totalCount, loadConfigInfo.UserData));
+                LoadConfigDependencyAssetEventArgs loadConfigDependencyAssetEventArgs = LoadConfigDependencyAssetEventArgs.Create(configAssetName, dependencyAssetName, loadedCount, totalCount, loadConfigInfo.UserData);
+                m_LoadConfigDependencyAssetEventHandler(this, loadConfigDependencyAssetEventArgs);
+                ReferencePool.Release(loadConfigDependencyAssetEventArgs);
             }
         }
     }

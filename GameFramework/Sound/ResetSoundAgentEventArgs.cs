@@ -18,5 +18,22 @@ namespace GameFramework.Sound
         public ResetSoundAgentEventArgs()
         {
         }
+
+        /// <summary>
+        /// 创建重置声音代理事件。
+        /// </summary>
+        /// <returns>创建的重置声音代理事件。</returns>
+        public static ResetSoundAgentEventArgs Create()
+        {
+            ResetSoundAgentEventArgs resetSoundAgentEventArgs = ReferencePool.Acquire<ResetSoundAgentEventArgs>();
+            return resetSoundAgentEventArgs;
+        }
+
+        /// <summary>
+        /// 清理重置声音代理事件。
+        /// </summary>
+        public override void Clear()
+        {
+        }
     }
 }

@@ -85,7 +85,9 @@ namespace GameFramework.WebRequest
                     m_WaitTime += realElapseSeconds;
                     if (m_WaitTime >= m_Task.Timeout)
                     {
-                        OnWebRequestAgentHelperError(this, new WebRequestAgentHelperErrorEventArgs("Timeout"));
+                        WebRequestAgentHelperErrorEventArgs webRequestAgentHelperErrorEventArgs = WebRequestAgentHelperErrorEventArgs.Create("Timeout");
+                        OnWebRequestAgentHelperError(this, webRequestAgentHelperErrorEventArgs);
+                        ReferencePool.Release(webRequestAgentHelperErrorEventArgs);
                     }
                 }
             }

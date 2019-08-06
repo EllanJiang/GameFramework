@@ -1503,7 +1503,9 @@ namespace GameFramework.Resource
         {
             if (m_ResourceUpdateStartEventHandler != null)
             {
-                m_ResourceUpdateStartEventHandler(this, new ResourceUpdateStartEventArgs(resourceName.FullName, downloadPath, downloadUri, currentLength, zipLength, retryCount));
+                ResourceUpdateStartEventArgs resourceUpdateStartEventArgs = ResourceUpdateStartEventArgs.Create(resourceName.FullName, downloadPath, downloadUri, currentLength, zipLength, retryCount);
+                m_ResourceUpdateStartEventHandler(this, resourceUpdateStartEventArgs);
+                ReferencePool.Release(resourceUpdateStartEventArgs);
             }
         }
 
@@ -1511,7 +1513,9 @@ namespace GameFramework.Resource
         {
             if (m_ResourceUpdateChangedEventHandler != null)
             {
-                m_ResourceUpdateChangedEventHandler(this, new ResourceUpdateChangedEventArgs(resourceName.FullName, downloadPath, downloadUri, currentLength, zipLength));
+                ResourceUpdateChangedEventArgs resourceUpdateChangedEventArgs = ResourceUpdateChangedEventArgs.Create(resourceName.FullName, downloadPath, downloadUri, currentLength, zipLength);
+                m_ResourceUpdateChangedEventHandler(this, resourceUpdateChangedEventArgs);
+                ReferencePool.Release(resourceUpdateChangedEventArgs);
             }
         }
 
@@ -1519,7 +1523,9 @@ namespace GameFramework.Resource
         {
             if (m_ResourceUpdateSuccessEventHandler != null)
             {
-                m_ResourceUpdateSuccessEventHandler(this, new ResourceUpdateSuccessEventArgs(resourceName.FullName, downloadPath, downloadUri, length, zipLength));
+                ResourceUpdateSuccessEventArgs resourceUpdateSuccessEventArgs = ResourceUpdateSuccessEventArgs.Create(resourceName.FullName, downloadPath, downloadUri, length, zipLength);
+                m_ResourceUpdateSuccessEventHandler(this, resourceUpdateSuccessEventArgs);
+                ReferencePool.Release(resourceUpdateSuccessEventArgs);
             }
         }
 
@@ -1527,7 +1533,9 @@ namespace GameFramework.Resource
         {
             if (m_ResourceUpdateFailureEventHandler != null)
             {
-                m_ResourceUpdateFailureEventHandler(this, new ResourceUpdateFailureEventArgs(resourceName.FullName, downloadUri, retryCount, totalRetryCount, errorMessage));
+                ResourceUpdateFailureEventArgs resourceUpdateFailureEventArgs = ResourceUpdateFailureEventArgs.Create(resourceName.FullName, downloadUri, retryCount, totalRetryCount, errorMessage);
+                m_ResourceUpdateFailureEventHandler(this, resourceUpdateFailureEventArgs);
+                ReferencePool.Release(resourceUpdateFailureEventArgs);
             }
         }
 

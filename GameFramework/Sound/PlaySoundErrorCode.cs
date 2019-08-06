@@ -13,6 +13,11 @@ namespace GameFramework.Sound
     public enum PlaySoundErrorCode
     {
         /// <summary>
+        /// 未知错误。
+        /// </summary>
+        Unknown = 0,
+
+        /// <summary>
         /// 声音组不存在。
         /// </summary>
         SoundGroupNotExist,

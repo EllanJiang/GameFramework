@@ -15,16 +15,12 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 初始化加载数据表更新事件的新实例。
         /// </summary>
-        /// <param name="dataTableAssetName">数据表资源名称。</param>
-        /// <param name="loadType">数据表加载方式。</param>
-        /// <param name="progress">加载数据表进度。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public LoadDataTableUpdateEventArgs(string dataTableAssetName, LoadType loadType, float progress, object userData)
+        public LoadDataTableUpdateEventArgs()
         {
-            DataTableAssetName = dataTableAssetName;
-            LoadType = loadType;
-            Progress = progress;
-            UserData = userData;
+            DataTableAssetName = null;
+            LoadType = LoadType.Text;
+            Progress = 0f;
+            UserData = null;
         }
 
         /// <summary>
@@ -61,6 +57,35 @@ namespace GameFramework.DataTable
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建加载数据表更新事件。
+        /// </summary>
+        /// <param name="dataTableAssetName">数据表资源名称。</param>
+        /// <param name="loadType">数据表加载方式。</param>
+        /// <param name="progress">加载数据表进度。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的加载数据表更新事件。</returns>
+        public static LoadDataTableUpdateEventArgs Create(string dataTableAssetName, LoadType loadType, float progress, object userData)
+        {
+            LoadDataTableUpdateEventArgs loadDataTableUpdateEventArgs = ReferencePool.Acquire<LoadDataTableUpdateEventArgs>();
+            loadDataTableUpdateEventArgs.DataTableAssetName = dataTableAssetName;
+            loadDataTableUpdateEventArgs.LoadType = loadType;
+            loadDataTableUpdateEventArgs.Progress = progress;
+            loadDataTableUpdateEventArgs.UserData = userData;
+            return loadDataTableUpdateEventArgs;
+        }
+
+        /// <summary>
+        /// 清理加载数据表更新事件。
+        /// </summary>
+        public override void Clear()
+        {
+            DataTableAssetName = null;
+            LoadType = LoadType.Text;
+            Progress = 0f;
+            UserData = null;
         }
     }
 }

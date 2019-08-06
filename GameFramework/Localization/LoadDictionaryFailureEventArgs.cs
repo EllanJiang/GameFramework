@@ -15,16 +15,12 @@ namespace GameFramework.Localization
         /// <summary>
         /// 初始化加载字典失败事件的新实例。
         /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
-        /// <param name="errorMessage">错误信息。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public LoadDictionaryFailureEventArgs(string dictionaryAssetName, LoadType loadType, string errorMessage, object userData)
+        public LoadDictionaryFailureEventArgs()
         {
-            DictionaryAssetName = dictionaryAssetName;
-            LoadType = loadType;
-            ErrorMessage = errorMessage;
-            UserData = userData;
+            DictionaryAssetName = null;
+            LoadType = LoadType.Text;
+            ErrorMessage = null;
+            UserData = null;
         }
 
         /// <summary>
@@ -61,6 +57,35 @@ namespace GameFramework.Localization
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建加载字典失败事件。
+        /// </summary>
+        /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="loadType">字典加载方式。</param>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的加载字典失败事件。</returns>
+        public static LoadDictionaryFailureEventArgs Create(string dictionaryAssetName, LoadType loadType, string errorMessage, object userData)
+        {
+            LoadDictionaryFailureEventArgs loadDictionaryFailureEventArgs = ReferencePool.Acquire<LoadDictionaryFailureEventArgs>();
+            loadDictionaryFailureEventArgs.DictionaryAssetName = dictionaryAssetName;
+            loadDictionaryFailureEventArgs.LoadType = loadType;
+            loadDictionaryFailureEventArgs.ErrorMessage = errorMessage;
+            loadDictionaryFailureEventArgs.UserData = userData;
+            return loadDictionaryFailureEventArgs;
+        }
+
+        /// <summary>
+        /// 清理加载字典失败事件。
+        /// </summary>
+        public override void Clear()
+        {
+            DictionaryAssetName = null;
+            LoadType = LoadType.Text;
+            ErrorMessage = null;
+            UserData = null;
         }
     }
 }

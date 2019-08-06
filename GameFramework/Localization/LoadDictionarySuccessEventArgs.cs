@@ -15,16 +15,12 @@ namespace GameFramework.Localization
         /// <summary>
         /// 初始化加载字典成功事件的新实例。
         /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
-        /// <param name="duration">加载持续时间。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public LoadDictionarySuccessEventArgs(string dictionaryAssetName, LoadType loadType, float duration, object userData)
+        public LoadDictionarySuccessEventArgs()
         {
-            DictionaryAssetName = dictionaryAssetName;
-            LoadType = loadType;
-            Duration = duration;
-            UserData = userData;
+            DictionaryAssetName = null;
+            LoadType = LoadType.Text;
+            Duration = 0f;
+            UserData = null;
         }
 
         /// <summary>
@@ -61,6 +57,35 @@ namespace GameFramework.Localization
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建加载字典成功事件。
+        /// </summary>
+        /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="loadType">字典加载方式。</param>
+        /// <param name="duration">加载持续时间。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的加载字典成功事件。</returns>
+        public static LoadDictionarySuccessEventArgs Create(string dictionaryAssetName, LoadType loadType, float duration, object userData)
+        {
+            LoadDictionarySuccessEventArgs loadDictionarySuccessEventArgs = ReferencePool.Acquire<LoadDictionarySuccessEventArgs>();
+            loadDictionarySuccessEventArgs.DictionaryAssetName = dictionaryAssetName;
+            loadDictionarySuccessEventArgs.LoadType = loadType;
+            loadDictionarySuccessEventArgs.Duration = duration;
+            loadDictionarySuccessEventArgs.UserData = userData;
+            return loadDictionarySuccessEventArgs;
+        }
+
+        /// <summary>
+        /// 清理加载字典成功事件。
+        /// </summary>
+        public override void Clear()
+        {
+            DictionaryAssetName = null;
+            LoadType = LoadType.Text;
+            Duration = 0f;
+            UserData = null;
         }
     }
 }

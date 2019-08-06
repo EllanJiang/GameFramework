@@ -17,16 +17,12 @@ namespace GameFramework.Network
         /// <summary>
         /// 初始化网络错误事件的新实例。
         /// </summary>
-        /// <param name="networkChannel">网络频道。</param>
-        /// <param name="errorCode">错误码。</param>
-        /// <param name="socketErrorCode">Socket 错误码。</param>
-        /// <param name="errorMessage">错误信息。</param>
-        public NetworkErrorEventArgs(INetworkChannel networkChannel, NetworkErrorCode errorCode, SocketError socketErrorCode, string errorMessage)
+        public NetworkErrorEventArgs()
         {
-            NetworkChannel = networkChannel;
-            ErrorCode = errorCode;
-            SocketErrorCode = socketErrorCode;
-            ErrorMessage = errorMessage;
+            NetworkChannel = null;
+            ErrorCode = NetworkErrorCode.Unknown;
+            SocketErrorCode = SocketError.Success;
+            ErrorMessage = null;
         }
 
         /// <summary>
@@ -63,6 +59,35 @@ namespace GameFramework.Network
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建网络错误事件。
+        /// </summary>
+        /// <param name="networkChannel">网络频道。</param>
+        /// <param name="errorCode">错误码。</param>
+        /// <param name="socketErrorCode">Socket 错误码。</param>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <returns>创建的网络错误事件。</returns>
+        public static NetworkErrorEventArgs Create(INetworkChannel networkChannel, NetworkErrorCode errorCode, SocketError socketErrorCode, string errorMessage)
+        {
+            NetworkErrorEventArgs networkErrorEventArgs = ReferencePool.Acquire<NetworkErrorEventArgs>();
+            networkErrorEventArgs.NetworkChannel = networkChannel;
+            networkErrorEventArgs.ErrorCode = errorCode;
+            networkErrorEventArgs.SocketErrorCode = socketErrorCode;
+            networkErrorEventArgs.ErrorMessage = errorMessage;
+            return networkErrorEventArgs;
+        }
+
+        /// <summary>
+        /// 清理网络错误事件。
+        /// </summary>
+        public override void Clear()
+        {
+            NetworkChannel = null;
+            ErrorCode = NetworkErrorCode.Unknown;
+            SocketErrorCode = SocketError.Success;
+            ErrorMessage = null;
         }
     }
 }

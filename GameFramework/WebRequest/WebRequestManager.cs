@@ -291,7 +291,9 @@ namespace GameFramework.WebRequest
         {
             if (m_WebRequestStartEventHandler != null)
             {
-                m_WebRequestStartEventHandler(this, new WebRequestStartEventArgs(sender.Task.SerialId, sender.Task.WebRequestUri, sender.Task.UserData));
+                WebRequestStartEventArgs webRequestStartEventArgs = WebRequestStartEventArgs.Create(sender.Task.SerialId, sender.Task.WebRequestUri, sender.Task.UserData);
+                m_WebRequestStartEventHandler(this, webRequestStartEventArgs);
+                ReferencePool.Release(webRequestStartEventArgs);
             }
         }
 
@@ -299,7 +301,9 @@ namespace GameFramework.WebRequest
         {
             if (m_WebRequestSuccessEventHandler != null)
             {
-                m_WebRequestSuccessEventHandler(this, new WebRequestSuccessEventArgs(sender.Task.SerialId, sender.Task.WebRequestUri, webResponseBytes, sender.Task.UserData));
+                WebRequestSuccessEventArgs webRequestSuccessEventArgs = WebRequestSuccessEventArgs.Create(sender.Task.SerialId, sender.Task.WebRequestUri, webResponseBytes, sender.Task.UserData);
+                m_WebRequestSuccessEventHandler(this, webRequestSuccessEventArgs);
+                ReferencePool.Release(webRequestSuccessEventArgs);
             }
         }
 
@@ -307,7 +311,9 @@ namespace GameFramework.WebRequest
         {
             if (m_WebRequestFailureEventHandler != null)
             {
-                m_WebRequestFailureEventHandler(this, new WebRequestFailureEventArgs(sender.Task.SerialId, sender.Task.WebRequestUri, errorMessage, sender.Task.UserData));
+                WebRequestFailureEventArgs webRequestFailureEventArgs = WebRequestFailureEventArgs.Create(sender.Task.SerialId, sender.Task.WebRequestUri, errorMessage, sender.Task.UserData);
+                m_WebRequestFailureEventHandler(this, webRequestFailureEventArgs);
+                ReferencePool.Release(webRequestFailureEventArgs);
             }
         }
     }

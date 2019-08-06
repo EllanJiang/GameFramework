@@ -8,17 +8,16 @@
 namespace GameFramework.Download
 {
     /// <summary>
-    ///  下载代理辅助器错误事件。
+    /// 下载代理辅助器错误事件。
     /// </summary>
     public sealed class DownloadAgentHelperErrorEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
         /// 初始化下载代理辅助器错误事件的新实例。
         /// </summary>
-        /// <param name="errorMessage">错误信息。</param>
-        public DownloadAgentHelperErrorEventArgs(string errorMessage)
+        public DownloadAgentHelperErrorEventArgs()
         {
-            ErrorMessage = errorMessage;
+            ErrorMessage = null;
         }
 
         /// <summary>
@@ -28,6 +27,26 @@ namespace GameFramework.Download
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建下载代理辅助器错误事件。
+        /// </summary>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <returns>创建的下载代理辅助器错误事件。</returns>
+        public static DownloadAgentHelperErrorEventArgs Create(string errorMessage)
+        {
+            DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = ReferencePool.Acquire<DownloadAgentHelperErrorEventArgs>();
+            downloadAgentHelperErrorEventArgs.ErrorMessage = errorMessage;
+            return downloadAgentHelperErrorEventArgs;
+        }
+
+        /// <summary>
+        /// 清理下载代理辅助器错误事件。
+        /// </summary>
+        public override void Clear()
+        {
+            ErrorMessage = null;
         }
     }
 }

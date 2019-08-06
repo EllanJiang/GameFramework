@@ -15,12 +15,10 @@ namespace GameFramework.Network
         /// <summary>
         /// 初始化网络连接成功事件的新实例。
         /// </summary>
-        /// <param name="networkChannel">网络频道。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public NetworkConnectedEventArgs(INetworkChannel networkChannel, object userData)
+        public NetworkConnectedEventArgs()
         {
-            NetworkChannel = networkChannel;
-            UserData = userData;
+            NetworkChannel = null;
+            UserData = null;
         }
 
         /// <summary>
@@ -39,6 +37,29 @@ namespace GameFramework.Network
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建网络连接成功事件。
+        /// </summary>
+        /// <param name="networkChannel">网络频道。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的网络连接成功事件。</returns>
+        public static NetworkConnectedEventArgs Create(INetworkChannel networkChannel, object userData)
+        {
+            NetworkConnectedEventArgs networkConnectedEventArgs = ReferencePool.Acquire<NetworkConnectedEventArgs>();
+            networkConnectedEventArgs.NetworkChannel = networkChannel;
+            networkConnectedEventArgs.UserData = userData;
+            return networkConnectedEventArgs;
+        }
+
+        /// <summary>
+        /// 清理网络连接成功事件。
+        /// </summary>
+        public override void Clear()
+        {
+            NetworkChannel = null;
+            UserData = null;
         }
     }
 }

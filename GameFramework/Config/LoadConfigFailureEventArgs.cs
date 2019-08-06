@@ -15,16 +15,12 @@ namespace GameFramework.Config
         /// <summary>
         /// 初始化加载配置失败事件的新实例。
         /// </summary>
-        /// <param name="configAssetName">配置资源名称。</param>
-        /// <param name="loadType">配置加载方式。</param>
-        /// <param name="errorMessage">错误信息。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public LoadConfigFailureEventArgs(string configAssetName, LoadType loadType, string errorMessage, object userData)
+        public LoadConfigFailureEventArgs()
         {
-            ConfigAssetName = configAssetName;
-            LoadType = loadType;
-            ErrorMessage = errorMessage;
-            UserData = userData;
+            ConfigAssetName = null;
+            LoadType = LoadType.Text;
+            ErrorMessage = null;
+            UserData = null;
         }
 
         /// <summary>
@@ -61,6 +57,35 @@ namespace GameFramework.Config
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建加载配置失败事件。
+        /// </summary>
+        /// <param name="configAssetName">配置资源名称。</param>
+        /// <param name="loadType">配置加载方式。</param>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的加载配置失败事件。</returns>
+        public static LoadConfigFailureEventArgs Create(string configAssetName, LoadType loadType, string errorMessage, object userData)
+        {
+            LoadConfigFailureEventArgs loadConfigFailureEventArgs = ReferencePool.Acquire<LoadConfigFailureEventArgs>();
+            loadConfigFailureEventArgs.ConfigAssetName = configAssetName;
+            loadConfigFailureEventArgs.LoadType = loadType;
+            loadConfigFailureEventArgs.ErrorMessage = errorMessage;
+            loadConfigFailureEventArgs.UserData = userData;
+            return loadConfigFailureEventArgs;
+        }
+
+        /// <summary>
+        /// 清理加载配置失败事件。
+        /// </summary>
+        public override void Clear()
+        {
+            ConfigAssetName = null;
+            LoadType = LoadType.Text;
+            ErrorMessage = null;
+            UserData = null;
         }
     }
 }

@@ -13,6 +13,11 @@ namespace GameFramework.Resource
     public enum LoadResourceProgress
     {
         /// <summary>
+        /// 未知类型。
+        /// </summary>
+        Unknown = 0,
+
+        /// <summary>
         /// 读取资源包。
         /// </summary>
         ReadResource,

@@ -791,14 +791,18 @@ namespace GameFramework.DataTable
 
                 if (m_LoadDataTableSuccessEventHandler != null)
                 {
-                    m_LoadDataTableSuccessEventHandler(this, new LoadDataTableSuccessEventArgs(dataTableAssetName, loadDataTableInfo.LoadType, duration, loadDataTableInfo.UserData));
+                    LoadDataTableSuccessEventArgs loadDataTableSuccessEventArgs = LoadDataTableSuccessEventArgs.Create(dataTableAssetName, loadDataTableInfo.LoadType, duration, loadDataTableInfo.UserData);
+                    m_LoadDataTableSuccessEventHandler(this, loadDataTableSuccessEventArgs);
+                    ReferencePool.Release(loadDataTableSuccessEventArgs);
                 }
             }
             catch (Exception exception)
             {
                 if (m_LoadDataTableFailureEventHandler != null)
                 {
-                    m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, loadDataTableInfo.LoadType, exception.ToString(), loadDataTableInfo.UserData));
+                    LoadDataTableFailureEventArgs loadDataTableFailureEventArgs = LoadDataTableFailureEventArgs.Create(dataTableAssetName, loadDataTableInfo.LoadType, exception.ToString(), loadDataTableInfo.UserData);
+                    m_LoadDataTableFailureEventHandler(this, loadDataTableFailureEventArgs);
+                    ReferencePool.Release(loadDataTableFailureEventArgs);
                     return;
                 }
 
@@ -822,7 +826,9 @@ namespace GameFramework.DataTable
             string appendErrorMessage = Utility.Text.Format("Load data table failure, asset name '{0}', status '{1}', error message '{2}'.", dataTableAssetName, status.ToString(), errorMessage);
             if (m_LoadDataTableFailureEventHandler != null)
             {
-                m_LoadDataTableFailureEventHandler(this, new LoadDataTableFailureEventArgs(dataTableAssetName, loadDataTableInfo.LoadType, appendErrorMessage, loadDataTableInfo.UserData));
+                LoadDataTableFailureEventArgs loadDataTableFailureEventArgs = LoadDataTableFailureEventArgs.Create(dataTableAssetName, loadDataTableInfo.LoadType, appendErrorMessage, loadDataTableInfo.UserData);
+                m_LoadDataTableFailureEventHandler(this, loadDataTableFailureEventArgs);
+                ReferencePool.Release(loadDataTableFailureEventArgs);
                 ReferencePool.Release(loadDataTableInfo);
                 return;
             }
@@ -841,7 +847,9 @@ namespace GameFramework.DataTable
 
             if (m_LoadDataTableUpdateEventHandler != null)
             {
-                m_LoadDataTableUpdateEventHandler(this, new LoadDataTableUpdateEventArgs(dataTableAssetName, loadDataTableInfo.LoadType, progress, loadDataTableInfo.UserData));
+                LoadDataTableUpdateEventArgs loadDataTableUpdateEventArgs = LoadDataTableUpdateEventArgs.Create(dataTableAssetName, loadDataTableInfo.LoadType, progress, loadDataTableInfo.UserData);
+                m_LoadDataTableUpdateEventHandler(this, loadDataTableUpdateEventArgs);
+                ReferencePool.Release(loadDataTableUpdateEventArgs);
             }
         }
 
@@ -855,7 +863,9 @@ namespace GameFramework.DataTable
 
             if (m_LoadDataTableDependencyAssetEventHandler != null)
             {
-                m_LoadDataTableDependencyAssetEventHandler(this, new LoadDataTableDependencyAssetEventArgs(dataTableAssetName, dependencyAssetName, loadedCount, totalCount, loadDataTableInfo.UserData));
+                LoadDataTableDependencyAssetEventArgs loadDataTableDependencyAssetEventArgs = LoadDataTableDependencyAssetEventArgs.Create(dataTableAssetName, dependencyAssetName, loadedCount, totalCount, loadDataTableInfo.UserData);
+                m_LoadDataTableDependencyAssetEventHandler(this, loadDataTableDependencyAssetEventArgs);
+                ReferencePool.Release(loadDataTableDependencyAssetEventArgs);
             }
         }
     }
