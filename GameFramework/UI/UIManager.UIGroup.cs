@@ -21,6 +21,7 @@ namespace GameFramework.UI
             private bool m_Pause;
             private readonly IUIGroupHelper m_UIGroupHelper;
             private readonly GameFrameworkLinkedList<UIFormInfo> m_UIFormInfos;
+            private LinkedListNode<UIFormInfo> m_CachedNode;
 
             /// <summary>
             /// 初始化界面组的新实例。
@@ -44,6 +45,7 @@ namespace GameFramework.UI
                 m_Pause = false;
                 m_UIGroupHelper = uiGroupHelper;
                 m_UIFormInfos = new GameFrameworkLinkedList<UIFormInfo>();
+                m_CachedNode = null;
                 Depth = depth;
             }
 
@@ -149,9 +151,10 @@ namespace GameFramework.UI
                         break;
                     }
 
-                    LinkedListNode<UIFormInfo> next = current.Next;
+                    m_CachedNode = current.Next;
                     current.Value.UIForm.OnUpdate(elapseSeconds, realElapseSeconds);
-                    current = next;
+                    current = m_CachedNode;
+                    m_CachedNode = null;
                 }
             }
 
@@ -355,7 +358,15 @@ namespace GameFramework.UI
                     uiForm.OnPause();
                 }
 
-                m_UIFormInfos.Remove(uiFormInfo);
+                if (m_CachedNode != null && m_CachedNode.Value.UIForm == uiForm)
+                {
+                    m_CachedNode = m_CachedNode.Next;
+                }
+
+                if (!m_UIFormInfos.Remove(uiFormInfo))
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("UI group '{0}' not exists specified UI form '[{1}]{2}'.", m_Name, uiForm.SerialId.ToString(), uiForm.UIFormAssetName));
+                }
             }
 
             /// <summary>

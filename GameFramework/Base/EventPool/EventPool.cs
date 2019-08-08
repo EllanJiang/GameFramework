@@ -197,7 +197,7 @@ namespace GameFramework
                 {
                     if (cachedNode.Value != null && cachedNode.Value.Value == handler)
                     {
-                        m_TempNodes.Add(cachedNode.Key, cachedNode.Value);
+                        m_TempNodes.Add(cachedNode.Key, cachedNode.Value.Next);
                     }
                 }
 
@@ -205,7 +205,7 @@ namespace GameFramework
                 {
                     foreach (KeyValuePair<object, LinkedListNode<EventHandler<T>>> cachedNode in m_TempNodes)
                     {
-                        m_CachedNodes[cachedNode.Key] = cachedNode.Value.Next;
+                        m_CachedNodes[cachedNode.Key] = cachedNode.Value;
                     }
 
                     m_TempNodes.Clear();
