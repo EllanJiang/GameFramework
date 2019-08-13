@@ -173,6 +173,7 @@ namespace GameFramework.Entity
                 entity.OnRecycle();
                 entityInfo.Status = EntityStatus.Recycled;
                 entityGroup.UnspawnEntity(entity);
+                ReferencePool.Release(entityInfo);
             }
 
             foreach (KeyValuePair<string, EntityGroup> entityGroup in m_EntityGroups)
@@ -1118,7 +1119,7 @@ namespace GameFramework.Entity
                     throw new GameFrameworkException("Can not create entity in helper.");
                 }
 
-                EntityInfo entityInfo = new EntityInfo(entity);
+                EntityInfo entityInfo = EntityInfo.Create(entity);
                 m_EntityInfos.Add(entityId, entityInfo);
                 entityInfo.Status = EntityStatus.WillInit;
                 entity.OnInit(entityId, entityAssetName, entityGroup, isNewInstance, userData);
@@ -1207,7 +1208,7 @@ namespace GameFramework.Entity
             }
 
             m_EntitiesBeingLoaded.Remove(showEntityInfo.EntityId);
-            EntityInstanceObject entityInstanceObject = new EntityInstanceObject(entityAssetName, entityAsset, m_EntityHelper.InstantiateEntity(entityAsset), m_EntityHelper);
+            EntityInstanceObject entityInstanceObject = EntityInstanceObject.Create(entityAssetName, entityAsset, m_EntityHelper.InstantiateEntity(entityAsset), m_EntityHelper);
             showEntityInfo.EntityGroup.RegisterEntityInstanceObject(entityInstanceObject, true);
 
             InternalShowEntity(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroup, entityInstanceObject.Target, true, duration, showEntityInfo.UserData);

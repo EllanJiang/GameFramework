@@ -86,7 +86,7 @@ namespace GameFramework.Task
         /// </summary>
         /// <param name="serialId">任务的序列编号。</param>
         /// <param name="priority">任务的优先级。</param>
-        public void Initialize(int serialId, int priority)
+        internal void Initialize(int serialId, int priority)
         {
             m_SerialId = serialId;
             m_Priority = priority;

@@ -330,8 +330,7 @@ namespace GameFramework.UI
             /// <param name="uiForm">要增加的界面。</param>
             public void AddUIForm(IUIForm uiForm)
             {
-                UIFormInfo uiFormInfo = new UIFormInfo(uiForm);
-                m_UIFormInfos.AddFirst(uiFormInfo);
+                m_UIFormInfos.AddFirst(UIFormInfo.Create(uiForm));
             }
 
             /// <summary>
@@ -367,6 +366,8 @@ namespace GameFramework.UI
                 {
                     throw new GameFrameworkException(Utility.Text.Format("UI group '{0}' not exists specified UI form '[{1}]{2}'.", m_Name, uiForm.SerialId.ToString(), uiForm.UIFormAssetName));
                 }
+
+                ReferencePool.Release(uiFormInfo);
             }
 
             /// <summary>

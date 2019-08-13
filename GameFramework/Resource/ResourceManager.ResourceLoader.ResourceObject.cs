@@ -19,12 +19,28 @@ namespace GameFramework.Resource
             /// </summary>
             private sealed class ResourceObject : ObjectBase
             {
-                private readonly List<object> m_DependencyResources;
-                private readonly IResourceHelper m_ResourceHelper;
-                private readonly ResourceLoader m_ResourceLoader;
+                private List<object> m_DependencyResources;
+                private IResourceHelper m_ResourceHelper;
+                private ResourceLoader m_ResourceLoader;
 
-                public ResourceObject(string name, object target, IResourceHelper resourceHelper, ResourceLoader resourceLoader)
-                    : base(name, target)
+                public ResourceObject()
+                {
+                    m_DependencyResources = new List<object>();
+                    m_ResourceHelper = null;
+                    m_ResourceLoader = null;
+                }
+
+                public override bool CustomCanReleaseFlag
+                {
+                    get
+                    {
+                        int targetReferenceCount = 0;
+                        m_ResourceLoader.m_ResourceDependencyCount.TryGetValue(Target, out targetReferenceCount);
+                        return base.CustomCanReleaseFlag && targetReferenceCount <= 0;
+                    }
+                }
+
+                public static ResourceObject Create(string name, object target, IResourceHelper resourceHelper, ResourceLoader resourceLoader)
                 {
                     if (resourceHelper == null)
                     {
@@ -36,19 +52,19 @@ namespace GameFramework.Resource
                         throw new GameFrameworkException("Resource loader is invalid.");
                     }
 
-                    m_DependencyResources = new List<object>();
-                    m_ResourceHelper = resourceHelper;
-                    m_ResourceLoader = resourceLoader;
+                    ResourceObject resourceObject = ReferencePool.Acquire<ResourceObject>();
+                    resourceObject.Initialize(name, target);
+                    resourceObject.m_ResourceHelper = resourceHelper;
+                    resourceObject.m_ResourceLoader = resourceLoader;
+                    return resourceObject;
                 }
 
-                public override bool CustomCanReleaseFlag
+                public override void Clear()
                 {
-                    get
-                    {
-                        int targetReferenceCount = 0;
-                        m_ResourceLoader.m_ResourceDependencyCount.TryGetValue(Target, out targetReferenceCount);
-                        return base.CustomCanReleaseFlag && targetReferenceCount <= 0;
-                    }
+                    base.Clear();
+                    m_DependencyResources.Clear();
+                    m_ResourceHelper = null;
+                    m_ResourceLoader = null;
                 }
 
                 public void AddDependencyResource(object dependencyResource)

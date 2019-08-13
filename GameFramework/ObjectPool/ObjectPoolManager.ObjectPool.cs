@@ -200,7 +200,7 @@ namespace GameFramework.ObjectPool
                     m_Objects.Add(obj.Name, objects);
                 }
 
-                Object<T> internalObject = new Object<T>(obj, spawned);
+                Object<T> internalObject = Object<T>.Create(obj, spawned);
                 objects.Add(internalObject);
                 m_ObjectMap.Add(obj.Target, internalObject);
 
@@ -498,6 +498,7 @@ namespace GameFramework.ObjectPool
                 foreach (KeyValuePair<object, Object<T>> objectInMap in m_ObjectMap)
                 {
                     objectInMap.Value.Release(true);
+                    ReferencePool.Release(objectInMap.Value);
                 }
 
                 m_Objects.Clear();
@@ -555,6 +556,7 @@ namespace GameFramework.ObjectPool
                     }
 
                     internalObject.Release(false);
+                    ReferencePool.Release(internalObject);
                     return;
                 }
 

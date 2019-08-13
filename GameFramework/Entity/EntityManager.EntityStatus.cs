@@ -14,6 +14,7 @@ namespace GameFramework.Entity
         /// </summary>
         private enum EntityStatus
         {
+            Unknown = 0,
             WillInit,
             Inited,
             WillShow,
