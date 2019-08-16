@@ -27,6 +27,7 @@ namespace GameFramework.Entity
         private IResourceManager m_ResourceManager;
         private IEntityHelper m_EntityHelper;
         private int m_Serial;
+        private bool m_IsShutdown;
         private EventHandler<ShowEntitySuccessEventArgs> m_ShowEntitySuccessEventHandler;
         private EventHandler<ShowEntityFailureEventArgs> m_ShowEntityFailureEventHandler;
         private EventHandler<ShowEntityUpdateEventArgs> m_ShowEntityUpdateEventHandler;
@@ -48,6 +49,7 @@ namespace GameFramework.Entity
             m_ResourceManager = null;
             m_EntityHelper = null;
             m_Serial = 0;
+            m_IsShutdown = false;
             m_ShowEntitySuccessEventHandler = null;
             m_ShowEntityFailureEventHandler = null;
             m_ShowEntityUpdateEventHandler = null;
@@ -187,6 +189,7 @@ namespace GameFramework.Entity
         /// </summary>
         internal override void Shutdown()
         {
+            m_IsShutdown = true;
             HideAllLoadedEntities();
             m_EntityGroups.Clear();
             m_EntitiesBeingLoaded.Clear();
@@ -1166,7 +1169,7 @@ namespace GameFramework.Entity
 
             DetachEntity(entity.Id, userData);
             entityInfo.Status = EntityStatus.WillHide;
-            entity.OnHide(userData);
+            entity.OnHide(m_IsShutdown, userData);
             entityInfo.Status = EntityStatus.Hidden;
 
             EntityGroup entityGroup = (EntityGroup)entity.EntityGroup;

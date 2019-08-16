@@ -27,6 +27,7 @@ namespace GameFramework.UI
         private IObjectPool<UIFormInstanceObject> m_InstancePool;
         private IUIFormHelper m_UIFormHelper;
         private int m_Serial;
+        private bool m_IsShutdown;
         private EventHandler<OpenUIFormSuccessEventArgs> m_OpenUIFormSuccessEventHandler;
         private EventHandler<OpenUIFormFailureEventArgs> m_OpenUIFormFailureEventHandler;
         private EventHandler<OpenUIFormUpdateEventArgs> m_OpenUIFormUpdateEventHandler;
@@ -48,6 +49,7 @@ namespace GameFramework.UI
             m_InstancePool = null;
             m_UIFormHelper = null;
             m_Serial = 0;
+            m_IsShutdown = false;
             m_OpenUIFormSuccessEventHandler = null;
             m_OpenUIFormFailureEventHandler = null;
             m_OpenUIFormUpdateEventHandler = null;
@@ -226,6 +228,7 @@ namespace GameFramework.UI
         /// </summary>
         internal override void Shutdown()
         {
+            m_IsShutdown = true;
             CloseAllLoadedUIForms();
             m_UIGroups.Clear();
             m_UIFormsBeingLoaded.Clear();
@@ -820,7 +823,7 @@ namespace GameFramework.UI
             }
 
             uiGroup.RemoveUIForm(uiForm);
-            uiForm.OnClose(userData);
+            uiForm.OnClose(m_IsShutdown, userData);
             uiGroup.Refresh();
 
             if (m_CloseUIFormCompleteEventHandler != null)

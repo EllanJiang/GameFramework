@@ -85,8 +85,9 @@ namespace GameFramework.UI
         /// <summary>
         /// 界面关闭。
         /// </summary>
+        /// <param name="isShutdown">是否是关闭界面管理器时触发。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void OnClose(object userData);
+        void OnClose(bool isShutdown, object userData);
 
         /// <summary>
         /// 界面暂停。
