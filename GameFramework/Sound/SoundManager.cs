@@ -39,7 +39,7 @@ namespace GameFramework.Sound
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadSoundSuccessCallback, LoadSoundFailureCallback, LoadSoundUpdateCallback, LoadSoundDependencyAssetCallback);
             m_ResourceManager = null;
             m_SoundHelper = null;
-            m_Serial = 0;
+            m_Serial = 1;
             m_PlaySoundSuccessEventHandler = null;
             m_PlaySoundFailureEventHandler = null;
             m_PlaySoundUpdateEventHandler = null;

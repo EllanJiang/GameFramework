@@ -47,7 +47,7 @@ namespace GameFramework.Entity
             m_ObjectPoolManager = null;
             m_ResourceManager = null;
             m_EntityHelper = null;
-            m_Serial = 0;
+            m_Serial = 1;
             m_ShowEntitySuccessEventHandler = null;
             m_ShowEntityFailureEventHandler = null;
             m_ShowEntityUpdateEventHandler = null;

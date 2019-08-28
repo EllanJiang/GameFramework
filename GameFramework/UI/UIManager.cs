@@ -49,7 +49,7 @@ namespace GameFramework.UI
             m_ResourceManager = null;
             m_InstancePool = null;
             m_UIFormHelper = null;
-            m_Serial = 0;
+            m_Serial = 1;
             m_OpenUIFormSuccessEventHandler = null;
             m_OpenUIFormFailureEventHandler = null;
             m_OpenUIFormUpdateEventHandler = null;
