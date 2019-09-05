@@ -6,7 +6,6 @@
 //------------------------------------------------------------
 
 using System.IO;
-using System.Security.Cryptography;
 
 namespace GameFramework
 {
@@ -18,7 +17,6 @@ namespace GameFramework
         public static partial class Verifier
         {
             private static readonly Crc32 s_AlgorithmCrc32 = new Crc32();
-            private static readonly MD5 s_AlgorithmMD5 = new MD5CryptoServiceProvider();
 
             /// <summary>
             /// 计算二进制流的 CRC32。
@@ -50,38 +48,6 @@ namespace GameFramework
             public static byte[] GetCrc32(Stream stream)
             {
                 return s_AlgorithmCrc32.ComputeHash(stream);
-            }
-
-            /// <summary>
-            /// 计算二进制流的 MD5。
-            /// </summary>
-            /// <param name="bytes">指定的二进制流。</param>
-            /// <returns>计算后的 MD5。</returns>
-            public static byte[] GetMD5(byte[] bytes)
-            {
-                return s_AlgorithmMD5.ComputeHash(bytes);
-            }
-
-            /// <summary>
-            /// 计算二进制流的 MD5。
-            /// </summary>
-            /// <param name="bytes">指定的二进制流。</param>
-            /// <param name="offset">二进制流的偏移。</param>
-            /// <param name="length">二进制流的长度。</param>
-            /// <returns>计算后的 MD5。</returns>
-            public static byte[] GetMD5(byte[] bytes, int offset, int length)
-            {
-                return s_AlgorithmMD5.ComputeHash(bytes, offset, length);
-            }
-
-            /// <summary>
-            /// 计算二进制流的 MD5。
-            /// </summary>
-            /// <param name="stream">指定的二进制流。</param>
-            /// <returns>计算后的 MD5。</returns>
-            public static byte[] GetMD5(Stream stream)
-            {
-                return s_AlgorithmMD5.ComputeHash(stream);
             }
         }
     }
