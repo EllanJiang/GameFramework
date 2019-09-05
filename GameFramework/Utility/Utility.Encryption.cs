@@ -120,7 +120,7 @@ namespace GameFramework
                 for (int i = 0; i < length; i++)
                 {
                     bytes[i] ^= code[codeIndex++];
-                    codeIndex = codeIndex % codeLength;
+                    codeIndex %= codeLength;
                 }
             }
         }
