@@ -101,14 +101,9 @@ namespace GameFramework
                     throw new GameFrameworkException("Bytes is invalid.");
                 }
 
-                if (offset < 0)
+                if (offset < 0 || length <= 0 || offset + length > bytes.Length)
                 {
-                    throw new GameFrameworkException("Offset is invalid.");
-                }
-
-                if (length > bytes.Length)
-                {
-                    throw new GameFrameworkException("Length is invalid.");
+                    throw new GameFrameworkException("Offset or length is invalid.");
                 }
 
                 if (compressedStream == null)
@@ -204,14 +199,9 @@ namespace GameFramework
                     throw new GameFrameworkException("Bytes is invalid.");
                 }
 
-                if (offset < 0)
+                if (offset < 0 || length <= 0 || offset + length > bytes.Length)
                 {
-                    throw new GameFrameworkException("Offset is invalid.");
-                }
-
-                if (length > bytes.Length)
-                {
-                    throw new GameFrameworkException("Length is invalid.");
+                    throw new GameFrameworkException("Offset or length is invalid.");
                 }
 
                 if (decompressedStream == null)
