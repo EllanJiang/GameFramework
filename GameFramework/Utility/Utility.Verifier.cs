@@ -91,6 +91,50 @@ namespace GameFramework
                 Array.Clear(s_CachedBytes, 0, CachedBytesLength);
                 return result;
             }
+
+            /// <summary>
+            /// 获取 CRC32 数值的二进制数组。
+            /// </summary>
+            /// <param name="crc32">CRC32 数值。</param>
+            /// <returns>CRC32 数值的二进制数组。</returns>
+            public static byte[] GetCrc32Bytes(int crc32)
+            {
+                return new byte[] { (byte)((crc32 >> 24) & 0xff), (byte)((crc32 >> 16) & 0xff), (byte)((crc32 >> 8) & 0xff), (byte)(crc32 & 0xff) };
+            }
+
+            /// <summary>
+            /// 获取 CRC32 数值的二进制数组。
+            /// </summary>
+            /// <param name="crc32">CRC32 数值。</param>
+            /// <param name="bytes">要存放结果的数组。</param>
+            public static void GetCrc32Bytes(int crc32, byte[] bytes)
+            {
+                GetCrc32Bytes(crc32, bytes, 0);
+            }
+
+            /// <summary>
+            /// 获取 CRC32 数值的二进制数组。
+            /// </summary>
+            /// <param name="crc32">CRC32 数值。</param>
+            /// <param name="bytes">要存放结果的数组。</param>
+            /// <param name="offset">CRC32 数值的二进制数组在结果数组内的起始位置。</param>
+            public static void GetCrc32Bytes(int crc32, byte[] bytes, int offset)
+            {
+                if (bytes == null)
+                {
+                    throw new GameFrameworkException("Result is invalid.");
+                }
+
+                if (offset < 0 || offset + 4 > bytes.Length)
+                {
+                    throw new GameFrameworkException("Offset or length is invalid.");
+                }
+
+                bytes[offset] = (byte)((crc32 >> 24) & 0xff);
+                bytes[offset + 1] = (byte)((crc32 >> 16) & 0xff);
+                bytes[offset + 2] = (byte)((crc32 >> 8) & 0xff);
+                bytes[offset + 3] = (byte)(crc32 & 0xff);
+            }
         }
     }
 }
