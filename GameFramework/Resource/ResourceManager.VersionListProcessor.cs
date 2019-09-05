@@ -208,7 +208,7 @@ namespace GameFramework.Resource
                         count -= bytesRead;
                     }
 
-                    int hashCode = Utility.Converter.GetInt32(Utility.Verifier.GetCrc32(m_ResourceManager.m_UpdateFileCache, 0, length));
+                    int hashCode = Utility.Verifier.GetCrc32(m_ResourceManager.m_UpdateFileCache, 0, length);
                     if (hashCode != m_VersionListZipHashCode)
                     {
                         fileStream.Close();

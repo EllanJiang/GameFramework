@@ -513,7 +513,7 @@ namespace GameFramework.Resource
                         Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
                     }
 
-                    int hashCode = Utility.Converter.GetInt32(Utility.Verifier.GetCrc32(m_ResourceManager.m_UpdateFileCache, 0, length));
+                    int hashCode = Utility.Verifier.GetCrc32(m_ResourceManager.m_UpdateFileCache, 0, length);
                     if (hashCode != updateInfo.ZipHashCode)
                     {
                         fileStream.Close();
