@@ -517,7 +517,7 @@ namespace GameFramework.Resource
                     if (hashCode != updateInfo.ZipHashCode)
                     {
                         fileStream.Close();
-                        string errorMessage = Utility.Text.Format("Zip hash code error, need '{0}', downloaded '{1}'.", updateInfo.ZipHashCode.ToString("X8"), hashCode.ToString("X8"));
+                        string errorMessage = Utility.Text.Format("Zip hash code error, need '{0}', downloaded '{1}'.", updateInfo.ZipHashCode.ToString(), hashCode.ToString());
                         DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                         OnDownloadFailure(this, downloadFailureEventArgs);
                         ReferencePool.Release(downloadFailureEventArgs);

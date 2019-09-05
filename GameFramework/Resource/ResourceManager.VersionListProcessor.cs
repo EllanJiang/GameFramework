@@ -212,7 +212,7 @@ namespace GameFramework.Resource
                     if (hashCode != m_VersionListZipHashCode)
                     {
                         fileStream.Close();
-                        string errorMessage = Utility.Text.Format("Latest version list zip hash code error, need '{0}', downloaded '{1}'.", m_VersionListZipHashCode.ToString("X8"), hashCode.ToString("X8"));
+                        string errorMessage = Utility.Text.Format("Latest version list zip hash code error, need '{0}', downloaded '{1}'.", m_VersionListZipHashCode.ToString(), hashCode.ToString());
                         DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                         OnDownloadFailure(this, downloadFailureEventArgs);
                         ReferencePool.Release(downloadFailureEventArgs);
