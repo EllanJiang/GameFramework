@@ -49,7 +49,7 @@ namespace GameFramework.Resource
         private string m_ApplicableGameVersion;
         private int m_InternalResourceVersion;
         private byte[] m_UpdateFileCachedBytes;
-        private Stream m_DecompressCachedStream;
+        private MemoryStream m_DecompressCachedStream;
         private DecryptResourceCallback m_DecryptResourceCallback;
         private InitResourcesCompleteCallback m_InitResourcesCompleteCallback;
         private UpdateVersionListCallbacks m_UpdateVersionListCallbacks;

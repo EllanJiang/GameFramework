@@ -526,13 +526,13 @@ namespace GameFramework.Resource
 
                     if (zip)
                     {
+                        if (m_ResourceManager.m_DecompressCachedStream == null)
+                        {
+                            m_ResourceManager.m_DecompressCachedStream = new MemoryStream();
+                        }
+
                         try
                         {
-                            if (m_ResourceManager.m_DecompressCachedStream == null)
-                            {
-                                m_ResourceManager.m_DecompressCachedStream = new MemoryStream();
-                            }
-
                             m_ResourceManager.m_DecompressCachedStream.Position = 0L;
                             m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
                             if (!Utility.Zip.Decompress(m_ResourceManager.m_UpdateFileCachedBytes, 0, length, m_ResourceManager.m_DecompressCachedStream))

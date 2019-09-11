@@ -189,26 +189,8 @@ namespace GameFramework.Resource
                         return;
                     }
 
-                    if (m_ResourceManager.UpdateFileCachedBytesLength < length)
-                    {
-                        m_ResourceManager.UpdateFileCachedBytesLength = (length / OneMegaBytes + 1) * OneMegaBytes;
-                    }
-
-                    int offset = 0;
-                    int count = length;
-                    while (count > 0)
-                    {
-                        int bytesRead = fileStream.Read(m_ResourceManager.m_UpdateFileCachedBytes, offset, count);
-                        if (bytesRead <= 0)
-                        {
-                            throw new GameFrameworkException(Utility.Text.Format("Unknown error when load file '{0}'.", e.DownloadPath));
-                        }
-
-                        offset += bytesRead;
-                        count -= bytesRead;
-                    }
-
-                    int hashCode = Utility.Verifier.GetCrc32(m_ResourceManager.m_UpdateFileCachedBytes, 0, length);
+                    fileStream.Position = 0L;
+                    int hashCode = Utility.Verifier.GetCrc32(fileStream);
                     if (hashCode != m_VersionListZipHashCode)
                     {
                         fileStream.Close();
@@ -219,16 +201,17 @@ namespace GameFramework.Resource
                         return;
                     }
 
+                    if (m_ResourceManager.m_DecompressCachedStream == null)
+                    {
+                        m_ResourceManager.m_DecompressCachedStream = new MemoryStream();
+                    }
+
                     try
                     {
-                        if (m_ResourceManager.m_DecompressCachedStream == null)
-                        {
-                            m_ResourceManager.m_DecompressCachedStream = new MemoryStream();
-                        }
-
+                        fileStream.Position = 0L;
                         m_ResourceManager.m_DecompressCachedStream.Position = 0L;
                         m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
-                        if (!Utility.Zip.Decompress(m_ResourceManager.m_UpdateFileCachedBytes, 0, length, m_ResourceManager.m_DecompressCachedStream))
+                        if (!Utility.Zip.Decompress(fileStream, m_ResourceManager.m_DecompressCachedStream))
                         {
                             fileStream.Close();
                             string errorMessage = Utility.Text.Format("Unable to decompress latest version list '{0}'.", e.DownloadPath);
@@ -250,12 +233,7 @@ namespace GameFramework.Resource
 
                         fileStream.Position = 0L;
                         fileStream.SetLength(0L);
-                        m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                        int bytesRead = 0;
-                        while ((bytesRead = m_ResourceManager.m_DecompressCachedStream.Read(m_ResourceManager.m_UpdateFileCachedBytes, 0, m_ResourceManager.m_UpdateFileCachedBytes.Length)) > 0)
-                        {
-                            fileStream.Write(m_ResourceManager.m_UpdateFileCachedBytes, 0, bytesRead);
-                        }
+                        fileStream.Write(m_ResourceManager.m_DecompressCachedStream.GetBuffer(), 0, (int)m_ResourceManager.m_DecompressCachedStream.Length);
                     }
                     catch (Exception exception)
                     {
@@ -265,6 +243,11 @@ namespace GameFramework.Resource
                         OnDownloadFailure(this, downloadFailureEventArgs);
                         ReferencePool.Release(downloadFailureEventArgs);
                         return;
+                    }
+                    finally
+                    {
+                        m_ResourceManager.m_DecompressCachedStream.Position = 0L;
+                        m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
                     }
                 }
 
