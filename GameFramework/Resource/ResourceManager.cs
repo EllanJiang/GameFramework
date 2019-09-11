@@ -48,8 +48,8 @@ namespace GameFramework.Resource
         private string m_UpdatePrefixUri;
         private string m_ApplicableGameVersion;
         private int m_InternalResourceVersion;
-        private byte[] m_UpdateFileCache;
-        private Stream m_DecompressCache;
+        private byte[] m_UpdateFileCachedBytes;
+        private Stream m_DecompressCachedStream;
         private DecryptResourceCallback m_DecryptResourceCallback;
         private InitResourcesCompleteCallback m_InitResourcesCompleteCallback;
         private UpdateVersionListCallbacks m_UpdateVersionListCallbacks;
@@ -86,8 +86,8 @@ namespace GameFramework.Resource
             m_UpdatePrefixUri = null;
             m_ApplicableGameVersion = null;
             m_InternalResourceVersion = 0;
-            m_UpdateFileCache = null;
-            m_DecompressCache = null;
+            m_UpdateFileCachedBytes = null;
+            m_DecompressCachedStream = null;
             m_DecryptResourceCallback = null;
             m_InitResourcesCompleteCallback = null;
             m_UpdateVersionListCallbacks = null;
@@ -229,25 +229,25 @@ namespace GameFramework.Resource
         /// <summary>
         /// 获取或设置更新文件缓存大小。
         /// </summary>
-        public int UpdateFileCacheLength
+        public int UpdateFileCachedBytesLength
         {
             get
             {
-                return m_UpdateFileCache != null ? m_UpdateFileCache.Length : 0;
+                return m_UpdateFileCachedBytes != null ? m_UpdateFileCachedBytes.Length : 0;
             }
             set
             {
                 if (m_ResourceUpdater == null)
                 {
-                    throw new GameFrameworkException("You can not use UpdateFileCacheLength at this time.");
+                    throw new GameFrameworkException("You can not use UpdateFileCachedBytesLength at this time.");
                 }
 
-                if (m_UpdateFileCache != null && m_UpdateFileCache.Length == value)
+                if (m_UpdateFileCachedBytes != null && m_UpdateFileCachedBytes.Length == value)
                 {
                     return;
                 }
 
-                m_UpdateFileCache = new byte[value];
+                m_UpdateFileCachedBytes = new byte[value];
             }
         }
 
@@ -610,11 +610,11 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
-                m_UpdateFileCache = null;
-                if (m_DecompressCache != null)
+                m_UpdateFileCachedBytes = null;
+                if (m_DecompressCachedStream != null)
                 {
-                    m_DecompressCache.Dispose();
-                    m_DecompressCache = null;
+                    m_DecompressCachedStream.Dispose();
+                    m_DecompressCachedStream = null;
                 }
             }
 
@@ -1487,11 +1487,11 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
-                m_UpdateFileCache = null;
-                if (m_DecompressCache != null)
+                m_UpdateFileCachedBytes = null;
+                if (m_DecompressCachedStream != null)
                 {
-                    m_DecompressCache.Dispose();
-                    m_DecompressCache = null;
+                    m_DecompressCachedStream.Dispose();
+                    m_DecompressCachedStream = null;
                 }
             }
 
@@ -1552,11 +1552,11 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
-                m_UpdateFileCache = null;
-                if (m_DecompressCache != null)
+                m_UpdateFileCachedBytes = null;
+                if (m_DecompressCachedStream != null)
                 {
-                    m_DecompressCache.Dispose();
-                    m_DecompressCache = null;
+                    m_DecompressCachedStream.Dispose();
+                    m_DecompressCachedStream = null;
                 }
 
                 m_UpdateResourcesCompleteCallback = null;

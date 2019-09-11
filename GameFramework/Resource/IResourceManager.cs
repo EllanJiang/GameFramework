@@ -100,7 +100,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 获取或设置更新文件缓存大小。
         /// </summary>
-        int UpdateFileCacheLength
+        int UpdateFileCachedBytesLength
         {
             get;
             set;
