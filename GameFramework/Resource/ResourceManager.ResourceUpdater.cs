@@ -237,22 +237,6 @@ namespace GameFramework.Resource
                 {
                     GenerateReadWriteList();
                 }
-
-                int maxLength = 0;
-                foreach (UpdateInfo updateInfo in m_UpdateCandidateInfo)
-                {
-                    if (updateInfo.Length <= maxLength)
-                    {
-                        continue;
-                    }
-
-                    maxLength = updateInfo.Length;
-                }
-
-                if (m_ResourceManager.UpdateFileCachedBytesLength < maxLength)
-                {
-                    m_ResourceManager.UpdateFileCachedBytesLength = (maxLength / OneMegaBytes + 1) * OneMegaBytes;
-                }
             }
 
             /// <summary>
@@ -472,52 +456,7 @@ namespace GameFramework.Resource
                     if (length != updateInfo.ZipLength)
                     {
                         fileStream.Close();
-                        string errorMessage = Utility.Text.Format("Zip length error, need '{0}', downloaded '{1}'.", updateInfo.ZipLength.ToString(), length.ToString());
-                        DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
-                        OnDownloadFailure(this, downloadFailureEventArgs);
-                        ReferencePool.Release(downloadFailureEventArgs);
-                        return;
-                    }
-
-                    if (m_ResourceManager.UpdateFileCachedBytesLength < length)
-                    {
-                        m_ResourceManager.UpdateFileCachedBytesLength = (length / OneMegaBytes + 1) * OneMegaBytes;
-                    }
-
-                    int offset = 0;
-                    int count = length;
-                    while (count > 0)
-                    {
-                        int bytesRead = fileStream.Read(m_ResourceManager.m_UpdateFileCachedBytes, offset, count);
-                        if (bytesRead <= 0)
-                        {
-                            throw new GameFrameworkException(Utility.Text.Format("Unknown error when load file '{0}'.", e.DownloadPath));
-                        }
-
-                        offset += bytesRead;
-                        count -= bytesRead;
-                    }
-
-                    if (!zip)
-                    {
-                        Utility.Converter.GetBytes(updateInfo.HashCode, m_CachedHashBytes);
-                        if (updateInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt)
-                        {
-                            Utility.Encryption.GetQuickSelfXorBytes(m_ResourceManager.m_UpdateFileCachedBytes, m_CachedHashBytes);
-                        }
-                        else if (updateInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt)
-                        {
-                            Utility.Encryption.GetSelfXorBytes(m_ResourceManager.m_UpdateFileCachedBytes, m_CachedHashBytes, length);
-                        }
-
-                        Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
-                    }
-
-                    int hashCode = Utility.Verifier.GetCrc32(m_ResourceManager.m_UpdateFileCachedBytes, 0, length);
-                    if (hashCode != updateInfo.ZipHashCode)
-                    {
-                        fileStream.Close();
-                        string errorMessage = Utility.Text.Format("Zip hash code error, need '{0}', downloaded '{1}'.", updateInfo.ZipHashCode.ToString(), hashCode.ToString());
+                        string errorMessage = Utility.Text.Format("Resource zip length error, need '{0}', downloaded '{1}'.", updateInfo.ZipLength.ToString(), length.ToString());
                         DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                         OnDownloadFailure(this, downloadFailureEventArgs);
                         ReferencePool.Release(downloadFailureEventArgs);
@@ -526,6 +465,18 @@ namespace GameFramework.Resource
 
                     if (zip)
                     {
+                        fileStream.Position = 0L;
+                        int hashCode = Utility.Verifier.GetCrc32(fileStream);
+                        if (hashCode != updateInfo.ZipHashCode)
+                        {
+                            fileStream.Close();
+                            string errorMessage = Utility.Text.Format("Resource zip hash code error, need '{0}', downloaded '{1}'.", updateInfo.ZipHashCode.ToString(), hashCode.ToString());
+                            DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
+                            OnDownloadFailure(this, downloadFailureEventArgs);
+                            ReferencePool.Release(downloadFailureEventArgs);
+                            return;
+                        }
+
                         if (m_ResourceManager.m_DecompressCachedStream == null)
                         {
                             m_ResourceManager.m_DecompressCachedStream = new MemoryStream();
@@ -533,12 +484,13 @@ namespace GameFramework.Resource
 
                         try
                         {
+                            fileStream.Position = 0L;
                             m_ResourceManager.m_DecompressCachedStream.Position = 0L;
                             m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
-                            if (!Utility.Zip.Decompress(m_ResourceManager.m_UpdateFileCachedBytes, 0, length, m_ResourceManager.m_DecompressCachedStream))
+                            if (!Utility.Zip.Decompress(fileStream, m_ResourceManager.m_DecompressCachedStream))
                             {
                                 fileStream.Close();
-                                string errorMessage = Utility.Text.Format("Unable to decompress from file '{0}'.", e.DownloadPath);
+                                string errorMessage = Utility.Text.Format("Unable to decompress resource '{0}'.", e.DownloadPath);
                                 DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                                 OnDownloadFailure(this, downloadFailureEventArgs);
                                 ReferencePool.Release(downloadFailureEventArgs);
@@ -557,17 +509,50 @@ namespace GameFramework.Resource
 
                             fileStream.Position = 0L;
                             fileStream.SetLength(0L);
-                            m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                            int bytesRead = 0;
-                            while ((bytesRead = m_ResourceManager.m_DecompressCachedStream.Read(m_ResourceManager.m_UpdateFileCachedBytes, 0, m_ResourceManager.m_UpdateFileCachedBytes.Length)) > 0)
-                            {
-                                fileStream.Write(m_ResourceManager.m_UpdateFileCachedBytes, 0, bytesRead);
-                            }
+                            fileStream.Write(m_ResourceManager.m_DecompressCachedStream.GetBuffer(), 0, (int)m_ResourceManager.m_DecompressCachedStream.Length);
                         }
                         catch (Exception exception)
                         {
                             fileStream.Close();
-                            string errorMessage = Utility.Text.Format("Unable to decompress from file '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
+                            string errorMessage = Utility.Text.Format("Unable to decompress resource '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
+                            DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
+                            OnDownloadFailure(this, downloadFailureEventArgs);
+                            ReferencePool.Release(downloadFailureEventArgs);
+                            return;
+                        }
+                        finally
+                        {
+                            m_ResourceManager.m_DecompressCachedStream.Position = 0L;
+                            m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
+                        }
+                    }
+                    else
+                    {
+                        int hashCode = 0;
+                        fileStream.Position = 0L;
+                        if (updateInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt || updateInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt)
+                        {
+                            Utility.Converter.GetBytes(updateInfo.HashCode, m_CachedHashBytes);
+                            if (updateInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt)
+                            {
+                                hashCode = Utility.Verifier.GetCrc32(fileStream, m_CachedHashBytes, Utility.Encryption.QuickEncryptLength);
+                            }
+                            else if (updateInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt)
+                            {
+                                hashCode = Utility.Verifier.GetCrc32(fileStream, m_CachedHashBytes, length);
+                            }
+
+                            Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
+                        }
+                        else
+                        {
+                            hashCode = Utility.Verifier.GetCrc32(fileStream);
+                        }
+
+                        if (hashCode != updateInfo.HashCode)
+                        {
+                            fileStream.Close();
+                            string errorMessage = Utility.Text.Format("Zip hash code error, need '{0}', downloaded '{1}'.", updateInfo.ZipHashCode.ToString(), hashCode.ToString());
                             DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                             OnDownloadFailure(this, downloadFailureEventArgs);
                             ReferencePool.Release(downloadFailureEventArgs);

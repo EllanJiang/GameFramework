@@ -135,6 +135,61 @@ namespace GameFramework
                 bytes[offset + 2] = (byte)((crc32 >> 8) & 0xff);
                 bytes[offset + 3] = (byte)(crc32 & 0xff);
             }
+
+            internal static int GetCrc32(Stream stream, byte[] code, int length)
+            {
+                if (stream == null)
+                {
+                    throw new GameFrameworkException("Stream is invalid.");
+                }
+
+                if (code == null)
+                {
+                    throw new GameFrameworkException("Code is invalid.");
+                }
+
+                int codeLength = code.Length;
+                if (codeLength <= 0)
+                {
+                    throw new GameFrameworkException("Code length is invalid.");
+                }
+
+                int bytesLength = (int)stream.Length;
+                if (length < 0 || length > bytesLength)
+                {
+                    length = bytesLength;
+                }
+
+                int codeIndex = 0;
+                while (true)
+                {
+                    int bytesRead = stream.Read(s_CachedBytes, 0, CachedBytesLength);
+                    if (bytesRead > 0)
+                    {
+                        if (length > 0)
+                        {
+                            for (int i = 0; i < bytesRead && i < length; i++)
+                            {
+                                s_CachedBytes[i] ^= code[codeIndex++];
+                                codeIndex %= codeLength;
+                            }
+
+                            length -= bytesRead;
+                        }
+
+                        s_Algorithm.HashCore(s_CachedBytes, 0, bytesRead);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                int result = (int)s_Algorithm.HashFinal();
+                s_Algorithm.Initialize();
+                Array.Clear(s_CachedBytes, 0, CachedBytesLength);
+                return result;
+            }
         }
     }
 }

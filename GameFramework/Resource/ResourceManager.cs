@@ -26,7 +26,6 @@ namespace GameFramework.Resource
         private const string ResourceListFileName = "list";
         private const string BackupFileSuffixName = ".bak";
         private const byte ReadWriteListVersionHeader = 0;
-        private const int OneMegaBytes = 1024 * 1024;
 
         private Dictionary<string, AssetInfo> m_AssetInfos;
         private Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
@@ -48,7 +47,6 @@ namespace GameFramework.Resource
         private string m_UpdatePrefixUri;
         private string m_ApplicableGameVersion;
         private int m_InternalResourceVersion;
-        private byte[] m_UpdateFileCachedBytes;
         private MemoryStream m_DecompressCachedStream;
         private DecryptResourceCallback m_DecryptResourceCallback;
         private InitResourcesCompleteCallback m_InitResourcesCompleteCallback;
@@ -86,7 +84,6 @@ namespace GameFramework.Resource
             m_UpdatePrefixUri = null;
             m_ApplicableGameVersion = null;
             m_InternalResourceVersion = 0;
-            m_UpdateFileCachedBytes = null;
             m_DecompressCachedStream = null;
             m_DecryptResourceCallback = null;
             m_InitResourcesCompleteCallback = null;
@@ -223,31 +220,6 @@ namespace GameFramework.Resource
             set
             {
                 m_UpdatePrefixUri = value;
-            }
-        }
-
-        /// <summary>
-        /// 获取或设置更新文件缓存大小。
-        /// </summary>
-        public int UpdateFileCachedBytesLength
-        {
-            get
-            {
-                return m_UpdateFileCachedBytes != null ? m_UpdateFileCachedBytes.Length : 0;
-            }
-            set
-            {
-                if (m_ResourceUpdater == null)
-                {
-                    throw new GameFrameworkException("You can not use UpdateFileCachedBytesLength at this time.");
-                }
-
-                if (m_UpdateFileCachedBytes != null && m_UpdateFileCachedBytes.Length == value)
-                {
-                    return;
-                }
-
-                m_UpdateFileCachedBytes = new byte[value];
             }
         }
 
@@ -610,7 +582,6 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
-                m_UpdateFileCachedBytes = null;
                 if (m_DecompressCachedStream != null)
                 {
                     m_DecompressCachedStream.Dispose();
@@ -1487,7 +1458,6 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
-                m_UpdateFileCachedBytes = null;
                 if (m_DecompressCachedStream != null)
                 {
                     m_DecompressCachedStream.Dispose();
@@ -1552,7 +1522,6 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
-                m_UpdateFileCachedBytes = null;
                 if (m_DecompressCachedStream != null)
                 {
                     m_DecompressCachedStream.Dispose();
