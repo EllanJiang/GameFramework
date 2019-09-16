@@ -88,7 +88,7 @@ namespace GameFramework.Resource
                     return m_Name.GetHashCode();
                 }
 
-                return (m_Name.GetHashCode() ^ m_Variant.GetHashCode());
+                return m_Name.GetHashCode() ^ m_Variant.GetHashCode();
             }
 
             public override bool Equals(object value)

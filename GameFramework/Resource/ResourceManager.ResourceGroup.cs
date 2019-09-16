@@ -18,7 +18,7 @@ namespace GameFramework.Resource
         {
             private readonly string m_Name;
             private readonly Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
-            private readonly List<ResourceName> m_ResourceNames;
+            private readonly HashSet<ResourceName> m_ResourceNames;
             private long m_TotalLength;
             private long m_TotalZipLength;
 
@@ -41,7 +41,7 @@ namespace GameFramework.Resource
 
                 m_Name = name;
                 m_ResourceInfos = resourceInfos;
-                m_ResourceNames = new List<ResourceName>();
+                m_ResourceNames = new HashSet<ResourceName>();
             }
 
             /// <summary>
@@ -158,9 +158,10 @@ namespace GameFramework.Resource
             public string[] GetResourceNames()
             {
                 string[] resourceNames = new string[m_ResourceNames.Count];
-                for (int i = 0; i < m_ResourceNames.Count; i++)
+                int index = 0;
+                foreach (ResourceName resourceName in m_ResourceNames)
                 {
-                    resourceNames[i] = m_ResourceNames[i].FullName;
+                    resourceNames[index++] = resourceName.FullName;
                 }
 
                 return resourceNames;
