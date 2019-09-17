@@ -554,11 +554,9 @@ namespace GameFramework.Config
                 LoadConfigFailureEventArgs loadConfigFailureEventArgs = LoadConfigFailureEventArgs.Create(configAssetName, loadConfigInfo.LoadType, appendErrorMessage, loadConfigInfo.UserData);
                 m_LoadConfigFailureEventHandler(this, loadConfigFailureEventArgs);
                 ReferencePool.Release(loadConfigFailureEventArgs);
-                ReferencePool.Release(loadConfigInfo);
                 return;
             }
 
-            ReferencePool.Release(loadConfigInfo);
             throw new GameFrameworkException(appendErrorMessage);
         }
 

@@ -697,7 +697,6 @@ namespace GameFramework.Sound
                     ReferencePool.Release(playSoundInfo.PlaySoundParams);
                 }
 
-                ReferencePool.Release(playSoundInfo);
                 return;
             }
 
@@ -714,11 +713,9 @@ namespace GameFramework.Sound
                     ReferencePool.Release(playSoundInfo.PlaySoundParams);
                 }
 
-                ReferencePool.Release(playSoundInfo);
                 return;
             }
 
-            ReferencePool.Release(playSoundInfo);
             throw new GameFrameworkException(appendErrorMessage);
         }
 

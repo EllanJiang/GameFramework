@@ -1229,7 +1229,6 @@ namespace GameFramework.Entity
             if (m_EntitiesToReleaseOnLoad.Contains(showEntityInfo.SerialId))
             {
                 m_EntitiesToReleaseOnLoad.Remove(showEntityInfo.SerialId);
-                ReferencePool.Release(showEntityInfo);
                 return;
             }
 
@@ -1240,11 +1239,9 @@ namespace GameFramework.Entity
                 ShowEntityFailureEventArgs showEntityFailureEventArgs = ShowEntityFailureEventArgs.Create(showEntityInfo.EntityId, entityAssetName, showEntityInfo.EntityGroup.Name, appendErrorMessage, showEntityInfo.UserData);
                 m_ShowEntityFailureEventHandler(this, showEntityFailureEventArgs);
                 ReferencePool.Release(showEntityFailureEventArgs);
-                ReferencePool.Release(showEntityInfo);
                 return;
             }
 
-            ReferencePool.Release(showEntityInfo);
             throw new GameFrameworkException(appendErrorMessage);
         }
 

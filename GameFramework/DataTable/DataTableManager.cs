@@ -829,11 +829,9 @@ namespace GameFramework.DataTable
                 LoadDataTableFailureEventArgs loadDataTableFailureEventArgs = LoadDataTableFailureEventArgs.Create(dataTableAssetName, loadDataTableInfo.LoadType, appendErrorMessage, loadDataTableInfo.UserData);
                 m_LoadDataTableFailureEventHandler(this, loadDataTableFailureEventArgs);
                 ReferencePool.Release(loadDataTableFailureEventArgs);
-                ReferencePool.Release(loadDataTableInfo);
                 return;
             }
 
-            ReferencePool.Release(loadDataTableInfo);
             throw new GameFrameworkException(appendErrorMessage);
         }
 

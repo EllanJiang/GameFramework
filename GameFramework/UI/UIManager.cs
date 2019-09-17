@@ -1008,7 +1008,6 @@ namespace GameFramework.UI
             if (m_UIFormsToReleaseOnLoad.Contains(openUIFormInfo.SerialId))
             {
                 m_UIFormsToReleaseOnLoad.Remove(openUIFormInfo.SerialId);
-                ReferencePool.Release(openUIFormInfo);
                 return;
             }
 
@@ -1019,11 +1018,9 @@ namespace GameFramework.UI
                 OpenUIFormFailureEventArgs openUIFormFailureEventArgs = OpenUIFormFailureEventArgs.Create(openUIFormInfo.SerialId, uiFormAssetName, openUIFormInfo.UIGroup.Name, openUIFormInfo.PauseCoveredUIForm, appendErrorMessage, openUIFormInfo.UserData);
                 m_OpenUIFormFailureEventHandler(this, openUIFormFailureEventArgs);
                 ReferencePool.Release(openUIFormFailureEventArgs);
-                ReferencePool.Release(openUIFormInfo);
                 return;
             }
 
-            ReferencePool.Release(openUIFormInfo);
             throw new GameFrameworkException(appendErrorMessage);
         }
 

@@ -635,11 +635,9 @@ namespace GameFramework.Localization
                 LoadDictionaryFailureEventArgs loadDictionaryFailureEventArgs = LoadDictionaryFailureEventArgs.Create(dictionaryAssetName, loadDictionaryInfo.LoadType, appendErrorMessage, loadDictionaryInfo.UserData);
                 m_LoadDictionaryFailureEventHandler(this, loadDictionaryFailureEventArgs);
                 ReferencePool.Release(loadDictionaryFailureEventArgs);
-                ReferencePool.Release(loadDictionaryInfo);
                 return;
             }
 
-            ReferencePool.Release(loadDictionaryInfo);
             throw new GameFrameworkException(appendErrorMessage);
         }
 
