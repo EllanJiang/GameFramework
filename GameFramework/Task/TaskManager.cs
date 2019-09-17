@@ -107,7 +107,7 @@ namespace GameFramework.Task
         public T GenerateTask<T>(int priority) where T : TaskBase, new()
         {
             T task = ReferencePool.Acquire<T>();
-            task.Initialize(m_Serial++, priority);
+            task.Initialize(++m_Serial, priority);
             task.OnGenerate();
 
             LinkedListNode<TaskBase> current = m_Tasks.First;

@@ -134,7 +134,7 @@ namespace GameFramework.WebRequest
             public static WebRequestTask Create(string webRequestUri, byte[] postData, int priority, float timeout, object userData)
             {
                 WebRequestTask webRequestTask = ReferencePool.Acquire<WebRequestTask>();
-                webRequestTask.m_SerialId = s_Serial++;
+                webRequestTask.m_SerialId = ++s_Serial;
                 webRequestTask.m_Priority = priority;
                 webRequestTask.m_WebRequestUri = webRequestUri;
                 webRequestTask.m_PostData = postData;

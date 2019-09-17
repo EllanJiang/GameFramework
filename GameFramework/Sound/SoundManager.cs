@@ -451,7 +451,7 @@ namespace GameFramework.Sound
                 playSoundParams = PlaySoundParams.Create();
             }
 
-            int serialId = m_Serial++;
+            int serialId = ++m_Serial;
             PlaySoundErrorCode? errorCode = null;
             string errorMessage = null;
             SoundGroup soundGroup = (SoundGroup)GetSoundGroup(soundGroupName);

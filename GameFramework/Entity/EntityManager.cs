@@ -646,7 +646,7 @@ namespace GameFramework.Entity
             EntityInstanceObject entityInstanceObject = entityGroup.SpawnEntityInstanceObject(entityAssetName);
             if (entityInstanceObject == null)
             {
-                int serialId = m_Serial++;
+                int serialId = ++m_Serial;
                 m_EntitiesBeingLoaded.Add(entityId, serialId);
                 m_ResourceManager.LoadAsset(entityAssetName, priority, m_LoadAssetCallbacks, ShowEntityInfo.Create(serialId, entityId, entityGroup, userData));
                 return;

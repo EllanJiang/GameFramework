@@ -162,7 +162,7 @@ namespace GameFramework.Download
             public static DownloadTask Create(string downloadPath, string downloadUri, int priority, int flushSize, float timeout, object userData)
             {
                 DownloadTask downloadTask = ReferencePool.Acquire<DownloadTask>();
-                downloadTask.m_SerialId = s_Serial++;
+                downloadTask.m_SerialId = ++s_Serial;
                 downloadTask.m_Priority = priority;
                 downloadTask.m_DownloadPath = downloadPath;
                 downloadTask.m_DownloadUri = downloadUri;

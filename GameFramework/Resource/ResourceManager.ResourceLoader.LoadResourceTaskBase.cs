@@ -203,7 +203,7 @@ namespace GameFramework.Resource
 
                 protected void Initialize(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, object userData)
                 {
-                    m_SerialId = s_Serial++;
+                    m_SerialId = ++s_Serial;
                     m_Priority = priority;
                     m_AssetName = assetName;
                     m_AssetType = assetType;

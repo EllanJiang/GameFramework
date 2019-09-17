@@ -748,7 +748,7 @@ namespace GameFramework.UI
                 throw new GameFrameworkException(Utility.Text.Format("UI group '{0}' is not exist.", uiGroupName));
             }
 
-            int serialId = m_Serial++;
+            int serialId = ++m_Serial;
             UIFormInstanceObject uiFormInstanceObject = m_InstancePool.Spawn(uiFormAssetName);
             if (uiFormInstanceObject == null)
             {
