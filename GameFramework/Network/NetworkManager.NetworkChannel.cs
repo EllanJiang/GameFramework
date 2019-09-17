@@ -37,6 +37,10 @@ namespace GameFramework.Network
             private bool m_Active;
             private bool m_Disposed;
 
+            private readonly AsyncCallback m_ConnectCallback;
+            private readonly AsyncCallback m_SendCallback;
+            private readonly AsyncCallback m_ReceiveCallback;
+
             public GameFrameworkAction<NetworkChannel, object> NetworkChannelConnected;
             public GameFrameworkAction<NetworkChannel> NetworkChannelClosed;
             public GameFrameworkAction<NetworkChannel, int> NetworkChannelMissHeartBeat;
@@ -65,6 +69,10 @@ namespace GameFramework.Network
                 m_ReceivedPacketCount = 0;
                 m_Active = false;
                 m_Disposed = false;
+
+                m_ConnectCallback = ConnectCallback;
+                m_SendCallback = SendCallback;
+                m_ReceiveCallback = ReceiveCallback;
 
                 NetworkChannelConnected = null;
                 NetworkChannelClosed = null;
@@ -362,7 +370,7 @@ namespace GameFramework.Network
 
                 try
                 {
-                    m_Socket.BeginConnect(ipAddress, port, ConnectCallback, new ConnectState(m_Socket, userData));
+                    m_Socket.BeginConnect(ipAddress, port, m_ConnectCallback, new ConnectState(m_Socket, userData));
                 }
                 catch (Exception exception)
                 {
@@ -509,7 +517,7 @@ namespace GameFramework.Network
             {
                 try
                 {
-                    m_Socket.BeginSend(m_SendState.Stream.GetBuffer(), (int)m_SendState.Stream.Position, (int)(m_SendState.Stream.Length - m_SendState.Stream.Position), SocketFlags.None, SendCallback, m_Socket);
+                    m_Socket.BeginSend(m_SendState.Stream.GetBuffer(), (int)m_SendState.Stream.Position, (int)(m_SendState.Stream.Length - m_SendState.Stream.Position), SocketFlags.None, m_SendCallback, m_Socket);
                 }
                 catch (Exception exception)
                 {
@@ -529,7 +537,7 @@ namespace GameFramework.Network
             {
                 try
                 {
-                    m_Socket.BeginReceive(m_ReceiveState.Stream.GetBuffer(), (int)m_ReceiveState.Stream.Position, (int)(m_ReceiveState.Stream.Length - m_ReceiveState.Stream.Position), SocketFlags.None, ReceiveCallback, m_Socket);
+                    m_Socket.BeginReceive(m_ReceiveState.Stream.GetBuffer(), (int)m_ReceiveState.Stream.Position, (int)(m_ReceiveState.Stream.Length - m_ReceiveState.Stream.Position), SocketFlags.None, m_ReceiveCallback, m_Socket);
                 }
                 catch (Exception exception)
                 {
