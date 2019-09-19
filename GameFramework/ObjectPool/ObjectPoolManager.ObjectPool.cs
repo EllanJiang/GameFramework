@@ -20,6 +20,7 @@ namespace GameFramework.ObjectPool
         {
             private readonly Dictionary<string, List<Object<T>>> m_Objects;
             private readonly Dictionary<object, Object<T>> m_ObjectMap;
+            private readonly ReleaseObjectFilterCallback<T> m_DefaultReleaseObjectFilterCallback;
             private readonly List<T> m_CachedCanReleaseObjects;
             private readonly List<T> m_CachedToReleaseObjects;
             private readonly bool m_AllowMultiSpawn;
@@ -28,8 +29,6 @@ namespace GameFramework.ObjectPool
             private float m_ExpireTime;
             private int m_Priority;
             private float m_AutoReleaseTime;
-
-            private readonly ReleaseObjectFilterCallback<T> m_DefaultReleaseObjectFilterCallback;
 
             /// <summary>
             /// 初始化对象池的新实例。
@@ -45,6 +44,7 @@ namespace GameFramework.ObjectPool
             {
                 m_Objects = new Dictionary<string, List<Object<T>>>();
                 m_ObjectMap = new Dictionary<object, Object<T>>();
+                m_DefaultReleaseObjectFilterCallback = DefaultReleaseObjectFilterCallback;
                 m_CachedCanReleaseObjects = new List<T>();
                 m_CachedToReleaseObjects = new List<T>();
                 m_AllowMultiSpawn = allowMultiSpawn;
@@ -53,7 +53,6 @@ namespace GameFramework.ObjectPool
                 ExpireTime = expireTime;
                 m_Priority = priority;
                 m_AutoReleaseTime = 0f;
-                m_DefaultReleaseObjectFilterCallback = DefaultReleaseObjectFilterCallback;
             }
 
             /// <summary>
