@@ -29,6 +29,8 @@ namespace GameFramework.ObjectPool
             private int m_Priority;
             private float m_AutoReleaseTime;
 
+            private readonly ReleaseObjectFilterCallback<T> m_DefaultReleaseObjectFilterCallback;
+
             /// <summary>
             /// 初始化对象池的新实例。
             /// </summary>
@@ -51,6 +53,7 @@ namespace GameFramework.ObjectPool
                 ExpireTime = expireTime;
                 m_Priority = priority;
                 m_AutoReleaseTime = 0f;
+                m_DefaultReleaseObjectFilterCallback = DefaultReleaseObjectFilterCallback;
             }
 
             /// <summary>
@@ -393,7 +396,7 @@ namespace GameFramework.ObjectPool
             /// </summary>
             public override void Release()
             {
-                Release(Count - m_Capacity, DefaultReleaseObjectFilterCallback);
+                Release(Count - m_Capacity, m_DefaultReleaseObjectFilterCallback);
             }
 
             /// <summary>
@@ -402,7 +405,7 @@ namespace GameFramework.ObjectPool
             /// <param name="toReleaseCount">尝试释放对象数量。</param>
             public override void Release(int toReleaseCount)
             {
-                Release(toReleaseCount, DefaultReleaseObjectFilterCallback);
+                Release(toReleaseCount, m_DefaultReleaseObjectFilterCallback);
             }
 
             /// <summary>
