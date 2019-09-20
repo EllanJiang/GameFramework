@@ -35,6 +35,6 @@ namespace GameFramework.Resource
         /// <summary>
         /// 加载场景。
         /// </summary>
-        LoadScene,
+        LoadScene
     }
 }

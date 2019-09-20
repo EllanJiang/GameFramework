@@ -15,7 +15,7 @@ namespace GameFramework.Task
         /// <summary>
         /// 空闲。
         /// </summary>
-        Free,
+        Free = 0,
 
         /// <summary>
         /// 等待中。
@@ -40,6 +40,6 @@ namespace GameFramework.Task
         /// <summary>
         /// 已取消。
         /// </summary>
-        Canceled,
+        Canceled
     }
 }

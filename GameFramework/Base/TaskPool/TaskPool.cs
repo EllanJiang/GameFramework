@@ -223,12 +223,12 @@ namespace GameFramework
             foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
             {
                 T workingTask = workingAgent.Task;
-                results.Add(new TaskInfo(workingTask.SerialId, workingTask.Priority, workingTask.Done, true, workingTask.Description));
+                results.Add(new TaskInfo(workingTask.SerialId, workingTask.Priority, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description));
             }
 
             foreach (T waitingTask in m_WaitingTasks)
             {
-                results.Add(new TaskInfo(waitingTask.SerialId, waitingTask.Priority, waitingTask.Done, false, waitingTask.Description));
+                results.Add(new TaskInfo(waitingTask.SerialId, waitingTask.Priority, TaskStatus.Todo, waitingTask.Description));
             }
 
             return results.ToArray();

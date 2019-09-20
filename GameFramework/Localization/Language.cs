@@ -265,6 +265,6 @@ namespace GameFramework.Localization
         /// <summary>
         /// 越南语。
         /// </summary>
-        Vietnamese,
+        Vietnamese
     }
 }

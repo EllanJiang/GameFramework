@@ -15,7 +15,7 @@ namespace GameFramework
         /// <summary>
         /// 按文本加载。
         /// </summary>
-        Text,
+        Text = 0,
 
         /// <summary>
         /// 按二进制流加载。

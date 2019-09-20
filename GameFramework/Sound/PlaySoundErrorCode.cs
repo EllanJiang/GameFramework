@@ -40,6 +40,6 @@ namespace GameFramework.Sound
         /// <summary>
         /// 设置声音资源失败。
         /// </summary>
-        SetSoundAssetFailure,
+        SetSoundAssetFailure
     }
 }

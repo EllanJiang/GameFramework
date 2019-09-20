@@ -55,6 +55,6 @@ namespace GameFramework.Network
         /// <summary>
         /// 接收错误。
         /// </summary>
-        ReceiveError,
+        ReceiveError
     }
 }

@@ -22,7 +22,7 @@ namespace GameFramework.Entity
             WillHide,
             Hidden,
             WillRecycle,
-            Recycled,
+            Recycled
         }
     }
 }

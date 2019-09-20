@@ -25,6 +25,6 @@ namespace GameFramework.Resource
         /// <summary>
         /// 可更新模式。
         /// </summary>
-        Updatable,
+        Updatable
     }
 }

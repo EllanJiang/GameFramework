@@ -32,7 +32,7 @@ namespace GameFramework.Resource
             /// <summary>
             /// 从内存解密加载。
             /// </summary>
-            LoadFromMemoryAndDecrypt,
+            LoadFromMemoryAndDecrypt
         }
     }
 }

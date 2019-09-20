@@ -16,8 +16,7 @@ namespace GameFramework
     {
         private readonly int m_SerialId;
         private readonly int m_Priority;
-        private readonly bool m_Done;
-        private readonly bool m_Working;
+        private readonly TaskStatus m_Status;
         private readonly string m_Description;
 
         /// <summary>
@@ -25,15 +24,13 @@ namespace GameFramework
         /// </summary>
         /// <param name="serialId">任务的序列编号。</param>
         /// <param name="priority">任务的优先级。</param>
-        /// <param name="done">任务是否完成。</param>
-        /// <param name="working">任务是否正在进行。</param>
+        /// <param name="status">任务状态。</param>
         /// <param name="description">任务描述。</param>
-        public TaskInfo(int serialId, int priority, bool done, bool working, string description)
+        public TaskInfo(int serialId, int priority, TaskStatus status, string description)
         {
             m_SerialId = serialId;
             m_Priority = priority;
-            m_Done = done;
-            m_Working = working;
+            m_Status = status;
             m_Description = description;
         }
 
@@ -60,24 +57,13 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 获取任务是否完成。
+        /// 获取任务状态。
         /// </summary>
-        public bool Done
+        public TaskStatus Status
         {
             get
             {
-                return m_Done;
-            }
-        }
-
-        /// <summary>
-        /// 获取任务是否正在进行。
-        /// </summary>
-        public bool Working
-        {
-            get
-            {
-                return m_Working;
+                return m_Status;
             }
         }
 

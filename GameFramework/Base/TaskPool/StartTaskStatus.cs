@@ -15,7 +15,7 @@ namespace GameFramework
         /// <summary>
         /// 可以立刻处理完成此任务。
         /// </summary>
-        Done,
+        Done = 0,
 
         /// <summary>
         /// 可以继续处理此任务。
@@ -30,6 +30,6 @@ namespace GameFramework
         /// <summary>
         /// 不能继续处理此任务，出现未知错误。
         /// </summary>
-        UnknownError,
+        UnknownError
     }
 }

@@ -33,6 +33,6 @@ namespace GameFramework
         /// <summary>
         /// 允许存在重复的事件处理函数。
         /// </summary>
-        AllowDuplicateHandler = 4,
+        AllowDuplicateHandler = 4
     }
 }

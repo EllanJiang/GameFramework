@@ -15,7 +15,7 @@ namespace GameFramework
         /// <summary>
         /// 调试。
         /// </summary>
-        Debug,
+        Debug = 0,
 
         /// <summary>
         /// 信息。

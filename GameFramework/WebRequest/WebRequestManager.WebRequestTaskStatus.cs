@@ -17,7 +17,7 @@ namespace GameFramework.WebRequest
             /// <summary>
             /// 准备请求。
             /// </summary>
-            Todo,
+            Todo = 0,
 
             /// <summary>
             /// 请求中。

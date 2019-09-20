@@ -40,6 +40,6 @@ namespace GameFramework.Resource
         /// <summary>
         /// 加载资源错误。
         /// </summary>
-        AssetError,
+        AssetError
     }
 }

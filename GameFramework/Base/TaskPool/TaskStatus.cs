@@ -5,26 +5,26 @@
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-namespace GameFramework.Network
+namespace GameFramework
 {
     /// <summary>
-    /// 网络类型。
+    /// 任务状态。
     /// </summary>
-    public enum NetworkType
+    public enum TaskStatus
     {
         /// <summary>
-        /// 未知。
+        /// 未开始。
         /// </summary>
-        Unknown = 0,
+        Todo = 0,
 
         /// <summary>
-        /// IP 版本 4。
+        /// 执行中。
         /// </summary>
-        IPv4,
+        Doing,
 
         /// <summary>
-        /// IP 版本 6。
+        /// 完成。
         /// </summary>
-        IPv6
+        Done
     }
 }

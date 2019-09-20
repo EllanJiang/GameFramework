@@ -17,7 +17,7 @@ namespace GameFramework.Download
             /// <summary>
             /// 准备下载。
             /// </summary>
-            Todo,
+            Todo = 0,
 
             /// <summary>
             /// 下载中。

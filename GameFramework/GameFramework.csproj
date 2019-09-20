@@ -66,6 +66,7 @@
     <Compile Include="Base\TaskPool\TaskBase.cs" />
     <Compile Include="Base\TaskPool\TaskInfo.cs" />
     <Compile Include="Base\TaskPool\TaskPool.cs" />
+    <Compile Include="Base\TaskPool\TaskStatus.cs" />
     <Compile Include="Base\Variable\GenericVariable.cs" />
     <Compile Include="Base\Variable\Variable.cs" />
     <Compile Include="Base\Version\Version.cs" />
