@@ -13,7 +13,7 @@ namespace GameFramework
     /// 任务池。
     /// </summary>
     /// <typeparam name="T">任务类型。</typeparam>
-    internal sealed class TaskPool<T> where T : ITask
+    internal sealed class TaskPool<T> where T : TaskBase
     {
         private readonly Stack<ITaskAgent<T>> m_FreeAgents;
         private readonly GameFrameworkLinkedList<ITaskAgent<T>> m_WorkingAgents;
@@ -215,6 +215,23 @@ namespace GameFramework
             }
 
             m_WorkingAgents.Clear();
+        }
+
+        public TaskInfo[] GetAllTaskInfos()
+        {
+            List<TaskInfo> results = new List<TaskInfo>();
+            foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
+            {
+                T workingTask = workingAgent.Task;
+                results.Add(new TaskInfo(workingTask.SerialId, workingTask.Priority, workingTask.Done, true, workingTask.Description));
+            }
+
+            foreach (T waitingTask in m_WaitingTasks)
+            {
+                results.Add(new TaskInfo(waitingTask.SerialId, waitingTask.Priority, waitingTask.Done, false, waitingTask.Description));
+            }
+
+            return results.ToArray();
         }
 
         private void ProcessRunningTasks(float elapseSeconds, float realElapseSeconds)

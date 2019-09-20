@@ -515,5 +515,11 @@ namespace GameFramework.Resource
         /// <param name="resourceGroupName">要获取的资源组名称。</param>
         /// <returns>要获取的资源组。</returns>
         IResourceGroup GetResourceGroup(string resourceGroupName);
+
+        /// <summary>
+        /// 获取所有加载资源任务的信息。
+        /// </summary>
+        /// <returns>所有加载资源任务的信息。</returns>
+        TaskInfo[] GetAllLoadAssetInfos();
     }
 }

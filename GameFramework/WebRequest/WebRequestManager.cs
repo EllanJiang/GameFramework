@@ -287,6 +287,15 @@ namespace GameFramework.WebRequest
             m_TaskPool.RemoveAllTasks();
         }
 
+        /// <summary>
+        /// 获取所有 Web 请求任务的信息。
+        /// </summary>
+        /// <returns>所有 Web 请求任务的信息。</returns>
+        public TaskInfo[] GetAllWebRequestInfos()
+        {
+            return m_TaskPool.GetAllTaskInfos();
+        }
+
         private void OnWebRequestAgentStart(WebRequestAgent sender)
         {
             if (m_WebRequestStartEventHandler != null)

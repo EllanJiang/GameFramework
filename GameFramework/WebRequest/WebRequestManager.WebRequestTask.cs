@@ -12,13 +12,10 @@ namespace GameFramework.WebRequest
         /// <summary>
         /// Web 请求任务。
         /// </summary>
-        private sealed class WebRequestTask : ITask
+        private sealed class WebRequestTask : TaskBase
         {
             private static int s_Serial = 0;
 
-            private int m_SerialId;
-            private int m_Priority;
-            private bool m_Done;
             private WebRequestTaskStatus m_Status;
             private string m_WebRequestUri;
             private byte[] m_PostData;
@@ -27,51 +24,11 @@ namespace GameFramework.WebRequest
 
             public WebRequestTask()
             {
-                m_SerialId = 0;
-                m_Priority = 0;
-                m_Done = false;
                 m_Status = WebRequestTaskStatus.Todo;
                 m_WebRequestUri = null;
                 m_PostData = null;
                 m_Timeout = 0f;
                 m_UserData = null;
-            }
-
-            /// <summary>
-            /// 获取 Web 请求任务的序列编号。
-            /// </summary>
-            public int SerialId
-            {
-                get
-                {
-                    return m_SerialId;
-                }
-            }
-
-            /// <summary>
-            /// 获取 Web 请求任务的优先级。
-            /// </summary>
-            public int Priority
-            {
-                get
-                {
-                    return m_Priority;
-                }
-            }
-
-            /// <summary>
-            /// 获取或设置 Web 请求任务是否完成。
-            /// </summary>
-            public bool Done
-            {
-                get
-                {
-                    return m_Done;
-                }
-                set
-                {
-                    m_Done = value;
-                }
             }
 
             /// <summary>
@@ -123,6 +80,17 @@ namespace GameFramework.WebRequest
             }
 
             /// <summary>
+            /// 获取 Web 请求任务的描述。
+            /// </summary>
+            public override string Description
+            {
+                get
+                {
+                    return m_WebRequestUri;
+                }
+            }
+
+            /// <summary>
             /// 创建 Web 请求任务。
             /// </summary>
             /// <param name="webRequestUri">要发送的远程地址。</param>
@@ -134,8 +102,7 @@ namespace GameFramework.WebRequest
             public static WebRequestTask Create(string webRequestUri, byte[] postData, int priority, float timeout, object userData)
             {
                 WebRequestTask webRequestTask = ReferencePool.Acquire<WebRequestTask>();
-                webRequestTask.m_SerialId = ++s_Serial;
-                webRequestTask.m_Priority = priority;
+                webRequestTask.Initialize(++s_Serial, priority);
                 webRequestTask.m_WebRequestUri = webRequestUri;
                 webRequestTask.m_PostData = postData;
                 webRequestTask.m_Timeout = timeout;
@@ -146,11 +113,9 @@ namespace GameFramework.WebRequest
             /// <summary>
             /// 清理 Web 请求任务。
             /// </summary>
-            public void Clear()
+            public override void Clear()
             {
-                m_SerialId = 0;
-                m_Priority = 0;
-                m_Done = false;
+                base.Clear();
                 m_Status = WebRequestTaskStatus.Todo;
                 m_WebRequestUri = null;
                 m_PostData = null;

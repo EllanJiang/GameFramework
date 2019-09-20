@@ -61,9 +61,10 @@
     <Compile Include="Base\ReferencePool\ReferencePool.cs" />
     <Compile Include="Base\ReferencePool\ReferencePool.ReferenceCollection.cs" />
     <Compile Include="Base\ReferencePool\ReferencePoolInfo.cs" />
-    <Compile Include="Base\TaskPool\ITask.cs" />
     <Compile Include="Base\TaskPool\ITaskAgent.cs" />
     <Compile Include="Base\TaskPool\StartTaskStatus.cs" />
+    <Compile Include="Base\TaskPool\TaskBase.cs" />
+    <Compile Include="Base\TaskPool\TaskInfo.cs" />
     <Compile Include="Base\TaskPool\TaskPool.cs" />
     <Compile Include="Base\Variable\GenericVariable.cs" />
     <Compile Include="Base\Variable\Variable.cs" />

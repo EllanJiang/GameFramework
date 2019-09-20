@@ -155,5 +155,11 @@ namespace GameFramework.WebRequest
         /// 移除所有 Web 请求任务。
         /// </summary>
         void RemoveAllWebRequests();
+
+        /// <summary>
+        /// 获取所有 Web 请求任务的信息。
+        /// </summary>
+        /// <returns>所有 Web 请求任务的信息。</returns>
+        TaskInfo[] GetAllWebRequestInfos();
     }
 }

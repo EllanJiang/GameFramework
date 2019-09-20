@@ -325,9 +325,18 @@ namespace GameFramework.Download
         /// <summary>
         /// 移除所有下载任务。
         /// </summary>
-        public void RemoveAllDownload()
+        public void RemoveAllDownloads()
         {
             m_TaskPool.RemoveAllTasks();
+        }
+
+        /// <summary>
+        /// 获取所有下载任务的信息。
+        /// </summary>
+        /// <returns>所有下载任务的信息。</returns>
+        public TaskInfo[] GetAllDownloadInfos()
+        {
+            return m_TaskPool.GetAllTaskInfos();
         }
 
         private void OnDownloadAgentStart(DownloadAgent sender)

@@ -400,6 +400,15 @@ namespace GameFramework.Resource
                 m_ResourceManager.m_ResourceHelper.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
             }
 
+            /// <summary>
+            /// 获取所有加载资源任务的信息。
+            /// </summary>
+            /// <returns>所有加载资源任务的信息。</returns>
+            public TaskInfo[] GetAllLoadAssetInfos()
+            {
+                return m_TaskPool.GetAllTaskInfos();
+            }
+
             private bool LoadDependencyAsset(string assetName, int priority, LoadResourceTaskBase mainTask, object userData)
             {
                 if (mainTask == null)

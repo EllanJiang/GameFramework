@@ -153,6 +153,12 @@ namespace GameFramework.Download
         /// <summary>
         /// 移除所有下载任务。
         /// </summary>
-        void RemoveAllDownload();
+        void RemoveAllDownloads();
+
+        /// <summary>
+        /// 获取所有下载任务的信息。
+        /// </summary>
+        /// <returns>所有下载任务的信息。</returns>
+        TaskInfo[] GetAllDownloadInfos();
     }
 }

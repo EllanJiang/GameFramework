@@ -12,13 +12,10 @@ namespace GameFramework.Download
         /// <summary>
         /// 下载任务。
         /// </summary>
-        private sealed class DownloadTask : ITask
+        private sealed class DownloadTask : TaskBase
         {
             private static int s_Serial = 0;
 
-            private int m_SerialId;
-            private int m_Priority;
-            private bool m_Done;
             private DownloadTaskStatus m_Status;
             private string m_DownloadPath;
             private string m_DownloadUri;
@@ -31,52 +28,12 @@ namespace GameFramework.Download
             /// </summary>
             public DownloadTask()
             {
-                m_SerialId = 0;
-                m_Priority = 0;
-                m_Done = false;
                 m_Status = DownloadTaskStatus.Todo;
                 m_DownloadPath = null;
                 m_DownloadUri = null;
                 m_FlushSize = 0;
                 m_Timeout = 0f;
                 m_UserData = null;
-            }
-
-            /// <summary>
-            /// 获取下载任务的序列编号。
-            /// </summary>
-            public int SerialId
-            {
-                get
-                {
-                    return m_SerialId;
-                }
-            }
-
-            /// <summary>
-            /// 获取下载任务的优先级。
-            /// </summary>
-            public int Priority
-            {
-                get
-                {
-                    return m_Priority;
-                }
-            }
-
-            /// <summary>
-            /// 获取或设置下载任务是否完成。
-            /// </summary>
-            public bool Done
-            {
-                get
-                {
-                    return m_Done;
-                }
-                set
-                {
-                    m_Done = value;
-                }
             }
 
             /// <summary>
@@ -150,6 +107,17 @@ namespace GameFramework.Download
             }
 
             /// <summary>
+            /// 获取下载任务的描述。
+            /// </summary>
+            public override string Description
+            {
+                get
+                {
+                    return m_DownloadPath;
+                }
+            }
+
+            /// <summary>
             /// 创建下载任务。
             /// </summary>
             /// <param name="downloadPath">下载后存放路径。</param>
@@ -162,8 +130,7 @@ namespace GameFramework.Download
             public static DownloadTask Create(string downloadPath, string downloadUri, int priority, int flushSize, float timeout, object userData)
             {
                 DownloadTask downloadTask = ReferencePool.Acquire<DownloadTask>();
-                downloadTask.m_SerialId = ++s_Serial;
-                downloadTask.m_Priority = priority;
+                downloadTask.Initialize(++s_Serial, priority);
                 downloadTask.m_DownloadPath = downloadPath;
                 downloadTask.m_DownloadUri = downloadUri;
                 downloadTask.m_FlushSize = flushSize;
@@ -175,11 +142,9 @@ namespace GameFramework.Download
             /// <summary>
             /// 清理下载任务。
             /// </summary>
-            public void Clear()
+            public override void Clear()
             {
-                m_SerialId = 0;
-                m_Priority = 0;
-                m_Done = false;
+                base.Clear();
                 m_Status = DownloadTaskStatus.Todo;
                 m_DownloadPath = null;
                 m_DownloadUri = null;

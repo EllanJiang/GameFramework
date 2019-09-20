@@ -1334,6 +1334,16 @@ namespace GameFramework.Resource
             return null;
         }
 
+        /// <summary>
+        /// 获取所有加载资源任务的信息。
+        /// </summary>
+        /// <returns>所有加载资源任务的信息。</returns>
+        public TaskInfo[] GetAllLoadAssetInfos()
+        {
+            return m_ResourceLoader.GetAllLoadAssetInfos();
+        }
+
+
         private ResourceGroup GetOrAddResourceGroup(string resourceGroupName)
         {
             if (resourceGroupName == null)
