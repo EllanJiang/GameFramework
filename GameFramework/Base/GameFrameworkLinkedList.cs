@@ -398,6 +398,9 @@ namespace GameFramework
                 }
             }
 
+            /// <summary>
+            /// 获取当前的枚举数。
+            /// </summary>
             object IEnumerator.Current
             {
                 get
@@ -423,6 +426,9 @@ namespace GameFramework
                 return m_Enumerator.MoveNext();
             }
 
+            /// <summary>
+            /// 重置枚举数。
+            /// </summary>
             void IEnumerator.Reset()
             {
                 ((IEnumerator<T>)m_Enumerator).Reset();
