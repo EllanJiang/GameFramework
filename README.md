@@ -6,7 +6,7 @@
 
 ---
 
-![Game Framework](http://gameframework.cn/wp-content/uploads/2016/04/Game-Framework.png)
+![Game Framework](https://gameframework.cn/image/gameframework.png)
 
 ---
 
