@@ -332,7 +332,7 @@ namespace GameFramework.Resource
                         throw;
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Parse version list exception '{0}'.", exception.Message), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse version list exception '{0}'.", exception.ToString()), exception);
                 }
                 finally
                 {
@@ -411,7 +411,7 @@ namespace GameFramework.Resource
                         throw;
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Parse readonly list exception '{0}'.", exception.Message), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse readonly list exception '{0}'.", exception.ToString()), exception);
                 }
                 finally
                 {
@@ -498,7 +498,7 @@ namespace GameFramework.Resource
                         throw;
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Parse read-write list exception '{0}'.", exception.Message), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse read-write list exception '{0}'.", exception.ToString()), exception);
                 }
                 finally
                 {

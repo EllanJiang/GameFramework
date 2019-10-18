@@ -238,7 +238,7 @@ namespace GameFramework.Resource
                     catch (Exception exception)
                     {
                         fileStream.Close();
-                        string errorMessage = Utility.Text.Format("Unable to decompress latest version list '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
+                        string errorMessage = Utility.Text.Format("Unable to decompress latest version list '{0}' with error message '{1}'.", e.DownloadPath, exception.ToString());
                         DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                         OnDownloadFailure(this, downloadFailureEventArgs);
                         ReferencePool.Release(downloadFailureEventArgs);

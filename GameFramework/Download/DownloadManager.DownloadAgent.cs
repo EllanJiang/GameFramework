@@ -224,7 +224,7 @@ namespace GameFramework.Download
                 }
                 catch (Exception exception)
                 {
-                    DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = DownloadAgentHelperErrorEventArgs.Create(exception.Message);
+                    DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = DownloadAgentHelperErrorEventArgs.Create(exception.ToString());
                     OnDownloadAgentHelperError(this, downloadAgentHelperErrorEventArgs);
                     ReferencePool.Release(downloadAgentHelperErrorEventArgs);
                     return StartTaskStatus.UnknownError;
@@ -301,7 +301,7 @@ namespace GameFramework.Download
                 }
                 catch (Exception exception)
                 {
-                    DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = DownloadAgentHelperErrorEventArgs.Create(exception.Message);
+                    DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = DownloadAgentHelperErrorEventArgs.Create(exception.ToString());
                     OnDownloadAgentHelperError(this, downloadAgentHelperErrorEventArgs);
                     ReferencePool.Release(downloadAgentHelperErrorEventArgs);
                 }

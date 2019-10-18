@@ -358,7 +358,7 @@ namespace GameFramework.Resource
                         File.Move(backupFile, file);
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Pack save exception '{0}'.", exception.Message), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Pack save exception '{0}'.", exception.ToString()), exception);
                 }
                 finally
                 {
@@ -514,7 +514,7 @@ namespace GameFramework.Resource
                         catch (Exception exception)
                         {
                             fileStream.Close();
-                            string errorMessage = Utility.Text.Format("Unable to decompress resource '{0}' with error message '{1}'.", e.DownloadPath, exception.Message);
+                            string errorMessage = Utility.Text.Format("Unable to decompress resource '{0}' with error message '{1}'.", e.DownloadPath, exception.ToString());
                             DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                             OnDownloadFailure(this, downloadFailureEventArgs);
                             ReferencePool.Release(downloadFailureEventArgs);

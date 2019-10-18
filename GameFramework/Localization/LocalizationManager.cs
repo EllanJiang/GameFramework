@@ -408,7 +408,7 @@ namespace GameFramework.Localization
             }
             catch (Exception exception)
             {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3}", key, value, arg0, exception.Message);
+                return Utility.Text.Format("<Error>{0},{1},{2},{3}", key, value, arg0, exception.ToString());
             }
         }
 
@@ -438,7 +438,7 @@ namespace GameFramework.Localization
             }
             catch (Exception exception)
             {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4}", key, value, arg0, arg1, exception.Message);
+                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4}", key, value, arg0, arg1, exception.ToString());
             }
         }
 
@@ -469,7 +469,7 @@ namespace GameFramework.Localization
             }
             catch (Exception exception)
             {
-                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5}", key, value, arg0, arg1, arg2, exception.Message);
+                return Utility.Text.Format("<Error>{0},{1},{2},{3},{4},{5}", key, value, arg0, arg1, arg2, exception.ToString());
             }
         }
 
@@ -507,7 +507,7 @@ namespace GameFramework.Localization
                     }
                 }
 
-                errorString += "," + exception.Message;
+                errorString += "," + exception.ToString();
                 return errorString;
             }
         }
