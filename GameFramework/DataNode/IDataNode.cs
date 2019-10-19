@@ -73,6 +73,20 @@ namespace GameFramework.DataNode
         void SetData(Variable data);
 
         /// <summary>
+        /// 根据索引检查是否存在子数据结点。
+        /// </summary>
+        /// <param name="index">子数据结点的索引。</param>
+        /// <returns>是否存在子数据结点。</returns>
+        bool HasChild(int index);
+
+        /// <summary>
+        /// 根据名称检查是否存在子数据结点。
+        /// </summary>
+        /// <param name="name">子数据结点名称。</param>
+        /// <returns>是否存在子数据结点。</returns>
+        bool HasChild(string name);
+
+        /// <summary>
         /// 根据索引获取子数据结点。
         /// </summary>
         /// <param name="index">子数据结点的索引。</param>
