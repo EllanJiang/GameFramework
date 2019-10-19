@@ -8,12 +8,12 @@
 namespace GameFramework.Config
 {
     /// <summary>
-    /// 加载配置成功事件。
+    /// 加载全局配置成功事件。
     /// </summary>
     public sealed class LoadConfigSuccessEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
-        /// 初始化加载配置成功事件的新实例。
+        /// 初始化加载全局配置成功事件的新实例。
         /// </summary>
         public LoadConfigSuccessEventArgs()
         {
@@ -24,7 +24,7 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 获取配置资源名称。
+        /// 获取全局配置资源名称。
         /// </summary>
         public string ConfigAssetName
         {
@@ -33,7 +33,7 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 获取配置加载方式。
+        /// 获取全局配置加载方式。
         /// </summary>
         public LoadType LoadType
         {
@@ -60,13 +60,13 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 创建加载配置成功事件。
+        /// 创建加载全局配置成功事件。
         /// </summary>
-        /// <param name="configAssetName">配置资源名称。</param>
-        /// <param name="loadType">配置加载方式。</param>
+        /// <param name="configAssetName">全局配置资源名称。</param>
+        /// <param name="loadType">全局配置加载方式。</param>
         /// <param name="duration">加载持续时间。</param>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>创建的加载配置成功事件。</returns>
+        /// <returns>创建的加载全局配置成功事件。</returns>
         public static LoadConfigSuccessEventArgs Create(string configAssetName, LoadType loadType, float duration, object userData)
         {
             LoadConfigSuccessEventArgs loadConfigSuccessEventArgs = ReferencePool.Acquire<LoadConfigSuccessEventArgs>();
@@ -78,7 +78,7 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 清理加载配置成功事件。
+        /// 清理加载全局配置成功事件。
         /// </summary>
         public override void Clear()
         {

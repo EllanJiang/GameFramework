@@ -13,7 +13,7 @@ using System.IO;
 namespace GameFramework.Config
 {
     /// <summary>
-    /// 配置管理器。
+    /// 全局配置管理器。
     /// </summary>
     internal sealed partial class ConfigManager : GameFrameworkModule, IConfigManager
     {
@@ -27,7 +27,7 @@ namespace GameFramework.Config
         private EventHandler<LoadConfigDependencyAssetEventArgs> m_LoadConfigDependencyAssetEventHandler;
 
         /// <summary>
-        /// 初始化配置管理器的新实例。
+        /// 初始化全局配置管理器的新实例。
         /// </summary>
         public ConfigManager()
         {
@@ -42,7 +42,7 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 获取配置数量。
+        /// 获取全局配置数量。
         /// </summary>
         public int ConfigCount
         {
@@ -53,7 +53,7 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 加载配置成功事件。
+        /// 加载全局配置成功事件。
         /// </summary>
         public event EventHandler<LoadConfigSuccessEventArgs> LoadConfigSuccess
         {
@@ -68,7 +68,7 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 加载配置失败事件。
+        /// 加载全局配置失败事件。
         /// </summary>
         public event EventHandler<LoadConfigFailureEventArgs> LoadConfigFailure
         {
@@ -83,7 +83,7 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 加载配置更新事件。
+        /// 加载全局配置更新事件。
         /// </summary>
         public event EventHandler<LoadConfigUpdateEventArgs> LoadConfigUpdate
         {
@@ -98,7 +98,7 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 加载配置时加载依赖资源事件。
+        /// 加载全局配置时加载依赖资源事件。
         /// </summary>
         public event EventHandler<LoadConfigDependencyAssetEventArgs> LoadConfigDependencyAsset
         {
@@ -113,7 +113,7 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 配置管理器轮询。
+        /// 全局配置管理器轮询。
         /// </summary>
         /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
@@ -122,7 +122,7 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 关闭并清理配置管理器。
+        /// 关闭并清理全局配置管理器。
         /// </summary>
         internal override void Shutdown()
         {
@@ -143,9 +143,9 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 设置配置辅助器。
+        /// 设置全局配置辅助器。
         /// </summary>
-        /// <param name="configHelper">配置辅助器。</param>
+        /// <param name="configHelper">全局配置辅助器。</param>
         public void SetConfigHelper(IConfigHelper configHelper)
         {
             if (configHelper == null)
@@ -157,31 +157,31 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 加载配置。
+        /// 加载全局配置。
         /// </summary>
-        /// <param name="configAssetName">配置资源名称。</param>
-        /// <param name="loadType">配置加载方式。</param>
+        /// <param name="configAssetName">全局配置资源名称。</param>
+        /// <param name="loadType">全局配置加载方式。</param>
         public void LoadConfig(string configAssetName, LoadType loadType)
         {
             LoadConfig(configAssetName, loadType, Constant.DefaultPriority, null);
         }
 
         /// <summary>
-        /// 加载配置。
+        /// 加载全局配置。
         /// </summary>
-        /// <param name="configAssetName">配置资源名称。</param>
-        /// <param name="loadType">配置加载方式。</param>
-        /// <param name="priority">加载配置资源的优先级。</param>
+        /// <param name="configAssetName">全局配置资源名称。</param>
+        /// <param name="loadType">全局配置加载方式。</param>
+        /// <param name="priority">加载全局配置资源的优先级。</param>
         public void LoadConfig(string configAssetName, LoadType loadType, int priority)
         {
             LoadConfig(configAssetName, loadType, priority, null);
         }
 
         /// <summary>
-        /// 加载配置。
+        /// 加载全局配置。
         /// </summary>
-        /// <param name="configAssetName">配置资源名称。</param>
-        /// <param name="loadType">配置加载方式。</param>
+        /// <param name="configAssetName">全局配置资源名称。</param>
+        /// <param name="loadType">全局配置加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
         public void LoadConfig(string configAssetName, LoadType loadType, object userData)
         {
@@ -189,11 +189,11 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 加载配置。
+        /// 加载全局配置。
         /// </summary>
-        /// <param name="configAssetName">配置资源名称。</param>
-        /// <param name="loadType">配置加载方式。</param>
-        /// <param name="priority">加载配置资源的优先级。</param>
+        /// <param name="configAssetName">全局配置资源名称。</param>
+        /// <param name="loadType">全局配置加载方式。</param>
+        /// <param name="priority">加载全局配置资源的优先级。</param>
         /// <param name="userData">用户自定义数据。</param>
         public void LoadConfig(string configAssetName, LoadType loadType, int priority, object userData)
         {
@@ -211,21 +211,21 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 解析配置。
+        /// 解析全局配置。
         /// </summary>
-        /// <param name="text">要解析的配置文本。</param>
-        /// <returns>是否解析配置成功。</returns>
+        /// <param name="text">要解析的全局配置文本。</param>
+        /// <returns>是否解析全局配置成功。</returns>
         public bool ParseConfig(string text)
         {
             return ParseConfig(text, null);
         }
 
         /// <summary>
-        /// 解析配置。
+        /// 解析全局配置。
         /// </summary>
-        /// <param name="text">要解析的配置文本。</param>
+        /// <param name="text">要解析的全局配置文本。</param>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析配置成功。</returns>
+        /// <returns>是否解析全局配置成功。</returns>
         public bool ParseConfig(string text, object userData)
         {
             if (m_ConfigHelper == null)
@@ -249,21 +249,21 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 解析配置。
+        /// 解析全局配置。
         /// </summary>
-        /// <param name="bytes">要解析的配置二进制流。</param>
-        /// <returns>是否解析配置成功。</returns>
+        /// <param name="bytes">要解析的全局配置二进制流。</param>
+        /// <returns>是否解析全局配置成功。</returns>
         public bool ParseConfig(byte[] bytes)
         {
             return ParseConfig(bytes, null);
         }
 
         /// <summary>
-        /// 解析配置。
+        /// 解析全局配置。
         /// </summary>
-        /// <param name="bytes">要解析的配置二进制流。</param>
+        /// <param name="bytes">要解析的全局配置二进制流。</param>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析配置成功。</returns>
+        /// <returns>是否解析全局配置成功。</returns>
         public bool ParseConfig(byte[] bytes, object userData)
         {
             if (m_ConfigHelper == null)
@@ -287,21 +287,21 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 解析配置。
+        /// 解析全局配置。
         /// </summary>
-        /// <param name="stream">要解析的配置二进制流。</param>
-        /// <returns>是否解析配置成功。</returns>
+        /// <param name="stream">要解析的全局配置二进制流。</param>
+        /// <returns>是否解析全局配置成功。</returns>
         public bool ParseConfig(Stream stream)
         {
             return ParseConfig(stream, null);
         }
 
         /// <summary>
-        /// 解析配置。
+        /// 解析全局配置。
         /// </summary>
-        /// <param name="stream">要解析的配置二进制流。</param>
+        /// <param name="stream">要解析的全局配置二进制流。</param>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析配置成功。</returns>
+        /// <returns>是否解析全局配置成功。</returns>
         public bool ParseConfig(Stream stream, object userData)
         {
             if (m_ConfigHelper == null)
@@ -325,24 +325,24 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 检查是否存在指定配置项。
+        /// 检查是否存在指定全局配置项。
         /// </summary>
-        /// <param name="configName">要检查配置项的名称。</param>
-        /// <returns>指定的配置项是否存在。</returns>
+        /// <param name="configName">要检查全局配置项的名称。</param>
+        /// <returns>指定的全局配置项是否存在。</returns>
         public bool HasConfig(string configName)
         {
             return GetConfigData(configName).HasValue;
         }
 
         /// <summary>
-        /// 增加指定配置项。
+        /// 增加指定全局配置项。
         /// </summary>
-        /// <param name="configName">要增加配置项的名称。</param>
-        /// <param name="boolValue">配置项布尔值。</param>
-        /// <param name="intValue">配置项整数值。</param>
-        /// <param name="floatValue">配置项浮点数值。</param>
-        /// <param name="stringValue">配置项字符串值。</param>
-        /// <returns>是否增加配置项成功。</returns>
+        /// <param name="configName">要增加全局配置项的名称。</param>
+        /// <param name="boolValue">全局配置项布尔值。</param>
+        /// <param name="intValue">全局配置项整数值。</param>
+        /// <param name="floatValue">全局配置项浮点数值。</param>
+        /// <param name="stringValue">全局配置项字符串值。</param>
+        /// <returns>是否增加全局配置项成功。</returns>
         public bool AddConfig(string configName, bool boolValue, int intValue, float floatValue, string stringValue)
         {
             if (HasConfig(configName))
@@ -355,16 +355,16 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 移除指定配置项。
+        /// 移除指定全局配置项。
         /// </summary>
-        /// <param name="configName">要移除配置项的名称。</param>
+        /// <param name="configName">要移除全局配置项的名称。</param>
         public void RemoveConfig(string configName)
         {
             m_ConfigDatas.Remove(configName);
         }
 
         /// <summary>
-        /// 清空所有配置项。
+        /// 清空所有全局配置项。
         /// </summary>
         public void RemoveAllConfigs()
         {
@@ -372,9 +372,9 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 从指定配置项中读取布尔值。
+        /// 从指定全局配置项中读取布尔值。
         /// </summary>
-        /// <param name="configName">要获取配置项的名称。</param>
+        /// <param name="configName">要获取全局配置项的名称。</param>
         /// <returns>读取的布尔值。</returns>
         public bool GetBool(string configName)
         {
@@ -388,10 +388,10 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 从指定配置项中读取布尔值。
+        /// 从指定全局配置项中读取布尔值。
         /// </summary>
-        /// <param name="configName">要获取配置项的名称。</param>
-        /// <param name="defaultValue">当指定的配置项不存在时，返回此默认值。</param>
+        /// <param name="configName">要获取全局配置项的名称。</param>
+        /// <param name="defaultValue">当指定的全局配置项不存在时，返回此默认值。</param>
         /// <returns>读取的布尔值。</returns>
         public bool GetBool(string configName, bool defaultValue)
         {
@@ -400,9 +400,9 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 从指定配置项中读取整数值。
+        /// 从指定全局配置项中读取整数值。
         /// </summary>
-        /// <param name="configName">要获取配置项的名称。</param>
+        /// <param name="configName">要获取全局配置项的名称。</param>
         /// <returns>读取的整数值。</returns>
         public int GetInt(string configName)
         {
@@ -416,10 +416,10 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 从指定配置项中读取整数值。
+        /// 从指定全局配置项中读取整数值。
         /// </summary>
-        /// <param name="configName">要获取配置项的名称。</param>
-        /// <param name="defaultValue">当指定的配置项不存在时，返回此默认值。</param>
+        /// <param name="configName">要获取全局配置项的名称。</param>
+        /// <param name="defaultValue">当指定的全局配置项不存在时，返回此默认值。</param>
         /// <returns>读取的整数值。</returns>
         public int GetInt(string configName, int defaultValue)
         {
@@ -428,9 +428,9 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 从指定配置项中读取浮点数值。
+        /// 从指定全局配置项中读取浮点数值。
         /// </summary>
-        /// <param name="configName">要获取配置项的名称。</param>
+        /// <param name="configName">要获取全局配置项的名称。</param>
         /// <returns>读取的浮点数值。</returns>
         public float GetFloat(string configName)
         {
@@ -444,10 +444,10 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 从指定配置项中读取浮点数值。
+        /// 从指定全局配置项中读取浮点数值。
         /// </summary>
-        /// <param name="configName">要获取配置项的名称。</param>
-        /// <param name="defaultValue">当指定的配置项不存在时，返回此默认值。</param>
+        /// <param name="configName">要获取全局配置项的名称。</param>
+        /// <param name="defaultValue">当指定的全局配置项不存在时，返回此默认值。</param>
         /// <returns>读取的浮点数值。</returns>
         public float GetFloat(string configName, float defaultValue)
         {
@@ -456,9 +456,9 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 从指定配置项中读取字符串值。
+        /// 从指定全局配置项中读取字符串值。
         /// </summary>
-        /// <param name="configName">要获取配置项的名称。</param>
+        /// <param name="configName">要获取全局配置项的名称。</param>
         /// <returns>读取的字符串值。</returns>
         public string GetString(string configName)
         {
@@ -472,10 +472,10 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 从指定配置项中读取字符串值。
+        /// 从指定全局配置项中读取字符串值。
         /// </summary>
-        /// <param name="configName">要获取配置项的名称。</param>
-        /// <param name="defaultValue">当指定的配置项不存在时，返回此默认值。</param>
+        /// <param name="configName">要获取全局配置项的名称。</param>
+        /// <param name="defaultValue">当指定的全局配置项不存在时，返回此默认值。</param>
         /// <returns>读取的字符串值。</returns>
         public string GetString(string configName, string defaultValue)
         {
