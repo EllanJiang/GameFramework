@@ -352,37 +352,6 @@ namespace GameFramework.Fsm
         }
 
         /// <summary>
-        /// 抛出有限状态机事件。
-        /// </summary>
-        /// <param name="sender">事件源。</param>
-        /// <param name="eventId">事件编号。</param>
-        public void FireEvent(object sender, int eventId)
-        {
-            if (m_CurrentState == null)
-            {
-                throw new GameFrameworkException("Current state is invalid.");
-            }
-
-            m_CurrentState.OnEvent(this, sender, eventId, null);
-        }
-
-        /// <summary>
-        /// 抛出有限状态机事件。
-        /// </summary>
-        /// <param name="sender">事件源。</param>
-        /// <param name="eventId">事件编号。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public void FireEvent(object sender, int eventId, object userData)
-        {
-            if (m_CurrentState == null)
-            {
-                throw new GameFrameworkException("Current state is invalid.");
-            }
-
-            m_CurrentState.OnEvent(this, sender, eventId, userData);
-        }
-
-        /// <summary>
         /// 是否存在有限状态机数据。
         /// </summary>
         /// <param name="name">有限状态机数据名称。</param>

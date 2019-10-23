@@ -139,7 +139,6 @@
     <Compile Include="Event\IEventManager.cs" />
     <Compile Include="Fsm\Fsm.cs" />
     <Compile Include="Fsm\FsmBase.cs" />
-    <Compile Include="Fsm\FsmEventHandler.cs" />
     <Compile Include="Fsm\FsmManager.cs" />
     <Compile Include="Fsm\FsmState.cs" />
     <Compile Include="Fsm\IFsm.cs" />
