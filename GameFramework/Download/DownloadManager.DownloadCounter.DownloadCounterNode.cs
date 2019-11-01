@@ -50,6 +50,11 @@ namespace GameFramework.Download
                     m_ElapseSeconds += realElapseSeconds;
                 }
 
+                public void AddDownloadedLength(int downloadedLength)
+                {
+                    m_DownloadedLength += downloadedLength;
+                }
+
                 public void Clear()
                 {
                     m_DownloadedLength = 0;

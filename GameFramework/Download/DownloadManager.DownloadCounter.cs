@@ -13,7 +13,7 @@ namespace GameFramework.Download
     {
         private sealed partial class DownloadCounter
         {
-            private readonly Queue<DownloadCounterNode> m_DownloadCounterNodes;
+            private readonly GameFrameworkLinkedList<DownloadCounterNode> m_DownloadCounterNodes;
             private float m_UpdateInterval;
             private float m_RecordInterval;
             private float m_CurrentSpeed;
@@ -32,7 +32,7 @@ namespace GameFramework.Download
                     throw new GameFrameworkException("Record interval is invalid.");
                 }
 
-                m_DownloadCounterNodes = new Queue<DownloadCounterNode>();
+                m_DownloadCounterNodes = new GameFrameworkLinkedList<DownloadCounterNode>();
                 m_UpdateInterval = updateInterval;
                 m_RecordInterval = recordInterval;
                 Reset();
@@ -106,9 +106,16 @@ namespace GameFramework.Download
                     downloadCounterNode.Update(elapseSeconds, realElapseSeconds);
                 }
 
-                while (m_DownloadCounterNodes.Count > 0 && m_DownloadCounterNodes.Peek().ElapseSeconds >= m_RecordInterval)
+                while (m_DownloadCounterNodes.Count > 0)
                 {
-                    ReferencePool.Release(m_DownloadCounterNodes.Dequeue());
+                    DownloadCounterNode downloadCounterNode = m_DownloadCounterNodes.First.Value;
+                    if (downloadCounterNode.ElapseSeconds < m_RecordInterval)
+                    {
+                        break;
+                    }
+
+                    ReferencePool.Release(downloadCounterNode);
+                    m_DownloadCounterNodes.RemoveFirst();
                 }
 
                 if (m_DownloadCounterNodes.Count <= 0)
@@ -137,7 +144,17 @@ namespace GameFramework.Download
                     return;
                 }
 
-                m_DownloadCounterNodes.Enqueue(DownloadCounterNode.Create(downloadedLength));
+                if (m_DownloadCounterNodes.Count > 0)
+                {
+                    DownloadCounterNode downloadCounterNode = m_DownloadCounterNodes.Last.Value;
+                    if (downloadCounterNode.ElapseSeconds < m_UpdateInterval)
+                    {
+                        downloadCounterNode.AddDownloadedLength(downloadedLength);
+                        return;
+                    }
+                }
+
+                m_DownloadCounterNodes.AddLast(DownloadCounterNode.Create(downloadedLength));
             }
 
             private void Reset()
