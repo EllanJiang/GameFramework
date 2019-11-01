@@ -16,6 +16,7 @@ namespace GameFramework
     public static partial class ReferencePool
     {
         private static readonly Dictionary<Type, ReferenceCollection> s_ReferenceCollections = new Dictionary<Type, ReferenceCollection>();
+        private static bool m_EnableStrictCheck = false;
 
         /// <summary>
         /// 获取引用池的数量。
@@ -25,6 +26,21 @@ namespace GameFramework
             get
             {
                 return s_ReferenceCollections.Count;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置是否开启强制检查。
+        /// </summary>
+        public static bool EnableStrictCheck
+        {
+            get
+            {
+                return m_EnableStrictCheck;
+            }
+            set
+            {
+                m_EnableStrictCheck = value;
             }
         }
 
@@ -180,6 +196,11 @@ namespace GameFramework
 
         private static void InternalCheckReferenceType(Type referenceType)
         {
+            if (!m_EnableStrictCheck)
+            {
+                return;
+            }
+
             if (referenceType == null)
             {
                 throw new GameFrameworkException("Reference type is invalid.");
