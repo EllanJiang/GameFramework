@@ -19,17 +19,6 @@ namespace GameFramework
         private static bool m_EnableStrictCheck = false;
 
         /// <summary>
-        /// 获取引用池的数量。
-        /// </summary>
-        public static int Count
-        {
-            get
-            {
-                return s_ReferenceCollections.Count;
-            }
-        }
-
-        /// <summary>
         /// 获取或设置是否开启强制检查。
         /// </summary>
         public static bool EnableStrictCheck
@@ -41,6 +30,17 @@ namespace GameFramework
             set
             {
                 m_EnableStrictCheck = value;
+            }
+        }
+
+        /// <summary>
+        /// 获取引用池的数量。
+        /// </summary>
+        public static int Count
+        {
+            get
+            {
+                return s_ReferenceCollections.Count;
             }
         }
 
