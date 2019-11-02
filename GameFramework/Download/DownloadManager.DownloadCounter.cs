@@ -5,8 +5,6 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace GameFramework.Download
 {
     internal sealed partial class DownloadManager : GameFrameworkModule, IDownloadManager
