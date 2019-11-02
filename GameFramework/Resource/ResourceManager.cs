@@ -1343,7 +1343,6 @@ namespace GameFramework.Resource
             return m_ResourceLoader.GetAllLoadAssetInfos();
         }
 
-
         private ResourceGroup GetOrAddResourceGroup(string resourceGroupName)
         {
             if (resourceGroupName == null)
@@ -1441,7 +1440,7 @@ namespace GameFramework.Resource
 
         private void OnCheckerResourceNeedUpdate(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode)
         {
-            m_ResourceUpdater.AddResourceUpdate(resourceName, loadType, length, hashCode, zipLength, zipHashCode, Utility.Path.GetCombinePath(m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(resourceName.FullName)));
+            m_ResourceUpdater.AddResourceUpdate(resourceName, loadType, length, hashCode, zipLength, zipHashCode, Utility.Path.GetRegularPath(Path.Combine(m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(resourceName.FullName))));
         }
 
         private void OnCheckerResourceCheckComplete(int removedCount, int updateCount, long updateTotalLength, long updateTotalZipLength)

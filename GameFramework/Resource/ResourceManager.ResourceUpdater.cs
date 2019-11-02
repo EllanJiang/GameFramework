@@ -159,7 +159,7 @@ namespace GameFramework.Resource
                     {
                         UpdateInfo updateInfo = m_UpdateWaitingInfo[0];
                         m_UpdateWaitingInfo.RemoveAt(0);
-                        m_DownloadManager.AddDownload(updateInfo.ResourcePath, Utility.Path.GetRemotePath(m_ResourceManager.m_UpdatePrefixUri, Utility.Path.GetResourceNameWithCrc32AndSuffix(updateInfo.ResourceName.FullName, updateInfo.HashCode)), updateInfo);
+                        m_DownloadManager.AddDownload(updateInfo.ResourcePath, Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_UpdatePrefixUri, Utility.Path.GetResourceNameWithCrc32AndSuffix(updateInfo.ResourceName.FullName, updateInfo.HashCode))), updateInfo);
                         m_UpdatingCount++;
                     }
                 }
@@ -287,7 +287,7 @@ namespace GameFramework.Resource
 
             private void GenerateReadWriteList()
             {
-                string file = Utility.Path.GetCombinePath(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName));
+                string file = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName)));
                 string backupFile = null;
 
                 if (File.Exists(file))

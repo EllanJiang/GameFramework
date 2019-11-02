@@ -32,40 +32,19 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 获取连接后的路径。
-            /// </summary>
-            /// <param name="path">路径片段。</param>
-            /// <returns>连接后的路径。</returns>
-            public static string GetCombinePath(params string[] path)
-            {
-                if (path == null || path.Length < 1)
-                {
-                    return null;
-                }
-
-                string combinePath = path[0];
-                for (int i = 1; i < path.Length; i++)
-                {
-                    combinePath = System.IO.Path.Combine(combinePath, path[i]);
-                }
-
-                return GetRegularPath(combinePath);
-            }
-
-            /// <summary>
             /// 获取远程格式的路径（带有file:// 或 http:// 前缀）。
             /// </summary>
             /// <param name="path">原始路径。</param>
             /// <returns>远程格式路径。</returns>
-            public static string GetRemotePath(params string[] path)
+            public static string GetRemotePath(string path)
             {
-                string combinePath = GetCombinePath(path);
-                if (combinePath == null)
+                string regularPath = GetRegularPath(path);
+                if (regularPath == null)
                 {
                     return null;
                 }
 
-                return combinePath.Contains("://") ? combinePath : ("file:///" + combinePath).Replace("file:////", "file:///");
+                return regularPath.Contains("://") ? regularPath : ("file:///" + regularPath).Replace("file:////", "file:///");
             }
 
             /// <summary>

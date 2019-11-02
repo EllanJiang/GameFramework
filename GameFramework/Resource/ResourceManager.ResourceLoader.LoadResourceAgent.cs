@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GameFramework.Resource
 {
@@ -182,7 +183,7 @@ namespace GameFramework.Resource
 
                     s_LoadingResourceNames.Add(m_Task.ResourceInfo.ResourceName.Name);
 
-                    string fullPath = Utility.Path.GetCombinePath(m_Task.ResourceInfo.StorageInReadOnly ? m_ReadOnlyPath : m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(m_Task.ResourceInfo.ResourceName.FullName));
+                    string fullPath = Utility.Path.GetRegularPath(Path.Combine(m_Task.ResourceInfo.StorageInReadOnly ? m_ReadOnlyPath : m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(m_Task.ResourceInfo.ResourceName.FullName)));
                     if (m_Task.ResourceInfo.LoadType == LoadType.LoadFromFile)
                     {
                         m_Helper.ReadFile(fullPath);

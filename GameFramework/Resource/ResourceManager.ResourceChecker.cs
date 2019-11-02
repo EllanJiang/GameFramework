@@ -79,9 +79,9 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("Read-write path is invalid.");
                 }
 
-                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName)), ParseVersionList);
-                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(m_ResourceManager.m_ReadOnlyPath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName)), ParseReadOnlyList);
-                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName)), ParseReadWriteList);
+                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName))), ParseVersionList);
+                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadOnlyPath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName))), ParseReadOnlyList);
+                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName))), ParseReadWriteList);
             }
 
             private void SetVersionInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode)
@@ -158,7 +158,7 @@ namespace GameFramework.Resource
                     {
                         removedCount++;
 
-                        string path = Utility.Path.GetCombinePath(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ci.ResourceName.FullName));
+                        string path = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ci.ResourceName.FullName)));
                         File.Delete(path);
 
                         if (!m_ResourceManager.m_ReadWriteResourceInfos.ContainsKey(ci.ResourceName))
@@ -179,7 +179,7 @@ namespace GameFramework.Resource
             /// <returns>是否恢复成功。</returns>
             private bool TryRecoverReadWriteList()
             {
-                string file = Utility.Path.GetCombinePath(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName));
+                string file = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName)));
                 string backupFile = file + BackupFileSuffixName;
 
                 try

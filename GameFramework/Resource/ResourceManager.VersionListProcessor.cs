@@ -89,7 +89,7 @@ namespace GameFramework.Resource
                 string applicableGameVersion = null;
                 int internalResourceVersion = 0;
 
-                string versionListFileName = Utility.Path.GetCombinePath(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName));
+                string versionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName)));
                 if (!File.Exists(versionListFileName))
                 {
                     return CheckVersionListResult.NeedUpdate;
@@ -163,8 +163,8 @@ namespace GameFramework.Resource
                 m_VersionListZipHashCode = versionListZipHashCode;
                 string versionListFileName = Utility.Path.GetResourceNameWithSuffix(VersionListFileName);
                 string latestVersionListFileName = Utility.Path.GetResourceNameWithCrc32AndSuffix(VersionListFileName, m_VersionListHashCode);
-                string localVersionListFilePath = Utility.Path.GetCombinePath(m_ResourceManager.m_ReadWritePath, versionListFileName);
-                string latestVersionListFileUri = Utility.Path.GetRemotePath(m_ResourceManager.m_UpdatePrefixUri, latestVersionListFileName);
+                string localVersionListFilePath = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, versionListFileName));
+                string latestVersionListFileUri = Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_UpdatePrefixUri, latestVersionListFileName));
                 m_DownloadManager.AddDownload(localVersionListFilePath, latestVersionListFileUri, this);
             }
 
