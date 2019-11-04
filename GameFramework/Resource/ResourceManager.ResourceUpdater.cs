@@ -34,6 +34,8 @@ namespace GameFramework.Resource
             private int m_UpdateRetryCount;
             private int m_UpdatingCount;
             private bool m_FailureFlag;
+            private string m_ReadWriteListFileName;
+            private string m_ReadWriteListBackupFileName;
 
             public GameFrameworkAction<ResourceName, string, string, int, int, int> ResourceUpdateStart;
             public GameFrameworkAction<ResourceName, string, string, int, int> ResourceUpdateChanged;
@@ -59,6 +61,8 @@ namespace GameFramework.Resource
                 m_UpdateRetryCount = 3;
                 m_UpdatingCount = 0;
                 m_FailureFlag = false;
+                m_ReadWriteListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName)));
+                m_ReadWriteListBackupFileName = m_ReadWriteListFileName + BackupFileSuffixName;
 
                 ResourceUpdateStart = null;
                 ResourceUpdateChanged = null;
@@ -287,24 +291,20 @@ namespace GameFramework.Resource
 
             private void GenerateReadWriteList()
             {
-                string file = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName)));
-                string backupFile = null;
-
-                if (File.Exists(file))
+                if (File.Exists(m_ReadWriteListFileName))
                 {
-                    backupFile = file + BackupFileSuffixName;
-                    if (File.Exists(backupFile))
+                    if (File.Exists(m_ReadWriteListBackupFileName))
                     {
-                        File.Delete(backupFile);
+                        File.Delete(m_ReadWriteListBackupFileName);
                     }
 
-                    File.Move(file, backupFile);
+                    File.Move(m_ReadWriteListFileName, m_ReadWriteListBackupFileName);
                 }
 
                 FileStream fileStream = null;
                 try
                 {
-                    fileStream = new FileStream(file, FileMode.CreateNew, FileAccess.Write);
+                    fileStream = new FileStream(m_ReadWriteListFileName, FileMode.CreateNew, FileAccess.Write);
                     using (BinaryWriter binaryWriter = new BinaryWriter(fileStream, Encoding.UTF8))
                     {
                         fileStream = null;
@@ -341,21 +341,21 @@ namespace GameFramework.Resource
                         Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
                     }
 
-                    if (!string.IsNullOrEmpty(backupFile))
+                    if (!string.IsNullOrEmpty(m_ReadWriteListBackupFileName))
                     {
-                        File.Delete(backupFile);
+                        File.Delete(m_ReadWriteListBackupFileName);
                     }
                 }
                 catch (Exception exception)
                 {
-                    if (File.Exists(file))
+                    if (File.Exists(m_ReadWriteListFileName))
                     {
-                        File.Delete(file);
+                        File.Delete(m_ReadWriteListFileName);
                     }
 
-                    if (!string.IsNullOrEmpty(backupFile))
+                    if (!string.IsNullOrEmpty(m_ReadWriteListBackupFileName))
                     {
-                        File.Move(backupFile, file);
+                        File.Move(m_ReadWriteListBackupFileName, m_ReadWriteListFileName);
                     }
 
                     throw new GameFrameworkException(Utility.Text.Format("Pack save exception '{0}'.", exception.ToString()), exception);

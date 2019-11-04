@@ -20,6 +20,7 @@ namespace GameFramework.Resource
             /// </summary>
             private sealed partial class LoadResourceAgent : ITaskAgent<LoadResourceTaskBase>
             {
+                private static readonly Dictionary<string, string> s_CachedResourceNames = new Dictionary<string, string>();
                 private static readonly HashSet<string> s_LoadingAssetNames = new HashSet<string>();
                 private static readonly HashSet<string> s_LoadingResourceNames = new HashSet<string>();
 
@@ -126,6 +127,13 @@ namespace GameFramework.Resource
                     m_Helper.LoadResourceAgentHelperError -= OnLoadResourceAgentHelperError;
                 }
 
+                public static void Clear()
+                {
+                    s_CachedResourceNames.Clear();
+                    s_LoadingAssetNames.Clear();
+                    s_LoadingResourceNames.Clear();
+                }
+
                 /// <summary>
                 /// 开始处理加载资源任务。
                 /// </summary>
@@ -166,7 +174,8 @@ namespace GameFramework.Resource
                         }
                     }
 
-                    if (IsResourceLoading(m_Task.ResourceInfo.ResourceName.Name))
+                    string resourceName = m_Task.ResourceInfo.ResourceName.Name;
+                    if (IsResourceLoading(resourceName))
                     {
                         m_Task.StartTime = default(DateTime);
                         return StartTaskStatus.HasToWait;
@@ -174,16 +183,22 @@ namespace GameFramework.Resource
 
                     s_LoadingAssetNames.Add(m_Task.AssetName);
 
-                    ResourceObject resourceObject = m_ResourceLoader.m_ResourcePool.Spawn(m_Task.ResourceInfo.ResourceName.Name);
+                    ResourceObject resourceObject = m_ResourceLoader.m_ResourcePool.Spawn(resourceName);
                     if (resourceObject != null)
                     {
                         OnResourceObjectReady(resourceObject);
                         return StartTaskStatus.CanResume;
                     }
 
-                    s_LoadingResourceNames.Add(m_Task.ResourceInfo.ResourceName.Name);
+                    s_LoadingResourceNames.Add(resourceName);
 
-                    string fullPath = Utility.Path.GetRegularPath(Path.Combine(m_Task.ResourceInfo.StorageInReadOnly ? m_ReadOnlyPath : m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(m_Task.ResourceInfo.ResourceName.FullName)));
+                    string fullPath = null;
+                    if (!s_CachedResourceNames.TryGetValue(resourceName, out fullPath))
+                    {
+                        fullPath = Utility.Path.GetRegularPath(Path.Combine(m_Task.ResourceInfo.StorageInReadOnly ? m_ReadOnlyPath : m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(m_Task.ResourceInfo.ResourceName.FullName)));
+                        s_CachedResourceNames.Add(resourceName, fullPath);
+                    }
+
                     if (m_Task.ResourceInfo.LoadType == LoadType.LoadFromFile)
                     {
                         m_Helper.ReadFile(fullPath);

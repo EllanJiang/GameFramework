@@ -231,6 +231,7 @@ namespace GameFramework.Resource
                 m_ResourceDependencyCount.Clear();
                 m_AssetToResourceMap.Clear();
                 m_SceneToAssetMap.Clear();
+                LoadResourceAgent.Clear();
             }
 
             /// <summary>
