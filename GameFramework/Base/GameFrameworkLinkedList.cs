@@ -15,7 +15,7 @@ namespace GameFramework
     /// 游戏框架链表类。
     /// </summary>
     /// <typeparam name="T">指定链表的元素类型。</typeparam>
-    public class GameFrameworkLinkedList<T> : ICollection<T>, IEnumerable<T>, ICollection, IEnumerable
+    public sealed class GameFrameworkLinkedList<T> : ICollection<T>, IEnumerable<T>, ICollection, IEnumerable
     {
         private readonly LinkedList<T> m_LinkedList;
         private readonly Queue<LinkedListNode<T>> m_CachedNodes;
@@ -420,7 +420,7 @@ namespace GameFramework
             /// <summary>
             /// 获取下一个结点。
             /// </summary>
-            /// <returns></returns>
+            /// <returns>返回下一个结点。</returns>
             public bool MoveNext()
             {
                 return m_Enumerator.MoveNext();

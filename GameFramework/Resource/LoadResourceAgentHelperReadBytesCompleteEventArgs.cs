@@ -37,7 +37,7 @@ namespace GameFramework.Resource
         /// </summary>
         /// <param name="bytes">资源的二进制流。</param>
         /// <param name="loadType">资源加载方式。</param>
-        /// <returns></returns>
+        /// <returns>创建的加载资源代理辅助器异步读取资源二进制流完成事件。</returns>
         public static LoadResourceAgentHelperReadBytesCompleteEventArgs Create(byte[] bytes, int loadType)
         {
             LoadResourceAgentHelperReadBytesCompleteEventArgs loadResourceAgentHelperReadBytesCompleteEventArgs = ReferencePool.Acquire<LoadResourceAgentHelperReadBytesCompleteEventArgs>();
