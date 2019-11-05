@@ -42,15 +42,5 @@ namespace GameFramework
             : base(message, innerException)
         {
         }
-
-        /// <summary>
-        /// 用序列化数据初始化游戏框架异常类的新实例。
-        /// </summary>
-        /// <param name="info">存有有关所引发异常的序列化的对象数据。</param>
-        /// <param name="context">包含有关源或目标的上下文信息。</param>
-        protected GameFrameworkException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
     }
 }
