@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.Runtime.Serialization;
 
 namespace GameFramework
 {
@@ -13,7 +14,7 @@ namespace GameFramework
     /// 游戏框架异常类。
     /// </summary>
     [Serializable]
-    public sealed class GameFrameworkException : Exception
+    public class GameFrameworkException : Exception
     {
         /// <summary>
         /// 初始化游戏框架异常类的新实例。
@@ -39,6 +40,16 @@ namespace GameFramework
         /// <param name="innerException">导致当前异常的异常。如果 innerException 参数不为空引用，则在处理内部异常的 catch 块中引发当前异常。</param>
         public GameFrameworkException(string message, Exception innerException)
             : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        /// 用序列化数据初始化游戏框架异常类的新实例。
+        /// </summary>
+        /// <param name="info">存有有关所引发异常的序列化的对象数据。</param>
+        /// <param name="context">包含有关源或目标的上下文信息。</param>
+        protected GameFrameworkException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }

@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using GameFramework.ObjectPool;
+using System.Collections.Generic;
 
 namespace GameFramework.Resource
 {
@@ -18,14 +19,14 @@ namespace GameFramework.Resource
             /// </summary>
             private sealed class AssetObject : ObjectBase
             {
-                private object[] m_DependencyAssets;
+                private List<object> m_DependencyAssets;
                 private object m_Resource;
                 private IResourceHelper m_ResourceHelper;
                 private ResourceLoader m_ResourceLoader;
 
                 public AssetObject()
                 {
-                    m_DependencyAssets = null;
+                    m_DependencyAssets = new List<object>();
                     m_Resource = null;
                     m_ResourceHelper = null;
                     m_ResourceLoader = null;
@@ -41,7 +42,7 @@ namespace GameFramework.Resource
                     }
                 }
 
-                public static AssetObject Create(string name, object target, object[] dependencyAssets, object resource, IResourceHelper resourceHelper, ResourceLoader resourceLoader)
+                public static AssetObject Create(string name, object target, List<object> dependencyAssets, object resource, IResourceHelper resourceHelper, ResourceLoader resourceLoader)
                 {
                     if (dependencyAssets == null)
                     {
@@ -65,7 +66,7 @@ namespace GameFramework.Resource
 
                     AssetObject assetObject = ReferencePool.Acquire<AssetObject>();
                     assetObject.Initialize(name, target);
-                    assetObject.m_DependencyAssets = dependencyAssets;
+                    assetObject.m_DependencyAssets.AddRange(dependencyAssets);
                     assetObject.m_Resource = resource;
                     assetObject.m_ResourceHelper = resourceHelper;
                     assetObject.m_ResourceLoader = resourceLoader;
@@ -89,7 +90,7 @@ namespace GameFramework.Resource
                 public override void Clear()
                 {
                     base.Clear();
-                    m_DependencyAssets = null;
+                    m_DependencyAssets.Clear();
                     m_Resource = null;
                     m_ResourceHelper = null;
                     m_ResourceLoader = null;

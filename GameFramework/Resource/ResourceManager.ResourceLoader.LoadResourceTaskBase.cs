@@ -145,9 +145,9 @@ namespace GameFramework.Resource
                     return m_DependencyAssetNames;
                 }
 
-                public object[] GetDependencyAssets()
+                public List<object> GetDependencyAssets()
                 {
-                    return m_DependencyAssets.ToArray();
+                    return m_DependencyAssets;
                 }
 
                 public void LoadMain(LoadResourceAgent agent, ResourceObject resourceObject)

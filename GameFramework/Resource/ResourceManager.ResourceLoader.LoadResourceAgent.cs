@@ -301,7 +301,7 @@ namespace GameFramework.Resource
 
                     if (assetObject == null)
                     {
-                        object[] dependencyAssets = m_Task.GetDependencyAssets();
+                        List<object> dependencyAssets = m_Task.GetDependencyAssets();
                         assetObject = AssetObject.Create(m_Task.AssetName, e.Asset, dependencyAssets, m_Task.ResourceObject.Target, m_ResourceHelper, m_ResourceLoader);
                         m_ResourceLoader.m_AssetPool.Register(assetObject, true);
                         m_ResourceLoader.m_AssetToResourceMap.Add(e.Asset, m_Task.ResourceObject.Target);
