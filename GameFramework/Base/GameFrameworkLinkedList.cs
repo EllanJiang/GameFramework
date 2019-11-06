@@ -30,7 +30,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 获取链表中实际包含的结点数。
+        /// 获取链表中实际包含的结点数量。
         /// </summary>
         public int Count
         {
@@ -277,15 +277,6 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 返回循环访问集合的枚举数。
-        /// </summary>
-        /// <returns>循环访问集合的枚举数。</returns>
-        public Enumerator GetEnumerator()
-        {
-            return new Enumerator(m_LinkedList);
-        }
-
-        /// <summary>
         /// 从链表中移除指定值的第一个匹配项。
         /// </summary>
         /// <param name="value">指定值。</param>
@@ -343,6 +334,15 @@ namespace GameFramework
             ReleaseNode(last);
         }
 
+        /// <summary>
+        /// 返回循环访问集合的枚举数。
+        /// </summary>
+        /// <returns>循环访问集合的枚举数。</returns>
+        public Enumerator GetEnumerator()
+        {
+            return new Enumerator(m_LinkedList);
+        }
+
         private LinkedListNode<T> AcquireNode(T value)
         {
             LinkedListNode<T> node = null;
@@ -380,10 +380,15 @@ namespace GameFramework
         /// </summary>
         public struct Enumerator : IEnumerator<T>, IEnumerator
         {
-            private LinkedList<T>.Enumerator m_Enumerator;
+            private readonly LinkedList<T>.Enumerator m_Enumerator;
 
             internal Enumerator(LinkedList<T> linkedList)
             {
+                if (linkedList == null)
+                {
+                    throw new GameFrameworkException("Linked list is invalid.");
+                }
+
                 m_Enumerator = linkedList.GetEnumerator();
             }
 
