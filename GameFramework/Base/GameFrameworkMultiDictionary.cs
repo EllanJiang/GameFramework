@@ -133,9 +133,8 @@ namespace GameFramework
             GameFrameworkLinkedListRange<TValue> range = default(GameFrameworkLinkedListRange<TValue>);
             if (m_Dictionary.TryGetValue(key, out range))
             {
-                LinkedListNode<TValue> terminal = range.Last.Next;
                 LinkedListNode<TValue> current = range.First;
-                while (current != null && current != terminal)
+                while (current != null)
                 {
                     if (current.Value.Equals(value))
                     {
@@ -159,7 +158,7 @@ namespace GameFramework
                         return true;
                     }
 
-                    current = current.Next;
+                    current = current != range.Last ? current.Next : null;
                 }
             }
 
@@ -178,12 +177,11 @@ namespace GameFramework
             {
                 m_Dictionary.Remove(key);
 
-                LinkedListNode<TValue> terminal = range.Last.Next;
                 LinkedListNode<TValue> current = range.First;
                 LinkedListNode<TValue> next = null;
-                while (current != null && current != terminal)
+                while (current != null)
                 {
-                    next = current.Next;
+                    next = current != range.Last ? current.Next : null;
                     m_LinkedList.Remove(current);
                     current = next;
                 }

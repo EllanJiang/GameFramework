@@ -247,11 +247,10 @@ namespace GameFramework
             GameFrameworkLinkedListRange<EventHandler<T>> range = default(GameFrameworkLinkedListRange<EventHandler<T>>);
             if (m_EventHandlers.TryGetValue(e.Id, out range))
             {
-                LinkedListNode<EventHandler<T>> terminal = range.Last.Next;
                 LinkedListNode<EventHandler<T>> current = range.First;
-                while (current != null && current != terminal)
+                while (current != null)
                 {
-                    m_CachedNodes[e] = current.Next;
+                    m_CachedNodes[e] = current != range.Last ? current.Next : null;
                     current.Value(sender, e);
                     current = m_CachedNodes[e];
                 }

@@ -101,16 +101,15 @@ namespace GameFramework
         /// <returns>是否包含指定值。</returns>
         public bool Contains(T value)
         {
-            LinkedListNode<T> terminal = Last.Next;
-            LinkedListNode<T> current = First;
-            while (current != null && current != terminal)
+            LinkedListNode<T> current = m_First;
+            while (current != null)
             {
                 if (current.Value.Equals(value))
                 {
                     return true;
                 }
 
-                current = current.Next;
+                current = current != m_Last ? current.Next : null;
             }
 
             return false;
@@ -141,7 +140,6 @@ namespace GameFramework
         public struct Enumerator : IEnumerator<T>, IEnumerator
         {
             private readonly GameFrameworkLinkedListRange<T> m_GameFrameworkLinkedListRange;
-            private readonly LinkedListNode<T> m_Terminal;
             private LinkedListNode<T> m_Current;
             private T m_CurrentValue;
 
@@ -153,8 +151,7 @@ namespace GameFramework
                 }
 
                 m_GameFrameworkLinkedListRange = range;
-                m_Terminal = m_GameFrameworkLinkedListRange.Last.Next;
-                m_Current = m_GameFrameworkLinkedListRange.First;
+                m_Current = m_GameFrameworkLinkedListRange.m_First;
                 m_CurrentValue = default(T);
             }
 
@@ -193,13 +190,13 @@ namespace GameFramework
             /// <returns>返回下一个结点。</returns>
             public bool MoveNext()
             {
-                if (m_Current == null || m_Current == m_Terminal)
+                if (m_Current == null)
                 {
                     return false;
                 }
 
                 m_CurrentValue = m_Current.Value;
-                m_Current = m_Current.Next;
+                m_Current = m_Current != m_GameFrameworkLinkedListRange.m_Last ? m_Current.Next : null;
                 return true;
             }
 
@@ -208,7 +205,7 @@ namespace GameFramework
             /// </summary>
             void IEnumerator.Reset()
             {
-                m_Current = m_GameFrameworkLinkedListRange.First;
+                m_Current = m_GameFrameworkLinkedListRange.m_First;
                 m_CurrentValue = default(T);
             }
         }
