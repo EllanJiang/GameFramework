@@ -85,13 +85,35 @@ namespace GameFramework
                 }
 
                 int count = 1;
-                for (LinkedListNode<T> current = m_FirstNode; current != null && current != m_LastNode; current = current.Next)
+                for (LinkedListNode<T> currentNode = m_FirstNode; currentNode != null && currentNode != m_LastNode; currentNode = currentNode.Next)
                 {
                     count++;
                 }
 
                 return count;
             }
+        }
+
+        /// <summary>
+        /// 检查是否包含指定值。
+        /// </summary>
+        /// <param name="value">要检查的值。</param>
+        /// <returns>是否包含指定值。</returns>
+        public bool Contains(T value)
+        {
+            LinkedListNode<T> terminalNode = LastNode.Next;
+            LinkedListNode<T> currentNode = FirstNode;
+            while (currentNode != null && currentNode != terminalNode)
+            {
+                if (currentNode.Value.Equals(value))
+                {
+                    return true;
+                }
+
+                currentNode = currentNode.Next;
+            }
+
+            return false;
         }
 
         /// <summary>
