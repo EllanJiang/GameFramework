@@ -380,7 +380,7 @@ namespace GameFramework
         /// </summary>
         public struct Enumerator : IEnumerator<T>, IEnumerator
         {
-            private readonly LinkedList<T>.Enumerator m_Enumerator;
+            private LinkedList<T>.Enumerator m_Enumerator;
 
             internal Enumerator(LinkedList<T> linkedList)
             {
