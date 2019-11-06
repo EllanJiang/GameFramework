@@ -38,6 +38,7 @@ namespace GameFramework.Setting
         /// </summary>
         internal override void Shutdown()
         {
+            Save();
         }
 
         /// <summary>
