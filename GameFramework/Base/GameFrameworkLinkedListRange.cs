@@ -16,27 +16,27 @@ namespace GameFramework
     /// <typeparam name="T">指定链表范围的元素类型。</typeparam>
     public struct GameFrameworkLinkedListRange<T> : IEnumerable<T>, IEnumerable
     {
-        private readonly LinkedListNode<T> m_FirstNode;
-        private readonly LinkedListNode<T> m_LastNode;
+        private readonly LinkedListNode<T> m_First;
+        private readonly LinkedListNode<T> m_Last;
 
         /// <summary>
         /// 初始化游戏框架链表范围的新实例。
         /// </summary>
-        /// <param name="onlyNode">链表范围的唯一结点。</param>
-        public GameFrameworkLinkedListRange(LinkedListNode<T> onlyNode)
-            : this(onlyNode, onlyNode)
+        /// <param name="node">链表范围的唯一结点。</param>
+        public GameFrameworkLinkedListRange(LinkedListNode<T> node)
+            : this(node, node)
         {
         }
 
         /// <summary>
         /// 初始化游戏框架链表范围的新实例。
         /// </summary>
-        /// <param name="firstNode">链表范围的开始结点。</param>
-        /// <param name="lastNode">链表范围的结束结点。</param>
-        public GameFrameworkLinkedListRange(LinkedListNode<T> firstNode, LinkedListNode<T> lastNode)
+        /// <param name="first">链表范围的开始结点。</param>
+        /// <param name="last">链表范围的结束结点。</param>
+        public GameFrameworkLinkedListRange(LinkedListNode<T> first, LinkedListNode<T> last)
         {
-            m_FirstNode = firstNode;
-            m_LastNode = lastNode;
+            m_First = first;
+            m_Last = last;
         }
 
         /// <summary>
@@ -46,29 +46,29 @@ namespace GameFramework
         {
             get
             {
-                return m_FirstNode != null && m_LastNode != null;
+                return m_First != null && m_Last != null;
             }
         }
 
         /// <summary>
         /// 获取链表范围的开始结点。
         /// </summary>
-        public LinkedListNode<T> FirstNode
+        public LinkedListNode<T> First
         {
             get
             {
-                return m_FirstNode;
+                return m_First;
             }
         }
 
         /// <summary>
         /// 获取链表范围的结束结点。
         /// </summary>
-        public LinkedListNode<T> LastNode
+        public LinkedListNode<T> Last
         {
             get
             {
-                return m_LastNode;
+                return m_Last;
             }
         }
 
@@ -85,7 +85,7 @@ namespace GameFramework
                 }
 
                 int count = 1;
-                for (LinkedListNode<T> currentNode = m_FirstNode; currentNode != null && currentNode != m_LastNode; currentNode = currentNode.Next)
+                for (LinkedListNode<T> current = m_First; current != null && current != m_Last; current = current.Next)
                 {
                     count++;
                 }
@@ -101,16 +101,16 @@ namespace GameFramework
         /// <returns>是否包含指定值。</returns>
         public bool Contains(T value)
         {
-            LinkedListNode<T> terminalNode = LastNode.Next;
-            LinkedListNode<T> currentNode = FirstNode;
-            while (currentNode != null && currentNode != terminalNode)
+            LinkedListNode<T> terminal = Last.Next;
+            LinkedListNode<T> current = First;
+            while (current != null && current != terminal)
             {
-                if (currentNode.Value.Equals(value))
+                if (current.Value.Equals(value))
                 {
                     return true;
                 }
 
-                currentNode = currentNode.Next;
+                current = current.Next;
             }
 
             return false;
@@ -141,9 +141,9 @@ namespace GameFramework
         public struct Enumerator : IEnumerator<T>, IEnumerator
         {
             private readonly GameFrameworkLinkedListRange<T> m_GameFrameworkLinkedListRange;
-            private readonly LinkedListNode<T> m_TerminalNode;
-            private LinkedListNode<T> m_CurrentNode;
-            private T m_Current;
+            private readonly LinkedListNode<T> m_Terminal;
+            private LinkedListNode<T> m_Current;
+            private T m_CurrentValue;
 
             internal Enumerator(GameFrameworkLinkedListRange<T> range)
             {
@@ -153,9 +153,9 @@ namespace GameFramework
                 }
 
                 m_GameFrameworkLinkedListRange = range;
-                m_TerminalNode = m_GameFrameworkLinkedListRange.LastNode.Next;
-                m_CurrentNode = m_GameFrameworkLinkedListRange.FirstNode;
-                m_Current = default(T);
+                m_Terminal = m_GameFrameworkLinkedListRange.Last.Next;
+                m_Current = m_GameFrameworkLinkedListRange.First;
+                m_CurrentValue = default(T);
             }
 
             /// <summary>
@@ -165,7 +165,7 @@ namespace GameFramework
             {
                 get
                 {
-                    return m_Current;
+                    return m_CurrentValue;
                 }
             }
 
@@ -176,7 +176,7 @@ namespace GameFramework
             {
                 get
                 {
-                    return m_Current;
+                    return m_CurrentValue;
                 }
             }
 
@@ -193,13 +193,13 @@ namespace GameFramework
             /// <returns>返回下一个结点。</returns>
             public bool MoveNext()
             {
-                if (m_CurrentNode == null || m_CurrentNode == m_TerminalNode)
+                if (m_Current == null || m_Current == m_Terminal)
                 {
                     return false;
                 }
 
-                m_Current = m_CurrentNode.Value;
-                m_CurrentNode = m_CurrentNode.Next;
+                m_CurrentValue = m_Current.Value;
+                m_Current = m_Current.Next;
                 return true;
             }
 
@@ -208,8 +208,8 @@ namespace GameFramework
             /// </summary>
             void IEnumerator.Reset()
             {
-                m_CurrentNode = m_GameFrameworkLinkedListRange.FirstNode;
-                m_Current = default(T);
+                m_Current = m_GameFrameworkLinkedListRange.First;
+                m_CurrentValue = default(T);
             }
         }
     }

@@ -112,13 +112,13 @@ namespace GameFramework
             GameFrameworkLinkedListRange<TValue> range = default(GameFrameworkLinkedListRange<TValue>);
             if (m_Dictionary.TryGetValue(key, out range))
             {
-                LinkedListNode<TValue> lastNode = m_LinkedList.AddAfter(range.LastNode, value);
-                m_Dictionary[key] = new GameFrameworkLinkedListRange<TValue>(range.FirstNode, lastNode);
+                LinkedListNode<TValue> last = m_LinkedList.AddAfter(range.Last, value);
+                m_Dictionary[key] = new GameFrameworkLinkedListRange<TValue>(range.First, last);
             }
             else
             {
-                LinkedListNode<TValue> onlyNode = m_LinkedList.AddLast(value);
-                m_Dictionary.Add(key, new GameFrameworkLinkedListRange<TValue>(onlyNode));
+                LinkedListNode<TValue> node = m_LinkedList.AddLast(value);
+                m_Dictionary.Add(key, new GameFrameworkLinkedListRange<TValue>(node));
             }
         }
 
@@ -133,33 +133,33 @@ namespace GameFramework
             GameFrameworkLinkedListRange<TValue> range = default(GameFrameworkLinkedListRange<TValue>);
             if (m_Dictionary.TryGetValue(key, out range))
             {
-                LinkedListNode<TValue> terminalNode = range.LastNode.Next;
-                LinkedListNode<TValue> currentNode = range.FirstNode;
-                while (currentNode != null && currentNode != terminalNode)
+                LinkedListNode<TValue> terminal = range.Last.Next;
+                LinkedListNode<TValue> current = range.First;
+                while (current != null && current != terminal)
                 {
-                    if (currentNode.Value.Equals(value))
+                    if (current.Value.Equals(value))
                     {
-                        if (currentNode == range.FirstNode)
+                        if (current == range.First)
                         {
-                            if (currentNode == range.LastNode)
+                            if (current == range.Last)
                             {
                                 m_Dictionary.Remove(key);
                             }
                             else
                             {
-                                m_Dictionary[key] = new GameFrameworkLinkedListRange<TValue>(currentNode.Next, range.LastNode);
+                                m_Dictionary[key] = new GameFrameworkLinkedListRange<TValue>(current.Next, range.Last);
                             }
                         }
-                        else if (currentNode == range.LastNode)
+                        else if (current == range.Last)
                         {
-                            m_Dictionary[key] = new GameFrameworkLinkedListRange<TValue>(range.FirstNode, currentNode.Previous);
+                            m_Dictionary[key] = new GameFrameworkLinkedListRange<TValue>(range.First, current.Previous);
                         }
 
-                        m_LinkedList.Remove(currentNode);
+                        m_LinkedList.Remove(current);
                         return true;
                     }
 
-                    currentNode = currentNode.Next;
+                    current = current.Next;
                 }
             }
 
@@ -178,14 +178,14 @@ namespace GameFramework
             {
                 m_Dictionary.Remove(key);
 
-                LinkedListNode<TValue> terminalNode = range.LastNode.Next;
-                LinkedListNode<TValue> currentNode = range.FirstNode;
-                LinkedListNode<TValue> nextNode = null;
-                while (currentNode != null && currentNode != terminalNode)
+                LinkedListNode<TValue> terminal = range.Last.Next;
+                LinkedListNode<TValue> current = range.First;
+                LinkedListNode<TValue> next = null;
+                while (current != null && current != terminal)
                 {
-                    nextNode = currentNode.Next;
-                    m_LinkedList.Remove(currentNode);
-                    currentNode = nextNode;
+                    next = current.Next;
+                    m_LinkedList.Remove(current);
+                    current = next;
                 }
 
                 return true;
