@@ -53,6 +53,8 @@
     <Compile Include="Base\GameFrameworkFunc.cs" />
     <Compile Include="Base\GameFrameworkLinkedList.cs" />
     <Compile Include="Base\GameFrameworkModule.cs" />
+    <Compile Include="Base\GameFrameworkMultimap.cs" />
+    <Compile Include="Base\GameFrameworkLinkedListRange.cs" />
     <Compile Include="Base\GameFrameworkSegment.cs" />
     <Compile Include="Base\Log\GameFrameworkLog.cs" />
     <Compile Include="Base\Log\GameFrameworkLog.ILogHelper.cs" />
