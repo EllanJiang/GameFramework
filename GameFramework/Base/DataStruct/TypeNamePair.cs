@@ -12,7 +12,7 @@ namespace GameFramework
     /// <summary>
     /// 类型和名称的组合值。
     /// </summary>
-    public struct TypeNamePair : IEquatable<TypeNamePair>
+    internal struct TypeNamePair : IEquatable<TypeNamePair>
     {
         private readonly Type m_Type;
         private readonly string m_Name;
