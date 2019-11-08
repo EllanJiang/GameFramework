@@ -264,6 +264,38 @@ namespace GameFramework.Fsm
         }
 
         /// <summary>
+        /// 创建有限状态机。
+        /// </summary>
+        /// <typeparam name="T">有限状态机持有者类型。</typeparam>
+        /// <param name="owner">有限状态机持有者。</param>
+        /// <param name="states">有限状态机状态集合。</param>
+        /// <returns>要创建的有限状态机。</returns>
+        public IFsm<T> CreateFsm<T>(T owner, List<FsmState<T>> states) where T : class
+        {
+            return CreateFsm(string.Empty, owner, states);
+        }
+
+        /// <summary>
+        /// 创建有限状态机。
+        /// </summary>
+        /// <typeparam name="T">有限状态机持有者类型。</typeparam>
+        /// <param name="name">有限状态机名称。</param>
+        /// <param name="owner">有限状态机持有者。</param>
+        /// <param name="states">有限状态机状态集合。</param>
+        /// <returns>要创建的有限状态机。</returns>
+        public IFsm<T> CreateFsm<T>(string name, T owner, List<FsmState<T>> states) where T : class
+        {
+            if (HasFsm<T>(name))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", Utility.Text.GetFullName<T>(name)));
+            }
+
+            Fsm<T> fsm = Fsm<T>.Create(name, owner, states);
+            m_Fsms.Add(Utility.Text.GetFullName<T>(name), fsm);
+            return fsm;
+        }
+
+        /// <summary>
         /// 销毁有限状态机。
         /// </summary>
         /// <typeparam name="T">有限状态机持有者类型。</typeparam>

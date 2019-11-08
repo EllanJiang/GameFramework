@@ -146,6 +146,7 @@ namespace GameFramework.Fsm
             Fsm<T> fsm = ReferencePool.Acquire<Fsm<T>>();
             fsm.Name = name;
             fsm.m_Owner = owner;
+            fsm.m_IsDestroyed = false;
             foreach (FsmState<T> state in states)
             {
                 if (state == null)
@@ -163,7 +164,49 @@ namespace GameFramework.Fsm
                 state.OnInit(fsm);
             }
 
+            return fsm;
+        }
+
+        /// <summary>
+        /// 创建有限状态机。
+        /// </summary>
+        /// <param name="name">有限状态机名称。</param>
+        /// <param name="owner">有限状态机持有者。</param>
+        /// <param name="states">有限状态机状态集合。</param>
+        /// <returns>创建的有限状态机。</returns>
+        public static Fsm<T> Create(string name, T owner, List<FsmState<T>> states)
+        {
+            if (owner == null)
+            {
+                throw new GameFrameworkException("FSM owner is invalid.");
+            }
+
+            if (states == null || states.Count < 1)
+            {
+                throw new GameFrameworkException("FSM states is invalid.");
+            }
+
+            Fsm<T> fsm = ReferencePool.Acquire<Fsm<T>>();
+            fsm.Name = name;
+            fsm.m_Owner = owner;
             fsm.m_IsDestroyed = false;
+            foreach (FsmState<T> state in states)
+            {
+                if (state == null)
+                {
+                    throw new GameFrameworkException("FSM states is invalid.");
+                }
+
+                Type stateType = state.GetType();
+                if (fsm.m_States.ContainsKey(stateType))
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("FSM '{0}' state '{1}' is already exist.", Utility.Text.GetFullName<T>(name), stateType));
+                }
+
+                fsm.m_States.Add(stateType, state);
+                state.OnInit(fsm);
+            }
+
             return fsm;
         }
 
