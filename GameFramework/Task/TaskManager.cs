@@ -67,7 +67,7 @@ namespace GameFramework.Task
                 {
                     LinkedListNode<TaskBase> next = current.Next;
                     m_Tasks.Remove(current);
-                    ReferencePool.Release((IReference)task);
+                    ReferencePool.Release(task);
                     current = next;
                 }
             }
@@ -82,7 +82,7 @@ namespace GameFramework.Task
 
             foreach (TaskBase task in m_Tasks)
             {
-                ReferencePool.Release((IReference)task);
+                ReferencePool.Release(task);
             }
 
             m_Tasks.Clear();

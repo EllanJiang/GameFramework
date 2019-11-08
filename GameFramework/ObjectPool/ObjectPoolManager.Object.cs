@@ -189,7 +189,7 @@ namespace GameFramework.ObjectPool
             public void Release(bool isShutdown)
             {
                 m_Object.Release(isShutdown);
-                ReferencePool.Release((IReference)m_Object);
+                ReferencePool.Release(m_Object);
             }
         }
     }

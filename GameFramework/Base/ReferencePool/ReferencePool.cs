@@ -105,21 +105,6 @@ namespace GameFramework
         /// <summary>
         /// 将引用归还引用池。
         /// </summary>
-        /// <typeparam name="T">引用类型。</typeparam>
-        /// <param name="reference">引用。</param>
-        public static void Release<T>(T reference) where T : class, IReference
-        {
-            if (reference == null)
-            {
-                throw new GameFrameworkException("Reference is invalid.");
-            }
-
-            GetReferenceCollection(typeof(T)).Release(reference);
-        }
-
-        /// <summary>
-        /// 将引用归还引用池。
-        /// </summary>
         /// <param name="reference">引用。</param>
         public static void Release(IReference reference)
         {

@@ -266,7 +266,7 @@ namespace GameFramework
                 noHandlerException = true;
             }
 
-            ReferencePool.Release((IReference)e);
+            ReferencePool.Release(e);
 
             if (noHandlerException)
             {
