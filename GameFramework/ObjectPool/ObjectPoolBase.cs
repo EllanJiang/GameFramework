@@ -51,7 +51,7 @@ namespace GameFramework.ObjectPool
         {
             get
             {
-                return Utility.Text.GetFullName(ObjectType, m_Name);
+                return new TypeNamePair(ObjectType, m_Name).ToString();
             }
         }
 

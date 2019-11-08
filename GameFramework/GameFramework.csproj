@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\DataStruct\LoadType.cs" />
-    <Compile Include="Base\DataStruct\TypeNameKey.cs" />
+    <Compile Include="Base\DataStruct\TypeNamePair.cs" />
     <Compile Include="Base\EventPool\BaseEventArgs.cs" />
     <Compile Include="Base\EventPool\EventPool.cs" />
     <Compile Include="Base\EventPool\EventPool.Event.cs" />

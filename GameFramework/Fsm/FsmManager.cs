@@ -15,7 +15,7 @@ namespace GameFramework.Fsm
     /// </summary>
     internal sealed class FsmManager : GameFrameworkModule, IFsmManager
     {
-        private readonly Dictionary<TypeNameKey, FsmBase> m_Fsms;
+        private readonly Dictionary<TypeNamePair, FsmBase> m_Fsms;
         private readonly List<FsmBase> m_TempFsms;
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace GameFramework.Fsm
         /// </summary>
         public FsmManager()
         {
-            m_Fsms = new Dictionary<TypeNameKey, FsmBase>();
+            m_Fsms = new Dictionary<TypeNamePair, FsmBase>();
             m_TempFsms = new List<FsmBase>();
         }
 
@@ -63,7 +63,7 @@ namespace GameFramework.Fsm
                 return;
             }
 
-            foreach (KeyValuePair<TypeNameKey, FsmBase> fsm in m_Fsms)
+            foreach (KeyValuePair<TypeNamePair, FsmBase> fsm in m_Fsms)
             {
                 m_TempFsms.Add(fsm.Value);
             }
@@ -84,7 +84,7 @@ namespace GameFramework.Fsm
         /// </summary>
         internal override void Shutdown()
         {
-            foreach (KeyValuePair<TypeNameKey, FsmBase> fsm in m_Fsms)
+            foreach (KeyValuePair<TypeNamePair, FsmBase> fsm in m_Fsms)
             {
                 fsm.Value.Shutdown();
             }
@@ -100,7 +100,7 @@ namespace GameFramework.Fsm
         /// <returns>是否存在有限状态机。</returns>
         public bool HasFsm<T>() where T : class
         {
-            return InternalHasFsm(new TypeNameKey(typeof(T)));
+            return InternalHasFsm(new TypeNamePair(typeof(T)));
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException("Owner type is invalid.");
             }
 
-            return InternalHasFsm(new TypeNameKey(ownerType));
+            return InternalHasFsm(new TypeNamePair(ownerType));
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace GameFramework.Fsm
         /// <returns>是否存在有限状态机。</returns>
         public bool HasFsm<T>(string name) where T : class
         {
-            return InternalHasFsm(new TypeNameKey(typeof(T), name));
+            return InternalHasFsm(new TypeNamePair(typeof(T), name));
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException("Owner type is invalid.");
             }
 
-            return InternalHasFsm(new TypeNameKey(ownerType, name));
+            return InternalHasFsm(new TypeNamePair(ownerType, name));
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace GameFramework.Fsm
         /// <returns>要获取的有限状态机。</returns>
         public IFsm<T> GetFsm<T>() where T : class
         {
-            return (IFsm<T>)InternalGetFsm(new TypeNameKey(typeof(T)));
+            return (IFsm<T>)InternalGetFsm(new TypeNamePair(typeof(T)));
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException("Owner type is invalid.");
             }
 
-            return InternalGetFsm(new TypeNameKey(ownerType));
+            return InternalGetFsm(new TypeNamePair(ownerType));
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace GameFramework.Fsm
         /// <returns>要获取的有限状态机。</returns>
         public IFsm<T> GetFsm<T>(string name) where T : class
         {
-            return (IFsm<T>)InternalGetFsm(new TypeNameKey(typeof(T), name));
+            return (IFsm<T>)InternalGetFsm(new TypeNamePair(typeof(T), name));
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException("Owner type is invalid.");
             }
 
-            return InternalGetFsm(new TypeNameKey(ownerType, name));
+            return InternalGetFsm(new TypeNamePair(ownerType, name));
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace GameFramework.Fsm
         {
             int index = 0;
             FsmBase[] results = new FsmBase[m_Fsms.Count];
-            foreach (KeyValuePair<TypeNameKey, FsmBase> fsm in m_Fsms)
+            foreach (KeyValuePair<TypeNamePair, FsmBase> fsm in m_Fsms)
             {
                 results[index++] = fsm.Value;
             }
@@ -225,7 +225,7 @@ namespace GameFramework.Fsm
             }
 
             results.Clear();
-            foreach (KeyValuePair<TypeNameKey, FsmBase> fsm in m_Fsms)
+            foreach (KeyValuePair<TypeNamePair, FsmBase> fsm in m_Fsms)
             {
                 results.Add(fsm.Value);
             }
@@ -253,7 +253,7 @@ namespace GameFramework.Fsm
         /// <returns>要创建的有限状态机。</returns>
         public IFsm<T> CreateFsm<T>(string name, T owner, params FsmState<T>[] states) where T : class
         {
-            TypeNameKey typeNameKey = new TypeNameKey(typeof(T), name);
+            TypeNamePair typeNameKey = new TypeNamePair(typeof(T), name);
             if (HasFsm<T>(name))
             {
                 throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", typeNameKey.ToString()));
@@ -286,7 +286,7 @@ namespace GameFramework.Fsm
         /// <returns>要创建的有限状态机。</returns>
         public IFsm<T> CreateFsm<T>(string name, T owner, List<FsmState<T>> states) where T : class
         {
-            TypeNameKey typeNameKey = new TypeNameKey(typeof(T), name);
+            TypeNamePair typeNameKey = new TypeNamePair(typeof(T), name);
             if (HasFsm<T>(name))
             {
                 throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", typeNameKey));
@@ -304,7 +304,7 @@ namespace GameFramework.Fsm
         /// <returns>是否销毁有限状态机成功。</returns>
         public bool DestroyFsm<T>() where T : class
         {
-            return InternalDestroyFsm(new TypeNameKey(typeof(T)));
+            return InternalDestroyFsm(new TypeNamePair(typeof(T)));
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException("Owner type is invalid.");
             }
 
-            return InternalDestroyFsm(new TypeNameKey(ownerType));
+            return InternalDestroyFsm(new TypeNamePair(ownerType));
         }
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace GameFramework.Fsm
         /// <returns>是否销毁有限状态机成功。</returns>
         public bool DestroyFsm<T>(string name) where T : class
         {
-            return InternalDestroyFsm(new TypeNameKey(typeof(T), name));
+            return InternalDestroyFsm(new TypeNamePair(typeof(T), name));
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException("Owner type is invalid.");
             }
 
-            return InternalDestroyFsm(new TypeNameKey(ownerType, name));
+            return InternalDestroyFsm(new TypeNamePair(ownerType, name));
         }
 
         /// <summary>
@@ -362,7 +362,7 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException("FSM is invalid.");
             }
 
-            return InternalDestroyFsm(new TypeNameKey(typeof(T), fsm.Name));
+            return InternalDestroyFsm(new TypeNamePair(typeof(T), fsm.Name));
         }
 
         /// <summary>
@@ -377,15 +377,15 @@ namespace GameFramework.Fsm
                 throw new GameFrameworkException("FSM is invalid.");
             }
 
-            return InternalDestroyFsm(new TypeNameKey(fsm.OwnerType, fsm.Name));
+            return InternalDestroyFsm(new TypeNamePair(fsm.OwnerType, fsm.Name));
         }
 
-        private bool InternalHasFsm(TypeNameKey typeNameKey)
+        private bool InternalHasFsm(TypeNamePair typeNameKey)
         {
             return m_Fsms.ContainsKey(typeNameKey);
         }
 
-        private FsmBase InternalGetFsm(TypeNameKey typeNameKey)
+        private FsmBase InternalGetFsm(TypeNamePair typeNameKey)
         {
             FsmBase fsm = null;
             if (m_Fsms.TryGetValue(typeNameKey, out fsm))
@@ -396,7 +396,7 @@ namespace GameFramework.Fsm
             return null;
         }
 
-        private bool InternalDestroyFsm(TypeNameKey typeNameKey)
+        private bool InternalDestroyFsm(TypeNamePair typeNameKey)
         {
             FsmBase fsm = null;
             if (m_Fsms.TryGetValue(typeNameKey, out fsm))

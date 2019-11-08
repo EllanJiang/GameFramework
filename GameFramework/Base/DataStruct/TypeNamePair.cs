@@ -12,7 +12,7 @@ namespace GameFramework
     /// <summary>
     /// 类型和名称的组合值。
     /// </summary>
-    public struct TypeNameKey : IEquatable<TypeNameKey>
+    public struct TypeNamePair : IEquatable<TypeNamePair>
     {
         private readonly Type m_Type;
         private readonly string m_Name;
@@ -21,7 +21,7 @@ namespace GameFramework
         /// 初始化类型和名称的组合值的新实例。
         /// </summary>
         /// <param name="type">类型。</param>
-        public TypeNameKey(Type type)
+        public TypeNamePair(Type type)
             : this(type, string.Empty)
         {
         }
@@ -31,7 +31,7 @@ namespace GameFramework
         /// </summary>
         /// <param name="type">类型。</param>
         /// <param name="name">名称。</param>
-        public TypeNameKey(Type type, string name)
+        public TypeNamePair(Type type, string name)
         {
             if (type == null)
             {
@@ -95,7 +95,7 @@ namespace GameFramework
         /// <returns>被比较的对象是否与自身相等。</returns>
         public override bool Equals(object obj)
         {
-            return obj is TypeNameKey && Equals((TypeNameKey)obj);
+            return obj is TypeNamePair && Equals((TypeNamePair)obj);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace GameFramework
         /// </summary>
         /// <param name="value">要比较的对象。</param>
         /// <returns>被比较的对象是否与自身相等。</returns>
-        public bool Equals(TypeNameKey value)
+        public bool Equals(TypeNamePair value)
         {
             return m_Type == value.m_Type && m_Name == value.m_Name;
         }
@@ -114,7 +114,7 @@ namespace GameFramework
         /// <param name="a">值 a。</param>
         /// <param name="b">值 b。</param>
         /// <returns>两个对象是否相等。</returns>
-        public static bool operator ==(TypeNameKey a, TypeNameKey b)
+        public static bool operator ==(TypeNamePair a, TypeNamePair b)
         {
             return a.Equals(b);
         }
@@ -125,7 +125,7 @@ namespace GameFramework
         /// <param name="a">值 a。</param>
         /// <param name="b">值 b。</param>
         /// <returns>两个对象是否不相等。</returns>
-        public static bool operator !=(TypeNameKey a, TypeNameKey b)
+        public static bool operator !=(TypeNamePair a, TypeNamePair b)
         {
             return !(a == b);
         }
