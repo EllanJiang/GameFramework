@@ -253,14 +253,14 @@ namespace GameFramework.Fsm
         /// <returns>要创建的有限状态机。</returns>
         public IFsm<T> CreateFsm<T>(string name, T owner, params FsmState<T>[] states) where T : class
         {
-            TypeNamePair typeNameKey = new TypeNamePair(typeof(T), name);
+            TypeNamePair typeNamePair = new TypeNamePair(typeof(T), name);
             if (HasFsm<T>(name))
             {
-                throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", typeNameKey.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", typeNamePair.ToString()));
             }
 
             Fsm<T> fsm = Fsm<T>.Create(name, owner, states);
-            m_Fsms.Add(typeNameKey, fsm);
+            m_Fsms.Add(typeNamePair, fsm);
             return fsm;
         }
 
@@ -286,14 +286,14 @@ namespace GameFramework.Fsm
         /// <returns>要创建的有限状态机。</returns>
         public IFsm<T> CreateFsm<T>(string name, T owner, List<FsmState<T>> states) where T : class
         {
-            TypeNamePair typeNameKey = new TypeNamePair(typeof(T), name);
+            TypeNamePair typeNamePair = new TypeNamePair(typeof(T), name);
             if (HasFsm<T>(name))
             {
-                throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", typeNameKey));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", typeNamePair));
             }
 
             Fsm<T> fsm = Fsm<T>.Create(name, owner, states);
-            m_Fsms.Add(typeNameKey, fsm);
+            m_Fsms.Add(typeNamePair, fsm);
             return fsm;
         }
 
@@ -380,15 +380,15 @@ namespace GameFramework.Fsm
             return InternalDestroyFsm(new TypeNamePair(fsm.OwnerType, fsm.Name));
         }
 
-        private bool InternalHasFsm(TypeNamePair typeNameKey)
+        private bool InternalHasFsm(TypeNamePair typeNamePair)
         {
-            return m_Fsms.ContainsKey(typeNameKey);
+            return m_Fsms.ContainsKey(typeNamePair);
         }
 
-        private FsmBase InternalGetFsm(TypeNamePair typeNameKey)
+        private FsmBase InternalGetFsm(TypeNamePair typeNamePair)
         {
             FsmBase fsm = null;
-            if (m_Fsms.TryGetValue(typeNameKey, out fsm))
+            if (m_Fsms.TryGetValue(typeNamePair, out fsm))
             {
                 return fsm;
             }
@@ -396,13 +396,13 @@ namespace GameFramework.Fsm
             return null;
         }
 
-        private bool InternalDestroyFsm(TypeNamePair typeNameKey)
+        private bool InternalDestroyFsm(TypeNamePair typeNamePair)
         {
             FsmBase fsm = null;
-            if (m_Fsms.TryGetValue(typeNameKey, out fsm))
+            if (m_Fsms.TryGetValue(typeNamePair, out fsm))
             {
                 fsm.Shutdown();
-                return m_Fsms.Remove(typeNameKey);
+                return m_Fsms.Remove(typeNamePair);
             }
 
             return false;
