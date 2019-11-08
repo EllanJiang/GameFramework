@@ -659,6 +659,37 @@ namespace GameFramework.DataTable
             return InternalDestroyDataTable(new TypeNamePair(dataRowType, name));
         }
 
+        /// <summary>
+        /// 销毁数据表。
+        /// </summary>
+        /// <typeparam name="T">数据表行的类型。</typeparam>
+        /// <param name="dataTable">要销毁的数据表。</param>
+        /// <returns>是否销毁数据表成功。</returns>
+        public bool DestroyDataTable<T>(IDataTable<T> dataTable) where T : IDataRow
+        {
+            if (dataTable == null)
+            {
+                throw new GameFrameworkException("Data table is invalid.");
+            }
+
+            return InternalDestroyDataTable(new TypeNamePair(typeof(T), dataTable.Name));
+        }
+
+        /// <summary>
+        /// 销毁数据表。
+        /// </summary>
+        /// <param name="dataTable">要销毁的数据表。</param>
+        /// <returns>是否销毁数据表成功。</returns>
+        public bool DestroyDataTable(DataTableBase dataTable)
+        {
+            if (dataTable == null)
+            {
+                throw new GameFrameworkException("Data table is invalid.");
+            }
+
+            return InternalDestroyDataTable(new TypeNamePair(dataTable.Type, dataTable.Name));
+        }
+
         private bool InternalHasDataTable(TypeNamePair typeNamePair)
         {
             return m_DataTables.ContainsKey(typeNamePair);

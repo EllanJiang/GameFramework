@@ -412,7 +412,7 @@ namespace GameFramework.DataTable
                         throw;
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", Utility.Text.GetFullName<T>(Name), exception.ToString()), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", new TypeNamePair(typeof(T), Name).ToString(), exception.ToString()), exception);
                 }
             }
 
@@ -441,7 +441,7 @@ namespace GameFramework.DataTable
                         throw;
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", Utility.Text.GetFullName<T>(Name), exception.ToString()), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", new TypeNamePair(typeof(T), Name).ToString(), exception.ToString()), exception);
                 }
             }
 
@@ -470,7 +470,7 @@ namespace GameFramework.DataTable
                         throw;
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", Utility.Text.GetFullName<T>(Name), exception.ToString()), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", new TypeNamePair(typeof(T), Name).ToString(), exception.ToString()), exception);
                 }
             }
 
@@ -478,7 +478,7 @@ namespace GameFramework.DataTable
             {
                 if (HasDataRow(dataRow.Id))
                 {
-                    throw new GameFrameworkException(Utility.Text.Format("Already exist '{0}' in data table '{1}'.", dataRow.Id.ToString(), Utility.Text.GetFullName<T>(Name)));
+                    throw new GameFrameworkException(Utility.Text.Format("Already exist '{0}' in data table '{1}'.", dataRow.Id.ToString(), new TypeNamePair(typeof(T), Name).ToString()));
                 }
 
                 m_DataSet.Add(dataRow.Id, dataRow);
