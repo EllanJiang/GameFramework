@@ -450,7 +450,7 @@ namespace GameFramework.Resource
 
                 using (FileStream fileStream = new FileStream(e.DownloadPath, FileMode.Open, FileAccess.ReadWrite))
                 {
-                    bool zip = (updateInfo.Length != updateInfo.ZipLength || updateInfo.HashCode != updateInfo.ZipHashCode);
+                    bool zip = updateInfo.Length != updateInfo.ZipLength || updateInfo.HashCode != updateInfo.ZipHashCode;
 
                     int length = (int)fileStream.Length;
                     if (length != updateInfo.ZipLength)

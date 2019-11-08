@@ -10,74 +10,73 @@ using System;
 namespace GameFramework
 {
     /// <summary>
-    /// 数据片段。
+    /// 类型和名称的组合值。
     /// </summary>
-    /// <typeparam name="T">数据源类型。</typeparam>
-    public struct GameFrameworkSegment<T> : IEquatable<GameFrameworkSegment<T>> where T : class
+    public struct TypeNameKey : IEquatable<TypeNameKey>
     {
-        private readonly T m_Source;
-        private readonly int m_Offset;
-        private readonly int m_Length;
+        private readonly Type m_Type;
+        private readonly string m_Name;
 
         /// <summary>
-        /// 初始化数据片段的新实例。
+        /// 初始化类型和名称的组合值的新实例。
         /// </summary>
-        /// <param name="source">数据源。</param>
-        /// <param name="offset">偏移。</param>
-        /// <param name="length">长度。</param>
-        public GameFrameworkSegment(T source, int offset, int length)
+        /// <param name="type">类型。</param>
+        public TypeNameKey(Type type)
+            : this(type, string.Empty)
         {
-            if (source == null)
-            {
-                throw new GameFrameworkException("Source is invalid.");
-            }
-
-            if (offset < 0)
-            {
-                throw new GameFrameworkException("Offset is invalid.");
-            }
-
-            if (length <= 0)
-            {
-                throw new GameFrameworkException("Length is invalid.");
-            }
-
-            m_Source = source;
-            m_Offset = offset;
-            m_Length = length;
         }
 
         /// <summary>
-        /// 获取数据源。
+        /// 初始化类型和名称的组合值的新实例。
         /// </summary>
-        public T Source
+        /// <param name="type">类型。</param>
+        /// <param name="name">名称。</param>
+        public TypeNameKey(Type type, string name)
+        {
+            if (type == null)
+            {
+                throw new GameFrameworkException("Type is invalid.");
+            }
+
+            m_Type = type;
+            m_Name = name ?? string.Empty;
+        }
+
+        /// <summary>
+        /// 获取类型。
+        /// </summary>
+        public Type Type
         {
             get
             {
-                return m_Source;
+                return m_Type;
             }
         }
 
         /// <summary>
-        /// 获取偏移。
+        /// 获取名称。
         /// </summary>
-        public int Offset
+        public string Name
         {
             get
             {
-                return m_Offset;
+                return m_Name;
             }
         }
 
         /// <summary>
-        /// 获取长度。
+        /// 获取类型和名称的组合值字符串。
         /// </summary>
-        public int Length
+        /// <returns>类型和名称的组合值字符串。</returns>
+        public override string ToString()
         {
-            get
+            if (m_Type == null)
             {
-                return m_Length;
+                throw new GameFrameworkException("Type is invalid.");
             }
+
+            string typeName = m_Type.FullName;
+            return string.IsNullOrEmpty(m_Name) ? typeName : Utility.Text.Format("{0}.{1}", typeName, m_Name);
         }
 
         /// <summary>
@@ -86,7 +85,7 @@ namespace GameFramework
         /// <returns>对象的哈希值。</returns>
         public override int GetHashCode()
         {
-            return m_Source.GetHashCode() ^ m_Offset ^ m_Length;
+            return m_Type.GetHashCode() ^ m_Name.GetHashCode();
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace GameFramework
         /// <returns>被比较的对象是否与自身相等。</returns>
         public override bool Equals(object obj)
         {
-            return obj is GameFrameworkSegment<T> && Equals((GameFrameworkSegment<T>)obj);
+            return obj is TypeNameKey && Equals((TypeNameKey)obj);
         }
 
         /// <summary>
@@ -104,9 +103,9 @@ namespace GameFramework
         /// </summary>
         /// <param name="value">要比较的对象。</param>
         /// <returns>被比较的对象是否与自身相等。</returns>
-        public bool Equals(GameFrameworkSegment<T> value)
+        public bool Equals(TypeNameKey value)
         {
-            return value.m_Source == m_Source && value.m_Offset == m_Offset && value.m_Length == m_Length;
+            return m_Type == value.m_Type && m_Name == value.m_Name;
         }
 
         /// <summary>
@@ -115,7 +114,7 @@ namespace GameFramework
         /// <param name="a">值 a。</param>
         /// <param name="b">值 b。</param>
         /// <returns>两个对象是否相等。</returns>
-        public static bool operator ==(GameFrameworkSegment<T> a, GameFrameworkSegment<T> b)
+        public static bool operator ==(TypeNameKey a, TypeNameKey b)
         {
             return a.Equals(b);
         }
@@ -126,7 +125,7 @@ namespace GameFramework
         /// <param name="a">值 a。</param>
         /// <param name="b">值 b。</param>
         /// <returns>两个对象是否不相等。</returns>
-        public static bool operator !=(GameFrameworkSegment<T> a, GameFrameworkSegment<T> b)
+        public static bool operator !=(TypeNameKey a, TypeNameKey b)
         {
             return !(a == b);
         }

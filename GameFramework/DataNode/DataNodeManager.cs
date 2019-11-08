@@ -90,7 +90,7 @@ namespace GameFramework.DataNode
             IDataNode current = GetNode(path, node);
             if (current == null)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Data node is not exist, path '{0}', node '{1}'.", path, (node != null ? node.FullName : string.Empty)));
+                throw new GameFrameworkException(Utility.Text.Format("Data node is not exist, path '{0}', node '{1}'.", path, node != null ? node.FullName : string.Empty));
             }
 
             return current.GetData<T>();
@@ -107,7 +107,7 @@ namespace GameFramework.DataNode
             IDataNode current = GetNode(path, node);
             if (current == null)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Data node is not exist, path '{0}', node '{1}'.", path, (node != null ? node.FullName : string.Empty)));
+                throw new GameFrameworkException(Utility.Text.Format("Data node is not exist, path '{0}', node '{1}'.", path, node != null ? node.FullName : string.Empty));
             }
 
             return current.GetData();
@@ -177,7 +177,7 @@ namespace GameFramework.DataNode
         /// <returns>指定位置的数据结点，如果没有找到，则返回空。</returns>
         public IDataNode GetNode(string path, IDataNode node)
         {
-            IDataNode current = (node ?? m_Root);
+            IDataNode current = node ?? m_Root;
             string[] splitPath = GetSplitPath(path);
             foreach (string i in splitPath)
             {
@@ -209,7 +209,7 @@ namespace GameFramework.DataNode
         /// <returns>指定位置的数据结点，如果没有找到，则增加相应的数据结点。</returns>
         public IDataNode GetOrAddNode(string path, IDataNode node)
         {
-            IDataNode current = (node ?? m_Root);
+            IDataNode current = node ?? m_Root;
             string[] splitPath = GetSplitPath(path);
             foreach (string i in splitPath)
             {
@@ -235,7 +235,7 @@ namespace GameFramework.DataNode
         /// <param name="node">查找起始结点。</param>
         public void RemoveNode(string path, IDataNode node)
         {
-            IDataNode current = (node ?? m_Root);
+            IDataNode current = node ?? m_Root;
             IDataNode parent = current.Parent;
             string[] splitPath = GetSplitPath(path);
             foreach (string i in splitPath)
