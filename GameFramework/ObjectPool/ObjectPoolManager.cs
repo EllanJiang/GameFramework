@@ -20,6 +20,7 @@ namespace GameFramework.ObjectPool
         private const int DefaultPriority = 0;
 
         private readonly Dictionary<TypeNamePair, ObjectPoolBase> m_ObjectPools;
+        private readonly List<ObjectPoolBase> m_CachedAllObjectPools;
 
         /// <summary>
         /// 初始化对象池管理器的新实例。
@@ -27,6 +28,7 @@ namespace GameFramework.ObjectPool
         public ObjectPoolManager()
         {
             m_ObjectPools = new Dictionary<TypeNamePair, ObjectPoolBase>();
+            m_CachedAllObjectPools = new List<ObjectPoolBase>();
         }
 
         /// <summary>
@@ -76,6 +78,7 @@ namespace GameFramework.ObjectPool
             }
 
             m_ObjectPools.Clear();
+            m_CachedAllObjectPools.Clear();
         }
 
         /// <summary>
@@ -1206,8 +1209,8 @@ namespace GameFramework.ObjectPool
         /// </summary>
         public void Release()
         {
-            ObjectPoolBase[] objectPools = GetAllObjectPools(true);
-            foreach (ObjectPoolBase objectPool in objectPools)
+            GetAllObjectPools(true, m_CachedAllObjectPools);
+            foreach (ObjectPoolBase objectPool in m_CachedAllObjectPools)
             {
                 objectPool.Release();
             }
@@ -1218,8 +1221,8 @@ namespace GameFramework.ObjectPool
         /// </summary>
         public void ReleaseAllUnused()
         {
-            ObjectPoolBase[] objectPools = GetAllObjectPools(true);
-            foreach (ObjectPoolBase objectPool in objectPools)
+            GetAllObjectPools(true, m_CachedAllObjectPools);
+            foreach (ObjectPoolBase objectPool in m_CachedAllObjectPools)
             {
                 objectPool.ReleaseAllUnused();
             }

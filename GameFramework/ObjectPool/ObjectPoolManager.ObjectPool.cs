@@ -498,6 +498,8 @@ namespace GameFramework.ObjectPool
 
                 m_Objects.Clear();
                 m_ObjectMap.Clear();
+                m_CachedCanReleaseObjects.Clear();
+                m_CachedToReleaseObjects.Clear();
             }
 
             private Object<T> GetObject(object target)
