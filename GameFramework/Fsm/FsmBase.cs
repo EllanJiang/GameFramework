@@ -40,6 +40,17 @@ namespace GameFramework.Fsm
         }
 
         /// <summary>
+        /// 获取有限状态机完整名称。
+        /// </summary>
+        public string FullName
+        {
+            get
+            {
+                return new TypeNamePair(OwnerType, m_Name).ToString();
+            }
+        }
+
+        /// <summary>
         /// 获取有限状态机持有者类型。
         /// </summary>
         public abstract Type OwnerType

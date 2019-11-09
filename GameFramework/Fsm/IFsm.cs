@@ -25,6 +25,14 @@ namespace GameFramework.Fsm
         }
 
         /// <summary>
+        /// 获取有限状态机完整名称。
+        /// </summary>
+        string FullName
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取有限状态机持有者。
         /// </summary>
         T Owner

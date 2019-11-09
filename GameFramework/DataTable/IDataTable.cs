@@ -25,6 +25,14 @@ namespace GameFramework.DataTable
         }
 
         /// <summary>
+        /// 获取数据表完整名称。
+        /// </summary>
+        string FullName
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取数据表行的类型。
         /// </summary>
         Type Type

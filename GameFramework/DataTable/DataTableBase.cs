@@ -46,6 +46,17 @@ namespace GameFramework.DataTable
         }
 
         /// <summary>
+        /// 获取数据表完整名称。
+        /// </summary>
+        public string FullName
+        {
+            get
+            {
+                return new TypeNamePair(Type, m_Name).ToString();
+            }
+        }
+
+        /// <summary>
         /// 获取数据表行的类型。
         /// </summary>
         public abstract Type Type
