@@ -367,6 +367,7 @@ namespace GameFramework.Network
 
                 m_SendState.Reset();
                 m_ReceiveState.PrepareForPacketHeader(m_NetworkChannelHelper.PacketHeaderLength);
+                m_NetworkChannelHelper.PrepareForConnecting();
 
                 try
                 {

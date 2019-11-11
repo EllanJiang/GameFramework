@@ -34,6 +34,11 @@ namespace GameFramework.Network
         void Shutdown();
 
         /// <summary>
+        /// 准备进行连接。
+        /// </summary>
+        void PrepareForConnecting();
+
+        /// <summary>
         /// 发送心跳消息包。
         /// </summary>
         /// <returns>是否发送心跳消息包成功。</returns>
