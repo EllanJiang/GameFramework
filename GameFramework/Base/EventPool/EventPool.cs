@@ -248,9 +248,9 @@ namespace GameFramework
             if (m_EventHandlers.TryGetValue(e.Id, out range))
             {
                 LinkedListNode<EventHandler<T>> current = range.First;
-                while (current != null)
+                while (current != null && current != range.Terminal)
                 {
-                    m_CachedNodes[e] = current != range.Last ? current.Next : null;
+                    m_CachedNodes[e] = current.Next != range.Terminal ? current.Next : null;
                     current.Value(sender, e);
                     current = m_CachedNodes[e];
                 }

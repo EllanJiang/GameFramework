@@ -17,26 +17,22 @@ namespace GameFramework
     public struct GameFrameworkLinkedListRange<T> : IEnumerable<T>, IEnumerable
     {
         private readonly LinkedListNode<T> m_First;
-        private readonly LinkedListNode<T> m_Last;
-
-        /// <summary>
-        /// 初始化游戏框架链表范围的新实例。
-        /// </summary>
-        /// <param name="node">链表范围的唯一结点。</param>
-        public GameFrameworkLinkedListRange(LinkedListNode<T> node)
-            : this(node, node)
-        {
-        }
+        private readonly LinkedListNode<T> m_Terminal;
 
         /// <summary>
         /// 初始化游戏框架链表范围的新实例。
         /// </summary>
         /// <param name="first">链表范围的开始结点。</param>
-        /// <param name="last">链表范围的结束结点。</param>
-        public GameFrameworkLinkedListRange(LinkedListNode<T> first, LinkedListNode<T> last)
+        /// <param name="terminal">链表范围的终结标记结点。</param>
+        public GameFrameworkLinkedListRange(LinkedListNode<T> first, LinkedListNode<T> terminal)
         {
+            if (first == null || terminal == null || first == terminal)
+            {
+                throw new GameFrameworkException("Range is invalid.");
+            }
+
             m_First = first;
-            m_Last = last;
+            m_Terminal = terminal;
         }
 
         /// <summary>
@@ -46,7 +42,7 @@ namespace GameFramework
         {
             get
             {
-                return m_First != null && m_Last != null;
+                return m_First != null && m_Terminal != null && m_First != m_Terminal;
             }
         }
 
@@ -62,13 +58,13 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 获取链表范围的结束结点。
+        /// 获取链表范围的终结标记结点。
         /// </summary>
-        public LinkedListNode<T> Last
+        public LinkedListNode<T> Terminal
         {
             get
             {
-                return m_Last;
+                return m_Terminal;
             }
         }
 
@@ -84,8 +80,8 @@ namespace GameFramework
                     return 0;
                 }
 
-                int count = 1;
-                for (LinkedListNode<T> current = m_First; current != null && current != m_Last; current = current.Next)
+                int count = 0;
+                for (LinkedListNode<T> current = m_First; current != null && current != m_Terminal; current = current.Next)
                 {
                     count++;
                 }
@@ -101,15 +97,12 @@ namespace GameFramework
         /// <returns>是否包含指定值。</returns>
         public bool Contains(T value)
         {
-            LinkedListNode<T> current = m_First;
-            while (current != null)
+            for (LinkedListNode<T> current = m_First; current != null && current != m_Terminal; current = current.Next)
             {
                 if (current.Value.Equals(value))
                 {
                     return true;
                 }
-
-                current = current != m_Last ? current.Next : null;
             }
 
             return false;
@@ -190,13 +183,13 @@ namespace GameFramework
             /// <returns>返回下一个结点。</returns>
             public bool MoveNext()
             {
-                if (m_Current == null)
+                if (m_Current == null || m_Current == m_GameFrameworkLinkedListRange.m_Terminal)
                 {
                     return false;
                 }
 
                 m_CurrentValue = m_Current.Value;
-                m_Current = m_Current != m_GameFrameworkLinkedListRange.m_Last ? m_Current.Next : null;
+                m_Current = m_Current.Next;
                 return true;
             }
 

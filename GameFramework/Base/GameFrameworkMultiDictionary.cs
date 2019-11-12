@@ -112,13 +112,13 @@ namespace GameFramework
             GameFrameworkLinkedListRange<TValue> range = default(GameFrameworkLinkedListRange<TValue>);
             if (m_Dictionary.TryGetValue(key, out range))
             {
-                LinkedListNode<TValue> last = m_LinkedList.AddAfter(range.Last, value);
-                m_Dictionary[key] = new GameFrameworkLinkedListRange<TValue>(range.First, last);
+                m_LinkedList.AddBefore(range.Terminal, value);
             }
             else
             {
-                LinkedListNode<TValue> node = m_LinkedList.AddLast(value);
-                m_Dictionary.Add(key, new GameFrameworkLinkedListRange<TValue>(node));
+                LinkedListNode<TValue> first = m_LinkedList.AddLast(value);
+                LinkedListNode<TValue> terminal = m_LinkedList.AddLast(default(TValue));
+                m_Dictionary.Add(key, new GameFrameworkLinkedListRange<TValue>(first, terminal));
             }
         }
 
@@ -133,32 +133,27 @@ namespace GameFramework
             GameFrameworkLinkedListRange<TValue> range = default(GameFrameworkLinkedListRange<TValue>);
             if (m_Dictionary.TryGetValue(key, out range))
             {
-                LinkedListNode<TValue> current = range.First;
-                while (current != null)
+                for (LinkedListNode<TValue> current = range.First; current != null && current != range.Terminal; current = current.Next)
                 {
                     if (current.Value.Equals(value))
                     {
                         if (current == range.First)
                         {
-                            if (current == range.Last)
+                            LinkedListNode<TValue> next = current.Next;
+                            if (next == range.Terminal)
                             {
+                                m_LinkedList.Remove(next);
                                 m_Dictionary.Remove(key);
                             }
                             else
                             {
-                                m_Dictionary[key] = new GameFrameworkLinkedListRange<TValue>(current.Next, range.Last);
+                                m_Dictionary[key] = new GameFrameworkLinkedListRange<TValue>(next, range.Terminal);
                             }
-                        }
-                        else if (current == range.Last)
-                        {
-                            m_Dictionary[key] = new GameFrameworkLinkedListRange<TValue>(range.First, current.Previous);
                         }
 
                         m_LinkedList.Remove(current);
                         return true;
                     }
-
-                    current = current != range.Last ? current.Next : null;
                 }
             }
 
@@ -178,10 +173,9 @@ namespace GameFramework
                 m_Dictionary.Remove(key);
 
                 LinkedListNode<TValue> current = range.First;
-                LinkedListNode<TValue> next = null;
                 while (current != null)
                 {
-                    next = current != range.Last ? current.Next : null;
+                    LinkedListNode<TValue> next = current != range.Terminal ? current.Next : null;
                     m_LinkedList.Remove(current);
                     current = next;
                 }
