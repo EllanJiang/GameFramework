@@ -142,15 +142,15 @@ namespace GameFramework.Network
         /// </summary>
         internal override void Shutdown()
         {
-            foreach (KeyValuePair<string, NetworkChannelBase> networkChannelPair in m_NetworkChannels)
+            foreach (KeyValuePair<string, NetworkChannelBase> networkChannel in m_NetworkChannels)
             {
-                NetworkChannelBase networkChannel = networkChannelPair.Value;
-                networkChannel.NetworkChannelConnected -= OnNetworkChannelConnected;
-                networkChannel.NetworkChannelClosed -= OnNetworkChannelClosed;
-                networkChannel.NetworkChannelMissHeartBeat -= OnNetworkChannelMissHeartBeat;
-                networkChannel.NetworkChannelError -= OnNetworkChannelError;
-                networkChannel.NetworkChannelCustomError -= OnNetworkChannelCustomError;
-                networkChannel.Shutdown();
+                NetworkChannelBase networkChannelBase = networkChannel.Value;
+                networkChannelBase.NetworkChannelConnected -= OnNetworkChannelConnected;
+                networkChannelBase.NetworkChannelClosed -= OnNetworkChannelClosed;
+                networkChannelBase.NetworkChannelMissHeartBeat -= OnNetworkChannelMissHeartBeat;
+                networkChannelBase.NetworkChannelError -= OnNetworkChannelError;
+                networkChannelBase.NetworkChannelCustomError -= OnNetworkChannelCustomError;
+                networkChannelBase.Shutdown();
             }
 
             m_NetworkChannels.Clear();
@@ -243,11 +243,12 @@ namespace GameFramework.Network
             NetworkChannelBase networkChannel = null;
             switch (serviceType)
             {
-                case ServiceType.AsyncTcp:
-                    networkChannel = new AsyncTcpNetworkChannel(name, networkChannelHelper);
+                case ServiceType.Tcp:
+                    networkChannel = new TcpNetworkChannel(name, networkChannelHelper);
                     break;
 
-                case ServiceType.SyncTcp:
+                case ServiceType.TcpWithSyncReceive:
+                    networkChannel = new TcpWithSyncReceiveNetworkChannel(name, networkChannelHelper);
                     break;
 
                 default:

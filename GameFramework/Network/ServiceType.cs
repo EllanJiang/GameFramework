@@ -13,13 +13,13 @@ namespace GameFramework.Network
     public enum ServiceType
     {
         /// <summary>
-        /// 异步 TCP。
+        /// TCP 网络服务。
         /// </summary>
-        AsyncTcp = 0,
+        Tcp = 0,
 
         /// <summary>
-        /// 同步 TCP。
+        /// 使用同步接收的 TCP 网络服务。
         /// </summary>
-        SyncTcp
+        TcpWithSyncReceive
     }
 }

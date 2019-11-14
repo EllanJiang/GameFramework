@@ -235,6 +235,44 @@ namespace GameFramework.Network
             /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
             public virtual void Update(float elapseSeconds, float realElapseSeconds)
             {
+                if (m_Socket == null || !m_Active)
+                {
+                    return;
+                }
+
+                ProcessSend();
+                ProcessReceive();
+                m_ReceivePacketPool.Update(elapseSeconds, realElapseSeconds);
+
+                if (m_HeartBeatInterval > 0f)
+                {
+                    bool sendHeartBeat = false;
+                    int missHeartBeatCount = 0;
+                    lock (m_HeartBeatState)
+                    {
+                        if (m_Socket == null || !m_Active)
+                        {
+                            return;
+                        }
+
+                        m_HeartBeatState.HeartBeatElapseSeconds += realElapseSeconds;
+                        if (m_HeartBeatState.HeartBeatElapseSeconds >= m_HeartBeatInterval)
+                        {
+                            sendHeartBeat = true;
+                            missHeartBeatCount = m_HeartBeatState.MissHeartBeatCount;
+                            m_HeartBeatState.HeartBeatElapseSeconds = 0f;
+                            m_HeartBeatState.MissHeartBeatCount++;
+                        }
+                    }
+
+                    if (sendHeartBeat && m_NetworkChannelHelper.SendHeartBeat())
+                    {
+                        if (missHeartBeatCount > 0 && NetworkChannelMissHeartBeat != null)
+                        {
+                            NetworkChannelMissHeartBeat(this, missHeartBeatCount);
+                        }
+                    }
+                }
             }
 
             /// <summary>
@@ -242,6 +280,9 @@ namespace GameFramework.Network
             /// </summary>
             public virtual void Shutdown()
             {
+                Close();
+                m_ReceivePacketPool.Shutdown();
+                m_NetworkChannelHelper.Shutdown();
             }
 
             /// <summary>
@@ -283,7 +324,38 @@ namespace GameFramework.Network
             /// <param name="ipAddress">远程主机的 IP 地址。</param>
             /// <param name="port">远程主机的端口号。</param>
             /// <param name="userData">用户自定义数据。</param>
-            public abstract void Connect(IPAddress ipAddress, int port, object userData);
+            public virtual void Connect(IPAddress ipAddress, int port, object userData)
+            {
+                if (m_Socket != null)
+                {
+                    Close();
+                    m_Socket = null;
+                }
+
+                switch (ipAddress.AddressFamily)
+                {
+                    case System.Net.Sockets.AddressFamily.InterNetwork:
+                        m_AddressFamily = AddressFamily.IPv4;
+                        break;
+
+                    case System.Net.Sockets.AddressFamily.InterNetworkV6:
+                        m_AddressFamily = AddressFamily.IPv6;
+                        break;
+
+                    default:
+                        string errorMessage = Utility.Text.Format("Not supported address family '{0}'.", ipAddress.AddressFamily.ToString());
+                        if (NetworkChannelError != null)
+                        {
+                            NetworkChannelError(this, NetworkErrorCode.AddressFamilyError, SocketError.Success, errorMessage);
+                            return;
+                        }
+
+                        throw new GameFrameworkException(errorMessage);
+                }
+
+                m_SendState.Reset();
+                m_ReceiveState.PrepareForPacketHeader(m_NetworkChannelHelper.PacketHeaderLength);
+            }
 
             /// <summary>
             /// 关闭连接并释放所有相关资源。
@@ -411,6 +483,146 @@ namespace GameFramework.Network
                 }
 
                 m_Disposed = true;
+            }
+
+            protected virtual bool ProcessSend()
+            {
+                if (m_SendState.Stream.Length > 0 || m_SendPacketPool.Count <= 0)
+                {
+                    return false;
+                }
+
+                while (m_SendPacketPool.Count > 0)
+                {
+                    Packet packet = null;
+                    lock (m_SendPacketPool)
+                    {
+                        packet = m_SendPacketPool.Dequeue();
+                    }
+
+                    bool serializeResult = false;
+                    try
+                    {
+                        serializeResult = m_NetworkChannelHelper.Serialize(packet, m_SendState.Stream);
+                    }
+                    catch (Exception exception)
+                    {
+                        m_Active = false;
+                        if (NetworkChannelError != null)
+                        {
+                            SocketException socketException = exception as SocketException;
+                            NetworkChannelError(this, NetworkErrorCode.SerializeError, socketException != null ? socketException.SocketErrorCode : SocketError.Success, exception.ToString());
+                            return false;
+                        }
+
+                        throw;
+                    }
+
+                    if (!serializeResult)
+                    {
+                        string errorMessage = "Serialized packet failure.";
+                        if (NetworkChannelError != null)
+                        {
+                            NetworkChannelError(this, NetworkErrorCode.SerializeError, SocketError.Success, errorMessage);
+                            return false;
+                        }
+
+                        throw new GameFrameworkException(errorMessage);
+                    }
+                }
+
+                m_SendState.Stream.Position = 0L;
+                return true;
+            }
+
+            protected virtual void ProcessReceive()
+            {
+            }
+
+            protected virtual bool ProcessPacketHeader()
+            {
+                try
+                {
+                    object customErrorData = null;
+                    IPacketHeader packetHeader = m_NetworkChannelHelper.DeserializePacketHeader(m_ReceiveState.Stream, out customErrorData);
+
+                    if (customErrorData != null && NetworkChannelCustomError != null)
+                    {
+                        NetworkChannelCustomError(this, customErrorData);
+                    }
+
+                    if (packetHeader == null)
+                    {
+                        string errorMessage = "Packet header is invalid.";
+                        if (NetworkChannelError != null)
+                        {
+                            NetworkChannelError(this, NetworkErrorCode.DeserializePacketHeaderError, SocketError.Success, errorMessage);
+                            return false;
+                        }
+
+                        throw new GameFrameworkException(errorMessage);
+                    }
+
+                    m_ReceiveState.PrepareForPacket(packetHeader);
+                    if (packetHeader.PacketLength <= 0)
+                    {
+                        return ProcessPacket();
+                    }
+                }
+                catch (Exception exception)
+                {
+                    m_Active = false;
+                    if (NetworkChannelError != null)
+                    {
+                        SocketException socketException = exception as SocketException;
+                        NetworkChannelError(this, NetworkErrorCode.DeserializePacketHeaderError, socketException != null ? socketException.SocketErrorCode : SocketError.Success, exception.ToString());
+                        return false;
+                    }
+
+                    throw;
+                }
+
+                return true;
+            }
+
+            protected virtual bool ProcessPacket()
+            {
+                lock (m_HeartBeatState)
+                {
+                    m_HeartBeatState.Reset(m_ResetHeartBeatElapseSecondsWhenReceivePacket);
+                }
+
+                try
+                {
+                    object customErrorData = null;
+                    Packet packet = m_NetworkChannelHelper.DeserializePacket(m_ReceiveState.PacketHeader, m_ReceiveState.Stream, out customErrorData);
+
+                    if (customErrorData != null && NetworkChannelCustomError != null)
+                    {
+                        NetworkChannelCustomError(this, customErrorData);
+                    }
+
+                    if (packet != null)
+                    {
+                        m_ReceivePacketPool.Fire(this, packet);
+                    }
+
+                    m_ReceiveState.PrepareForPacketHeader(m_NetworkChannelHelper.PacketHeaderLength);
+                }
+                catch (Exception exception)
+                {
+                    m_Active = false;
+                    if (NetworkChannelError != null)
+                    {
+                        SocketException socketException = exception as SocketException;
+                        NetworkChannelError(this, NetworkErrorCode.DeserializePacketError, socketException != null ? socketException.SocketErrorCode : SocketError.Success, exception.ToString());
+                        return false;
+                    }
+
+                    throw;
+                }
+
+                return true;
             }
         }
     }

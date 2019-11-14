@@ -166,13 +166,14 @@
     <Compile Include="Network\NetworkCustomErrorEventArgs.cs" />
     <Compile Include="Network\NetworkErrorCode.cs" />
     <Compile Include="Network\NetworkErrorEventArgs.cs" />
-    <Compile Include="Network\NetworkManager.AsyncTcpNetworkChannel.cs" />
     <Compile Include="Network\NetworkManager.ConnectState.cs" />
     <Compile Include="Network\NetworkManager.cs" />
     <Compile Include="Network\NetworkManager.HeartBeatState.cs" />
     <Compile Include="Network\NetworkManager.NetworkChannelBase.cs" />
     <Compile Include="Network\NetworkManager.ReceiveState.cs" />
     <Compile Include="Network\NetworkManager.SendState.cs" />
+    <Compile Include="Network\NetworkManager.TcpNetworkChannel.cs" />
+    <Compile Include="Network\NetworkManager.TcpWithSyncReceiveNetworkChannel.cs" />
     <Compile Include="Network\NetworkMissHeartBeatEventArgs.cs" />
     <Compile Include="Network\Packet.cs" />
     <Compile Include="Network\ServiceType.cs" />
