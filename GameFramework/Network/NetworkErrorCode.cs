@@ -28,21 +28,6 @@ namespace GameFramework.Network
         SocketError,
 
         /// <summary>
-        /// 序列化错误。
-        /// </summary>
-        SerializeError,
-
-        /// <summary>
-        /// 反序列化消息包头错误。
-        /// </summary>
-        DeserializePacketHeaderError,
-
-        /// <summary>
-        /// 反序列化消息包错误。
-        /// </summary>
-        DeserializePacketError,
-
-        /// <summary>
         /// 连接错误。
         /// </summary>
         ConnectError,
@@ -55,6 +40,21 @@ namespace GameFramework.Network
         /// <summary>
         /// 接收错误。
         /// </summary>
-        ReceiveError
+        ReceiveError,
+
+        /// <summary>
+        /// 序列化错误。
+        /// </summary>
+        SerializeError,
+
+        /// <summary>
+        /// 反序列化消息包头错误。
+        /// </summary>
+        DeserializePacketHeaderError,
+
+        /// <summary>
+        /// 反序列化消息包错误。
+        /// </summary>
+        DeserializePacketError
     }
 }

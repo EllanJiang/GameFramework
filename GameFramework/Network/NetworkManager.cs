@@ -16,7 +16,7 @@ namespace GameFramework.Network
     /// </summary>
     internal sealed partial class NetworkManager : GameFrameworkModule, INetworkManager
     {
-        private readonly Dictionary<string, NetworkChannel> m_NetworkChannels;
+        private readonly Dictionary<string, NetworkChannelBase> m_NetworkChannels;
 
         private EventHandler<NetworkConnectedEventArgs> m_NetworkConnectedEventHandler;
         private EventHandler<NetworkClosedEventArgs> m_NetworkClosedEventHandler;
@@ -29,7 +29,7 @@ namespace GameFramework.Network
         /// </summary>
         public NetworkManager()
         {
-            m_NetworkChannels = new Dictionary<string, NetworkChannel>();
+            m_NetworkChannels = new Dictionary<string, NetworkChannelBase>();
 
             m_NetworkConnectedEventHandler = null;
             m_NetworkClosedEventHandler = null;
@@ -131,7 +131,7 @@ namespace GameFramework.Network
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
-            foreach (KeyValuePair<string, NetworkChannel> networkChannel in m_NetworkChannels)
+            foreach (KeyValuePair<string, NetworkChannelBase> networkChannel in m_NetworkChannels)
             {
                 networkChannel.Value.Update(elapseSeconds, realElapseSeconds);
             }
@@ -142,15 +142,15 @@ namespace GameFramework.Network
         /// </summary>
         internal override void Shutdown()
         {
-            foreach (KeyValuePair<string, NetworkChannel> networkChannel in m_NetworkChannels)
+            foreach (KeyValuePair<string, NetworkChannelBase> networkChannelPair in m_NetworkChannels)
             {
-                NetworkChannel nc = networkChannel.Value;
-                nc.NetworkChannelConnected -= OnNetworkChannelConnected;
-                nc.NetworkChannelClosed -= OnNetworkChannelClosed;
-                nc.NetworkChannelMissHeartBeat -= OnNetworkChannelMissHeartBeat;
-                nc.NetworkChannelError -= OnNetworkChannelError;
-                nc.NetworkChannelCustomError -= OnNetworkChannelCustomError;
-                nc.Shutdown();
+                NetworkChannelBase networkChannel = networkChannelPair.Value;
+                networkChannel.NetworkChannelConnected -= OnNetworkChannelConnected;
+                networkChannel.NetworkChannelClosed -= OnNetworkChannelClosed;
+                networkChannel.NetworkChannelMissHeartBeat -= OnNetworkChannelMissHeartBeat;
+                networkChannel.NetworkChannelError -= OnNetworkChannelError;
+                networkChannel.NetworkChannelCustomError -= OnNetworkChannelCustomError;
+                networkChannel.Shutdown();
             }
 
             m_NetworkChannels.Clear();
@@ -173,7 +173,7 @@ namespace GameFramework.Network
         /// <returns>要获取的网络频道。</returns>
         public INetworkChannel GetNetworkChannel(string name)
         {
-            NetworkChannel networkChannel = null;
+            NetworkChannelBase networkChannel = null;
             if (m_NetworkChannels.TryGetValue(name ?? string.Empty, out networkChannel))
             {
                 return networkChannel;
@@ -190,7 +190,7 @@ namespace GameFramework.Network
         {
             int index = 0;
             INetworkChannel[] results = new INetworkChannel[m_NetworkChannels.Count];
-            foreach (KeyValuePair<string, NetworkChannel> networkChannel in m_NetworkChannels)
+            foreach (KeyValuePair<string, NetworkChannelBase> networkChannel in m_NetworkChannels)
             {
                 results[index++] = networkChannel.Value;
             }
@@ -210,7 +210,7 @@ namespace GameFramework.Network
             }
 
             results.Clear();
-            foreach (KeyValuePair<string, NetworkChannel> networkChannel in m_NetworkChannels)
+            foreach (KeyValuePair<string, NetworkChannelBase> networkChannel in m_NetworkChannels)
             {
                 results.Add(networkChannel.Value);
             }
@@ -220,9 +220,10 @@ namespace GameFramework.Network
         /// 创建网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
+        /// <param name="serviceType">网络服务类型。</param>
         /// <param name="networkChannelHelper">网络频道辅助器。</param>
         /// <returns>要创建的网络频道。</returns>
-        public INetworkChannel CreateNetworkChannel(string name, INetworkChannelHelper networkChannelHelper)
+        public INetworkChannel CreateNetworkChannel(string name, ServiceType serviceType, INetworkChannelHelper networkChannelHelper)
         {
             if (networkChannelHelper == null)
             {
@@ -239,7 +240,20 @@ namespace GameFramework.Network
                 throw new GameFrameworkException(Utility.Text.Format("Already exist network channel '{0}'.", name ?? string.Empty));
             }
 
-            NetworkChannel networkChannel = new NetworkChannel(name, networkChannelHelper);
+            NetworkChannelBase networkChannel = null;
+            switch (serviceType)
+            {
+                case ServiceType.AsyncTcp:
+                    networkChannel = new AsyncTcpNetworkChannel(name, networkChannelHelper);
+                    break;
+
+                case ServiceType.SyncTcp:
+                    break;
+
+                default:
+                    throw new GameFrameworkException(Utility.Text.Format("Not supported service type '{0}'.", serviceType.ToString()));
+            }
+
             networkChannel.NetworkChannelConnected += OnNetworkChannelConnected;
             networkChannel.NetworkChannelClosed += OnNetworkChannelClosed;
             networkChannel.NetworkChannelMissHeartBeat += OnNetworkChannelMissHeartBeat;
@@ -256,7 +270,7 @@ namespace GameFramework.Network
         /// <returns>是否销毁网络频道成功。</returns>
         public bool DestroyNetworkChannel(string name)
         {
-            NetworkChannel networkChannel = null;
+            NetworkChannelBase networkChannel = null;
             if (m_NetworkChannels.TryGetValue(name ?? string.Empty, out networkChannel))
             {
                 networkChannel.NetworkChannelConnected -= OnNetworkChannelConnected;
@@ -271,7 +285,7 @@ namespace GameFramework.Network
             return false;
         }
 
-        private void OnNetworkChannelConnected(NetworkChannel networkChannel, object userData)
+        private void OnNetworkChannelConnected(NetworkChannelBase networkChannel, object userData)
         {
             if (m_NetworkConnectedEventHandler != null)
             {
@@ -284,7 +298,7 @@ namespace GameFramework.Network
             }
         }
 
-        private void OnNetworkChannelClosed(NetworkChannel networkChannel)
+        private void OnNetworkChannelClosed(NetworkChannelBase networkChannel)
         {
             if (m_NetworkClosedEventHandler != null)
             {
@@ -297,7 +311,7 @@ namespace GameFramework.Network
             }
         }
 
-        private void OnNetworkChannelMissHeartBeat(NetworkChannel networkChannel, int missHeartBeatCount)
+        private void OnNetworkChannelMissHeartBeat(NetworkChannelBase networkChannel, int missHeartBeatCount)
         {
             if (m_NetworkMissHeartBeatEventHandler != null)
             {
@@ -310,7 +324,7 @@ namespace GameFramework.Network
             }
         }
 
-        private void OnNetworkChannelError(NetworkChannel networkChannel, NetworkErrorCode errorCode, SocketError socketErrorCode, string errorMessage)
+        private void OnNetworkChannelError(NetworkChannelBase networkChannel, NetworkErrorCode errorCode, SocketError socketErrorCode, string errorMessage)
         {
             if (m_NetworkErrorEventHandler != null)
             {
@@ -323,7 +337,7 @@ namespace GameFramework.Network
             }
         }
 
-        private void OnNetworkChannelCustomError(NetworkChannel networkChannel, object customErrorData)
+        private void OnNetworkChannelCustomError(NetworkChannelBase networkChannel, object customErrorData)
         {
             if (m_NetworkCustomErrorEventHandler != null)
             {

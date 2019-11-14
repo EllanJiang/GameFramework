@@ -8,9 +8,9 @@
 namespace GameFramework.Network
 {
     /// <summary>
-    /// 网络类型。
+    /// 网络地址类型。
     /// </summary>
-    public enum NetworkType
+    public enum AddressFamily
     {
         /// <summary>
         /// 未知。

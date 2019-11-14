@@ -41,9 +41,17 @@ namespace GameFramework.Network
         }
 
         /// <summary>
-        /// 获取网络类型。
+        /// 获取网络服务类型。
         /// </summary>
-        NetworkType NetworkType
+        ServiceType ServiceType
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取网络地址类型。
+        /// </summary>
+        AddressFamily AddressFamily
         {
             get;
         }
