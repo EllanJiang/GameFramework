@@ -242,6 +242,11 @@ namespace GameFramework.Network
 
                 ProcessSend();
                 ProcessReceive();
+                if (m_Socket == null || !m_Active)
+                {
+                    return;
+                }
+
                 m_ReceivePacketPool.Update(elapseSeconds, realElapseSeconds);
 
                 if (m_HeartBeatInterval > 0f)
