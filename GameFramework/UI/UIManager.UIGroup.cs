@@ -396,7 +396,7 @@ namespace GameFramework.UI
                 bool pause = m_Pause;
                 bool cover = false;
                 int depth = UIFormCount;
-                while (current != null)
+                while (current != null && current.Value != null)
                 {
                     LinkedListNode<UIFormInfo> next = current.Next;
                     current.Value.UIForm.OnDepthChanged(Depth, depth--);
