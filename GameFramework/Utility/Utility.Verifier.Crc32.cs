@@ -79,7 +79,7 @@ namespace GameFramework
                             }
                             else
                             {
-                                entry = entry >> 1;
+                                entry >>= 1;
                             }
                         }
 
