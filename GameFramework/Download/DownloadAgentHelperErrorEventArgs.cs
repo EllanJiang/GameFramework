@@ -17,7 +17,17 @@ namespace GameFramework.Download
         /// </summary>
         public DownloadAgentHelperErrorEventArgs()
         {
+            DeleteDownloading = false;
             ErrorMessage = null;
+        }
+
+        /// <summary>
+        /// 获取是否需要删除正在下载的文件。
+        /// </summary>
+        public bool DeleteDownloading
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -32,11 +42,13 @@ namespace GameFramework.Download
         /// <summary>
         /// 创建下载代理辅助器错误事件。
         /// </summary>
+        /// <param name="deleteDownloading">是否需要删除正在下载的文件。</param>
         /// <param name="errorMessage">错误信息。</param>
         /// <returns>创建的下载代理辅助器错误事件。</returns>
-        public static DownloadAgentHelperErrorEventArgs Create(string errorMessage)
+        public static DownloadAgentHelperErrorEventArgs Create(bool deleteDownloading, string errorMessage)
         {
             DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = ReferencePool.Acquire<DownloadAgentHelperErrorEventArgs>();
+            downloadAgentHelperErrorEventArgs.DeleteDownloading = deleteDownloading;
             downloadAgentHelperErrorEventArgs.ErrorMessage = errorMessage;
             return downloadAgentHelperErrorEventArgs;
         }
@@ -46,6 +58,7 @@ namespace GameFramework.Download
         /// </summary>
         public override void Clear()
         {
+            DeleteDownloading = false;
             ErrorMessage = null;
         }
     }
