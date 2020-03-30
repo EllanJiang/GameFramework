@@ -69,6 +69,11 @@ namespace GameFramework.Resource
 
                 public void AddDependencyResource(object dependencyResource)
                 {
+                    if (Target == dependencyResource)
+                    {
+                        return;
+                    }
+
                     if (m_DependencyResources.Contains(dependencyResource))
                     {
                         return;
