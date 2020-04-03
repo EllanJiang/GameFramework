@@ -383,22 +383,6 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("You must set download manager first.");
                 }
 
-                if (e.CurrentLength > updateInfo.ZipLength)
-                {
-                    m_DownloadManager.RemoveDownload(e.SerialId);
-                    string downloadFile = Utility.Text.Format("{0}.download", e.DownloadPath);
-                    if (File.Exists(downloadFile))
-                    {
-                        File.Delete(downloadFile);
-                    }
-
-                    string errorMessage = Utility.Text.Format("When download start, downloaded length is larger than zip length, need '{0}', current '{1}'.", updateInfo.ZipLength.ToString(), e.CurrentLength.ToString());
-                    DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
-                    OnDownloadFailure(this, downloadFailureEventArgs);
-                    ReferencePool.Release(downloadFailureEventArgs);
-                    return;
-                }
-
                 if (ResourceUpdateStart != null)
                 {
                     ResourceUpdateStart(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, e.CurrentLength, updateInfo.ZipLength, updateInfo.RetryCount);
