@@ -14,9 +14,9 @@ namespace GameFramework
         /// <summary>
         /// 加密解密相关的实用函数。
         /// </summary>
-        internal static class Encryption
+        public static class Encryption
         {
-            public const int QuickEncryptLength = 220;
+            internal const int QuickEncryptLength = 220;
 
             /// <summary>
             /// 将 bytes 使用 code 做异或运算的快速版本。

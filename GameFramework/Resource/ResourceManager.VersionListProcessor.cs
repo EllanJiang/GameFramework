@@ -8,7 +8,6 @@
 using GameFramework.Download;
 using System;
 using System.IO;
-using System.Text;
 
 namespace GameFramework.Resource
 {
@@ -86,41 +85,24 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("Read-write path is invalid.");
                 }
 
-                string applicableGameVersion = null;
-                int internalResourceVersion = 0;
-
                 string versionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName)));
                 if (!File.Exists(versionListFileName))
                 {
                     return CheckVersionListResult.NeedUpdate;
                 }
 
+                int internalResourceVersion = 0;
                 FileStream fileStream = null;
                 try
                 {
                     fileStream = new FileStream(versionListFileName, FileMode.Open, FileAccess.Read);
-                    using (BinaryReader binaryReader = new BinaryReader(fileStream, Encoding.UTF8))
+                    object internalResourceVersionObject = null;
+                    if (!m_ResourceManager.m_UpdatableVersionListSerializer.TryGetValue(fileStream, "InternalResourceVersion", out internalResourceVersionObject))
                     {
-                        fileStream = null;
-                        if (binaryReader.ReadChar() != VersionListHeader[0] || binaryReader.ReadChar() != VersionListHeader[1] || binaryReader.ReadChar() != VersionListHeader[2])
-                        {
-                            return CheckVersionListResult.NeedUpdate;
-                        }
-
-                        byte listVersion = binaryReader.ReadByte();
-
-                        if (listVersion == 0)
-                        {
-                            byte[] encryptBytes = binaryReader.ReadBytes(4);
-
-                            applicableGameVersion = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
-                            internalResourceVersion = binaryReader.ReadInt32();
-                        }
-                        else
-                        {
-                            throw new GameFrameworkException("Version list version is invalid.");
-                        }
+                        return CheckVersionListResult.NeedUpdate;
                     }
+
+                    internalResourceVersion = (int)internalResourceVersionObject;
                 }
                 catch
                 {

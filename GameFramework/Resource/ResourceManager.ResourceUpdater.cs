@@ -9,7 +9,6 @@ using GameFramework.Download;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace GameFramework.Resource
 {
@@ -29,13 +28,13 @@ namespace GameFramework.Resource
             private IDownloadManager m_DownloadManager;
             private bool m_CheckResourcesComplete;
             private ResourceGroup m_UpdatingResourceGroup;
-            private int m_GenerateReadWriteListLength;
-            private int m_CurrentGenerateReadWriteListLength;
+            private int m_GenerateReadWriteVersionListLength;
+            private int m_CurrentGenerateReadWriteVersionListLength;
             private int m_UpdateRetryCount;
             private int m_UpdatingCount;
             private bool m_FailureFlag;
-            private string m_ReadWriteListFileName;
-            private string m_ReadWriteListBackupFileName;
+            private string m_ReadWriteVersionListFileName;
+            private string m_ReadWriteVersionListBackupFileName;
 
             public GameFrameworkAction<ResourceName, string, string, int, int, int> ResourceUpdateStart;
             public GameFrameworkAction<ResourceName, string, string, int, int> ResourceUpdateChanged;
@@ -56,13 +55,13 @@ namespace GameFramework.Resource
                 m_DownloadManager = null;
                 m_CheckResourcesComplete = false;
                 m_UpdatingResourceGroup = null;
-                m_GenerateReadWriteListLength = 0;
-                m_CurrentGenerateReadWriteListLength = 0;
+                m_GenerateReadWriteVersionListLength = 0;
+                m_CurrentGenerateReadWriteVersionListLength = 0;
                 m_UpdateRetryCount = 3;
                 m_UpdatingCount = 0;
                 m_FailureFlag = false;
-                m_ReadWriteListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName)));
-                m_ReadWriteListBackupFileName = m_ReadWriteListFileName + BackupFileSuffixName;
+                m_ReadWriteVersionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName)));
+                m_ReadWriteVersionListBackupFileName = m_ReadWriteVersionListFileName + BackupFileSuffixName;
 
                 ResourceUpdateStart = null;
                 ResourceUpdateChanged = null;
@@ -72,17 +71,17 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 获取或设置每下载多少字节的资源，刷新一次资源列表。
+            /// 获取或设置每下载多少字节的资源，重新生成一次版本资源列表。
             /// </summary>
-            public int GenerateReadWriteListLength
+            public int GenerateReadWriteVersionListLength
             {
                 get
                 {
-                    return m_GenerateReadWriteListLength;
+                    return m_GenerateReadWriteVersionListLength;
                 }
                 set
                 {
-                    m_GenerateReadWriteListLength = value;
+                    m_GenerateReadWriteVersionListLength = value;
                 }
             }
 
@@ -233,13 +232,13 @@ namespace GameFramework.Resource
             /// <summary>
             /// 检查资源完成。
             /// </summary>
-            /// <param name="needGenerateReadWriteList">是否需要生成读写区资源列表。</param>
-            public void CheckResourceComplete(bool needGenerateReadWriteList)
+            /// <param name="needGenerateReadWriteVersionList">是否需要生成读写区版本资源列表。</param>
+            public void CheckResourceComplete(bool needGenerateReadWriteVersionList)
             {
                 m_CheckResourcesComplete = true;
-                if (needGenerateReadWriteList)
+                if (needGenerateReadWriteVersionList)
                 {
-                    GenerateReadWriteList();
+                    GenerateReadWriteVersionList();
                 }
             }
 
@@ -289,84 +288,68 @@ namespace GameFramework.Resource
                 m_FailureFlag = false;
             }
 
-            private void GenerateReadWriteList()
+            private void GenerateReadWriteVersionList()
             {
-                if (File.Exists(m_ReadWriteListFileName))
+                if (File.Exists(m_ReadWriteVersionListFileName))
                 {
-                    if (File.Exists(m_ReadWriteListBackupFileName))
+                    if (File.Exists(m_ReadWriteVersionListBackupFileName))
                     {
-                        File.Delete(m_ReadWriteListBackupFileName);
+                        File.Delete(m_ReadWriteVersionListBackupFileName);
                     }
 
-                    File.Move(m_ReadWriteListFileName, m_ReadWriteListBackupFileName);
+                    File.Move(m_ReadWriteVersionListFileName, m_ReadWriteVersionListBackupFileName);
                 }
 
                 FileStream fileStream = null;
                 try
                 {
-                    fileStream = new FileStream(m_ReadWriteListFileName, FileMode.CreateNew, FileAccess.Write);
-                    using (BinaryWriter binaryWriter = new BinaryWriter(fileStream, Encoding.UTF8))
+                    fileStream = new FileStream(m_ReadWriteVersionListFileName, FileMode.CreateNew, FileAccess.Write);
+                    LocalVersionList.Resource[] resources = m_ResourceManager.m_ReadWriteResourceInfos.Count > 0 ? new LocalVersionList.Resource[m_ResourceManager.m_ReadWriteResourceInfos.Count] : null;
+                    if (resources != null)
                     {
-                        fileStream = null;
-                        Utility.Random.GetRandomBytes(m_CachedHashBytes);
-
-                        binaryWriter.Write(ReadWriteListHeader);
-                        binaryWriter.Write(ReadWriteListVersionHeader);
-                        binaryWriter.Write(m_CachedHashBytes);
-                        binaryWriter.Write(m_ResourceManager.m_ReadWriteResourceInfos.Count);
+                        int index = 0;
                         foreach (KeyValuePair<ResourceName, ReadWriteResourceInfo> i in m_ResourceManager.m_ReadWriteResourceInfos)
                         {
-                            byte[] nameBytes = Utility.Converter.GetBytes(i.Key.Name);
-                            Utility.Encryption.GetSelfXorBytes(nameBytes, m_CachedHashBytes);
-                            binaryWriter.Write((byte)nameBytes.Length);
-                            binaryWriter.Write(nameBytes);
-
-                            if (i.Key.Variant == null)
-                            {
-                                binaryWriter.Write((byte)0);
-                            }
-                            else
-                            {
-                                byte[] variantBytes = Utility.Converter.GetBytes(i.Key.Variant);
-                                Utility.Encryption.GetSelfXorBytes(variantBytes, m_CachedHashBytes);
-                                binaryWriter.Write((byte)variantBytes.Length);
-                                binaryWriter.Write(variantBytes);
-                            }
-
-                            binaryWriter.Write((byte)i.Value.LoadType);
-                            binaryWriter.Write(i.Value.Length);
-                            binaryWriter.Write(i.Value.HashCode);
+                            resources[index++] = new LocalVersionList.Resource(i.Key.Name, i.Key.Variant, (byte)i.Value.LoadType, i.Value.Length, i.Value.HashCode);
                         }
-
-                        Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
                     }
 
-                    if (!string.IsNullOrEmpty(m_ReadWriteListBackupFileName))
+                    LocalVersionList versionList = new LocalVersionList(resources, null);
+                    if (!m_ResourceManager.m_ReadWriteVersionListSerializer.Serialize(fileStream, versionList))
                     {
-                        File.Delete(m_ReadWriteListBackupFileName);
+                        throw new GameFrameworkException("Serialize read write version list failure.");
+                    }
+
+                    if (fileStream != null)
+                    {
+                        fileStream.Dispose();
+                        fileStream = null;
+                    }
+
+                    if (!string.IsNullOrEmpty(m_ReadWriteVersionListBackupFileName))
+                    {
+                        File.Delete(m_ReadWriteVersionListBackupFileName);
                     }
                 }
                 catch (Exception exception)
-                {
-                    if (File.Exists(m_ReadWriteListFileName))
-                    {
-                        File.Delete(m_ReadWriteListFileName);
-                    }
-
-                    if (!string.IsNullOrEmpty(m_ReadWriteListBackupFileName))
-                    {
-                        File.Move(m_ReadWriteListBackupFileName, m_ReadWriteListFileName);
-                    }
-
-                    throw new GameFrameworkException(Utility.Text.Format("Pack save exception '{0}'.", exception.ToString()), exception);
-                }
-                finally
                 {
                     if (fileStream != null)
                     {
                         fileStream.Dispose();
                         fileStream = null;
                     }
+
+                    if (File.Exists(m_ReadWriteVersionListFileName))
+                    {
+                        File.Delete(m_ReadWriteVersionListFileName);
+                    }
+
+                    if (!string.IsNullOrEmpty(m_ReadWriteVersionListBackupFileName))
+                    {
+                        File.Move(m_ReadWriteVersionListBackupFileName, m_ReadWriteVersionListFileName);
+                    }
+
+                    throw new GameFrameworkException(Utility.Text.Format("Generate read write version list exception '{0}'.", exception.ToString()), exception);
                 }
             }
 
@@ -546,26 +529,13 @@ namespace GameFramework.Resource
                 }
 
                 m_UpdatingCount--;
-
-                if (m_ResourceManager.m_ResourceInfos.ContainsKey(updateInfo.ResourceName))
-                {
-                    throw new GameFrameworkException(Utility.Text.Format("Resource info '{0}' is already exist.", updateInfo.ResourceName.FullName));
-                }
-
                 m_ResourceManager.m_ResourceInfos.Add(updateInfo.ResourceName, new ResourceInfo(updateInfo.ResourceName, updateInfo.LoadType, updateInfo.Length, updateInfo.HashCode, false));
-
-                if (m_ResourceManager.m_ReadWriteResourceInfos.ContainsKey(updateInfo.ResourceName))
-                {
-                    throw new GameFrameworkException(Utility.Text.Format("Read-write resource info '{0}' is already exist.", updateInfo.ResourceName.FullName));
-                }
-
                 m_ResourceManager.m_ReadWriteResourceInfos.Add(updateInfo.ResourceName, new ReadWriteResourceInfo(updateInfo.LoadType, updateInfo.Length, updateInfo.HashCode));
-
-                m_CurrentGenerateReadWriteListLength += updateInfo.ZipLength;
-                if (m_UpdatingCount <= 0 || m_CurrentGenerateReadWriteListLength >= m_GenerateReadWriteListLength)
+                m_CurrentGenerateReadWriteVersionListLength += updateInfo.ZipLength;
+                if (m_UpdatingCount <= 0 || m_CurrentGenerateReadWriteVersionListLength >= m_GenerateReadWriteVersionListLength)
                 {
-                    m_CurrentGenerateReadWriteListLength = 0;
-                    GenerateReadWriteList();
+                    m_CurrentGenerateReadWriteVersionListLength = 0;
+                    GenerateReadWriteVersionList();
                 }
 
                 if (ResourceUpdateSuccess != null)

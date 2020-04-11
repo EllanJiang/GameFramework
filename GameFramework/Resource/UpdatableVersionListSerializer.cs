@@ -1,0 +1,33 @@
+﻿//------------------------------------------------------------
+// Game Framework
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
+//------------------------------------------------------------
+
+namespace GameFramework.Resource
+{
+    /// <summary>
+    /// 可更新模式版本资源列表序列化器。
+    /// </summary>
+    public sealed class UpdatableVersionListSerializer : VersionListSerializer<UpdatableVersionList>
+    {
+        private static readonly byte[] VersionListHeader = new byte[] { (byte)'E', (byte)'L', (byte)'V' };
+
+        /// <summary>
+        /// 初始化可更新模式版本资源列表序列化器的新实例。
+        /// </summary>
+        public UpdatableVersionListSerializer()
+        {
+        }
+
+        /// <summary>
+        /// 获取可更新模式版本资源列表头标识。
+        /// </summary>
+        /// <returns>可更新模式版本资源列表头标识。</returns>
+        protected override byte[] GetHeader()
+        {
+            return VersionListHeader;
+        }
+    }
+}

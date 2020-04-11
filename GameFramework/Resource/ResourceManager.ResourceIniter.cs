@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace GameFramework.Resource
 {
@@ -19,10 +18,7 @@ namespace GameFramework.Resource
         /// </summary>
         private sealed class ResourceIniter
         {
-            private const int CachedHashBytesLength = 4;
-
             private readonly ResourceManager m_ResourceManager;
-            private readonly byte[] m_CachedHashBytes;
             private string m_CurrentVariant;
 
             public GameFrameworkAction ResourceInitComplete;
@@ -34,7 +30,6 @@ namespace GameFramework.Resource
             public ResourceIniter(ResourceManager resourceManager)
             {
                 m_ResourceManager = resourceManager;
-                m_CachedHashBytes = new byte[CachedHashBytesLength];
                 m_CurrentVariant = null;
 
                 ResourceInitComplete = null;
@@ -64,120 +59,79 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("Readonly path is invalid.");
                 }
 
-                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadOnlyPath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName))), ParsePackageList);
+                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadOnlyPath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName))), ParsePackageVersionList);
             }
 
             /// <summary>
-            /// 解析资源包资源列表。
+            /// 解析资源包版本资源列表。
             /// </summary>
             /// <param name="fileUri">版本资源列表文件路径。</param>
             /// <param name="bytes">要解析的数据。</param>
             /// <param name="errorMessage">错误信息。</param>
-            private void ParsePackageList(string fileUri, byte[] bytes, string errorMessage)
+            private void ParsePackageVersionList(string fileUri, byte[] bytes, string errorMessage)
             {
                 if (bytes == null || bytes.Length <= 0)
                 {
-                    throw new GameFrameworkException(Utility.Text.Format("Package list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
+                    throw new GameFrameworkException(Utility.Text.Format("Package version list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
                 }
 
                 MemoryStream memoryStream = null;
                 try
                 {
                     memoryStream = new MemoryStream(bytes, false);
-                    using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
+                    PackageVersionList versionList = m_ResourceManager.m_PackageVersionListSerializer.Deserialize(memoryStream);
+                    if (!versionList.IsValid)
                     {
-                        memoryStream = null;
-                        if (binaryReader.ReadChar() != PackageListHeader[0] || binaryReader.ReadChar() != PackageListHeader[1] || binaryReader.ReadChar() != PackageListHeader[2])
+                        throw new GameFrameworkException("Deserialize package version list failure.");
+                    }
+
+                    PackageVersionList.Asset[] assets = versionList.GetAssets();
+                    PackageVersionList.Resource[] resources = versionList.GetResources();
+                    PackageVersionList.ResourceGroup[] resourceGroups = versionList.GetResourceGroups();
+                    m_ResourceManager.m_ApplicableGameVersion = versionList.ApplicableGameVersion;
+                    m_ResourceManager.m_InternalResourceVersion = versionList.InternalResourceVersion;
+                    m_ResourceManager.m_AssetInfos = new Dictionary<string, AssetInfo>(assets.Length);
+                    m_ResourceManager.m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>(resources.Length, new ResourceNameComparer());
+                    ResourceGroup defaultResourceGroup = m_ResourceManager.GetOrAddResourceGroup(string.Empty);
+
+                    foreach (PackageVersionList.Resource resource in resources)
+                    {
+                        ResourceName resourceName = new ResourceName(resource.Name, resource.Variant);
+                        int[] assetIndexes = resource.GetAssetIndexes();
+                        foreach (int assetIndex in assetIndexes)
                         {
-                            throw new GameFrameworkException("Package list header is invalid.");
-                        }
-
-                        byte listVersion = binaryReader.ReadByte();
-
-                        if (listVersion == 0)
-                        {
-                            byte[] encryptBytes = binaryReader.ReadBytes(4);
-
-                            m_ResourceManager.m_ApplicableGameVersion = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
-                            m_ResourceManager.m_InternalResourceVersion = binaryReader.ReadInt32();
-
-                            int assetCount = binaryReader.ReadInt32();
-                            m_ResourceManager.m_AssetInfos = new Dictionary<string, AssetInfo>(assetCount);
-                            int resourceCount = binaryReader.ReadInt32();
-                            m_ResourceManager.m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>(resourceCount, new ResourceNameComparer());
-                            ResourceLength[] resourceLengths = new ResourceLength[resourceCount];
-
-                            for (int i = 0; i < resourceCount; i++)
+                            PackageVersionList.Asset asset = assets[assetIndex];
+                            int[] dependencyAssetIndexes = asset.GetDependencyAssetIndexes();
+                            string[] dependencyAssetNames = new string[dependencyAssetIndexes.Length];
+                            int index = 0;
+                            foreach (int dependencyAssetIndex in dependencyAssetIndexes)
                             {
-                                string name = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
-                                string variant = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
-                                ResourceName resourceName = new ResourceName(name, variant);
-
-                                LoadType loadType = (LoadType)binaryReader.ReadByte();
-                                int length = binaryReader.ReadInt32();
-                                int hashCode = binaryReader.ReadInt32();
-                                Utility.Converter.GetBytes(hashCode, m_CachedHashBytes);
-                                resourceLengths[i] = new ResourceLength(resourceName, length, length);
-
-                                int assetNamesCount = binaryReader.ReadInt32();
-                                for (int j = 0; j < assetNamesCount; j++)
-                                {
-                                    string assetName = m_ResourceManager.GetEncryptedString(binaryReader, m_CachedHashBytes);
-
-                                    int dependencyAssetNamesCount = binaryReader.ReadInt32();
-                                    string[] dependencyAssetNames = new string[dependencyAssetNamesCount];
-                                    for (int k = 0; k < dependencyAssetNamesCount; k++)
-                                    {
-                                        dependencyAssetNames[k] = m_ResourceManager.GetEncryptedString(binaryReader, m_CachedHashBytes);
-                                    }
-
-                                    if (variant == null || variant == m_CurrentVariant)
-                                    {
-                                        m_ResourceManager.m_AssetInfos.Add(assetName, new AssetInfo(assetName, resourceName, dependencyAssetNames));
-                                    }
-                                }
-
-                                if (variant == null || variant == m_CurrentVariant)
-                                {
-                                    ProcessResourceInfo(resourceName, loadType, length, hashCode);
-                                }
+                                dependencyAssetNames[index++] = assets[dependencyAssetIndex].Name;
                             }
 
-                            Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
-
-                            ResourceGroup defaultResourceGroup = m_ResourceManager.GetOrAddResourceGroup(string.Empty);
-                            for (int i = 0; i < resourceCount; i++)
+                            if (resource.Variant == null || resource.Variant == m_CurrentVariant)
                             {
-                                if (resourceLengths[i].ResourceName.Variant == null || resourceLengths[i].ResourceName.Variant == m_CurrentVariant)
-                                {
-                                    defaultResourceGroup.AddResource(resourceLengths[i].ResourceName, resourceLengths[i].Length, resourceLengths[i].ZipLength);
-                                }
-                            }
-
-                            int resourceGroupCount = binaryReader.ReadInt32();
-                            for (int i = 0; i < resourceGroupCount; i++)
-                            {
-                                string resourceGroupName = m_ResourceManager.GetEncryptedString(binaryReader, encryptBytes);
-                                ResourceGroup resourceGroup = m_ResourceManager.GetOrAddResourceGroup(resourceGroupName);
-                                int resourceGroupResourceCount = binaryReader.ReadInt32();
-                                for (int j = 0; j < resourceGroupResourceCount; j++)
-                                {
-                                    ushort index = binaryReader.ReadUInt16();
-                                    if (index >= resourceCount)
-                                    {
-                                        throw new GameFrameworkException(Utility.Text.Format("Package index '{0}' is invalid, resource count is '{1}'.", index.ToString(), resourceCount.ToString()));
-                                    }
-
-                                    if (resourceLengths[index].ResourceName.Variant == null || resourceLengths[index].ResourceName.Variant == m_CurrentVariant)
-                                    {
-                                        resourceGroup.AddResource(resourceLengths[index].ResourceName, resourceLengths[index].Length, resourceLengths[index].ZipLength);
-                                    }
-                                }
+                                m_ResourceManager.m_AssetInfos.Add(asset.Name, new AssetInfo(asset.Name, resourceName, dependencyAssetNames));
                             }
                         }
-                        else
+
+                        if (resource.Variant == null || resource.Variant == m_CurrentVariant)
                         {
-                            throw new GameFrameworkException("Package list version is invalid.");
+                            m_ResourceManager.m_ResourceInfos.Add(resourceName, new ResourceInfo(resourceName, (LoadType)resource.LoadType, resource.Length, resource.HashCode, true));
+                            defaultResourceGroup.AddResource(resourceName, resource.Length, resource.Length);
+                        }
+                    }
+
+                    foreach (PackageVersionList.ResourceGroup resourceGroup in resourceGroups)
+                    {
+                        ResourceGroup group = m_ResourceManager.GetOrAddResourceGroup(resourceGroup.Name);
+                        int[] resourceIndexes = resourceGroup.GetResourceIndexes();
+                        foreach (int resourceIndex in resourceIndexes)
+                        {
+                            if (resources[resourceIndex].Variant == null || resources[resourceIndex].Variant == m_CurrentVariant)
+                            {
+                                group.AddResource(new ResourceName(resources[resourceIndex].Name, resources[resourceIndex].Variant), resources[resourceIndex].Length, resources[resourceIndex].Length);
+                            }
                         }
                     }
 
@@ -190,7 +144,7 @@ namespace GameFramework.Resource
                         throw;
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Parse package list exception '{0}'.", exception.ToString()), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse package version list exception '{0}'.", exception.ToString()), exception);
                 }
                 finally
                 {
@@ -200,16 +154,6 @@ namespace GameFramework.Resource
                         memoryStream = null;
                     }
                 }
-            }
-
-            private void ProcessResourceInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode)
-            {
-                if (m_ResourceManager.m_ResourceInfos.ContainsKey(resourceName))
-                {
-                    throw new GameFrameworkException(Utility.Text.Format("Resource info '{0}' is already exist.", resourceName.FullName));
-                }
-
-                m_ResourceManager.m_ResourceInfos.Add(resourceName, new ResourceInfo(resourceName, loadType, length, hashCode, true));
             }
         }
     }

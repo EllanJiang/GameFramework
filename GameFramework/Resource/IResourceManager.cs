@@ -49,6 +49,38 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 获取单机模式版本资源列表序列化器。
+        /// </summary>
+        PackageVersionListSerializer PackageVersionListSerializer
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取可更新模式版本资源列表序列化器。
+        /// </summary>
+        UpdatableVersionListSerializer UpdatableVersionListSerializer
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取本地只读区版本资源列表序列化器。
+        /// </summary>
+        ReadOnlyVersionListSerializer ReadOnlyVersionListSerializer
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取本地读写区版本资源列表序列化器。
+        /// </summary>
+        ReadWriteVersionListSerializer ReadWriteVersionListSerializer
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取当前资源适用的游戏版本号。
         /// </summary>
         string ApplicableGameVersion
@@ -98,9 +130,9 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取或设置每下载多少字节的资源，刷新一次资源列表。
+        /// 获取或设置每下载多少字节的资源，重新生成一次版本资源列表。
         /// </summary>
-        int GenerateReadWriteListLength
+        int GenerateReadWriteVersionListLength
         {
             get;
             set;

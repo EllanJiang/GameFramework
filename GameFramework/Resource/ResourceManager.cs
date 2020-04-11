@@ -18,20 +18,19 @@ namespace GameFramework.Resource
     /// </summary>
     internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
-        private static readonly char[] PackageListHeader = new char[] { 'E', 'L', 'P' };
-        private static readonly char[] VersionListHeader = new char[] { 'E', 'L', 'V' };
-        private static readonly char[] ReadOnlyListHeader = new char[] { 'E', 'L', 'R' };
-        private static readonly char[] ReadWriteListHeader = new char[] { 'E', 'L', 'W' };
         private const string VersionListFileName = "version";
         private const string ResourceListFileName = "list";
         private const string BackupFileSuffixName = ".bak";
-        private const byte ReadWriteListVersionHeader = 0;
 
         private Dictionary<string, AssetInfo> m_AssetInfos;
         private Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
         private readonly Dictionary<string, ResourceGroup> m_ResourceGroups;
         private readonly SortedDictionary<ResourceName, ReadWriteResourceInfo> m_ReadWriteResourceInfos;
-        private readonly byte[] m_CachedBytesForEncryptedString;
+
+        private PackageVersionListSerializer m_PackageVersionListSerializer;
+        private UpdatableVersionListSerializer m_UpdatableVersionListSerializer;
+        private ReadOnlyVersionListSerializer m_ReadOnlyVersionListSerializer;
+        private ReadWriteVersionListSerializer m_ReadWriteVersionListSerializer;
 
         private ResourceIniter m_ResourceIniter;
         private VersionListProcessor m_VersionListProcessor;
@@ -39,6 +38,7 @@ namespace GameFramework.Resource
         private ResourceUpdater m_ResourceUpdater;
         private ResourceLoader m_ResourceLoader;
         private IResourceHelper m_ResourceHelper;
+
         private string m_ReadOnlyPath;
         private string m_ReadWritePath;
         private ResourceMode m_ResourceMode;
@@ -67,7 +67,11 @@ namespace GameFramework.Resource
             m_ResourceInfos = null;
             m_ResourceGroups = new Dictionary<string, ResourceGroup>();
             m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>(new ResourceNameComparer());
-            m_CachedBytesForEncryptedString = new byte[byte.MaxValue];
+
+            m_PackageVersionListSerializer = null;
+            m_UpdatableVersionListSerializer = null;
+            m_ReadOnlyVersionListSerializer = null;
+            m_ReadWriteVersionListSerializer = null;
 
             m_ResourceIniter = null;
             m_VersionListProcessor = null;
@@ -154,6 +158,50 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 获取单机模式版本资源列表序列化器。
+        /// </summary>
+        public PackageVersionListSerializer PackageVersionListSerializer
+        {
+            get
+            {
+                return m_PackageVersionListSerializer;
+            }
+        }
+
+        /// <summary>
+        /// 获取可更新模式版本资源列表序列化器。
+        /// </summary>
+        public UpdatableVersionListSerializer UpdatableVersionListSerializer
+        {
+            get
+            {
+                return m_UpdatableVersionListSerializer;
+            }
+        }
+
+        /// <summary>
+        /// 获取本地只读区版本资源列表序列化器。
+        /// </summary>
+        public ReadOnlyVersionListSerializer ReadOnlyVersionListSerializer
+        {
+            get
+            {
+                return m_ReadOnlyVersionListSerializer;
+            }
+        }
+
+        /// <summary>
+        /// 获取本地读写区版本资源列表序列化器。
+        /// </summary>
+        public ReadWriteVersionListSerializer ReadWriteVersionListSerializer
+        {
+            get
+            {
+                return m_ReadWriteVersionListSerializer;
+            }
+        }
+
+        /// <summary>
         /// 获取当前资源适用的游戏版本号。
         /// </summary>
         public string ApplicableGameVersion
@@ -224,22 +272,22 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取或设置每下载多少字节的资源，刷新一次资源列表。
+        /// 获取或设置每下载多少字节的资源，重新生成一次版本资源列表。
         /// </summary>
-        public int GenerateReadWriteListLength
+        public int GenerateReadWriteVersionListLength
         {
             get
             {
-                return m_ResourceUpdater != null ? m_ResourceUpdater.GenerateReadWriteListLength : 0;
+                return m_ResourceUpdater != null ? m_ResourceUpdater.GenerateReadWriteVersionListLength : 0;
             }
             set
             {
                 if (m_ResourceUpdater == null)
                 {
-                    throw new GameFrameworkException("You can not use GenerateReadWriteListLength at this time.");
+                    throw new GameFrameworkException("You can not use GenerateReadWriteVersionListLength at this time.");
                 }
 
-                m_ResourceUpdater.GenerateReadWriteListLength = value;
+                m_ResourceUpdater.GenerateReadWriteVersionListLength = value;
             }
         }
 
@@ -666,11 +714,17 @@ namespace GameFramework.Resource
 
                 if (m_ResourceMode == ResourceMode.Package)
                 {
+                    m_PackageVersionListSerializer = new PackageVersionListSerializer();
+
                     m_ResourceIniter = new ResourceIniter(this);
                     m_ResourceIniter.ResourceInitComplete += OnIniterResourceInitComplete;
                 }
                 else if (m_ResourceMode == ResourceMode.Updatable)
                 {
+                    m_UpdatableVersionListSerializer = new UpdatableVersionListSerializer();
+                    m_ReadOnlyVersionListSerializer = new ReadOnlyVersionListSerializer();
+                    m_ReadWriteVersionListSerializer = new ReadWriteVersionListSerializer();
+
                     m_VersionListProcessor = new VersionListProcessor(this);
                     m_VersionListProcessor.VersionListUpdateSuccess += OnVersionListProcessorUpdateSuccess;
                     m_VersionListProcessor.VersionListUpdateFailure += OnVersionListProcessorUpdateFailure;
@@ -1395,24 +1449,6 @@ namespace GameFramework.Resource
             }
 
             return null;
-        }
-
-        private string GetEncryptedString(BinaryReader binaryReader, byte[] encryptBytes)
-        {
-            int length = binaryReader.ReadByte();
-            if (length <= 0)
-            {
-                return null;
-            }
-
-            for (int i = 0; i < length; i++)
-            {
-                m_CachedBytesForEncryptedString[i] = binaryReader.ReadByte();
-            }
-
-            Utility.Encryption.GetSelfXorBytes(m_CachedBytesForEncryptedString, encryptBytes, length);
-
-            return Utility.Converter.GetString(m_CachedBytesForEncryptedString, 0, length);
         }
 
         private void OnIniterResourceInitComplete()
