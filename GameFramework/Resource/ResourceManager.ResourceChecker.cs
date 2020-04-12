@@ -157,6 +157,11 @@ namespace GameFramework.Resource
                     }
                 }
 
+                if (removedCount > 0)
+                {
+                    Utility.Path.RemoveEmptyDirectory(m_ResourceManager.m_ReadWritePath);
+                }
+
                 ResourceCheckComplete(removedCount, updateCount, updateTotalLength, updateTotalZipLength);
             }
 

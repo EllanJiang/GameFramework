@@ -170,8 +170,6 @@ namespace GameFramework.Resource
                 {
                     ResourceGroup updatingResourceGroup = m_UpdatingResourceGroup;
                     m_UpdatingResourceGroup = null;
-
-                    Utility.Path.RemoveEmptyDirectory(m_ResourceManager.m_ReadWritePath);
                     if (ResourceUpdateAllComplete != null)
                     {
                         ResourceUpdateAllComplete(updatingResourceGroup, !m_FailureFlag, m_UpdateCandidateInfo.Count <= 0);
