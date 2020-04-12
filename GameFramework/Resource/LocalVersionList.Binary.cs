@@ -15,6 +15,7 @@ namespace GameFramework.Resource
         public struct Binary
         {
             private readonly string m_Name;
+            private readonly string m_Variant;
             private readonly int m_Length;
             private readonly int m_HashCode;
 
@@ -22,9 +23,10 @@ namespace GameFramework.Resource
             /// 初始化二进制资源的新实例。
             /// </summary>
             /// <param name="name">二进制资源名称。</param>
+            /// <param name="variant">二进制资源变体名称。</param>
             /// <param name="length">二进制资源长度。</param>
             /// <param name="hashCode">二进制资源哈希值。</param>
-            public Binary(string name, int length, int hashCode)
+            public Binary(string name, string variant, int length, int hashCode)
             {
                 if (name == null)
                 {
@@ -32,6 +34,7 @@ namespace GameFramework.Resource
                 }
 
                 m_Name = name;
+                m_Variant = variant;
                 m_Length = length;
                 m_HashCode = hashCode;
             }
@@ -44,6 +47,17 @@ namespace GameFramework.Resource
                 get
                 {
                     return m_Name;
+                }
+            }
+
+            /// <summary>
+            /// 获取二进制资源变体名称。
+            /// </summary>
+            public string Variant
+            {
+                get
+                {
+                    return m_Variant;
                 }
             }
 
