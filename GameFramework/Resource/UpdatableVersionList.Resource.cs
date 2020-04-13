@@ -38,7 +38,7 @@ namespace GameFramework.Resource
             /// <param name="assetIndexes">普通资源包含的资产索引集合。</param>
             public Resource(string name, string variant, byte loadType, int length, int hashCode, int zipLength, int zipHashCode, int[] assetIndexes)
             {
-                if (name == null)
+                if (string.IsNullOrEmpty(name))
                 {
                     throw new GameFrameworkException("Name is invalid.");
                 }

@@ -290,7 +290,6 @@ namespace GameFramework.Resource
             {
                 ResourceInfo? resourceInfo = null;
                 string[] dependencyAssetNames = null;
-
                 if (!CheckAsset(assetName, out resourceInfo, out dependencyAssetNames))
                 {
                     string errorMessage = Utility.Text.Format("Can not load asset '{0}'.", assetName);
@@ -342,7 +341,6 @@ namespace GameFramework.Resource
             {
                 ResourceInfo? resourceInfo = null;
                 string[] dependencyAssetNames = null;
-
                 if (!CheckAsset(sceneAssetName, out resourceInfo, out dependencyAssetNames))
                 {
                     string errorMessage = Utility.Text.Format("Can not load scene '{0}'.", sceneAssetName);
@@ -419,7 +417,6 @@ namespace GameFramework.Resource
 
                 ResourceInfo? resourceInfo = null;
                 string[] dependencyAssetNames = null;
-
                 if (!CheckAsset(assetName, out resourceInfo, out dependencyAssetNames))
                 {
                     return false;

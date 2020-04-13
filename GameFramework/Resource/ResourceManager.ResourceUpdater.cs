@@ -312,7 +312,7 @@ namespace GameFramework.Resource
                         }
                     }
 
-                    LocalVersionList versionList = new LocalVersionList(resources, null);
+                    LocalVersionList versionList = new LocalVersionList(resources);
                     if (!m_ResourceManager.m_ReadWriteVersionListSerializer.Serialize(fileStream, versionList))
                     {
                         throw new GameFrameworkException("Serialize read write version list failure.");

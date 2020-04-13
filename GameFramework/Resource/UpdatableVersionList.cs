@@ -14,7 +14,6 @@ namespace GameFramework.Resource
     {
         private static readonly Asset[] EmptyAssetArray = new Asset[] { };
         private static readonly Resource[] EmptyResourceArray = new Resource[] { };
-        private static readonly Binary[] EmptyBinaryArray = new Binary[] { };
         private static readonly ResourceGroup[] EmptyResourceGroupArray = new ResourceGroup[] { };
 
         private readonly bool m_IsValid;
@@ -22,7 +21,6 @@ namespace GameFramework.Resource
         private readonly int m_InternalResourceVersion;
         private readonly Asset[] m_Assets;
         private readonly Resource[] m_Resources;
-        private readonly Binary[] m_Binaries;
         private readonly ResourceGroup[] m_ResourceGroups;
 
         /// <summary>
@@ -32,16 +30,14 @@ namespace GameFramework.Resource
         /// <param name="internalResourceVersion">内部资源版本号。</param>
         /// <param name="assets">包含的资产集合。</param>
         /// <param name="resources">包含的普通资源集合。</param>
-        /// <param name="binaries">包含的二进制资源集合。</param>
         /// <param name="resourceGroups">包含的资源组集合。</param>
-        public UpdatableVersionList(string applicableGameVersion, int internalResourceVersion, Asset[] assets, Resource[] resources, Binary[] binaries, ResourceGroup[] resourceGroups)
+        public UpdatableVersionList(string applicableGameVersion, int internalResourceVersion, Asset[] assets, Resource[] resources, ResourceGroup[] resourceGroups)
         {
             m_IsValid = true;
             m_ApplicableGameVersion = applicableGameVersion;
             m_InternalResourceVersion = internalResourceVersion;
             m_Assets = assets ?? EmptyAssetArray;
             m_Resources = resources ?? EmptyResourceArray;
-            m_Binaries = binaries ?? EmptyBinaryArray;
             m_ResourceGroups = resourceGroups ?? EmptyResourceGroupArray;
         }
 
@@ -94,15 +90,6 @@ namespace GameFramework.Resource
         public Resource[] GetResources()
         {
             return m_Resources;
-        }
-
-        /// <summary>
-        /// 获取包含的二进制资源集合。
-        /// </summary>
-        /// <returns></returns>
-        public Binary[] GetBinaries()
-        {
-            return m_Binaries;
         }
 
         /// <summary>

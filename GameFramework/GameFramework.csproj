@@ -204,7 +204,9 @@
     <Compile Include="Resource\LoadAssetFailureCallback.cs" />
     <Compile Include="Resource\LoadAssetSuccessCallback.cs" />
     <Compile Include="Resource\LoadAssetUpdateCallback.cs" />
-    <Compile Include="Resource\LoadBytesCallback.cs" />
+    <Compile Include="Resource\LoadBytesCallbacks.cs" />
+    <Compile Include="Resource\LoadBytesFailureCallback.cs" />
+    <Compile Include="Resource\LoadBytesSuccessCallback.cs" />
     <Compile Include="Resource\LoadResourceAgentHelperErrorEventArgs.cs" />
     <Compile Include="Resource\LoadResourceAgentHelperLoadCompleteEventArgs.cs" />
     <Compile Include="Resource\LoadResourceAgentHelperParseBytesCompleteEventArgs.cs" />
@@ -218,11 +220,9 @@
     <Compile Include="Resource\LoadSceneFailureCallback.cs" />
     <Compile Include="Resource\LoadSceneSuccessCallback.cs" />
     <Compile Include="Resource\LoadSceneUpdateCallback.cs" />
-    <Compile Include="Resource\LocalVersionList.Binary.cs" />
     <Compile Include="Resource\LocalVersionList.cs" />
     <Compile Include="Resource\LocalVersionList.Resource.cs" />
     <Compile Include="Resource\PackageVersionList.Asset.cs" />
-    <Compile Include="Resource\PackageVersionList.Binary.cs" />
     <Compile Include="Resource\PackageVersionList.cs" />
     <Compile Include="Resource\PackageVersionList.Resource.cs" />
     <Compile Include="Resource\PackageVersionList.ResourceGroup.cs" />
@@ -263,7 +263,6 @@
     <Compile Include="Resource\UnloadSceneFailureCallback.cs" />
     <Compile Include="Resource\UnloadSceneSuccessCallback.cs" />
     <Compile Include="Resource\UpdatableVersionList.Asset.cs" />
-    <Compile Include="Resource\UpdatableVersionList.Binary.cs" />
     <Compile Include="Resource\UpdatableVersionList.cs" />
     <Compile Include="Resource\UpdatableVersionList.Resource.cs" />
     <Compile Include="Resource\UpdatableVersionList.ResourceGroup.cs" />

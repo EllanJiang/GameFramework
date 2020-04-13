@@ -74,9 +74,9 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("Read-write path is invalid.");
                 }
 
-                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName))), ParseUpdatableVersionList);
-                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadOnlyPath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName))), ParseReadOnlyVersionList);
-                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName))), ParseReadWriteVersionList);
+                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName))), new LoadBytesCallbacks(OnLoadUpdatableVersionListSuccess, OnLoadUpdatableVersionListFailure), null);
+                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadOnlyPath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName))), new LoadBytesCallbacks(OnLoadReadOnlyVersionListSuccess, OnLoadReadOnlyVersionListFailure), null);
+                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName))), new LoadBytesCallbacks(OnLoadReadWriteVersionListSuccess, OnLoadReadWriteVersionListFailure), null);
             }
 
             private void SetVersionInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode)
@@ -196,22 +196,11 @@ namespace GameFramework.Resource
                 return true;
             }
 
-            /// <summary>
-            /// 解析版本资源列表。
-            /// </summary>
-            /// <param name="fileUri">版本资源列表文件路径。</param>
-            /// <param name="bytes">要解析的数据。</param>
-            /// <param name="errorMessage">错误信息。</param>
-            private void ParseUpdatableVersionList(string fileUri, byte[] bytes, string errorMessage)
+            private void OnLoadUpdatableVersionListSuccess(string fileUri, byte[] bytes, float duration, object userData)
             {
                 if (m_UpdatableVersionListReady)
                 {
                     throw new GameFrameworkException("Updatable version list has been parsed.");
-                }
-
-                if (bytes == null || bytes.Length <= 0)
-                {
-                    throw new GameFrameworkException(Utility.Text.Format("Updatable version list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
                 }
 
                 MemoryStream memoryStream = null;
@@ -235,6 +224,11 @@ namespace GameFramework.Resource
 
                     foreach (UpdatableVersionList.Resource resource in resources)
                     {
+                        if (resource.Variant != null && resource.Variant != m_CurrentVariant)
+                        {
+                            continue;
+                        }
+
                         ResourceName resourceName = new ResourceName(resource.Name, resource.Variant);
                         int[] assetIndexes = resource.GetAssetIndexes();
                         foreach (int assetIndex in assetIndexes)
@@ -248,17 +242,11 @@ namespace GameFramework.Resource
                                 dependencyAssetNames[index++] = assets[dependencyAssetIndex].Name;
                             }
 
-                            if (resource.Variant == null || resource.Variant == m_CurrentVariant)
-                            {
-                                m_ResourceManager.m_AssetInfos.Add(asset.Name, new AssetInfo(asset.Name, resourceName, dependencyAssetNames));
-                            }
+                            m_ResourceManager.m_AssetInfos.Add(asset.Name, new AssetInfo(asset.Name, resourceName, dependencyAssetNames));
                         }
 
-                        if (resource.Variant == null || resource.Variant == m_CurrentVariant)
-                        {
-                            SetVersionInfo(resourceName, (LoadType)resource.LoadType, resource.Length, resource.HashCode, resource.ZipLength, resource.ZipHashCode);
-                            defaultResourceGroup.AddResource(resourceName, resource.Length, resource.ZipLength);
-                        }
+                        SetVersionInfo(resourceName, (LoadType)resource.LoadType, resource.Length, resource.HashCode, resource.ZipLength, resource.ZipHashCode);
+                        defaultResourceGroup.AddResource(resourceName, resource.Length, resource.ZipLength);
                     }
 
                     foreach (UpdatableVersionList.ResourceGroup resourceGroup in resourceGroups)
@@ -267,10 +255,12 @@ namespace GameFramework.Resource
                         int[] resourceIndexes = resourceGroup.GetResourceIndexes();
                         foreach (int resourceIndex in resourceIndexes)
                         {
-                            if (resources[resourceIndex].Variant == null || resources[resourceIndex].Variant == m_CurrentVariant)
+                            if (resources[resourceIndex].Variant != null && resources[resourceIndex].Variant != m_CurrentVariant)
                             {
-                                group.AddResource(new ResourceName(resources[resourceIndex].Name, resources[resourceIndex].Variant), resources[resourceIndex].Length, resources[resourceIndex].ZipLength);
+                                continue;
                             }
+
+                            group.AddResource(new ResourceName(resources[resourceIndex].Name, resources[resourceIndex].Variant), resources[resourceIndex].Length, resources[resourceIndex].ZipLength);
                         }
                     }
 
@@ -296,24 +286,16 @@ namespace GameFramework.Resource
                 }
             }
 
-            /// <summary>
-            /// 解析只读区版本资源列表。
-            /// </summary>
-            /// <param name="fileUri">只读区版本资源列表文件路径。</param>
-            /// <param name="bytes">要解析的数据。</param>
-            /// <param name="errorMessage">错误信息。</param>
-            private void ParseReadOnlyVersionList(string fileUri, byte[] bytes, string errorMessage)
+            private void OnLoadUpdatableVersionListFailure(string fileUri, string errorMessage, object userData)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Updatable version list '{0}' is invalid, error message is '{1}'.", fileUri, string.IsNullOrEmpty(errorMessage) ? "<Empty>" : errorMessage));
+            }
+
+            private void OnLoadReadOnlyVersionListSuccess(string fileUri, byte[] bytes, float duration, object userData)
             {
                 if (m_ReadOnlyVersionListReady)
                 {
                     throw new GameFrameworkException("Read only version list has been parsed.");
-                }
-
-                if (bytes == null || bytes.Length <= 0)
-                {
-                    m_ReadOnlyVersionListReady = true;
-                    RefreshCheckInfoStatus();
-                    return;
                 }
 
                 MemoryStream memoryStream = null;
@@ -354,24 +336,22 @@ namespace GameFramework.Resource
                 }
             }
 
-            /// <summary>
-            /// 解析读写区版本资源列表。
-            /// </summary>
-            /// <param name="fileUri">读写区版本资源列表文件路径。</param>
-            /// <param name="bytes">要解析的数据。</param>
-            /// <param name="errorMessage">错误信息。</param>
-            private void ParseReadWriteVersionList(string fileUri, byte[] bytes, string errorMessage)
+            private void OnLoadReadOnlyVersionListFailure(string fileUri, string errorMessage, object userData)
+            {
+                if (m_ReadOnlyVersionListReady)
+                {
+                    throw new GameFrameworkException("Read only version list has been parsed.");
+                }
+
+                m_ReadOnlyVersionListReady = true;
+                RefreshCheckInfoStatus();
+            }
+
+            private void OnLoadReadWriteVersionListSuccess(string fileUri, byte[] bytes, float duration, object userData)
             {
                 if (m_ReadWriteVersionListReady)
                 {
                     throw new GameFrameworkException("Read write version list has been parsed.");
-                }
-
-                if (bytes == null || bytes.Length <= 0)
-                {
-                    m_ReadWriteVersionListReady = true;
-                    RefreshCheckInfoStatus();
-                    return;
                 }
 
                 MemoryStream memoryStream = null;
@@ -412,6 +392,17 @@ namespace GameFramework.Resource
                         memoryStream = null;
                     }
                 }
+            }
+
+            private void OnLoadReadWriteVersionListFailure(string fileUri, string errorMessage, object userData)
+            {
+                if (m_ReadWriteVersionListReady)
+                {
+                    throw new GameFrameworkException("Read write version list has been parsed.");
+                }
+
+                m_ReadWriteVersionListReady = true;
+                RefreshCheckInfoStatus();
             }
         }
     }

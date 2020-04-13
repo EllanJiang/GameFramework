@@ -26,7 +26,7 @@ namespace GameFramework.Resource
             /// <param name="dependencyAssetIndexes">资产包含的依赖资产索引集合。</param>
             public Asset(string name, int[] dependencyAssetIndexes)
             {
-                if (name == null)
+                if (string.IsNullOrEmpty(name))
                 {
                     throw new GameFrameworkException("Name is invalid.");
                 }

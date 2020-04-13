@@ -13,22 +13,18 @@ namespace GameFramework.Resource
     public partial struct LocalVersionList
     {
         private static readonly Resource[] EmptyResourceArray = new Resource[] { };
-        private static readonly Binary[] EmptyBinaryArray = new Binary[] { };
 
         private readonly bool m_IsValid;
         private readonly Resource[] m_Resources;
-        private readonly Binary[] m_Binaries;
 
         /// <summary>
         /// 初始化本地版本资源列表的新实例。
         /// </summary>
         /// <param name="resources">包含的普通资源集合。</param>
-        /// <param name="binaries">包含的二进制资源集合。</param>
-        public LocalVersionList(Resource[] resources, Binary[] binaries)
+        public LocalVersionList(Resource[] resources)
         {
             m_IsValid = true;
             m_Resources = resources ?? EmptyResourceArray;
-            m_Binaries = binaries ?? EmptyBinaryArray;
         }
 
         /// <summary>
@@ -49,15 +45,6 @@ namespace GameFramework.Resource
         public Resource[] GetResources()
         {
             return m_Resources;
-        }
-
-        /// <summary>
-        /// 获取二进制资源集合。
-        /// </summary>
-        /// <returns></returns>
-        public Binary[] GetBinaries()
-        {
-            return m_Binaries;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace GameFramework.Resource
             /// <param name="hashCode">普通资源哈希值。</param>
             public Resource(string name, string variant, byte loadType, int length, int hashCode)
             {
-                if (name == null)
+                if (string.IsNullOrEmpty(name))
                 {
                     throw new GameFrameworkException("Name is invalid.");
                 }
