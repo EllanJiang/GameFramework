@@ -13,7 +13,7 @@ namespace GameFramework
     /// 事件池模式。
     /// </summary>
     [Flags]
-    internal enum EventPoolMode
+    internal enum EventPoolMode : byte
     {
         /// <summary>
         /// 默认事件池模式，即必须存在有且只有一个事件处理函数。

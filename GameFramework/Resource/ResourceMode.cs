@@ -10,7 +10,7 @@ namespace GameFramework.Resource
     /// <summary>
     /// 资源模式。
     /// </summary>
-    public enum ResourceMode
+    public enum ResourceMode : byte
     {
         /// <summary>
         /// 未指定。

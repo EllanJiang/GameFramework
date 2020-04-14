@@ -10,7 +10,7 @@ namespace GameFramework.Network
     /// <summary>
     /// 网络地址类型。
     /// </summary>
-    public enum AddressFamily
+    public enum AddressFamily : byte
     {
         /// <summary>
         /// 未知。

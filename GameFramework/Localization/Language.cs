@@ -10,7 +10,7 @@ namespace GameFramework.Localization
     /// <summary>
     /// 本地化语言。
     /// </summary>
-    public enum Language
+    public enum Language : byte
     {
         /// <summary>
         /// 未指定。

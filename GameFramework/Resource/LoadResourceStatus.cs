@@ -10,7 +10,7 @@ namespace GameFramework.Resource
     /// <summary>
     /// 加载资源状态。
     /// </summary>
-    public enum LoadResourceStatus
+    public enum LoadResourceStatus : byte
     {
         /// <summary>
         /// 加载资源完成。

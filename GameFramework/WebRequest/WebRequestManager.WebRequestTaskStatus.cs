@@ -12,7 +12,7 @@ namespace GameFramework.WebRequest
         /// <summary>
         /// Web 请求任务的状态。
         /// </summary>
-        private enum WebRequestTaskStatus
+        private enum WebRequestTaskStatus : byte
         {
             /// <summary>
             /// 准备请求。

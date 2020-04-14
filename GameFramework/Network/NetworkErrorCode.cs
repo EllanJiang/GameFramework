@@ -10,7 +10,7 @@ namespace GameFramework.Network
     /// <summary>
     /// 网络错误码。
     /// </summary>
-    public enum NetworkErrorCode
+    public enum NetworkErrorCode : byte
     {
         /// <summary>
         /// 未知错误。

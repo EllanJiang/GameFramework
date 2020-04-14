@@ -10,7 +10,7 @@ namespace GameFramework.Resource
     /// <summary>
     /// 加载资源进度类型。
     /// </summary>
-    public enum LoadResourceProgress
+    public enum LoadResourceProgress : byte
     {
         /// <summary>
         /// 未知类型。

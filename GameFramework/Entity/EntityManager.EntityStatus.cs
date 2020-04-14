@@ -12,7 +12,7 @@ namespace GameFramework.Entity
         /// <summary>
         /// 实体状态。
         /// </summary>
-        private enum EntityStatus
+        private enum EntityStatus : byte
         {
             Unknown = 0,
             WillInit,

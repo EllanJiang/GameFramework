@@ -10,7 +10,7 @@ namespace GameFramework
     /// <summary>
     /// 加载方式。
     /// </summary>
-    public enum LoadType
+    public enum LoadType : byte
     {
         /// <summary>
         /// 按文本加载。

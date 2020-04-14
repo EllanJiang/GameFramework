@@ -10,7 +10,7 @@ namespace GameFramework
     /// <summary>
     /// 游戏框架日志等级。
     /// </summary>
-    public enum GameFrameworkLogLevel
+    public enum GameFrameworkLogLevel : byte
     {
         /// <summary>
         /// 调试。

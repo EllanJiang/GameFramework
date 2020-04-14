@@ -10,7 +10,7 @@ namespace GameFramework.Sound
     /// <summary>
     /// 播放声音错误码。
     /// </summary>
-    public enum PlaySoundErrorCode
+    public enum PlaySoundErrorCode : byte
     {
         /// <summary>
         /// 未知错误。

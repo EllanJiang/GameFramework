@@ -10,7 +10,7 @@ namespace GameFramework.Network
     /// <summary>
     /// 网络服务类型。
     /// </summary>
-    public enum ServiceType
+    public enum ServiceType : byte
     {
         /// <summary>
         /// TCP 网络服务。

@@ -10,7 +10,7 @@ namespace GameFramework
     /// <summary>
     /// 任务状态。
     /// </summary>
-    public enum TaskStatus
+    public enum TaskStatus : byte
     {
         /// <summary>
         /// 未开始。

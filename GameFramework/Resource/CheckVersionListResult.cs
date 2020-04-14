@@ -10,7 +10,7 @@ namespace GameFramework.Resource
     /// <summary>
     /// 检查版本资源列表结果。
     /// </summary>
-    public enum CheckVersionListResult
+    public enum CheckVersionListResult : byte
     {
         /// <summary>
         /// 已经是最新的。

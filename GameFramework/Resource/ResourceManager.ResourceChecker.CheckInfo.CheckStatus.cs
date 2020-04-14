@@ -16,7 +16,7 @@ namespace GameFramework.Resource
                 /// <summary>
                 /// 资源检查状态。
                 /// </summary>
-                public enum CheckStatus
+                public enum CheckStatus : byte
                 {
                     /// <summary>
                     /// 状态未知。
