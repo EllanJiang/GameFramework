@@ -10,9 +10,9 @@ namespace GameFramework.Resource
     /// <summary>
     /// 本地只读区版本资源列表序列化器。
     /// </summary>
-    public sealed class ReadOnlyVersionListSerializer : VersionListSerializer<LocalVersionList>
+    public sealed class ReadOnlyVersionListSerializer : GameFrameworkSerializer<LocalVersionList>
     {
-        private static readonly byte[] VersionListHeader = new byte[] { (byte)'E', (byte)'L', (byte)'R' };
+        private static readonly byte[] Header = new byte[] { (byte)'E', (byte)'L', (byte)'R' };
 
         /// <summary>
         /// 初始化本地只读区版本资源列表序列化器的新实例。
@@ -27,7 +27,7 @@ namespace GameFramework.Resource
         /// <returns>本地只读区版本资源列表头标识。</returns>
         protected override byte[] GetHeader()
         {
-            return VersionListHeader;
+            return Header;
         }
     }
 }

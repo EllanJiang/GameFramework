@@ -10,9 +10,9 @@ namespace GameFramework.Resource
     /// <summary>
     /// 单机模式版本资源列表序列化器。
     /// </summary>
-    public sealed class PackageVersionListSerializer : VersionListSerializer<PackageVersionList>
+    public sealed class PackageVersionListSerializer : GameFrameworkSerializer<PackageVersionList>
     {
-        private static readonly byte[] VersionListHeader = new byte[] { (byte)'E', (byte)'L', (byte)'P' };
+        private static readonly byte[] Header = new byte[] { (byte)'E', (byte)'L', (byte)'P' };
 
         /// <summary>
         /// 初始化单机模式版本资源列表序列化器的新实例。
@@ -27,7 +27,7 @@ namespace GameFramework.Resource
         /// <returns>单机模式版本资源列表头标识。</returns>
         protected override byte[] GetHeader()
         {
-            return VersionListHeader;
+            return Header;
         }
     }
 }

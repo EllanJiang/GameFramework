@@ -9,12 +9,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace GameFramework.Resource
+namespace GameFramework
 {
     /// <summary>
-    /// 版本资源列表序列化器基类。
+    /// 游戏框架序列化器基类。
     /// </summary>
-    public abstract class VersionListSerializer<T>
+    /// <typeparam name="T">要序列化的数据类型。</typeparam>
+    public abstract class GameFrameworkSerializer<T>
     {
         private readonly Dictionary<byte, SerializeCallback> m_SerializeCallbacks;
         private readonly Dictionary<byte, DeserializeCallback> m_DeserializeCallbacks;
@@ -22,9 +23,9 @@ namespace GameFramework.Resource
         private byte m_LatestSerializeCallbackVersion;
 
         /// <summary>
-        /// 初始化版本资源列表序列化器基类的新实例。
+        /// 初始化游戏框架序列化器基类的新实例。
         /// </summary>
-        public VersionListSerializer()
+        public GameFrameworkSerializer()
         {
             m_SerializeCallbacks = new Dictionary<byte, SerializeCallback>();
             m_DeserializeCallbacks = new Dictionary<byte, DeserializeCallback>();
@@ -36,15 +37,15 @@ namespace GameFramework.Resource
         /// 序列化回调函数。
         /// </summary>
         /// <param name="binaryWriter">目标流。</param>
-        /// <param name="versionList">要序列化的版本资源列表。</param>
-        /// <returns>序列化版本资源列表是否成功。</returns>
-        public delegate bool SerializeCallback(BinaryWriter binaryWriter, T versionList);
+        /// <param name="data">要序列化的数据。</param>
+        /// <returns>序列化数据是否成功。</returns>
+        public delegate bool SerializeCallback(BinaryWriter binaryWriter, T data);
 
         /// <summary>
         /// 反序列化回调函数。
         /// </summary>
         /// <param name="binaryReader">指定流。</param>
-        /// <returns>反序列化的版本资源列表。</returns>
+        /// <returns>反序列化的数据。</returns>
         public delegate T DeserializeCallback(BinaryReader binaryReader);
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace GameFramework.Resource
         {
             if (callback == null)
             {
-                throw new GameFrameworkException("Callback is invalid.");
+                throw new GameFrameworkException("Serialize callback is invalid.");
             }
 
             m_SerializeCallbacks[version] = callback;
@@ -84,7 +85,7 @@ namespace GameFramework.Resource
         {
             if (callback == null)
             {
-                throw new GameFrameworkException("Callback is invalid.");
+                throw new GameFrameworkException("Deserialize callback is invalid.");
             }
 
             m_DeserializeCallbacks[version] = callback;
@@ -99,36 +100,36 @@ namespace GameFramework.Resource
         {
             if (callback == null)
             {
-                throw new GameFrameworkException("Callback is invalid.");
+                throw new GameFrameworkException("Try get value callback is invalid.");
             }
 
             m_TryGetValueCallbacks[version] = callback;
         }
 
         /// <summary>
-        /// 序列化版本资源列表到目标流中。
+        /// 序列化数据到目标流中。
         /// </summary>
         /// <param name="stream">目标流。</param>
-        /// <param name="versionList">要序列化的版本资源列表。</param>
-        /// <returns>序列化版本资源列表是否成功。</returns>
-        public bool Serialize(Stream stream, T versionList)
+        /// <param name="data">要序列化的数据。</param>
+        /// <returns>序列化数据是否成功。</returns>
+        public bool Serialize(Stream stream, T data)
         {
             if (m_SerializeCallbacks.Count <= 0)
             {
                 throw new GameFrameworkException("No serialize callback registered.");
             }
 
-            return Serialize(stream, versionList, m_LatestSerializeCallbackVersion);
+            return Serialize(stream, data, m_LatestSerializeCallbackVersion);
         }
 
         /// <summary>
-        /// 序列化版本资源列表到目标流中。
+        /// 序列化数据到目标流中。
         /// </summary>
         /// <param name="stream">目标流。</param>
-        /// <param name="versionList">要序列化的版本资源列表。</param>
+        /// <param name="data">要序列化的数据。</param>
         /// <param name="version">序列化回调函数的版本。</param>
-        /// <returns>序列化版本资源列表是否成功。</returns>
-        public bool Serialize(Stream stream, T versionList, byte version)
+        /// <returns>序列化数据是否成功。</returns>
+        public bool Serialize(Stream stream, T data, byte version)
         {
             using (BinaryWriter binaryWriter = new BinaryWriter(stream, Encoding.UTF8))
             {
@@ -143,15 +144,15 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(Utility.Text.Format("Serialize callback '{0}' is not exist.", version.ToString()));
                 }
 
-                return callback(binaryWriter, versionList);
+                return callback(binaryWriter, data);
             }
         }
 
         /// <summary>
-        /// 从指定流反序列化版本资源列表。
+        /// 从指定流反序列化数据。
         /// </summary>
         /// <param name="stream">指定流。</param>
-        /// <returns>反序列化的版本资源列表。</returns>
+        /// <returns>反序列化的数据。</returns>
         public T Deserialize(Stream stream)
         {
             using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.UTF8))
@@ -159,7 +160,7 @@ namespace GameFramework.Resource
                 byte[] header = GetHeader();
                 if (binaryReader.ReadByte() != header[0] || binaryReader.ReadByte() != header[1] || binaryReader.ReadByte() != header[2])
                 {
-                    throw new GameFrameworkException("Version list header is invalid.");
+                    throw new GameFrameworkException("Header is invalid.");
                 }
 
                 byte version = binaryReader.ReadByte();
@@ -203,9 +204,9 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取版本资源列表头标识。
+        /// 获取数据头标识。
         /// </summary>
-        /// <returns>版本资源列表头标识。</returns>
+        /// <returns>数据头标识。</returns>
         protected abstract byte[] GetHeader();
     }
 }
