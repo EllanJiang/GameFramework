@@ -16,7 +16,7 @@ namespace GameFramework.DataNode
         /// </summary>
         private sealed class DataNode : IDataNode, IReference
         {
-            private static readonly DataNode[] EmptyArray = new DataNode[] { };
+            private static readonly DataNode[] EmptyDataNodeArray = new DataNode[] { };
 
             private string m_Name;
             private Variable m_Data;
@@ -241,7 +241,7 @@ namespace GameFramework.DataNode
             {
                 if (m_Childs == null)
                 {
-                    return EmptyArray;
+                    return EmptyDataNodeArray;
                 }
 
                 return m_Childs.ToArray();

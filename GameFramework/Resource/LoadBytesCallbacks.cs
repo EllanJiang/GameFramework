@@ -25,7 +25,7 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 初始化加载二进制资源回调函数集的新实例。
+        /// 初始化加载数据流回调函数集的新实例。
         /// </summary>
         /// <param name="loadBytesSuccessCallback">加载数据流成功回调函数。</param>
         /// <param name="loadBytesFailureCallback">加载数据流失败回调函数。</param>

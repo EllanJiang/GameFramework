@@ -14,7 +14,7 @@ namespace GameFramework.Resource
         /// </summary>
         public struct Asset
         {
-            private static readonly int[] EmptyArray = new int[] { };
+            private static readonly int[] EmptyIntArray = new int[] { };
 
             private readonly string m_Name;
             private readonly int[] m_DependencyAssetIndexes;
@@ -32,7 +32,7 @@ namespace GameFramework.Resource
                 }
 
                 m_Name = name;
-                m_DependencyAssetIndexes = dependencyAssetIndexes ?? EmptyArray;
+                m_DependencyAssetIndexes = dependencyAssetIndexes ?? EmptyIntArray;
             }
 
             /// <summary>

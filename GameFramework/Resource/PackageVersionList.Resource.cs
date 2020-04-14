@@ -14,7 +14,7 @@ namespace GameFramework.Resource
         /// </summary>
         public struct Resource
         {
-            private static readonly int[] EmptyArray = new int[] { };
+            private static readonly int[] EmptyIntArray = new int[] { };
 
             private readonly string m_Name;
             private readonly string m_Variant;
@@ -44,7 +44,7 @@ namespace GameFramework.Resource
                 m_LoadType = loadType;
                 m_Length = length;
                 m_HashCode = hashCode;
-                m_AssetIndexes = assetIndexes ?? EmptyArray;
+                m_AssetIndexes = assetIndexes ?? EmptyIntArray;
             }
 
             /// <summary>
