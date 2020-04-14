@@ -110,6 +110,13 @@ namespace GameFramework.Scene
         void GetUnloadingSceneAssetNames(List<string> results);
 
         /// <summary>
+        /// 检查场景资源是否存在。
+        /// </summary>
+        /// <param name="sceneAssetName">要检查场景资源的名称。</param>
+        /// <returns>场景资源是否存在。</returns>
+        bool HasScene(string sceneAssetName);
+
+        /// <summary>
         /// 加载场景。
         /// </summary>
         /// <param name="sceneAssetName">场景资源名称。</param>
