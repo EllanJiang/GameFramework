@@ -12,25 +12,30 @@ namespace GameFramework.Resource
         /// <summary>
         /// 资源加载方式类型。
         /// </summary>
-        private enum LoadType
+        private enum LoadType : byte
         {
             /// <summary>
-            /// 从文件加载。
+            /// 按二进制直接加载。
             /// </summary>
-            LoadFromFile = 0,
+            LoadFromBinary = 0,
 
             /// <summary>
-            /// 从内存加载。
+            /// 使用文件方式加载。
+            /// </summary>
+            LoadFromFile,
+
+            /// <summary>
+            /// 使用内存方式加载。
             /// </summary>
             LoadFromMemory,
 
             /// <summary>
-            /// 从内存快速解密加载。
+            /// 使用内存快速解密方式加载。
             /// </summary>
             LoadFromMemoryAndQuickDecrypt,
 
             /// <summary>
-            /// 从内存解密加载。
+            /// 使用内存解密方式加载。
             /// </summary>
             LoadFromMemoryAndDecrypt
         }

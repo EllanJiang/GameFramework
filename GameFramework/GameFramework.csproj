@@ -205,6 +205,9 @@
     <Compile Include="Resource\LoadAssetFailureCallback.cs" />
     <Compile Include="Resource\LoadAssetSuccessCallback.cs" />
     <Compile Include="Resource\LoadAssetUpdateCallback.cs" />
+    <Compile Include="Resource\LoadBinaryCallbacks.cs" />
+    <Compile Include="Resource\LoadBinaryFailureCallback.cs" />
+    <Compile Include="Resource\LoadBinarySuccessCallback.cs" />
     <Compile Include="Resource\LoadBytesCallbacks.cs" />
     <Compile Include="Resource\LoadBytesFailureCallback.cs" />
     <Compile Include="Resource\LoadBytesSuccessCallback.cs" />
@@ -245,6 +248,7 @@
     <Compile Include="Resource\ResourceManager.ResourceLoader.AssetObject.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadAssetTask.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceLoader.LoadBinaryInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadDependencyAssetTask.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadResourceAgent.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.LoadResourceTaskBase.cs" />

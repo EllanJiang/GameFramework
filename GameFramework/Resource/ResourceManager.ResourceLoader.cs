@@ -8,6 +8,7 @@
 using GameFramework.ObjectPool;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GameFramework.Resource
 {
@@ -26,6 +27,7 @@ namespace GameFramework.Resource
             private readonly Dictionary<object, int> m_ResourceDependencyCount;
             private readonly Dictionary<object, object> m_AssetToResourceMap;
             private readonly Dictionary<string, object> m_SceneToAssetMap;
+            private readonly LoadBytesCallbacks m_LoadBytesCallbacks;
             private readonly byte[] m_CachedHashBytes;
             private IObjectPool<AssetObject> m_AssetPool;
             private IObjectPool<ResourceObject> m_ResourcePool;
@@ -42,6 +44,7 @@ namespace GameFramework.Resource
                 m_ResourceDependencyCount = new Dictionary<object, int>();
                 m_AssetToResourceMap = new Dictionary<object, object>();
                 m_SceneToAssetMap = new Dictionary<string, object>();
+                m_LoadBytesCallbacks = new LoadBytesCallbacks(OnLoadBinarySuccess, OnLoadBinaryFailure);
                 m_CachedHashBytes = new byte[CachedHashBytesLength];
                 m_AssetPool = null;
                 m_ResourcePool = null;
@@ -302,6 +305,18 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(errorMessage);
                 }
 
+                if (resourceInfo.Value.LoadType == LoadType.LoadFromBinary)
+                {
+                    string errorMessage = Utility.Text.Format("Can not load asset '{0}' which is a binary asset.", assetName);
+                    if (loadAssetCallbacks.LoadAssetFailureCallback != null)
+                    {
+                        loadAssetCallbacks.LoadAssetFailureCallback(assetName, LoadResourceStatus.TypeError, errorMessage, userData);
+                        return;
+                    }
+
+                    throw new GameFrameworkException(errorMessage);
+                }
+
                 LoadAssetTask mainTask = LoadAssetTask.Create(assetName, assetType, priority, resourceInfo.Value, dependencyAssetNames, loadAssetCallbacks, userData);
                 foreach (string dependencyAssetName in dependencyAssetNames)
                 {
@@ -347,6 +362,18 @@ namespace GameFramework.Resource
                     if (loadSceneCallbacks.LoadSceneFailureCallback != null)
                     {
                         loadSceneCallbacks.LoadSceneFailureCallback(sceneAssetName, LoadResourceStatus.NotReady, errorMessage, userData);
+                        return;
+                    }
+
+                    throw new GameFrameworkException(errorMessage);
+                }
+
+                if (resourceInfo.Value.LoadType == LoadType.LoadFromBinary)
+                {
+                    string errorMessage = Utility.Text.Format("Can not load scene asset '{0}' which is a binary asset.", sceneAssetName);
+                    if (loadSceneCallbacks.LoadSceneFailureCallback != null)
+                    {
+                        loadSceneCallbacks.LoadSceneFailureCallback(sceneAssetName, LoadResourceStatus.TypeError, errorMessage, userData);
                         return;
                     }
 
@@ -400,6 +427,61 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
+            /// 获取二进制资源的实际路径。
+            /// </summary>
+            /// <param name="binaryAssetName">要获取实际路径的二进制资源的名称。</param>
+            /// <returns>二进制资源的实际路径。</returns>
+            public string GetBinaryPath(string binaryAssetName)
+            {
+                ResourceInfo? resourceInfo = null;
+                string[] dependencyAssetNames = null;
+                if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
+                {
+                    return null;
+                }
+
+                return Utility.Path.GetRegularPath(Path.Combine(resourceInfo.Value.StorageInReadOnly ? m_ResourceManager.m_ReadOnlyPath : m_ResourceManager.m_ReadWritePath, resourceInfo.Value.ResourceName.FullName));
+            }
+
+            /// <summary>
+            /// 异步加载二进制资源。
+            /// </summary>
+            /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
+            /// <param name="loadBinaryCallbacks">加载二进制资源回调函数集。</param>
+            /// <param name="userData">用户自定义数据。</param>
+            public void LoadBinary(string binaryAssetName, LoadBinaryCallbacks loadBinaryCallbacks, object userData)
+            {
+                ResourceInfo? resourceInfo = null;
+                string[] dependencyAssetNames = null;
+                if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
+                {
+                    string errorMessage = Utility.Text.Format("Can not load binary '{0}'.", binaryAssetName);
+                    if (loadBinaryCallbacks.LoadBinaryFailureCallback != null)
+                    {
+                        loadBinaryCallbacks.LoadBinaryFailureCallback(binaryAssetName, LoadResourceStatus.NotReady, errorMessage, userData);
+                        return;
+                    }
+
+                    throw new GameFrameworkException(errorMessage);
+                }
+
+                if (resourceInfo.Value.LoadType != LoadType.LoadFromBinary)
+                {
+                    string errorMessage = Utility.Text.Format("Can not load binary asset '{0}' which is not a binary asset.", binaryAssetName);
+                    if (loadBinaryCallbacks.LoadBinaryFailureCallback != null)
+                    {
+                        loadBinaryCallbacks.LoadBinaryFailureCallback(binaryAssetName, LoadResourceStatus.TypeError, errorMessage, userData);
+                        return;
+                    }
+
+                    throw new GameFrameworkException(errorMessage);
+                }
+
+                string path = Utility.Path.GetRemotePath(Path.Combine(resourceInfo.Value.StorageInReadOnly ? m_ResourceManager.m_ReadOnlyPath : m_ResourceManager.m_ReadWritePath, resourceInfo.Value.ResourceName.FullName));
+                m_ResourceManager.m_ResourceHelper.LoadBytes(path, m_LoadBytesCallbacks, LoadBinaryInfo.Create(binaryAssetName, loadBinaryCallbacks, userData));
+            }
+
+            /// <summary>
             /// 获取所有加载资源任务的信息。
             /// </summary>
             /// <returns>所有加载资源任务的信息。</returns>
@@ -418,6 +500,11 @@ namespace GameFramework.Resource
                 ResourceInfo? resourceInfo = null;
                 string[] dependencyAssetNames = null;
                 if (!CheckAsset(assetName, out resourceInfo, out dependencyAssetNames))
+                {
+                    return false;
+                }
+
+                if (resourceInfo.Value.LoadType == LoadType.LoadFromBinary)
                 {
                     return false;
                 }
@@ -458,7 +545,6 @@ namespace GameFramework.Resource
                 }
 
                 dependencyAssetNames = assetInfo.Value.GetDependencyAssetNames();
-
                 return true;
             }
 
@@ -481,6 +567,34 @@ namespace GameFramework.Resource
                     default:
                         return bytes;
                 }
+            }
+
+            private void OnLoadBinarySuccess(string fileUri, byte[] bytes, float duration, object userData)
+            {
+                LoadBinaryInfo loadBinaryInfo = (LoadBinaryInfo)userData;
+                if (loadBinaryInfo == null)
+                {
+                    throw new GameFrameworkException("Load binary info is invalid.");
+                }
+
+                loadBinaryInfo.LoadBinaryCallbacks.LoadBinarySuccessCallback(loadBinaryInfo.BinaryAssetName, bytes, duration, loadBinaryInfo.UserData);
+                ReferencePool.Release(loadBinaryInfo);
+            }
+
+            private void OnLoadBinaryFailure(string fileUri, string errorMessage, object userData)
+            {
+                LoadBinaryInfo loadBinaryInfo = (LoadBinaryInfo)userData;
+                if (loadBinaryInfo == null)
+                {
+                    throw new GameFrameworkException("Load binary info is invalid.");
+                }
+
+                if (loadBinaryInfo.LoadBinaryCallbacks.LoadBinaryFailureCallback != null)
+                {
+                    loadBinaryInfo.LoadBinaryCallbacks.LoadBinaryFailureCallback(loadBinaryInfo.BinaryAssetName, LoadResourceStatus.AssetError, errorMessage, loadBinaryInfo.UserData);
+                }
+
+                ReferencePool.Release(loadBinaryInfo);
             }
         }
     }

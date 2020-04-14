@@ -482,6 +482,13 @@ namespace GameFramework.Resource
         void UnloadAsset(object asset);
 
         /// <summary>
+        /// 检查场景资源是否存在。
+        /// </summary>
+        /// <param name="sceneAssetName">要检查场景资源的名称。</param>
+        /// <returns>场景资源是否存在。</returns>
+        bool HasScene(string sceneAssetName);
+
+        /// <summary>
         /// 异步加载场景。
         /// </summary>
         /// <param name="sceneAssetName">要加载场景资源的名称。</param>
@@ -527,6 +534,35 @@ namespace GameFramework.Resource
         /// <param name="unloadSceneCallbacks">卸载场景回调函数集。</param>
         /// <param name="userData">用户自定义数据。</param>
         void UnloadScene(string sceneAssetName, UnloadSceneCallbacks unloadSceneCallbacks, object userData);
+
+        /// <summary>
+        /// 获取二进制资源的实际路径。
+        /// </summary>
+        /// <param name="binaryAssetName">要获取实际路径的二进制资源的名称。</param>
+        /// <returns>二进制资源的实际路径。</returns>
+        string GetBinaryPath(string binaryAssetName);
+
+        /// <summary>
+        /// 检查二进制资源是否存在。
+        /// </summary>
+        /// <param name="binaryAssetName">要检查二进制资源的名称。</param>
+        /// <returns>二进制资源是否存在。</returns>
+        bool HasBinary(string binaryAssetName);
+
+        /// <summary>
+        /// 异步加载二进制资源。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
+        /// <param name="loadBinaryCallbacks">加载二进制资源回调函数集。</param>
+        void LoadBinary(string binaryAssetName, LoadBinaryCallbacks loadBinaryCallbacks);
+
+        /// <summary>
+        /// 异步加载二进制资源。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
+        /// <param name="loadBinaryCallbacks">加载二进制资源回调函数集。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        void LoadBinary(string binaryAssetName, LoadBinaryCallbacks loadBinaryCallbacks, object userData);
 
         /// <summary>
         /// 检查资源组是否存在。

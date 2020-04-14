@@ -1229,6 +1229,21 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 检查场景资源是否存在。
+        /// </summary>
+        /// <param name="sceneAssetName">要检查场景资源的名称。</param>
+        /// <returns>场景资源是否存在。</returns>
+        public bool HasScene(string sceneAssetName)
+        {
+            if (string.IsNullOrEmpty(sceneAssetName))
+            {
+                throw new GameFrameworkException("Scene asset name is invalid.");
+            }
+
+            return m_ResourceLoader.HasAsset(sceneAssetName);
+        }
+
+        /// <summary>
         /// 异步加载场景。
         /// </summary>
         /// <param name="sceneAssetName">要加载场景资源的名称。</param>
@@ -1351,6 +1366,77 @@ namespace GameFramework.Resource
             }
 
             m_ResourceLoader.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
+        }
+
+        /// <summary>
+        /// 检查二进制资源是否存在。
+        /// </summary>
+        /// <param name="binaryAssetName">要检查二进制资源的名称。</param>
+        /// <returns>二进制资源是否存在。</returns>
+        public bool HasBinary(string binaryAssetName)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            return m_ResourceLoader.HasAsset(binaryAssetName);
+        }
+
+        /// <summary>
+        /// 获取二进制资源的实际路径。
+        /// </summary>
+        /// <param name="binaryAssetName">要获取实际路径的二进制资源的名称。</param>
+        /// <returns>二进制资源的实际路径。</returns>
+        public string GetBinaryPath(string binaryAssetName)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            return m_ResourceLoader.GetBinaryPath(binaryAssetName);
+        }
+
+        /// <summary>
+        /// 异步加载二进制资源。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
+        /// <param name="loadBinaryCallbacks">加载二进制资源回调函数集。</param>
+        public void LoadBinary(string binaryAssetName, LoadBinaryCallbacks loadBinaryCallbacks)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            if (loadBinaryCallbacks == null)
+            {
+                throw new GameFrameworkException("Load binary callbacks is invalid.");
+            }
+
+            m_ResourceLoader.LoadBinary(binaryAssetName, loadBinaryCallbacks, null);
+        }
+
+        /// <summary>
+        /// 异步加载二进制资源。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
+        /// <param name="loadBinaryCallbacks">加载二进制资源回调函数集。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        public void LoadBinary(string binaryAssetName, LoadBinaryCallbacks loadBinaryCallbacks, object userData)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            if (loadBinaryCallbacks == null)
+            {
+                throw new GameFrameworkException("Load binary callbacks is invalid.");
+            }
+
+            m_ResourceLoader.LoadBinary(binaryAssetName, loadBinaryCallbacks, userData);
         }
 
         /// <summary>
