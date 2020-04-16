@@ -305,7 +305,7 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(errorMessage);
                 }
 
-                if (resourceInfo.Value.LoadType == LoadType.LoadFromBinary)
+                if (IsLoadFromBinary(resourceInfo.Value.LoadType))
                 {
                     string errorMessage = Utility.Text.Format("Can not load asset '{0}' which is a binary asset.", assetName);
                     if (loadAssetCallbacks.LoadAssetFailureCallback != null)
@@ -368,7 +368,7 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(errorMessage);
                 }
 
-                if (resourceInfo.Value.LoadType == LoadType.LoadFromBinary)
+                if (IsLoadFromBinary(resourceInfo.Value.LoadType))
                 {
                     string errorMessage = Utility.Text.Format("Can not load scene asset '{0}' which is a binary asset.", sceneAssetName);
                     if (loadSceneCallbacks.LoadSceneFailureCallback != null)
@@ -465,7 +465,7 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(errorMessage);
                 }
 
-                if (resourceInfo.Value.LoadType != LoadType.LoadFromBinary)
+                if (!IsLoadFromBinary(resourceInfo.Value.LoadType))
                 {
                     string errorMessage = Utility.Text.Format("Can not load binary asset '{0}' which is not a binary asset.", binaryAssetName);
                     if (loadBinaryCallbacks.LoadBinaryFailureCallback != null)
@@ -504,7 +504,7 @@ namespace GameFramework.Resource
                     return false;
                 }
 
-                if (resourceInfo.Value.LoadType == LoadType.LoadFromBinary)
+                if (IsLoadFromBinary(resourceInfo.Value.LoadType))
                 {
                     return false;
                 }
@@ -520,6 +520,11 @@ namespace GameFramework.Resource
 
                 m_TaskPool.AddTask(dependencyTask);
                 return true;
+            }
+
+            private bool IsLoadFromBinary(LoadType loadType)
+            {
+                return loadType == LoadType.LoadFromBinary || loadType == LoadType.LoadFromBinaryAndQuickDecrypt || loadType == LoadType.LoadFromBinaryAndDecrypt;
             }
 
             private bool CheckAsset(string assetName, out ResourceInfo? resourceInfo, out string[] dependencyAssetNames)

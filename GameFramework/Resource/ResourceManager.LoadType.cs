@@ -15,14 +15,9 @@ namespace GameFramework.Resource
         private enum LoadType : byte
         {
             /// <summary>
-            /// 按二进制直接加载。
-            /// </summary>
-            LoadFromBinary = 0,
-
-            /// <summary>
             /// 使用文件方式加载。
             /// </summary>
-            LoadFromFile,
+            LoadFromFile = 0,
 
             /// <summary>
             /// 使用内存方式加载。
@@ -37,7 +32,22 @@ namespace GameFramework.Resource
             /// <summary>
             /// 使用内存解密方式加载。
             /// </summary>
-            LoadFromMemoryAndDecrypt
+            LoadFromMemoryAndDecrypt,
+
+            /// <summary>
+            /// 使用二进制方式加载。
+            /// </summary>
+            LoadFromBinary,
+
+            /// <summary>
+            /// 使用二进制快速解密方式加载。
+            /// </summary>
+            LoadFromBinaryAndQuickDecrypt,
+
+            /// <summary>
+            /// 使用二进制解密方式加载。
+            /// </summary>
+            LoadFromBinaryAndDecrypt
         }
     }
 }
