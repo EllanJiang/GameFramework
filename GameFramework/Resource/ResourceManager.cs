@@ -19,8 +19,9 @@ namespace GameFramework.Resource
     internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
         private const string VersionListFileName = "version.dat";
-        private const string ResourceListFileName = "list.dat";
-        private const string BackupFileSuffixName = ".bak";
+        private const string LocalListFileName = "list.dat";
+        private const string RemoteFileExtensionName = "dat";
+        private const string BackupFileExtensionName = "bak";
 
         private Dictionary<string, AssetInfo> m_AssetInfos;
         private Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;

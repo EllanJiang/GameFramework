@@ -60,8 +60,8 @@ namespace GameFramework.Resource
                 m_UpdateRetryCount = 3;
                 m_UpdatingCount = 0;
                 m_FailureFlag = false;
-                m_ReadWriteVersionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, ResourceListFileName));
-                m_ReadWriteVersionListBackupFileName = m_ReadWriteVersionListFileName + BackupFileSuffixName;
+                m_ReadWriteVersionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, LocalListFileName));
+                m_ReadWriteVersionListBackupFileName = Utility.Text.Format("{0}.{1}", m_ReadWriteVersionListFileName, BackupFileExtensionName);
 
                 ResourceUpdateStart = null;
                 ResourceUpdateChanged = null;
@@ -162,7 +162,7 @@ namespace GameFramework.Resource
                     {
                         UpdateInfo updateInfo = m_UpdateWaitingInfo[0];
                         m_UpdateWaitingInfo.RemoveAt(0);
-                        string resourceFullNameWithCrc32 = updateInfo.ResourceName.Variant != null ? Utility.Text.Format("{0}.{1}.{3:x8}.{2}", updateInfo.ResourceName.Name, updateInfo.ResourceName.Variant, updateInfo.ResourceName.Extension, updateInfo.HashCode) : Utility.Text.Format("{0}.{2:x8}.{1}", updateInfo.ResourceName.Name, updateInfo.ResourceName.Extension, updateInfo.HashCode);
+                        string resourceFullNameWithCrc32 = updateInfo.ResourceName.Variant != null ? Utility.Text.Format("{0}.{1}.{2:x8}.{3}", updateInfo.ResourceName.Name, updateInfo.ResourceName.Variant, updateInfo.HashCode, RemoteFileExtensionName) : Utility.Text.Format("{0}.{1:x8}.{2}", updateInfo.ResourceName.Name, updateInfo.HashCode, RemoteFileExtensionName);
                         m_DownloadManager.AddDownload(updateInfo.ResourcePath, Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_UpdatePrefixUri, resourceFullNameWithCrc32)), updateInfo);
                         m_UpdatingCount++;
                     }
