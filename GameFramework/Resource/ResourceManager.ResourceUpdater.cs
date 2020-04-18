@@ -60,7 +60,7 @@ namespace GameFramework.Resource
                 m_UpdateRetryCount = 3;
                 m_UpdatingCount = 0;
                 m_FailureFlag = false;
-                m_ReadWriteVersionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, LocalListFileName));
+                m_ReadWriteVersionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, LocalVersionListFileName));
                 m_ReadWriteVersionListBackupFileName = Utility.Text.Format("{0}.{1}", m_ReadWriteVersionListFileName, BackupExtension);
 
                 ResourceUpdateStart = null;
