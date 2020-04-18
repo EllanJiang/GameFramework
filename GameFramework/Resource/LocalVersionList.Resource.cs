@@ -10,25 +10,27 @@ namespace GameFramework.Resource
     public partial struct LocalVersionList
     {
         /// <summary>
-        /// 普通资源。
+        /// 资源。
         /// </summary>
         public struct Resource
         {
             private readonly string m_Name;
             private readonly string m_Variant;
+            private readonly string m_Extension;
             private readonly byte m_LoadType;
             private readonly int m_Length;
             private readonly int m_HashCode;
 
             /// <summary>
-            /// 初始化普通资源的新实例。
+            /// 初始化资源的新实例。
             /// </summary>
-            /// <param name="name">普通资源名称。</param>
-            /// <param name="variant">普通资源变体名称。</param>
-            /// <param name="loadType">普通资源加载方式。</param>
-            /// <param name="length">普通资源长度。</param>
-            /// <param name="hashCode">普通资源哈希值。</param>
-            public Resource(string name, string variant, byte loadType, int length, int hashCode)
+            /// <param name="name">资源名称。</param>
+            /// <param name="variant">资源变体名称。</param>
+            /// <param name="extension">资源扩展名称。</param>
+            /// <param name="loadType">资源加载方式。</param>
+            /// <param name="length">资源长度。</param>
+            /// <param name="hashCode">资源哈希值。</param>
+            public Resource(string name, string variant, string extension, byte loadType, int length, int hashCode)
             {
                 if (string.IsNullOrEmpty(name))
                 {
@@ -37,13 +39,14 @@ namespace GameFramework.Resource
 
                 m_Name = name;
                 m_Variant = variant;
+                m_Extension = extension;
                 m_LoadType = loadType;
                 m_Length = length;
                 m_HashCode = hashCode;
             }
 
             /// <summary>
-            /// 获取普通资源名称。
+            /// 获取资源名称。
             /// </summary>
             public string Name
             {
@@ -54,7 +57,7 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 获取普通资源变体名称。
+            /// 获取资源变体名称。
             /// </summary>
             public string Variant
             {
@@ -65,7 +68,18 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 获取普通资源加载方式。
+            /// 获取资源扩展名称。
+            /// </summary>
+            public string Extension
+            {
+                get
+                {
+                    return m_Extension;
+                }
+            }
+
+            /// <summary>
+            /// 获取资源加载方式。
             /// </summary>
             public byte LoadType
             {
@@ -76,7 +90,7 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 获取普通资源长度。
+            /// 获取资源长度。
             /// </summary>
             public int Length
             {
@@ -87,7 +101,7 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 获取普通资源哈希值。
+            /// 获取资源哈希值。
             /// </summary>
             public int HashCode
             {

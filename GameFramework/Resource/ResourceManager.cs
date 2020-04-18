@@ -18,8 +18,8 @@ namespace GameFramework.Resource
     /// </summary>
     internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
-        private const string VersionListFileName = "version";
-        private const string ResourceListFileName = "list";
+        private const string VersionListFileName = "version.dat";
+        private const string ResourceListFileName = "list.dat";
         private const string BackupFileSuffixName = ".bak";
 
         private Dictionary<string, AssetInfo> m_AssetInfos;
@@ -1562,7 +1562,7 @@ namespace GameFramework.Resource
 
         private void OnCheckerResourceNeedUpdate(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode)
         {
-            m_ResourceUpdater.AddResourceUpdate(resourceName, loadType, length, hashCode, zipLength, zipHashCode, Utility.Path.GetRegularPath(Path.Combine(m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(resourceName.FullName))));
+            m_ResourceUpdater.AddResourceUpdate(resourceName, loadType, length, hashCode, zipLength, zipHashCode, Utility.Path.GetRegularPath(Path.Combine(m_ReadWritePath, resourceName.FullName)));
         }
 
         private void OnCheckerResourceCheckComplete(int removedCount, int updateCount, long updateTotalLength, long updateTotalZipLength)

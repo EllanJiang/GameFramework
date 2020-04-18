@@ -60,7 +60,7 @@ namespace GameFramework.Resource
                 m_UpdateRetryCount = 3;
                 m_UpdatingCount = 0;
                 m_FailureFlag = false;
-                m_ReadWriteVersionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName)));
+                m_ReadWriteVersionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, ResourceListFileName));
                 m_ReadWriteVersionListBackupFileName = m_ReadWriteVersionListFileName + BackupFileSuffixName;
 
                 ResourceUpdateStart = null;
@@ -162,7 +162,8 @@ namespace GameFramework.Resource
                     {
                         UpdateInfo updateInfo = m_UpdateWaitingInfo[0];
                         m_UpdateWaitingInfo.RemoveAt(0);
-                        m_DownloadManager.AddDownload(updateInfo.ResourcePath, Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_UpdatePrefixUri, Utility.Path.GetResourceNameWithCrc32AndSuffix(updateInfo.ResourceName.FullName, updateInfo.HashCode))), updateInfo);
+                        string resourceFullNameWithCrc32 = updateInfo.ResourceName.Variant != null ? Utility.Text.Format("{0}.{1}.{3:x8}.{2}", updateInfo.ResourceName.Name, updateInfo.ResourceName.Variant, updateInfo.ResourceName.Extension, updateInfo.HashCode) : Utility.Text.Format("{0}.{2:x8}.{1}", updateInfo.ResourceName.Name, updateInfo.ResourceName.Extension, updateInfo.HashCode);
+                        m_DownloadManager.AddDownload(updateInfo.ResourcePath, Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_UpdatePrefixUri, resourceFullNameWithCrc32)), updateInfo);
                         m_UpdatingCount++;
                     }
                 }
@@ -308,7 +309,7 @@ namespace GameFramework.Resource
                         int index = 0;
                         foreach (KeyValuePair<ResourceName, ReadWriteResourceInfo> i in m_ResourceManager.m_ReadWriteResourceInfos)
                         {
-                            resources[index++] = new LocalVersionList.Resource(i.Key.Name, i.Key.Variant, (byte)i.Value.LoadType, i.Value.Length, i.Value.HashCode);
+                            resources[index++] = new LocalVersionList.Resource(i.Key.Name, i.Key.Variant, i.Key.Extension, (byte)i.Value.LoadType, i.Value.Length, i.Value.HashCode);
                         }
                     }
 

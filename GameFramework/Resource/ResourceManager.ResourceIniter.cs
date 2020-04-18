@@ -59,7 +59,7 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("Readonly path is invalid.");
                 }
 
-                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadOnlyPath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName))), new LoadBytesCallbacks(OnLoadPackageVersionListSuccess, OnLoadPackageVersionListFailure), null);
+                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadOnlyPath, VersionListFileName)), new LoadBytesCallbacks(OnLoadPackageVersionListSuccess, OnLoadPackageVersionListFailure), null);
             }
 
             private void OnLoadPackageVersionListSuccess(string fileUri, byte[] bytes, float duration, object userData)
@@ -90,7 +90,7 @@ namespace GameFramework.Resource
                             continue;
                         }
 
-                        ResourceName resourceName = new ResourceName(resource.Name, resource.Variant);
+                        ResourceName resourceName = new ResourceName(resource.Name, resource.Variant, resource.Extension);
                         int[] assetIndexes = resource.GetAssetIndexes();
                         foreach (int assetIndex in assetIndexes)
                         {
@@ -116,12 +116,13 @@ namespace GameFramework.Resource
                         int[] resourceIndexes = resourceGroup.GetResourceIndexes();
                         foreach (int resourceIndex in resourceIndexes)
                         {
-                            if (resources[resourceIndex].Variant != null && resources[resourceIndex].Variant != m_CurrentVariant)
+                            PackageVersionList.Resource resource = resources[resourceIndex];
+                            if (resource.Variant != null && resource.Variant != m_CurrentVariant)
                             {
                                 continue;
                             }
 
-                            group.AddResource(new ResourceName(resources[resourceIndex].Name, resources[resourceIndex].Variant), resources[resourceIndex].Length, resources[resourceIndex].Length);
+                            group.AddResource(new ResourceName(resource.Name, resource.Variant, resource.Extension), resource.Length, resource.Length);
                         }
                     }
 

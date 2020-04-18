@@ -18,21 +18,29 @@ namespace GameFramework.Resource
         {
             private readonly string m_Name;
             private readonly string m_Variant;
+            private readonly string m_Extension;
 
             /// <summary>
             /// 初始化资源名称的新实例。
             /// </summary>
             /// <param name="name">资源名称。</param>
             /// <param name="variant">变体名称。</param>
-            public ResourceName(string name, string variant)
+            /// <param name="extension">扩展名称。</param>
+            public ResourceName(string name, string variant, string extension)
             {
                 if (string.IsNullOrEmpty(name))
                 {
                     throw new GameFrameworkException("Resource name is invalid.");
                 }
 
+                if (string.IsNullOrEmpty(extension))
+                {
+                    throw new GameFrameworkException("Resource extension is invalid.");
+                }
+
                 m_Name = name;
                 m_Variant = variant;
+                m_Extension = extension;
             }
 
             /// <summary>
@@ -58,13 +66,13 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 获取是否变体。
+            /// 获取扩展名称。
             /// </summary>
-            public bool IsVariant
+            public string Extension
             {
                 get
                 {
-                    return m_Variant != null;
+                    return m_Extension;
                 }
             }
 
@@ -72,7 +80,7 @@ namespace GameFramework.Resource
             {
                 get
                 {
-                    return IsVariant ? Utility.Text.Format("{0}.{1}", m_Name, m_Variant) : m_Name;
+                    return m_Variant != null ? Utility.Text.Format("{0}.{1}.{2}", m_Name, m_Variant, m_Extension) : Utility.Text.Format("{0}.{1}", m_Name, m_Extension);
                 }
             }
 
@@ -85,10 +93,10 @@ namespace GameFramework.Resource
             {
                 if (m_Variant == null)
                 {
-                    return m_Name.GetHashCode();
+                    return m_Name.GetHashCode() ^ m_Extension.GetHashCode();
                 }
 
-                return m_Name.GetHashCode() ^ m_Variant.GetHashCode();
+                return m_Name.GetHashCode() ^ m_Variant.GetHashCode() ^ m_Extension.GetHashCode();
             }
 
             public override bool Equals(object obj)
@@ -98,7 +106,7 @@ namespace GameFramework.Resource
 
             public bool Equals(ResourceName value)
             {
-                return m_Name == value.m_Name && m_Variant == value.m_Variant;
+                return m_Name == value.m_Name && m_Variant == value.m_Variant && m_Extension == value.m_Extension;
             }
 
             public static bool operator ==(ResourceName a, ResourceName b)
@@ -134,7 +142,13 @@ namespace GameFramework.Resource
                     return result;
                 }
 
-                return string.Compare(m_Variant, resourceName.m_Variant);
+                result = string.Compare(m_Variant, resourceName.m_Variant);
+                if (result != 0)
+                {
+                    return result;
+                }
+
+                return string.Compare(m_Extension, resourceName.m_Extension);
             }
         }
     }

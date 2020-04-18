@@ -85,7 +85,7 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("Read-write path is invalid.");
                 }
 
-                string versionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName)));
+                string versionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, VersionListFileName));
                 if (!File.Exists(versionListFileName))
                 {
                     return CheckVersionListResult.NeedUpdate;
@@ -143,11 +143,10 @@ namespace GameFramework.Resource
                 m_VersionListHashCode = versionListHashCode;
                 m_VersionListZipLength = versionListZipLength;
                 m_VersionListZipHashCode = versionListZipHashCode;
-                string versionListFileName = Utility.Path.GetResourceNameWithSuffix(VersionListFileName);
-                string latestVersionListFileName = Utility.Path.GetResourceNameWithCrc32AndSuffix(VersionListFileName, m_VersionListHashCode);
-                string localVersionListFilePath = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, versionListFileName));
-                string latestVersionListFileUri = Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_UpdatePrefixUri, latestVersionListFileName));
-                m_DownloadManager.AddDownload(localVersionListFilePath, latestVersionListFileUri, this);
+                string localVersionListFilePath = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, VersionListFileName));
+                int dotPosition = VersionListFileName.LastIndexOf('.');
+                string latestVersionListFullNameWithCrc32 = Utility.Text.Format("{0}.{2:x8}.{1}", VersionListFileName.Substring(0, dotPosition), VersionListFileName.Substring(dotPosition + 1), m_VersionListHashCode);
+                m_DownloadManager.AddDownload(localVersionListFilePath, Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_UpdatePrefixUri, latestVersionListFullNameWithCrc32)), this);
             }
 
             private void OnDownloadSuccess(object sender, DownloadSuccessEventArgs e)

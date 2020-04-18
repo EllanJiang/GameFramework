@@ -23,7 +23,7 @@ namespace GameFramework.Resource
             /// 初始化资源组的新实例。
             /// </summary>
             /// <param name="name">资源组名称。</param>
-            /// <param name="resourceIndexes">资源组包含的普通资源索引集合。</param>
+            /// <param name="resourceIndexes">资源组包含的资源索引集合。</param>
             public ResourceGroup(string name, int[] resourceIndexes)
             {
                 if (name == null)
@@ -47,9 +47,9 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 获取资源组包含的普通资源索引集合。
+            /// 获取资源组包含的资源索引集合。
             /// </summary>
-            /// <returns>资源组包含的普通资源索引集合。</returns>
+            /// <returns>资源组包含的资源索引集合。</returns>
             public int[] GetResourceIndexes()
             {
                 return m_ResourceIndexes;

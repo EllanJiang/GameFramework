@@ -20,7 +20,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 初始化本地版本资源列表的新实例。
         /// </summary>
-        /// <param name="resources">包含的普通资源集合。</param>
+        /// <param name="resources">包含的资源集合。</param>
         public LocalVersionList(Resource[] resources)
         {
             m_IsValid = true;
@@ -39,7 +39,7 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取普通资源集合。
+        /// 获取资源集合。
         /// </summary>
         /// <returns></returns>
         public Resource[] GetResources()

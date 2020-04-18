@@ -195,7 +195,7 @@ namespace GameFramework.Resource
                     string fullPath = null;
                     if (!s_CachedResourceNames.TryGetValue(resourceName, out fullPath))
                     {
-                        fullPath = Utility.Path.GetRegularPath(Path.Combine(m_Task.ResourceInfo.StorageInReadOnly ? m_ReadOnlyPath : m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(m_Task.ResourceInfo.ResourceName.FullName)));
+                        fullPath = Utility.Path.GetRegularPath(Path.Combine(m_Task.ResourceInfo.StorageInReadOnly ? m_ReadOnlyPath : m_ReadWritePath, m_Task.ResourceInfo.ResourceName.FullName));
                         s_CachedResourceNames.Add(resourceName, fullPath);
                     }
 

@@ -48,37 +48,6 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 获取带有后缀的资源名。
-            /// </summary>
-            /// <param name="resourceName">原始资源名。</param>
-            /// <returns>带有后缀的资源名。</returns>
-            public static string GetResourceNameWithSuffix(string resourceName)
-            {
-                if (string.IsNullOrEmpty(resourceName))
-                {
-                    throw new GameFrameworkException("Resource name is invalid.");
-                }
-
-                return Text.Format("{0}.dat", resourceName);
-            }
-
-            /// <summary>
-            /// 获取带有 CRC32 和后缀的资源名。
-            /// </summary>
-            /// <param name="resourceName">原始资源名。</param>
-            /// <param name="hashCode">CRC32 哈希值。</param>
-            /// <returns>带有 CRC32 和后缀的资源名。</returns>
-            public static string GetResourceNameWithCrc32AndSuffix(string resourceName, int hashCode)
-            {
-                if (string.IsNullOrEmpty(resourceName))
-                {
-                    throw new GameFrameworkException("Resource name is invalid.");
-                }
-
-                return Text.Format("{0}.{1:x8}.dat", resourceName, hashCode);
-            }
-
-            /// <summary>
             /// 移除空文件夹。
             /// </summary>
             /// <param name="directoryName">要处理的文件夹名称。</param>

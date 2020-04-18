@@ -74,9 +74,9 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("Read-write path is invalid.");
                 }
 
-                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(VersionListFileName))), new LoadBytesCallbacks(OnLoadUpdatableVersionListSuccess, OnLoadUpdatableVersionListFailure), null);
-                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadOnlyPath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName))), new LoadBytesCallbacks(OnLoadReadOnlyVersionListSuccess, OnLoadReadOnlyVersionListFailure), null);
-                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName))), new LoadBytesCallbacks(OnLoadReadWriteVersionListSuccess, OnLoadReadWriteVersionListFailure), null);
+                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadWritePath, VersionListFileName)), new LoadBytesCallbacks(OnLoadUpdatableVersionListSuccess, OnLoadUpdatableVersionListFailure), null);
+                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadOnlyPath, ResourceListFileName)), new LoadBytesCallbacks(OnLoadReadOnlyVersionListSuccess, OnLoadReadOnlyVersionListFailure), null);
+                m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadWritePath, ResourceListFileName)), new LoadBytesCallbacks(OnLoadReadWriteVersionListSuccess, OnLoadReadWriteVersionListFailure), null);
             }
 
             private void SetVersionInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode)
@@ -152,7 +152,7 @@ namespace GameFramework.Resource
                     if (ci.NeedRemove)
                     {
                         removedCount++;
-                        File.Delete(Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ci.ResourceName.FullName))));
+                        File.Delete(Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, ci.ResourceName.FullName)));
                         m_ResourceManager.m_ReadWriteResourceInfos.Remove(ci.ResourceName);
                     }
                 }
@@ -171,7 +171,7 @@ namespace GameFramework.Resource
             /// <returns>是否恢复成功。</returns>
             private bool TryRecoverReadWriteVersionList()
             {
-                string file = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, Utility.Path.GetResourceNameWithSuffix(ResourceListFileName)));
+                string file = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, ResourceListFileName));
                 string backupFile = file + BackupFileSuffixName;
 
                 try
@@ -229,7 +229,7 @@ namespace GameFramework.Resource
                             continue;
                         }
 
-                        ResourceName resourceName = new ResourceName(resource.Name, resource.Variant);
+                        ResourceName resourceName = new ResourceName(resource.Name, resource.Variant, resource.Extension);
                         int[] assetIndexes = resource.GetAssetIndexes();
                         foreach (int assetIndex in assetIndexes)
                         {
@@ -255,12 +255,13 @@ namespace GameFramework.Resource
                         int[] resourceIndexes = resourceGroup.GetResourceIndexes();
                         foreach (int resourceIndex in resourceIndexes)
                         {
-                            if (resources[resourceIndex].Variant != null && resources[resourceIndex].Variant != m_CurrentVariant)
+                            UpdatableVersionList.Resource resource = resources[resourceIndex];
+                            if (resource.Variant != null && resource.Variant != m_CurrentVariant)
                             {
                                 continue;
                             }
 
-                            group.AddResource(new ResourceName(resources[resourceIndex].Name, resources[resourceIndex].Variant), resources[resourceIndex].Length, resources[resourceIndex].ZipLength);
+                            group.AddResource(new ResourceName(resource.Name, resource.Variant, resource.Extension), resource.Length, resource.ZipLength);
                         }
                     }
 
@@ -311,7 +312,7 @@ namespace GameFramework.Resource
                     LocalVersionList.Resource[] resources = versionList.GetResources();
                     foreach (LocalVersionList.Resource resource in resources)
                     {
-                        SetReadOnlyInfo(new ResourceName(resource.Name, resource.Variant), (LoadType)resource.LoadType, resource.Length, resource.HashCode);
+                        SetReadOnlyInfo(new ResourceName(resource.Name, resource.Variant, resource.Extension), (LoadType)resource.LoadType, resource.Length, resource.HashCode);
                     }
 
                     m_ReadOnlyVersionListReady = true;
@@ -367,7 +368,7 @@ namespace GameFramework.Resource
                     LocalVersionList.Resource[] resources = versionList.GetResources();
                     foreach (LocalVersionList.Resource resource in resources)
                     {
-                        ResourceName resourceName = new ResourceName(resource.Name, resource.Variant);
+                        ResourceName resourceName = new ResourceName(resource.Name, resource.Variant, resource.Extension);
                         SetReadWriteInfo(resourceName, (LoadType)resource.LoadType, resource.Length, resource.HashCode);
                         m_ResourceManager.m_ReadWriteResourceInfos.Add(resourceName, new ReadWriteResourceInfo((LoadType)resource.LoadType, resource.Length, resource.HashCode));
                     }
