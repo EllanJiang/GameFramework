@@ -20,8 +20,8 @@ namespace GameFramework.Resource
     {
         private const string VersionListFileName = "version.dat";
         private const string LocalListFileName = "list.dat";
-        private const string RemoteFileExtensionName = "dat";
-        private const string BackupFileExtensionName = "bak";
+        private const string DefaultExtension = "dat";
+        private const string BackupExtension = "bak";
 
         private Dictionary<string, AssetInfo> m_AssetInfos;
         private Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;

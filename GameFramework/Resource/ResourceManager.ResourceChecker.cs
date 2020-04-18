@@ -172,7 +172,7 @@ namespace GameFramework.Resource
             private bool TryRecoverReadWriteVersionList()
             {
                 string file = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, LocalListFileName));
-                string backupFile = Utility.Text.Format("{0}.{1}", file, BackupFileExtensionName);
+                string backupFile = Utility.Text.Format("{0}.{1}", file, BackupExtension);
 
                 try
                 {
