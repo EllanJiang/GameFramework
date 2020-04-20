@@ -581,12 +581,14 @@ namespace GameFramework.Resource
                 switch ((LoadType)loadType)
                 {
                     case LoadType.LoadFromMemoryAndQuickDecrypt:
+                    case LoadType.LoadFromBinaryAndQuickDecrypt:
                         Utility.Converter.GetBytes(hashCode, m_CachedHashBytes);
                         Utility.Encryption.GetQuickSelfXorBytes(bytes, m_CachedHashBytes);
                         Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
                         return bytes;
 
                     case LoadType.LoadFromMemoryAndDecrypt:
+                    case LoadType.LoadFromBinaryAndDecrypt:
                         Utility.Converter.GetBytes(hashCode, m_CachedHashBytes);
                         Utility.Encryption.GetSelfXorBytes(bytes, m_CachedHashBytes);
                         Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
