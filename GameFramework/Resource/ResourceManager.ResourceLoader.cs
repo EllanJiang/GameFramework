@@ -501,7 +501,7 @@ namespace GameFramework.Resource
                 }
 
                 string path = Utility.Path.GetRemotePath(Path.Combine(resourceInfo.Value.StorageInReadOnly ? m_ResourceManager.m_ReadOnlyPath : m_ResourceManager.m_ReadWritePath, resourceInfo.Value.ResourceName.FullName));
-                m_ResourceManager.m_ResourceHelper.LoadBytes(path, m_LoadBytesCallbacks, LoadBinaryInfo.Create(binaryAssetName, loadBinaryCallbacks, userData));
+                m_ResourceManager.m_ResourceHelper.LoadBytes(path, m_LoadBytesCallbacks, LoadBinaryInfo.Create(binaryAssetName, resourceInfo.Value, loadBinaryCallbacks, userData));
             }
 
             /// <summary>
@@ -576,7 +576,7 @@ namespace GameFramework.Resource
                 return true;
             }
 
-            private byte[] DefaultDecryptResourceCallback(string name, string variant, int loadType, int length, int hashCode, bool storageInReadOnly, byte[] bytes)
+            private byte[] DefaultDecryptResourceCallback(string name, string variant, byte loadType, int length, int hashCode, bool storageInReadOnly, byte[] bytes)
             {
                 switch ((LoadType)loadType)
                 {
@@ -603,6 +603,12 @@ namespace GameFramework.Resource
                 if (loadBinaryInfo == null)
                 {
                     throw new GameFrameworkException("Load binary info is invalid.");
+                }
+
+                if (loadBinaryInfo.ResourceInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || loadBinaryInfo.ResourceInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
+                {
+                    DecryptResourceCallback decryptResourceCallback = m_ResourceManager.m_DecryptResourceCallback ?? DefaultDecryptResourceCallback;
+                    bytes = decryptResourceCallback(loadBinaryInfo.ResourceInfo.ResourceName.Name, loadBinaryInfo.ResourceInfo.ResourceName.Variant, (byte)loadBinaryInfo.ResourceInfo.LoadType, loadBinaryInfo.ResourceInfo.Length, loadBinaryInfo.ResourceInfo.HashCode, loadBinaryInfo.ResourceInfo.StorageInReadOnly, bytes);
                 }
 
                 loadBinaryInfo.LoadBinaryCallbacks.LoadBinarySuccessCallback(loadBinaryInfo.BinaryAssetName, bytes, duration, loadBinaryInfo.UserData);

@@ -205,7 +205,7 @@ namespace GameFramework.Resource
                     }
                     else
                     {
-                        m_Helper.ReadBytes(fullPath, (int)m_Task.ResourceInfo.LoadType);
+                        m_Helper.ReadBytes(fullPath);
                     }
 
                     return StartTaskStatus.CanResume;
@@ -274,10 +274,9 @@ namespace GameFramework.Resource
                 private void OnLoadResourceAgentHelperReadBytesComplete(object sender, LoadResourceAgentHelperReadBytesCompleteEventArgs e)
                 {
                     byte[] bytes = e.GetBytes();
-                    LoadType loadType = (LoadType)e.LoadType;
-                    if (loadType == LoadType.LoadFromMemoryAndQuickDecrypt || loadType == LoadType.LoadFromMemoryAndDecrypt)
+                    if (m_Task.ResourceInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt || m_Task.ResourceInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt)
                     {
-                        bytes = m_DecryptResourceCallback(m_Task.ResourceInfo.ResourceName.Name, m_Task.ResourceInfo.ResourceName.Variant, e.LoadType, m_Task.ResourceInfo.Length, m_Task.ResourceInfo.HashCode, m_Task.ResourceInfo.StorageInReadOnly, bytes);
+                        bytes = m_DecryptResourceCallback(m_Task.ResourceInfo.ResourceName.Name, m_Task.ResourceInfo.ResourceName.Variant, (byte)m_Task.ResourceInfo.LoadType, m_Task.ResourceInfo.Length, m_Task.ResourceInfo.HashCode, m_Task.ResourceInfo.StorageInReadOnly, bytes);
                     }
 
                     m_Helper.ParseBytes(bytes);

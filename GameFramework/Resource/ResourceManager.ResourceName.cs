@@ -19,6 +19,7 @@ namespace GameFramework.Resource
             private readonly string m_Name;
             private readonly string m_Variant;
             private readonly string m_Extension;
+            private string m_CachedFullName;
 
             /// <summary>
             /// 初始化资源名称的新实例。
@@ -41,6 +42,7 @@ namespace GameFramework.Resource
                 m_Name = name;
                 m_Variant = variant;
                 m_Extension = extension;
+                m_CachedFullName = null;
             }
 
             /// <summary>
@@ -80,7 +82,12 @@ namespace GameFramework.Resource
             {
                 get
                 {
-                    return m_Variant != null ? Utility.Text.Format("{0}.{1}.{2}", m_Name, m_Variant, m_Extension) : Utility.Text.Format("{0}.{1}", m_Name, m_Extension);
+                    if (m_CachedFullName == null)
+                    {
+                        m_CachedFullName = m_Variant != null ? Utility.Text.Format("{0}.{1}.{2}", m_Name, m_Variant, m_Extension) : Utility.Text.Format("{0}.{1}", m_Name, m_Extension);
+                    }
+
+                    return m_CachedFullName;
                 }
             }
 
