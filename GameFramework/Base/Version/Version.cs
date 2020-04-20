@@ -12,7 +12,7 @@ namespace GameFramework
     /// </summary>
     public static partial class Version
     {
-        private const string GameFrameworkVersionString = "2019.11.26";
+        private const string GameFrameworkVersionString = "2020.04.21";
 
         private static IVersionHelper s_VersionHelper = null;
 
