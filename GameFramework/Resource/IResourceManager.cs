@@ -543,6 +543,15 @@ namespace GameFramework.Resource
         string GetBinaryPath(string binaryAssetName);
 
         /// <summary>
+        /// 获取二进制资源的实际路径。
+        /// </summary>
+        /// <param name="binaryAssetName">要获取实际路径的二进制资源的名称。</param>
+        /// <param name="storageInReadOnly">资源是否在只读区。</param>
+        /// <param name="relativePath">二进制资源相对于只读区或者读写区的相对路径。</param>
+        /// <returns>获取二进制资源的实际路径是否成功。</returns>
+        bool GetBinaryPath(string binaryAssetName, out bool storageInReadOnly, out string relativePath);
+
+        /// <summary>
         /// 检查二进制资源是否存在。
         /// </summary>
         /// <param name="binaryAssetName">要检查二进制资源的名称。</param>
