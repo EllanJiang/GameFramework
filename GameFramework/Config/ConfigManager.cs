@@ -19,6 +19,7 @@ namespace GameFramework.Config
     {
         private readonly Dictionary<string, ConfigData> m_ConfigDatas;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
+        private readonly LoadBinaryCallbacks m_LoadBinaryCallbacks;
         private IResourceManager m_ResourceManager;
         private IConfigHelper m_ConfigHelper;
         private EventHandler<LoadConfigSuccessEventArgs> m_LoadConfigSuccessEventHandler;
@@ -32,7 +33,8 @@ namespace GameFramework.Config
         public ConfigManager()
         {
             m_ConfigDatas = new Dictionary<string, ConfigData>();
-            m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadConfigSuccessCallback, LoadConfigFailureCallback, LoadConfigUpdateCallback, LoadConfigDependencyAssetCallback);
+            m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadAssetSuccessCallback, LoadAssetOrBinaryFailureCallback, LoadAssetUpdateCallback, LoadAssetDependencyAssetCallback);
+            m_LoadBinaryCallbacks = new LoadBinaryCallbacks(LoadBinarySuccessCallback, LoadAssetOrBinaryFailureCallback);
             m_ResourceManager = null;
             m_ConfigHelper = null;
             m_LoadConfigSuccessEventHandler = null;
@@ -207,7 +209,15 @@ namespace GameFramework.Config
                 throw new GameFrameworkException("You must set config helper first.");
             }
 
-            m_ResourceManager.LoadAsset(configAssetName, priority, m_LoadAssetCallbacks, LoadConfigInfo.Create(loadType, userData));
+            LoadConfigInfo loadConfigInfo = LoadConfigInfo.Create(loadType, userData);
+            if (loadType == LoadType.TextFromAsset || loadType == LoadType.BytesFromAsset || loadType == LoadType.StreamFromAsset)
+            {
+                m_ResourceManager.LoadAsset(configAssetName, priority, m_LoadAssetCallbacks, loadConfigInfo);
+            }
+            else
+            {
+                m_ResourceManager.LoadBinary(configAssetName, m_LoadBinaryCallbacks, loadConfigInfo);
+            }
         }
 
         /// <summary>
@@ -499,7 +509,7 @@ namespace GameFramework.Config
             return null;
         }
 
-        private void LoadConfigSuccessCallback(string configAssetName, object configAsset, float duration, object userData)
+        private void LoadAssetSuccessCallback(string configAssetName, object configAsset, float duration, object userData)
         {
             LoadConfigInfo loadConfigInfo = (LoadConfigInfo)userData;
             if (loadConfigInfo == null)
@@ -540,7 +550,7 @@ namespace GameFramework.Config
             }
         }
 
-        private void LoadConfigFailureCallback(string configAssetName, LoadResourceStatus status, string errorMessage, object userData)
+        private void LoadAssetOrBinaryFailureCallback(string configAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
             LoadConfigInfo loadConfigInfo = (LoadConfigInfo)userData;
             if (loadConfigInfo == null)
@@ -560,7 +570,7 @@ namespace GameFramework.Config
             throw new GameFrameworkException(appendErrorMessage);
         }
 
-        private void LoadConfigUpdateCallback(string configAssetName, float progress, object userData)
+        private void LoadAssetUpdateCallback(string configAssetName, float progress, object userData)
         {
             LoadConfigInfo loadConfigInfo = (LoadConfigInfo)userData;
             if (loadConfigInfo == null)
@@ -576,7 +586,7 @@ namespace GameFramework.Config
             }
         }
 
-        private void LoadConfigDependencyAssetCallback(string configAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
+        private void LoadAssetDependencyAssetCallback(string configAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
             LoadConfigInfo loadConfigInfo = (LoadConfigInfo)userData;
             if (loadConfigInfo == null)
@@ -589,6 +599,46 @@ namespace GameFramework.Config
                 LoadConfigDependencyAssetEventArgs loadConfigDependencyAssetEventArgs = LoadConfigDependencyAssetEventArgs.Create(configAssetName, dependencyAssetName, loadedCount, totalCount, loadConfigInfo.UserData);
                 m_LoadConfigDependencyAssetEventHandler(this, loadConfigDependencyAssetEventArgs);
                 ReferencePool.Release(loadConfigDependencyAssetEventArgs);
+            }
+        }
+
+        private void LoadBinarySuccessCallback(string configAssetName, byte[] binaryBytes, float duration, object userData)
+        {
+            LoadConfigInfo loadConfigInfo = (LoadConfigInfo)userData;
+            if (loadConfigInfo == null)
+            {
+                throw new GameFrameworkException("Load config info is invalid.");
+            }
+
+            try
+            {
+                if (!m_ConfigHelper.LoadConfig(binaryBytes, loadConfigInfo.LoadType, loadConfigInfo.UserData))
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Load config failure in helper, asset name '{0}'.", configAssetName));
+                }
+
+                if (m_LoadConfigSuccessEventHandler != null)
+                {
+                    LoadConfigSuccessEventArgs loadConfigSuccessEventArgs = LoadConfigSuccessEventArgs.Create(configAssetName, loadConfigInfo.LoadType, duration, loadConfigInfo.UserData);
+                    m_LoadConfigSuccessEventHandler(this, loadConfigSuccessEventArgs);
+                    ReferencePool.Release(loadConfigSuccessEventArgs);
+                }
+            }
+            catch (Exception exception)
+            {
+                if (m_LoadConfigFailureEventHandler != null)
+                {
+                    LoadConfigFailureEventArgs loadConfigFailureEventArgs = LoadConfigFailureEventArgs.Create(configAssetName, loadConfigInfo.LoadType, exception.ToString(), loadConfigInfo.UserData);
+                    m_LoadConfigFailureEventHandler(this, loadConfigFailureEventArgs);
+                    ReferencePool.Release(loadConfigFailureEventArgs);
+                    return;
+                }
+
+                throw;
+            }
+            finally
+            {
+                ReferencePool.Release(loadConfigInfo);
             }
         }
     }

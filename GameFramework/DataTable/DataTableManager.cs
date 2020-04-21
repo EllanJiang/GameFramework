@@ -19,6 +19,7 @@ namespace GameFramework.DataTable
     {
         private readonly Dictionary<TypeNamePair, DataTableBase> m_DataTables;
         private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
+        private readonly LoadBinaryCallbacks m_LoadBinaryCallbacks;
         private IResourceManager m_ResourceManager;
         private IDataTableHelper m_DataTableHelper;
         private EventHandler<LoadDataTableSuccessEventArgs> m_LoadDataTableSuccessEventHandler;
@@ -32,7 +33,8 @@ namespace GameFramework.DataTable
         public DataTableManager()
         {
             m_DataTables = new Dictionary<TypeNamePair, DataTableBase>();
-            m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadDataTableSuccessCallback, LoadDataTableFailureCallback, LoadDataTableUpdateCallback, LoadDataTableDependencyAssetCallback);
+            m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadAssetSuccessCallback, LoadAssetOrBinaryFailureCallback, LoadAssetUpdateCallback, LoadAssetDependencyAssetCallback);
+            m_LoadBinaryCallbacks = new LoadBinaryCallbacks(LoadBinarySuccessCallback, LoadAssetOrBinaryFailureCallback);
             m_ResourceManager = null;
             m_DataTableHelper = null;
             m_LoadDataTableSuccessEventHandler = null;
@@ -213,7 +215,15 @@ namespace GameFramework.DataTable
                 throw new GameFrameworkException("You must set data table helper first.");
             }
 
-            m_ResourceManager.LoadAsset(dataTableAssetName, priority, m_LoadAssetCallbacks, LoadDataTableInfo.Create(loadType, userData));
+            LoadDataTableInfo loadDataTableInfo = LoadDataTableInfo.Create(loadType, userData);
+            if (loadType == LoadType.TextFromAsset || loadType == LoadType.BytesFromAsset || loadType == LoadType.StreamFromAsset)
+            {
+                m_ResourceManager.LoadAsset(dataTableAssetName, priority, m_LoadAssetCallbacks, loadDataTableInfo);
+            }
+            else
+            {
+                m_ResourceManager.LoadBinary(dataTableAssetName, m_LoadBinaryCallbacks, loadDataTableInfo);
+            }
         }
 
         /// <summary>
@@ -811,7 +821,7 @@ namespace GameFramework.DataTable
             return false;
         }
 
-        private void LoadDataTableSuccessCallback(string dataTableAssetName, object dataTableAsset, float duration, object userData)
+        private void LoadAssetSuccessCallback(string dataTableAssetName, object dataTableAsset, float duration, object userData)
         {
             LoadDataTableInfo loadDataTableInfo = (LoadDataTableInfo)userData;
             if (loadDataTableInfo == null)
@@ -852,7 +862,7 @@ namespace GameFramework.DataTable
             }
         }
 
-        private void LoadDataTableFailureCallback(string dataTableAssetName, LoadResourceStatus status, string errorMessage, object userData)
+        private void LoadAssetOrBinaryFailureCallback(string dataTableAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
             LoadDataTableInfo loadDataTableInfo = (LoadDataTableInfo)userData;
             if (loadDataTableInfo == null)
@@ -872,7 +882,7 @@ namespace GameFramework.DataTable
             throw new GameFrameworkException(appendErrorMessage);
         }
 
-        private void LoadDataTableUpdateCallback(string dataTableAssetName, float progress, object userData)
+        private void LoadAssetUpdateCallback(string dataTableAssetName, float progress, object userData)
         {
             LoadDataTableInfo loadDataTableInfo = (LoadDataTableInfo)userData;
             if (loadDataTableInfo == null)
@@ -888,7 +898,7 @@ namespace GameFramework.DataTable
             }
         }
 
-        private void LoadDataTableDependencyAssetCallback(string dataTableAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
+        private void LoadAssetDependencyAssetCallback(string dataTableAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
             LoadDataTableInfo loadDataTableInfo = (LoadDataTableInfo)userData;
             if (loadDataTableInfo == null)
@@ -901,6 +911,46 @@ namespace GameFramework.DataTable
                 LoadDataTableDependencyAssetEventArgs loadDataTableDependencyAssetEventArgs = LoadDataTableDependencyAssetEventArgs.Create(dataTableAssetName, dependencyAssetName, loadedCount, totalCount, loadDataTableInfo.UserData);
                 m_LoadDataTableDependencyAssetEventHandler(this, loadDataTableDependencyAssetEventArgs);
                 ReferencePool.Release(loadDataTableDependencyAssetEventArgs);
+            }
+        }
+
+        private void LoadBinarySuccessCallback(string dataTableAssetName, byte[] binaryBytes, float duration, object userData)
+        {
+            LoadDataTableInfo loadDataTableInfo = (LoadDataTableInfo)userData;
+            if (loadDataTableInfo == null)
+            {
+                throw new GameFrameworkException("Load data table info is invalid.");
+            }
+
+            try
+            {
+                if (!m_DataTableHelper.LoadDataTable(binaryBytes, loadDataTableInfo.LoadType, loadDataTableInfo.UserData))
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Load data table failure in helper, asset name '{0}'.", dataTableAssetName));
+                }
+
+                if (m_LoadDataTableSuccessEventHandler != null)
+                {
+                    LoadDataTableSuccessEventArgs loadDataTableSuccessEventArgs = LoadDataTableSuccessEventArgs.Create(dataTableAssetName, loadDataTableInfo.LoadType, duration, loadDataTableInfo.UserData);
+                    m_LoadDataTableSuccessEventHandler(this, loadDataTableSuccessEventArgs);
+                    ReferencePool.Release(loadDataTableSuccessEventArgs);
+                }
+            }
+            catch (Exception exception)
+            {
+                if (m_LoadDataTableFailureEventHandler != null)
+                {
+                    LoadDataTableFailureEventArgs loadDataTableFailureEventArgs = LoadDataTableFailureEventArgs.Create(dataTableAssetName, loadDataTableInfo.LoadType, exception.ToString(), loadDataTableInfo.UserData);
+                    m_LoadDataTableFailureEventHandler(this, loadDataTableFailureEventArgs);
+                    ReferencePool.Release(loadDataTableFailureEventArgs);
+                    return;
+                }
+
+                throw;
+            }
+            finally
+            {
+                ReferencePool.Release(loadDataTableInfo);
             }
         }
     }
