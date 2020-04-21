@@ -28,7 +28,7 @@ namespace GameFramework.Resource
         /// </summary>
         /// <param name="applicableGameVersion">适配的游戏版本号。</param>
         /// <param name="internalResourceVersion">内部资源版本号。</param>
-        /// <param name="assets">包含的资产集合。</param>
+        /// <param name="assets">包含的资源集合。</param>
         /// <param name="resources">包含的资源集合。</param>
         /// <param name="resourceGroups">包含的资源组集合。</param>
         public UpdatableVersionList(string applicableGameVersion, int internalResourceVersion, Asset[] assets, Resource[] resources, ResourceGroup[] resourceGroups)
@@ -75,7 +75,7 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取包含的资产集合。
+        /// 获取包含的资源集合。
         /// </summary>
         /// <returns></returns>
         public Asset[] GetAssets()

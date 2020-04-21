@@ -16,7 +16,7 @@ namespace GameFramework.DataTable
 
             public LoadDataTableInfo()
             {
-                m_LoadType = LoadType.Text;
+                m_LoadType = LoadType.TextFromAsset;
                 m_UserData = null;
             }
 
@@ -46,7 +46,7 @@ namespace GameFramework.DataTable
 
             public void Clear()
             {
-                m_LoadType = LoadType.Text;
+                m_LoadType = LoadType.TextFromAsset;
                 m_UserData = null;
             }
         }

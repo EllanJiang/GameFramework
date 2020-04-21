@@ -18,7 +18,7 @@ namespace GameFramework.Localization
         public LoadDictionarySuccessEventArgs()
         {
             DictionaryAssetName = null;
-            LoadType = LoadType.Text;
+            LoadType = LoadType.TextFromAsset;
             Duration = 0f;
             UserData = null;
         }
@@ -83,7 +83,7 @@ namespace GameFramework.Localization
         public override void Clear()
         {
             DictionaryAssetName = null;
-            LoadType = LoadType.Text;
+            LoadType = LoadType.TextFromAsset;
             Duration = 0f;
             UserData = null;
         }

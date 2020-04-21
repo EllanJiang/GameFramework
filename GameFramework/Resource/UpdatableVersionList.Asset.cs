@@ -10,7 +10,7 @@ namespace GameFramework.Resource
     public partial struct UpdatableVersionList
     {
         /// <summary>
-        /// 资产。
+        /// 资源。
         /// </summary>
         public struct Asset
         {
@@ -20,10 +20,10 @@ namespace GameFramework.Resource
             private readonly int[] m_DependencyAssetIndexes;
 
             /// <summary>
-            /// 初始化资产的新实例。
+            /// 初始化资源的新实例。
             /// </summary>
-            /// <param name="name">资产名称。</param>
-            /// <param name="dependencyAssetIndexes">资产包含的依赖资产索引集合。</param>
+            /// <param name="name">资源名称。</param>
+            /// <param name="dependencyAssetIndexes">资源包含的依赖资源索引集合。</param>
             public Asset(string name, int[] dependencyAssetIndexes)
             {
                 if (string.IsNullOrEmpty(name))
@@ -36,7 +36,7 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 获取资产名称。
+            /// 获取资源名称。
             /// </summary>
             public string Name
             {
@@ -47,7 +47,7 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 获取资产包含的依赖资产索引集合。
+            /// 获取资源包含的依赖资源索引集合。
             /// </summary>
             /// <returns></returns>
             public int[] GetDependencyAssetIndexes()

@@ -37,7 +37,7 @@ namespace GameFramework.Resource
             /// <param name="hashCode">资源哈希值。</param>
             /// <param name="zipLength">资源压缩后长度。</param>
             /// <param name="zipHashCode">资源压缩后哈希值。</param>
-            /// <param name="assetIndexes">资源包含的资产索引集合。</param>
+            /// <param name="assetIndexes">资源包含的资源索引集合。</param>
             public Resource(string name, string variant, string extension, byte loadType, int length, int hashCode, int zipLength, int zipHashCode, int[] assetIndexes)
             {
                 if (string.IsNullOrEmpty(name))
@@ -145,7 +145,7 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
-            /// 获取资源包含的资产索引集合。
+            /// 获取资源包含的资源索引集合。
             /// </summary>
             /// <returns></returns>
             public int[] GetAssetIndexes()

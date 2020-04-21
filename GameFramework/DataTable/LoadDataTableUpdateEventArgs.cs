@@ -18,7 +18,7 @@ namespace GameFramework.DataTable
         public LoadDataTableUpdateEventArgs()
         {
             DataTableAssetName = null;
-            LoadType = LoadType.Text;
+            LoadType = LoadType.TextFromAsset;
             Progress = 0f;
             UserData = null;
         }
@@ -83,7 +83,7 @@ namespace GameFramework.DataTable
         public override void Clear()
         {
             DataTableAssetName = null;
-            LoadType = LoadType.Text;
+            LoadType = LoadType.TextFromAsset;
             Progress = 0f;
             UserData = null;
         }

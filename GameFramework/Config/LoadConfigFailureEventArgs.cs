@@ -18,7 +18,7 @@ namespace GameFramework.Config
         public LoadConfigFailureEventArgs()
         {
             ConfigAssetName = null;
-            LoadType = LoadType.Text;
+            LoadType = LoadType.TextFromAsset;
             ErrorMessage = null;
             UserData = null;
         }
@@ -83,7 +83,7 @@ namespace GameFramework.Config
         public override void Clear()
         {
             ConfigAssetName = null;
-            LoadType = LoadType.Text;
+            LoadType = LoadType.TextFromAsset;
             ErrorMessage = null;
             UserData = null;
         }

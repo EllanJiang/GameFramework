@@ -13,18 +13,33 @@ namespace GameFramework
     public enum LoadType : byte
     {
         /// <summary>
-        /// 按文本加载。
+        /// 按文本从资源加载。
         /// </summary>
-        Text = 0,
+        TextFromAsset = 0,
 
         /// <summary>
-        /// 按二进制流加载。
+        /// 按二进制流从资源加载。
         /// </summary>
-        Bytes,
+        BytesFromAsset,
 
         /// <summary>
-        /// 按二进制流加载。
+        /// 按二进制流从资源加载。
         /// </summary>
-        Stream
+        StreamFromAsset,
+
+        /// <summary>
+        /// 按文本从二进制资源加载。
+        /// </summary>
+        TextFromBinary,
+
+        /// <summary>
+        /// 按二进制流从二进制资源加载。
+        /// </summary>
+        BytesFromBinary,
+
+        /// <summary>
+        /// 按二进制流从二进制资源加载。
+        /// </summary>
+        StreamFromBinary
     }
 }
