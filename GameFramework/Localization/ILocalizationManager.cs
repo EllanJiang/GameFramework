@@ -220,5 +220,10 @@ namespace GameFramework.Localization
         /// <param name="key">字典主键。</param>
         /// <returns>是否移除字典成功。</returns>
         bool RemoveRawString(string key);
+
+        /// <summary>
+        /// 清空所有字典。
+        /// </summary>
+        void RemoveAllRawString();
     }
 }

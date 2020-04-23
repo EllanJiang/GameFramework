@@ -590,6 +590,14 @@ namespace GameFramework.Localization
             return m_Dictionary.Remove(key);
         }
 
+        /// <summary>
+        /// 清空所有字典。
+        /// </summary>
+        public void RemoveAllRawString()
+        {
+            m_Dictionary.Clear();
+        }
+
         private void LoadAssetSuccessCallback(string dictionaryAssetName, object dictionaryAsset, float duration, object userData)
         {
             LoadDictionaryInfo loadDictionaryInfo = (LoadDictionaryInfo)userData;

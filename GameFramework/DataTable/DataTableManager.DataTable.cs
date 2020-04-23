@@ -366,6 +366,141 @@ namespace GameFramework.DataTable
             }
 
             /// <summary>
+            /// 增加数据表行。
+            /// </summary>
+            /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+            /// <returns>是否增加数据表行成功。</returns>
+            public override bool AddDataRow(GameFrameworkSegment<string> dataRowSegment)
+            {
+                try
+                {
+                    T dataRow = new T();
+                    if (!dataRow.ParseDataRow(dataRowSegment))
+                    {
+                        return false;
+                    }
+
+                    InternalAddDataRow(dataRow);
+                    return true;
+                }
+                catch (Exception exception)
+                {
+                    if (exception is GameFrameworkException)
+                    {
+                        throw;
+                    }
+
+                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", new TypeNamePair(typeof(T), Name).ToString(), exception.ToString()), exception);
+                }
+            }
+
+            /// <summary>
+            /// 增加数据表行。
+            /// </summary>
+            /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+            /// <returns>是否增加数据表行成功。</returns>
+            public override bool AddDataRow(GameFrameworkSegment<byte[]> dataRowSegment)
+            {
+                try
+                {
+                    T dataRow = new T();
+                    if (!dataRow.ParseDataRow(dataRowSegment))
+                    {
+                        return false;
+                    }
+
+                    InternalAddDataRow(dataRow);
+                    return true;
+                }
+                catch (Exception exception)
+                {
+                    if (exception is GameFrameworkException)
+                    {
+                        throw;
+                    }
+
+                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", new TypeNamePair(typeof(T), Name).ToString(), exception.ToString()), exception);
+                }
+            }
+
+            /// <summary>
+            /// 增加数据表行。
+            /// </summary>
+            /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+            /// <returns>是否增加数据表行成功。</returns>
+            public override bool AddDataRow(GameFrameworkSegment<Stream> dataRowSegment)
+            {
+                try
+                {
+                    T dataRow = new T();
+                    if (!dataRow.ParseDataRow(dataRowSegment))
+                    {
+                        return false;
+                    }
+
+                    InternalAddDataRow(dataRow);
+                    return true;
+                }
+                catch (Exception exception)
+                {
+                    if (exception is GameFrameworkException)
+                    {
+                        throw;
+                    }
+
+                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", new TypeNamePair(typeof(T), Name).ToString(), exception.ToString()), exception);
+                }
+            }
+
+            /// <summary>
+            /// 移除指定数据表行。
+            /// </summary>
+            /// <param name="id">要移除数据表行的编号。</param>
+            /// <returns>是否移除数据表行成功。</returns>
+            public bool RemoveDataRow(int id)
+            {
+                if (!HasDataRow(id))
+                {
+                    return false;
+                }
+
+                if (!m_DataSet.Remove(id))
+                {
+                    return false;
+                }
+
+                if (m_MinIdDataRow != null && m_MinIdDataRow.Id == id || m_MaxIdDataRow != null && m_MaxIdDataRow.Id == id)
+                {
+                    m_MinIdDataRow = null;
+                    m_MaxIdDataRow = null;
+                    foreach (KeyValuePair<int, T> dataRow in m_DataSet)
+                    {
+                        if (m_MinIdDataRow == null || m_MinIdDataRow.Id > dataRow.Key)
+                        {
+                            m_MinIdDataRow = dataRow.Value;
+                        }
+
+                        if (m_MaxIdDataRow == null || m_MaxIdDataRow.Id < dataRow.Key)
+                        {
+                            m_MaxIdDataRow = dataRow.Value;
+                        }
+                    }
+                }
+
+                return true;
+            }
+
+            /// <summary>
+            /// 清空所有数据表行。
+            /// </summary>
+            public void RemoveAllDataRows()
+            {
+                m_DataSet.Clear();
+                m_MinIdDataRow = null;
+                m_MaxIdDataRow = null;
+            }
+
+            /// <summary>
             /// 返回一个循环访问数据表的枚举器。
             /// </summary>
             /// <returns>可用于循环访问数据表的对象。</returns>
@@ -385,93 +520,6 @@ namespace GameFramework.DataTable
             internal override void Shutdown()
             {
                 m_DataSet.Clear();
-            }
-
-            /// <summary>
-            /// 增加数据表行。
-            /// </summary>
-            /// <param name="dataRowSegment">要解析的数据表行片段。</param>
-            /// <returns>是否增加数据表行成功。</returns>
-            internal override bool AddDataRow(GameFrameworkSegment<string> dataRowSegment)
-            {
-                try
-                {
-                    T dataRow = new T();
-                    if (!dataRow.ParseDataRow(dataRowSegment))
-                    {
-                        return false;
-                    }
-
-                    InternalAddDataRow(dataRow);
-                    return true;
-                }
-                catch (Exception exception)
-                {
-                    if (exception is GameFrameworkException)
-                    {
-                        throw;
-                    }
-
-                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", new TypeNamePair(typeof(T), Name).ToString(), exception.ToString()), exception);
-                }
-            }
-
-            /// <summary>
-            /// 增加数据表行。
-            /// </summary>
-            /// <param name="dataRowSegment">要解析的数据表行片段。</param>
-            /// <returns>是否增加数据表行成功。</returns>
-            internal override bool AddDataRow(GameFrameworkSegment<byte[]> dataRowSegment)
-            {
-                try
-                {
-                    T dataRow = new T();
-                    if (!dataRow.ParseDataRow(dataRowSegment))
-                    {
-                        return false;
-                    }
-
-                    InternalAddDataRow(dataRow);
-                    return true;
-                }
-                catch (Exception exception)
-                {
-                    if (exception is GameFrameworkException)
-                    {
-                        throw;
-                    }
-
-                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", new TypeNamePair(typeof(T), Name).ToString(), exception.ToString()), exception);
-                }
-            }
-
-            /// <summary>
-            /// 增加数据表行。
-            /// </summary>
-            /// <param name="dataRowSegment">要解析的数据表行片段。</param>
-            /// <returns>是否增加数据表行成功。</returns>
-            internal override bool AddDataRow(GameFrameworkSegment<Stream> dataRowSegment)
-            {
-                try
-                {
-                    T dataRow = new T();
-                    if (!dataRow.ParseDataRow(dataRowSegment))
-                    {
-                        return false;
-                    }
-
-                    InternalAddDataRow(dataRow);
-                    return true;
-                }
-                catch (Exception exception)
-                {
-                    if (exception is GameFrameworkException)
-                    {
-                        throw;
-                    }
-
-                    throw new GameFrameworkException(Utility.Text.Format("Can not parse data table '{0}' with exception '{1}'.", new TypeNamePair(typeof(T), Name).ToString(), exception.ToString()), exception);
-                }
             }
 
             private void InternalAddDataRow(T dataRow)

@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GameFramework.DataTable
 {
@@ -158,5 +159,38 @@ namespace GameFramework.DataTable
         /// </summary>
         /// <param name="results">所有数据表行。</param>
         void GetAllDataRows(List<T> results);
+
+        /// <summary>
+        /// 增加数据表行。
+        /// </summary>
+        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <returns>是否增加数据表行成功。</returns>
+        bool AddDataRow(GameFrameworkSegment<string> dataRowSegment);
+
+        /// <summary>
+        /// 增加数据表行。
+        /// </summary>
+        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <returns>是否增加数据表行成功。</returns>
+        bool AddDataRow(GameFrameworkSegment<byte[]> dataRowSegment);
+
+        /// <summary>
+        /// 增加数据表行。
+        /// </summary>
+        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <returns>是否增加数据表行成功。</returns>
+        bool AddDataRow(GameFrameworkSegment<Stream> dataRowSegment);
+
+        /// <summary>
+        /// 移除指定数据表行。
+        /// </summary>
+        /// <param name="id">要移除数据表行的编号。</param>
+        /// <returns>是否移除数据表行成功。</returns>
+        bool RemoveDataRow(int id);
+
+        /// <summary>
+        /// 清空所有数据表行。
+        /// </summary>
+        void RemoveAllDataRows();
     }
 }

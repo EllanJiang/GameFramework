@@ -368,9 +368,14 @@ namespace GameFramework.Config
         /// 移除指定全局配置项。
         /// </summary>
         /// <param name="configName">要移除全局配置项的名称。</param>
-        public void RemoveConfig(string configName)
+        public bool RemoveConfig(string configName)
         {
-            m_ConfigDatas.Remove(configName);
+            if (!HasConfig(configName))
+            {
+                return false;
+            }
+
+            return m_ConfigDatas.Remove(configName);
         }
 
         /// <summary>
