@@ -593,7 +593,7 @@ namespace GameFramework.Localization
         /// <summary>
         /// 清空所有字典。
         /// </summary>
-        public void RemoveAllRawString()
+        public void RemoveAllRawStrings()
         {
             m_Dictionary.Clear();
         }

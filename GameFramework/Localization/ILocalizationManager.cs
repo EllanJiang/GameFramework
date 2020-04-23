@@ -224,6 +224,6 @@ namespace GameFramework.Localization
         /// <summary>
         /// 清空所有字典。
         /// </summary>
-        void RemoveAllRawString();
+        void RemoveAllRawStrings();
     }
 }
