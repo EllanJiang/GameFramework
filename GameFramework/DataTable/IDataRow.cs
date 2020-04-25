@@ -26,21 +26,24 @@ namespace GameFramework.DataTable
         /// 数据表行文本解析器。
         /// </summary>
         /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <param name="dataTableUserData">数据表用户自定义数据。</param>
         /// <returns>是否解析数据表行成功。</returns>
-        bool ParseDataRow(GameFrameworkSegment<string> dataRowSegment);
+        bool ParseDataRow(GameFrameworkSegment<string> dataRowSegment, object dataTableUserData);
 
         /// <summary>
         /// 数据表行二进制流解析器。
         /// </summary>
         /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <param name="dataTableUserData">数据表用户自定义数据。</param>
         /// <returns>是否解析数据表行成功。</returns>
-        bool ParseDataRow(GameFrameworkSegment<byte[]> dataRowSegment);
+        bool ParseDataRow(GameFrameworkSegment<byte[]> dataRowSegment, object dataTableUserData);
 
         /// <summary>
         /// 数据表行二进制流解析器。
         /// </summary>
         /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <param name="dataTableUserData">数据表用户自定义数据。</param>
         /// <returns>是否解析数据表行成功。</returns>
-        bool ParseDataRow(GameFrameworkSegment<Stream> dataRowSegment);
+        bool ParseDataRow(GameFrameworkSegment<Stream> dataRowSegment, object dataTableUserData);
     }
 }

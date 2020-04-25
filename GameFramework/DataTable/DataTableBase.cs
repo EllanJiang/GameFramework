@@ -76,22 +76,25 @@ namespace GameFramework.DataTable
         /// 增加数据表行。
         /// </summary>
         /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <param name="dataTableUserData">数据表用户自定义数据。</param>
         /// <returns>是否增加数据表行成功。</returns>
-        public abstract bool AddDataRow(GameFrameworkSegment<string> dataRowSegment);
+        public abstract bool AddDataRow(GameFrameworkSegment<string> dataRowSegment, object dataTableUserData);
 
         /// <summary>
         /// 增加数据表行。
         /// </summary>
         /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <param name="dataTableUserData">数据表用户自定义数据。</param>
         /// <returns>是否增加数据表行成功。</returns>
-        public abstract bool AddDataRow(GameFrameworkSegment<byte[]> dataRowSegment);
+        public abstract bool AddDataRow(GameFrameworkSegment<byte[]> dataRowSegment, object dataTableUserData);
 
         /// <summary>
         /// 增加数据表行。
         /// </summary>
         /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+        /// <param name="dataTableUserData">数据表用户自定义数据。</param>
         /// <returns>是否增加数据表行成功。</returns>
-        public abstract bool AddDataRow(GameFrameworkSegment<Stream> dataRowSegment);
+        public abstract bool AddDataRow(GameFrameworkSegment<Stream> dataRowSegment, object dataTableUserData);
 
         /// <summary>
         /// 关闭并清理数据表。

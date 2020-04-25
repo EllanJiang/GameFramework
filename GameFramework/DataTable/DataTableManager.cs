@@ -719,9 +719,11 @@ namespace GameFramework.DataTable
         private void InternalCreateDataTable(DataTableBase dataTable, string text)
         {
             IEnumerable<GameFrameworkSegment<string>> dataRowSegments = null;
+            object dataTableUserData = null;
             try
             {
                 dataRowSegments = m_DataTableHelper.GetDataRowSegments(text);
+                dataTableUserData = m_DataTableHelper.GetDataTableUserData(text);
             }
             catch (Exception exception)
             {
@@ -740,7 +742,7 @@ namespace GameFramework.DataTable
 
             foreach (GameFrameworkSegment<string> dataRowSegment in dataRowSegments)
             {
-                if (!dataTable.AddDataRow(dataRowSegment))
+                if (!dataTable.AddDataRow(dataRowSegment, dataTableUserData))
                 {
                     throw new GameFrameworkException("Add data row failure.");
                 }
@@ -750,9 +752,11 @@ namespace GameFramework.DataTable
         private void InternalCreateDataTable(DataTableBase dataTable, byte[] bytes)
         {
             IEnumerable<GameFrameworkSegment<byte[]>> dataRowSegments = null;
+            object dataTableUserData = null;
             try
             {
                 dataRowSegments = m_DataTableHelper.GetDataRowSegments(bytes);
+                dataTableUserData = m_DataTableHelper.GetDataTableUserData(bytes);
             }
             catch (Exception exception)
             {
@@ -771,7 +775,7 @@ namespace GameFramework.DataTable
 
             foreach (GameFrameworkSegment<byte[]> dataRowSegment in dataRowSegments)
             {
-                if (!dataTable.AddDataRow(dataRowSegment))
+                if (!dataTable.AddDataRow(dataRowSegment, dataTableUserData))
                 {
                     throw new GameFrameworkException("Add data row failure.");
                 }
@@ -781,9 +785,11 @@ namespace GameFramework.DataTable
         private void InternalCreateDataTable(DataTableBase dataTable, Stream stream)
         {
             IEnumerable<GameFrameworkSegment<Stream>> dataRowSegments = null;
+            object dataTableUserData = null;
             try
             {
                 dataRowSegments = m_DataTableHelper.GetDataRowSegments(stream);
+                dataTableUserData = m_DataTableHelper.GetDataTableUserData(stream);
             }
             catch (Exception exception)
             {
@@ -802,7 +808,7 @@ namespace GameFramework.DataTable
 
             foreach (GameFrameworkSegment<Stream> dataRowSegment in dataRowSegments)
             {
-                if (!dataTable.AddDataRow(dataRowSegment))
+                if (!dataTable.AddDataRow(dataRowSegment, dataTableUserData))
                 {
                     throw new GameFrameworkException("Add data row failure.");
                 }

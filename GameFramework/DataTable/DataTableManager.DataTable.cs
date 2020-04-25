@@ -369,13 +369,14 @@ namespace GameFramework.DataTable
             /// 增加数据表行。
             /// </summary>
             /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+            /// <param name="dataTableUserData">数据表用户自定义数据。</param>
             /// <returns>是否增加数据表行成功。</returns>
-            public override bool AddDataRow(GameFrameworkSegment<string> dataRowSegment)
+            public override bool AddDataRow(GameFrameworkSegment<string> dataRowSegment, object dataTableUserData)
             {
                 try
                 {
                     T dataRow = new T();
-                    if (!dataRow.ParseDataRow(dataRowSegment))
+                    if (!dataRow.ParseDataRow(dataRowSegment, dataTableUserData))
                     {
                         return false;
                     }
@@ -398,13 +399,14 @@ namespace GameFramework.DataTable
             /// 增加数据表行。
             /// </summary>
             /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+            /// <param name="dataTableUserData">数据表用户自定义数据。</param>
             /// <returns>是否增加数据表行成功。</returns>
-            public override bool AddDataRow(GameFrameworkSegment<byte[]> dataRowSegment)
+            public override bool AddDataRow(GameFrameworkSegment<byte[]> dataRowSegment, object dataTableUserData)
             {
                 try
                 {
                     T dataRow = new T();
-                    if (!dataRow.ParseDataRow(dataRowSegment))
+                    if (!dataRow.ParseDataRow(dataRowSegment, dataTableUserData))
                     {
                         return false;
                     }
@@ -427,13 +429,14 @@ namespace GameFramework.DataTable
             /// 增加数据表行。
             /// </summary>
             /// <param name="dataRowSegment">要解析的数据表行片段。</param>
+            /// <param name="dataTableUserData">数据表用户自定义数据。</param>
             /// <returns>是否增加数据表行成功。</returns>
-            public override bool AddDataRow(GameFrameworkSegment<Stream> dataRowSegment)
+            public override bool AddDataRow(GameFrameworkSegment<Stream> dataRowSegment, object dataTableUserData)
             {
                 try
                 {
                     T dataRow = new T();
-                    if (!dataRow.ParseDataRow(dataRowSegment))
+                    if (!dataRow.ParseDataRow(dataRowSegment, dataTableUserData))
                     {
                         return false;
                     }
