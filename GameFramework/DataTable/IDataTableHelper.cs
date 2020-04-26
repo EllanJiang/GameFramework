@@ -5,9 +5,6 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.IO;
-
 namespace GameFramework.DataTable
 {
     /// <summary>
@@ -27,44 +24,16 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 获取数据表行片段。
         /// </summary>
-        /// <param name="text">要解析的数据表文本。</param>
+        /// <param name="dataTableData">要解析的数据表数据。</param>
         /// <returns>数据表行片段。</returns>
-        IEnumerable<GameFrameworkSegment<string>> GetDataRowSegments(string text);
-
-        /// <summary>
-        /// 获取数据表行片段。
-        /// </summary>
-        /// <param name="bytes">要解析的数据表二进制流。</param>
-        /// <returns>数据表行片段。</returns>
-        IEnumerable<GameFrameworkSegment<byte[]>> GetDataRowSegments(byte[] bytes);
-
-        /// <summary>
-        /// 获取数据表行片段。
-        /// </summary>
-        /// <param name="stream">要解析的数据表二进制流。</param>
-        /// <returns>数据表行片段。</returns>
-        IEnumerable<GameFrameworkSegment<Stream>> GetDataRowSegments(Stream stream);
+        GameFrameworkDataSegment[] GetDataRowSegments(object dataTableData);
 
         /// <summary>
         /// 获取数据表用户自定义数据。
         /// </summary>
-        /// <param name="text">要解析的数据表文本。</param>
+        /// <param name="dataTableData">要解析的数据表数据。</param>
         /// <returns>数据表用户自定义数据。</returns>
-        object GetDataTableUserData(string text);
-
-        /// <summary>
-        /// 获取数据表用户自定义数据。
-        /// </summary>
-        /// <param name="bytes">要解析的数据表二进制流。</param>
-        /// <returns>数据表用户自定义数据。</returns>
-        object GetDataTableUserData(byte[] bytes);
-
-        /// <summary>
-        /// 获取数据表用户自定义数据。
-        /// </summary>
-        /// <param name="stream">要解析的数据表二进制流。</param>
-        /// <returns>数据表用户自定义数据。</returns>
-        object GetDataTableUserData(Stream stream);
+        object GetDataTableUserData(object dataTableData);
 
         /// <summary>
         /// 释放数据表资源。

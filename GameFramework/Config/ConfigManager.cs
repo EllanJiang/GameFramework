@@ -8,7 +8,6 @@
 using GameFramework.Resource;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace GameFramework.Config
 {
@@ -210,7 +209,7 @@ namespace GameFramework.Config
             }
 
             LoadConfigInfo loadConfigInfo = LoadConfigInfo.Create(loadType, userData);
-            if (loadType == LoadType.TextFromAsset || loadType == LoadType.BytesFromAsset || loadType == LoadType.StreamFromAsset)
+            if (loadType == LoadType.Asset)
             {
                 m_ResourceManager.LoadAsset(configAssetName, priority, m_LoadAssetCallbacks, loadConfigInfo);
             }
@@ -223,20 +222,20 @@ namespace GameFramework.Config
         /// <summary>
         /// 解析全局配置。
         /// </summary>
-        /// <param name="text">要解析的全局配置文本。</param>
+        /// <param name="configData">要解析的全局配置数据。</param>
         /// <returns>是否解析全局配置成功。</returns>
-        public bool ParseConfig(string text)
+        public bool ParseConfig(object configData)
         {
-            return ParseConfig(text, null);
+            return ParseConfig(configData, null);
         }
 
         /// <summary>
         /// 解析全局配置。
         /// </summary>
-        /// <param name="text">要解析的全局配置文本。</param>
+        /// <param name="configData">要解析的全局配置数据。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析全局配置成功。</returns>
-        public bool ParseConfig(string text, object userData)
+        public bool ParseConfig(object configData, object userData)
         {
             if (m_ConfigHelper == null)
             {
@@ -245,83 +244,7 @@ namespace GameFramework.Config
 
             try
             {
-                return m_ConfigHelper.ParseConfig(text, userData);
-            }
-            catch (Exception exception)
-            {
-                if (exception is GameFrameworkException)
-                {
-                    throw;
-                }
-
-                throw new GameFrameworkException(Utility.Text.Format("Can not parse config with exception '{0}'.", exception.ToString()), exception);
-            }
-        }
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="bytes">要解析的全局配置二进制流。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        public bool ParseConfig(byte[] bytes)
-        {
-            return ParseConfig(bytes, null);
-        }
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="bytes">要解析的全局配置二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        public bool ParseConfig(byte[] bytes, object userData)
-        {
-            if (m_ConfigHelper == null)
-            {
-                throw new GameFrameworkException("You must set config helper first.");
-            }
-
-            try
-            {
-                return m_ConfigHelper.ParseConfig(bytes, userData);
-            }
-            catch (Exception exception)
-            {
-                if (exception is GameFrameworkException)
-                {
-                    throw;
-                }
-
-                throw new GameFrameworkException(Utility.Text.Format("Can not parse config with exception '{0}'.", exception.ToString()), exception);
-            }
-        }
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="stream">要解析的全局配置二进制流。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        public bool ParseConfig(Stream stream)
-        {
-            return ParseConfig(stream, null);
-        }
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="stream">要解析的全局配置二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        public bool ParseConfig(Stream stream, object userData)
-        {
-            if (m_ConfigHelper == null)
-            {
-                throw new GameFrameworkException("You must set config helper first.");
-            }
-
-            try
-            {
-                return m_ConfigHelper.ParseConfig(stream, userData);
+                return m_ConfigHelper.ParseConfig(configData, userData);
             }
             catch (Exception exception)
             {
@@ -607,7 +530,7 @@ namespace GameFramework.Config
             }
         }
 
-        private void LoadBinarySuccessCallback(string configAssetName, byte[] binaryBytes, float duration, object userData)
+        private void LoadBinarySuccessCallback(string configAssetName, byte[] configBytes, float duration, object userData)
         {
             LoadConfigInfo loadConfigInfo = (LoadConfigInfo)userData;
             if (loadConfigInfo == null)
@@ -617,7 +540,7 @@ namespace GameFramework.Config
 
             try
             {
-                if (!m_ConfigHelper.LoadConfig(binaryBytes, loadConfigInfo.LoadType, loadConfigInfo.UserData))
+                if (!m_ConfigHelper.LoadConfig(configBytes, loadConfigInfo.LoadType, loadConfigInfo.UserData))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load config failure in helper, asset name '{0}'.", configAssetName));
                 }

@@ -12,24 +12,23 @@ namespace GameFramework
     /// <summary>
     /// 数据片段。
     /// </summary>
-    /// <typeparam name="T">数据源类型。</typeparam>
-    public struct GameFrameworkSegment<T> : IEquatable<GameFrameworkSegment<T>> where T : class
+    public struct GameFrameworkDataSegment : IEquatable<GameFrameworkDataSegment>
     {
-        private readonly T m_Source;
+        private readonly object m_Data;
         private readonly int m_Offset;
         private readonly int m_Length;
 
         /// <summary>
         /// 初始化数据片段的新实例。
         /// </summary>
-        /// <param name="source">数据源。</param>
+        /// <param name="data">完整数据。</param>
         /// <param name="offset">偏移。</param>
         /// <param name="length">长度。</param>
-        public GameFrameworkSegment(T source, int offset, int length)
+        public GameFrameworkDataSegment(object data, int offset, int length)
         {
-            if (source == null)
+            if (data == null)
             {
-                throw new GameFrameworkException("Source is invalid.");
+                throw new GameFrameworkException("Data is invalid.");
             }
 
             if (offset < 0)
@@ -42,19 +41,19 @@ namespace GameFramework
                 throw new GameFrameworkException("Length is invalid.");
             }
 
-            m_Source = source;
+            m_Data = data;
             m_Offset = offset;
             m_Length = length;
         }
 
         /// <summary>
-        /// 获取数据源。
+        /// 获取完整数据。
         /// </summary>
-        public T Source
+        public object Data
         {
             get
             {
-                return m_Source;
+                return m_Data;
             }
         }
 
@@ -86,7 +85,7 @@ namespace GameFramework
         /// <returns>对象的哈希值。</returns>
         public override int GetHashCode()
         {
-            return m_Source.GetHashCode() ^ m_Offset ^ m_Length;
+            return m_Data.GetHashCode() ^ m_Offset ^ m_Length;
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace GameFramework
         /// <returns>被比较的对象是否与自身相等。</returns>
         public override bool Equals(object obj)
         {
-            return obj is GameFrameworkSegment<T> && Equals((GameFrameworkSegment<T>)obj);
+            return obj is GameFrameworkDataSegment && Equals((GameFrameworkDataSegment)obj);
         }
 
         /// <summary>
@@ -104,9 +103,9 @@ namespace GameFramework
         /// </summary>
         /// <param name="value">要比较的对象。</param>
         /// <returns>被比较的对象是否与自身相等。</returns>
-        public bool Equals(GameFrameworkSegment<T> value)
+        public bool Equals(GameFrameworkDataSegment value)
         {
-            return value.m_Source == m_Source && value.m_Offset == m_Offset && value.m_Length == m_Length;
+            return value.m_Data == m_Data && value.m_Offset == m_Offset && value.m_Length == m_Length;
         }
 
         /// <summary>
@@ -115,7 +114,7 @@ namespace GameFramework
         /// <param name="a">值 a。</param>
         /// <param name="b">值 b。</param>
         /// <returns>两个对象是否相等。</returns>
-        public static bool operator ==(GameFrameworkSegment<T> a, GameFrameworkSegment<T> b)
+        public static bool operator ==(GameFrameworkDataSegment a, GameFrameworkDataSegment b)
         {
             return a.Equals(b);
         }
@@ -126,7 +125,7 @@ namespace GameFramework
         /// <param name="a">值 a。</param>
         /// <param name="b">值 b。</param>
         /// <returns>两个对象是否不相等。</returns>
-        public static bool operator !=(GameFrameworkSegment<T> a, GameFrameworkSegment<T> b)
+        public static bool operator !=(GameFrameworkDataSegment a, GameFrameworkDataSegment b)
         {
             return !(a == b);
         }

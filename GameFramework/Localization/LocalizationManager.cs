@@ -8,7 +8,6 @@
 using GameFramework.Resource;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace GameFramework.Localization
 {
@@ -248,7 +247,7 @@ namespace GameFramework.Localization
             }
 
             LoadDictionaryInfo loadDictionaryInfo = LoadDictionaryInfo.Create(loadType, userData);
-            if (loadType == LoadType.TextFromAsset || loadType == LoadType.BytesFromAsset || loadType == LoadType.StreamFromAsset)
+            if (loadType == LoadType.Asset)
             {
                 m_ResourceManager.LoadAsset(dictionaryAssetName, priority, m_LoadAssetCallbacks, loadDictionaryInfo);
             }
@@ -261,20 +260,20 @@ namespace GameFramework.Localization
         /// <summary>
         /// 解析字典。
         /// </summary>
-        /// <param name="text">要解析的字典文本。</param>
+        /// <param name="dictionaryData">要解析的字典数据。</param>
         /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(string text)
+        public bool ParseDictionary(object dictionaryData)
         {
-            return ParseDictionary(text, null);
+            return ParseDictionary(dictionaryData, null);
         }
 
         /// <summary>
         /// 解析字典。
         /// </summary>
-        /// <param name="text">要解析的字典文本。</param>
+        /// <param name="dictionaryData">要解析的字典数据。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(string text, object userData)
+        public bool ParseDictionary(object dictionaryData, object userData)
         {
             if (m_LocalizationHelper == null)
             {
@@ -283,83 +282,7 @@ namespace GameFramework.Localization
 
             try
             {
-                return m_LocalizationHelper.ParseDictionary(text, userData);
-            }
-            catch (Exception exception)
-            {
-                if (exception is GameFrameworkException)
-                {
-                    throw;
-                }
-
-                throw new GameFrameworkException(Utility.Text.Format("Can not parse dictionary with exception '{0}'.", exception.ToString()), exception);
-            }
-        }
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="bytes">要解析的字典二进制流。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(byte[] bytes)
-        {
-            return ParseDictionary(bytes, null);
-        }
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="bytes">要解析的字典二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(byte[] bytes, object userData)
-        {
-            if (m_LocalizationHelper == null)
-            {
-                throw new GameFrameworkException("You must set localization helper first.");
-            }
-
-            try
-            {
-                return m_LocalizationHelper.ParseDictionary(bytes, userData);
-            }
-            catch (Exception exception)
-            {
-                if (exception is GameFrameworkException)
-                {
-                    throw;
-                }
-
-                throw new GameFrameworkException(Utility.Text.Format("Can not parse dictionary with exception '{0}'.", exception.ToString()), exception);
-            }
-        }
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="stream">要解析的字典二进制流。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(Stream stream)
-        {
-            return ParseDictionary(stream, null);
-        }
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="stream">要解析的字典二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(Stream stream, object userData)
-        {
-            if (m_LocalizationHelper == null)
-            {
-                throw new GameFrameworkException("You must set localization helper first.");
-            }
-
-            try
-            {
-                return m_LocalizationHelper.ParseDictionary(stream, userData);
+                return m_LocalizationHelper.ParseDictionary(dictionaryData, userData);
             }
             catch (Exception exception)
             {
@@ -691,7 +614,7 @@ namespace GameFramework.Localization
             }
         }
 
-        private void LoadBinarySuccessCallback(string dictionaryAssetName, byte[] binaryBytes, float duration, object userData)
+        private void LoadBinarySuccessCallback(string dictionaryAssetName, byte[] dictionaryBytes, float duration, object userData)
         {
             LoadDictionaryInfo loadDictionaryInfo = (LoadDictionaryInfo)userData;
             if (loadDictionaryInfo == null)
@@ -701,7 +624,7 @@ namespace GameFramework.Localization
 
             try
             {
-                if (!m_LocalizationHelper.LoadDictionary(binaryBytes, loadDictionaryInfo.LoadType, loadDictionaryInfo.UserData))
+                if (!m_LocalizationHelper.LoadDictionary(dictionaryBytes, loadDictionaryInfo.LoadType, loadDictionaryInfo.UserData))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load dictionary failure in helper, asset name '{0}'.", dictionaryAssetName));
                 }

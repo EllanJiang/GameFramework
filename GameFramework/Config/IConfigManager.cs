@@ -7,7 +7,6 @@
 
 using GameFramework.Resource;
 using System;
-using System.IO;
 
 namespace GameFramework.Config
 {
@@ -91,47 +90,17 @@ namespace GameFramework.Config
         /// <summary>
         /// 解析全局配置。
         /// </summary>
-        /// <param name="text">要解析的全局配置文本。</param>
+        /// <param name="configData">要解析的全局配置数据。</param>
         /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(string text);
+        bool ParseConfig(object configData);
 
         /// <summary>
         /// 解析全局配置。
         /// </summary>
-        /// <param name="text">要解析的全局配置文本。</param>
+        /// <param name="configData">要解析的全局配置数据。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(string text, object userData);
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="bytes">要解析的全局配置二进制流。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(byte[] bytes);
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="bytes">要解析的全局配置二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(byte[] bytes, object userData);
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="stream">要解析的全局配置二进制流。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(Stream stream);
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="stream">要解析的全局配置二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(Stream stream, object userData);
+        bool ParseConfig(object configData, object userData);
 
         /// <summary>
         /// 检查是否存在指定全局配置项。

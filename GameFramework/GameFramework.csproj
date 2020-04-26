@@ -48,6 +48,7 @@
     <Compile Include="Base\EventPool\EventPool.Event.cs" />
     <Compile Include="Base\EventPool\EventPoolMode.cs" />
     <Compile Include="Base\GameFrameworkAction.cs" />
+    <Compile Include="Base\GameFrameworkDataSegment.cs" />
     <Compile Include="Base\GameFrameworkEntry.cs" />
     <Compile Include="Base\GameFrameworkEventArgs.cs" />
     <Compile Include="Base\GameFrameworkException.cs" />
@@ -56,7 +57,6 @@
     <Compile Include="Base\GameFrameworkLinkedListRange.cs" />
     <Compile Include="Base\GameFrameworkModule.cs" />
     <Compile Include="Base\GameFrameworkMultiDictionary.cs" />
-    <Compile Include="Base\GameFrameworkSegment.cs" />
     <Compile Include="Base\GameFrameworkSerializer.cs" />
     <Compile Include="Base\Log\GameFrameworkLog.cs" />
     <Compile Include="Base\Log\GameFrameworkLog.ILogHelper.cs" />

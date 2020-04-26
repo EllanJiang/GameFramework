@@ -16,7 +16,7 @@ namespace GameFramework.Config
 
             public LoadConfigInfo()
             {
-                m_LoadType = LoadType.TextFromAsset;
+                m_LoadType = LoadType.Asset;
                 m_UserData = null;
             }
 
@@ -46,7 +46,7 @@ namespace GameFramework.Config
 
             public void Clear()
             {
-                m_LoadType = LoadType.TextFromAsset;
+                m_LoadType = LoadType.Asset;
                 m_UserData = null;
             }
         }

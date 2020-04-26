@@ -5,8 +5,6 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-using System.IO;
-
 namespace GameFramework.Config
 {
     /// <summary>
@@ -26,26 +24,10 @@ namespace GameFramework.Config
         /// <summary>
         /// 解析全局配置。
         /// </summary>
-        /// <param name="text">要解析的全局配置文本。</param>
+        /// <param name="configData">要解析的全局配置数据。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(string text, object userData);
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="bytes">要解析的全局配置二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(byte[] bytes, object userData);
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="stream">要解析的全局配置二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(Stream stream, object userData);
+        bool ParseConfig(object configData, object userData);
 
         /// <summary>
         /// 释放全局配置资源。
