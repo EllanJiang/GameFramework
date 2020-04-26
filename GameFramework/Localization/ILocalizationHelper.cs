@@ -24,10 +24,9 @@ namespace GameFramework.Localization
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryObject">字典对象。</param>
-        /// <param name="loadType">字典加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否加载成功。</returns>
-        bool LoadDictionary(object dictionaryObject, LoadType loadType, object userData);
+        bool LoadDictionary(object dictionaryObject, object userData);
 
         /// <summary>
         /// 解析字典。

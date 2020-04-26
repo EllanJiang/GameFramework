@@ -18,7 +18,6 @@ namespace GameFramework.DataTable
         public LoadDataTableFailureEventArgs()
         {
             DataTableAssetName = null;
-            LoadType = LoadType.Asset;
             ErrorMessage = null;
             UserData = null;
         }
@@ -27,15 +26,6 @@ namespace GameFramework.DataTable
         /// 获取数据表资源名称。
         /// </summary>
         public string DataTableAssetName
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取数据表加载方式。
-        /// </summary>
-        public LoadType LoadType
         {
             get;
             private set;
@@ -63,15 +53,13 @@ namespace GameFramework.DataTable
         /// 创建加载数据表失败事件。
         /// </summary>
         /// <param name="dataTableAssetName">数据表资源名称。</param>
-        /// <param name="loadType">数据表加载方式。</param>
         /// <param name="errorMessage">错误信息。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>创建的加载数据表失败事件。</returns>
-        public static LoadDataTableFailureEventArgs Create(string dataTableAssetName, LoadType loadType, string errorMessage, object userData)
+        public static LoadDataTableFailureEventArgs Create(string dataTableAssetName, string errorMessage, object userData)
         {
             LoadDataTableFailureEventArgs loadDataTableFailureEventArgs = ReferencePool.Acquire<LoadDataTableFailureEventArgs>();
             loadDataTableFailureEventArgs.DataTableAssetName = dataTableAssetName;
-            loadDataTableFailureEventArgs.LoadType = loadType;
             loadDataTableFailureEventArgs.ErrorMessage = errorMessage;
             loadDataTableFailureEventArgs.UserData = userData;
             return loadDataTableFailureEventArgs;
@@ -83,7 +71,6 @@ namespace GameFramework.DataTable
         public override void Clear()
         {
             DataTableAssetName = null;
-            LoadType = LoadType.Asset;
             ErrorMessage = null;
             UserData = null;
         }

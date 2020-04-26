@@ -1027,8 +1027,8 @@ namespace GameFramework.Resource
         /// 检查资源是否存在。
         /// </summary>
         /// <param name="assetName">要检查资源的名称。</param>
-        /// <returns>资源是否存在。</returns>
-        public bool HasAsset(string assetName)
+        /// <returns>检查资源是否存在的结果。</returns>
+        public HasAssetResult HasAsset(string assetName)
         {
             if (string.IsNullOrEmpty(assetName))
             {
@@ -1230,21 +1230,6 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 检查场景资源是否存在。
-        /// </summary>
-        /// <param name="sceneAssetName">要检查场景资源的名称。</param>
-        /// <returns>场景资源是否存在。</returns>
-        public bool HasScene(string sceneAssetName)
-        {
-            if (string.IsNullOrEmpty(sceneAssetName))
-            {
-                throw new GameFrameworkException("Scene asset name is invalid.");
-            }
-
-            return m_ResourceLoader.HasAsset(sceneAssetName);
-        }
-
-        /// <summary>
         /// 异步加载场景。
         /// </summary>
         /// <param name="sceneAssetName">要加载场景资源的名称。</param>
@@ -1367,21 +1352,6 @@ namespace GameFramework.Resource
             }
 
             m_ResourceLoader.UnloadScene(sceneAssetName, unloadSceneCallbacks, userData);
-        }
-
-        /// <summary>
-        /// 检查二进制资源是否存在。
-        /// </summary>
-        /// <param name="binaryAssetName">要检查二进制资源的名称。</param>
-        /// <returns>二进制资源是否存在。</returns>
-        public bool HasBinary(string binaryAssetName)
-        {
-            if (string.IsNullOrEmpty(binaryAssetName))
-            {
-                throw new GameFrameworkException("Binary asset name is invalid.");
-            }
-
-            return m_ResourceLoader.HasAsset(binaryAssetName);
         }
 
         /// <summary>

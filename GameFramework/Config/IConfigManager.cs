@@ -59,33 +59,29 @@ namespace GameFramework.Config
         /// 加载全局配置。
         /// </summary>
         /// <param name="configAssetName">全局配置资源名称。</param>
-        /// <param name="loadType">全局配置加载方式。</param>
-        void LoadConfig(string configAssetName, LoadType loadType);
+        void LoadConfig(string configAssetName);
 
         /// <summary>
         /// 加载全局配置。
         /// </summary>
         /// <param name="configAssetName">全局配置资源名称。</param>
-        /// <param name="loadType">全局配置加载方式。</param>
         /// <param name="priority">加载全局配置资源的优先级。</param>
-        void LoadConfig(string configAssetName, LoadType loadType, int priority);
+        void LoadConfig(string configAssetName, int priority);
 
         /// <summary>
         /// 加载全局配置。
         /// </summary>
         /// <param name="configAssetName">全局配置资源名称。</param>
-        /// <param name="loadType">全局配置加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadConfig(string configAssetName, LoadType loadType, object userData);
+        void LoadConfig(string configAssetName, object userData);
 
         /// <summary>
         /// 加载全局配置。
         /// </summary>
         /// <param name="configAssetName">全局配置资源名称。</param>
-        /// <param name="loadType">全局配置加载方式。</param>
         /// <param name="priority">加载全局配置资源的优先级。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void LoadConfig(string configAssetName, LoadType loadType, int priority, object userData);
+        void LoadConfig(string configAssetName, int priority, object userData);
 
         /// <summary>
         /// 解析全局配置。

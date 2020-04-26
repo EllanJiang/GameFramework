@@ -5,20 +5,25 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-namespace GameFramework
+namespace GameFramework.Resource
 {
     /// <summary>
-    /// 加载方式。
+    /// 检查资源是否存在的结果。
     /// </summary>
-    public enum LoadType : byte
+    public enum HasAssetResult : byte
     {
         /// <summary>
-        /// 从资源加载。
+        /// 不存在资源。
         /// </summary>
-        Asset = 0,
+        NotExist = 0,
 
         /// <summary>
-        /// 从二进制资源加载。
+        /// 存在资源。
+        /// </summary>
+        Asset,
+
+        /// <summary>
+        /// 存在二进制资源。
         /// </summary>
         Binary
     }

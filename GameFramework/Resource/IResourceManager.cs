@@ -404,8 +404,8 @@ namespace GameFramework.Resource
         /// 检查资源是否存在。
         /// </summary>
         /// <param name="assetName">要检查资源的名称。</param>
-        /// <returns>资源是否存在。</returns>
-        bool HasAsset(string assetName);
+        /// <returns>检查资源是否存在的结果。</returns>
+        HasAssetResult HasAsset(string assetName);
 
         /// <summary>
         /// 异步加载资源。
@@ -482,13 +482,6 @@ namespace GameFramework.Resource
         void UnloadAsset(object asset);
 
         /// <summary>
-        /// 检查场景资源是否存在。
-        /// </summary>
-        /// <param name="sceneAssetName">要检查场景资源的名称。</param>
-        /// <returns>场景资源是否存在。</returns>
-        bool HasScene(string sceneAssetName);
-
-        /// <summary>
         /// 异步加载场景。
         /// </summary>
         /// <param name="sceneAssetName">要加载场景资源的名称。</param>
@@ -550,13 +543,6 @@ namespace GameFramework.Resource
         /// <param name="relativePath">二进制资源相对于只读区或者读写区的相对路径。</param>
         /// <returns>获取二进制资源的实际路径是否成功。</returns>
         bool GetBinaryPath(string binaryAssetName, out bool storageInReadOnly, out string relativePath);
-
-        /// <summary>
-        /// 检查二进制资源是否存在。
-        /// </summary>
-        /// <param name="binaryAssetName">要检查二进制资源的名称。</param>
-        /// <returns>二进制资源是否存在。</returns>
-        bool HasBinary(string binaryAssetName);
 
         /// <summary>
         /// 异步加载二进制资源。

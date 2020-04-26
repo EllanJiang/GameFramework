@@ -18,7 +18,6 @@ namespace GameFramework.Localization
         public LoadDictionarySuccessEventArgs()
         {
             DictionaryAssetName = null;
-            LoadType = LoadType.Asset;
             Duration = 0f;
             UserData = null;
         }
@@ -27,15 +26,6 @@ namespace GameFramework.Localization
         /// 获取字典资源名称。
         /// </summary>
         public string DictionaryAssetName
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取字典加载方式。
-        /// </summary>
-        public LoadType LoadType
         {
             get;
             private set;
@@ -63,15 +53,13 @@ namespace GameFramework.Localization
         /// 创建加载字典成功事件。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
         /// <param name="duration">加载持续时间。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>创建的加载字典成功事件。</returns>
-        public static LoadDictionarySuccessEventArgs Create(string dictionaryAssetName, LoadType loadType, float duration, object userData)
+        public static LoadDictionarySuccessEventArgs Create(string dictionaryAssetName, float duration, object userData)
         {
             LoadDictionarySuccessEventArgs loadDictionarySuccessEventArgs = ReferencePool.Acquire<LoadDictionarySuccessEventArgs>();
             loadDictionarySuccessEventArgs.DictionaryAssetName = dictionaryAssetName;
-            loadDictionarySuccessEventArgs.LoadType = loadType;
             loadDictionarySuccessEventArgs.Duration = duration;
             loadDictionarySuccessEventArgs.UserData = userData;
             return loadDictionarySuccessEventArgs;
@@ -83,7 +71,6 @@ namespace GameFramework.Localization
         public override void Clear()
         {
             DictionaryAssetName = null;
-            LoadType = LoadType.Asset;
             Duration = 0f;
             UserData = null;
         }

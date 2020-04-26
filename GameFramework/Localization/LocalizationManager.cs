@@ -199,42 +199,38 @@ namespace GameFramework.Localization
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
-        public void LoadDictionary(string dictionaryAssetName, LoadType loadType)
+        public void LoadDictionary(string dictionaryAssetName)
         {
-            LoadDictionary(dictionaryAssetName, loadType, Constant.DefaultPriority, null);
+            LoadDictionary(dictionaryAssetName, Constant.DefaultPriority, null);
         }
 
         /// <summary>
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
         /// <param name="priority">加载字典资源的优先级。</param>
-        public void LoadDictionary(string dictionaryAssetName, LoadType loadType, int priority)
+        public void LoadDictionary(string dictionaryAssetName, int priority)
         {
-            LoadDictionary(dictionaryAssetName, loadType, priority, null);
+            LoadDictionary(dictionaryAssetName, priority, null);
         }
 
         /// <summary>
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void LoadDictionary(string dictionaryAssetName, LoadType loadType, object userData)
+        public void LoadDictionary(string dictionaryAssetName, object userData)
         {
-            LoadDictionary(dictionaryAssetName, loadType, Constant.DefaultPriority, userData);
+            LoadDictionary(dictionaryAssetName, Constant.DefaultPriority, userData);
         }
 
         /// <summary>
         /// 加载字典。
         /// </summary>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
         /// <param name="priority">加载字典资源的优先级。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void LoadDictionary(string dictionaryAssetName, LoadType loadType, int priority, object userData)
+        public void LoadDictionary(string dictionaryAssetName, int priority, object userData)
         {
             if (m_ResourceManager == null)
             {
@@ -246,14 +242,18 @@ namespace GameFramework.Localization
                 throw new GameFrameworkException("You must set localization helper first.");
             }
 
-            LoadDictionaryInfo loadDictionaryInfo = LoadDictionaryInfo.Create(loadType, userData);
-            if (loadType == LoadType.Asset)
+            switch (m_ResourceManager.HasAsset(dictionaryAssetName))
             {
-                m_ResourceManager.LoadAsset(dictionaryAssetName, priority, m_LoadAssetCallbacks, loadDictionaryInfo);
-            }
-            else
-            {
-                m_ResourceManager.LoadBinary(dictionaryAssetName, m_LoadBinaryCallbacks, loadDictionaryInfo);
+                case HasAssetResult.Asset:
+                    m_ResourceManager.LoadAsset(dictionaryAssetName, priority, m_LoadAssetCallbacks, userData);
+                    break;
+
+                case HasAssetResult.Binary:
+                    m_ResourceManager.LoadBinary(dictionaryAssetName, m_LoadBinaryCallbacks, userData);
+                    break;
+
+                default:
+                    throw new GameFrameworkException(Utility.Text.Format("Dictionary asset '{0}' is not exist.", dictionaryAssetName));
             }
         }
 
@@ -523,22 +523,16 @@ namespace GameFramework.Localization
 
         private void LoadAssetSuccessCallback(string dictionaryAssetName, object dictionaryAsset, float duration, object userData)
         {
-            LoadDictionaryInfo loadDictionaryInfo = (LoadDictionaryInfo)userData;
-            if (loadDictionaryInfo == null)
-            {
-                throw new GameFrameworkException("Load dictionary info is invalid.");
-            }
-
             try
             {
-                if (!m_LocalizationHelper.LoadDictionary(dictionaryAsset, loadDictionaryInfo.LoadType, loadDictionaryInfo.UserData))
+                if (!m_LocalizationHelper.LoadDictionary(dictionaryAsset, userData))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load dictionary failure in helper, asset name '{0}'.", dictionaryAssetName));
                 }
 
                 if (m_LoadDictionarySuccessEventHandler != null)
                 {
-                    LoadDictionarySuccessEventArgs loadDictionarySuccessEventArgs = LoadDictionarySuccessEventArgs.Create(dictionaryAssetName, loadDictionaryInfo.LoadType, duration, loadDictionaryInfo.UserData);
+                    LoadDictionarySuccessEventArgs loadDictionarySuccessEventArgs = LoadDictionarySuccessEventArgs.Create(dictionaryAssetName, duration, userData);
                     m_LoadDictionarySuccessEventHandler(this, loadDictionarySuccessEventArgs);
                     ReferencePool.Release(loadDictionarySuccessEventArgs);
                 }
@@ -547,7 +541,7 @@ namespace GameFramework.Localization
             {
                 if (m_LoadDictionaryFailureEventHandler != null)
                 {
-                    LoadDictionaryFailureEventArgs loadDictionaryFailureEventArgs = LoadDictionaryFailureEventArgs.Create(dictionaryAssetName, loadDictionaryInfo.LoadType, exception.ToString(), loadDictionaryInfo.UserData);
+                    LoadDictionaryFailureEventArgs loadDictionaryFailureEventArgs = LoadDictionaryFailureEventArgs.Create(dictionaryAssetName, exception.ToString(), userData);
                     m_LoadDictionaryFailureEventHandler(this, loadDictionaryFailureEventArgs);
                     ReferencePool.Release(loadDictionaryFailureEventArgs);
                     return;
@@ -557,23 +551,16 @@ namespace GameFramework.Localization
             }
             finally
             {
-                ReferencePool.Release(loadDictionaryInfo);
                 m_LocalizationHelper.ReleaseDictionaryAsset(dictionaryAsset);
             }
         }
 
         private void LoadAssetOrBinaryFailureCallback(string dictionaryAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
-            LoadDictionaryInfo loadDictionaryInfo = (LoadDictionaryInfo)userData;
-            if (loadDictionaryInfo == null)
-            {
-                throw new GameFrameworkException("Load dictionary info is invalid.");
-            }
-
             string appendErrorMessage = Utility.Text.Format("Load dictionary failure, asset name '{0}', status '{1}', error message '{2}'.", dictionaryAssetName, status.ToString(), errorMessage);
             if (m_LoadDictionaryFailureEventHandler != null)
             {
-                LoadDictionaryFailureEventArgs loadDictionaryFailureEventArgs = LoadDictionaryFailureEventArgs.Create(dictionaryAssetName, loadDictionaryInfo.LoadType, appendErrorMessage, loadDictionaryInfo.UserData);
+                LoadDictionaryFailureEventArgs loadDictionaryFailureEventArgs = LoadDictionaryFailureEventArgs.Create(dictionaryAssetName, appendErrorMessage, userData);
                 m_LoadDictionaryFailureEventHandler(this, loadDictionaryFailureEventArgs);
                 ReferencePool.Release(loadDictionaryFailureEventArgs);
                 return;
@@ -584,15 +571,9 @@ namespace GameFramework.Localization
 
         private void LoadAssetUpdateCallback(string dictionaryAssetName, float progress, object userData)
         {
-            LoadDictionaryInfo loadDictionaryInfo = (LoadDictionaryInfo)userData;
-            if (loadDictionaryInfo == null)
-            {
-                throw new GameFrameworkException("Load dictionary info is invalid.");
-            }
-
             if (m_LoadDictionaryUpdateEventHandler != null)
             {
-                LoadDictionaryUpdateEventArgs loadDictionaryUpdateEventArgs = LoadDictionaryUpdateEventArgs.Create(dictionaryAssetName, loadDictionaryInfo.LoadType, progress, loadDictionaryInfo.UserData);
+                LoadDictionaryUpdateEventArgs loadDictionaryUpdateEventArgs = LoadDictionaryUpdateEventArgs.Create(dictionaryAssetName, progress, userData);
                 m_LoadDictionaryUpdateEventHandler(this, loadDictionaryUpdateEventArgs);
                 ReferencePool.Release(loadDictionaryUpdateEventArgs);
             }
@@ -600,15 +581,9 @@ namespace GameFramework.Localization
 
         private void LoadAssetDependencyAssetCallback(string dictionaryAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
-            LoadDictionaryInfo loadDictionaryInfo = (LoadDictionaryInfo)userData;
-            if (loadDictionaryInfo == null)
-            {
-                throw new GameFrameworkException("Load dictionary info is invalid.");
-            }
-
             if (m_LoadDictionaryDependencyAssetEventHandler != null)
             {
-                LoadDictionaryDependencyAssetEventArgs loadDictionaryDependencyAssetEventArgs = LoadDictionaryDependencyAssetEventArgs.Create(dictionaryAssetName, dependencyAssetName, loadedCount, totalCount, loadDictionaryInfo.UserData);
+                LoadDictionaryDependencyAssetEventArgs loadDictionaryDependencyAssetEventArgs = LoadDictionaryDependencyAssetEventArgs.Create(dictionaryAssetName, dependencyAssetName, loadedCount, totalCount, userData);
                 m_LoadDictionaryDependencyAssetEventHandler(this, loadDictionaryDependencyAssetEventArgs);
                 ReferencePool.Release(loadDictionaryDependencyAssetEventArgs);
             }
@@ -616,22 +591,16 @@ namespace GameFramework.Localization
 
         private void LoadBinarySuccessCallback(string dictionaryAssetName, byte[] dictionaryBytes, float duration, object userData)
         {
-            LoadDictionaryInfo loadDictionaryInfo = (LoadDictionaryInfo)userData;
-            if (loadDictionaryInfo == null)
-            {
-                throw new GameFrameworkException("Load dictionary info is invalid.");
-            }
-
             try
             {
-                if (!m_LocalizationHelper.LoadDictionary(dictionaryBytes, loadDictionaryInfo.LoadType, loadDictionaryInfo.UserData))
+                if (!m_LocalizationHelper.LoadDictionary(dictionaryBytes, userData))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load dictionary failure in helper, asset name '{0}'.", dictionaryAssetName));
                 }
 
                 if (m_LoadDictionarySuccessEventHandler != null)
                 {
-                    LoadDictionarySuccessEventArgs loadDictionarySuccessEventArgs = LoadDictionarySuccessEventArgs.Create(dictionaryAssetName, loadDictionaryInfo.LoadType, duration, loadDictionaryInfo.UserData);
+                    LoadDictionarySuccessEventArgs loadDictionarySuccessEventArgs = LoadDictionarySuccessEventArgs.Create(dictionaryAssetName, duration, userData);
                     m_LoadDictionarySuccessEventHandler(this, loadDictionarySuccessEventArgs);
                     ReferencePool.Release(loadDictionarySuccessEventArgs);
                 }
@@ -640,17 +609,13 @@ namespace GameFramework.Localization
             {
                 if (m_LoadDictionaryFailureEventHandler != null)
                 {
-                    LoadDictionaryFailureEventArgs loadDictionaryFailureEventArgs = LoadDictionaryFailureEventArgs.Create(dictionaryAssetName, loadDictionaryInfo.LoadType, exception.ToString(), loadDictionaryInfo.UserData);
+                    LoadDictionaryFailureEventArgs loadDictionaryFailureEventArgs = LoadDictionaryFailureEventArgs.Create(dictionaryAssetName, exception.ToString(), userData);
                     m_LoadDictionaryFailureEventHandler(this, loadDictionaryFailureEventArgs);
                     ReferencePool.Release(loadDictionaryFailureEventArgs);
                     return;
                 }
 
                 throw;
-            }
-            finally
-            {
-                ReferencePool.Release(loadDictionaryInfo);
             }
         }
     }

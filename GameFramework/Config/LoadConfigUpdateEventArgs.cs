@@ -18,7 +18,6 @@ namespace GameFramework.Config
         public LoadConfigUpdateEventArgs()
         {
             ConfigAssetName = null;
-            LoadType = LoadType.Asset;
             Progress = 0f;
             UserData = null;
         }
@@ -27,15 +26,6 @@ namespace GameFramework.Config
         /// 获取全局配置资源名称。
         /// </summary>
         public string ConfigAssetName
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取全局配置加载方式。
-        /// </summary>
-        public LoadType LoadType
         {
             get;
             private set;
@@ -63,15 +53,13 @@ namespace GameFramework.Config
         /// 创建加载全局配置更新事件。
         /// </summary>
         /// <param name="configAssetName">全局配置资源名称。</param>
-        /// <param name="loadType">全局配置加载方式。</param>
         /// <param name="progress">加载全局配置进度。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>创建的加载全局配置更新事件。</returns>
-        public static LoadConfigUpdateEventArgs Create(string configAssetName, LoadType loadType, float progress, object userData)
+        public static LoadConfigUpdateEventArgs Create(string configAssetName, float progress, object userData)
         {
             LoadConfigUpdateEventArgs loadConfigUpdateEventArgs = ReferencePool.Acquire<LoadConfigUpdateEventArgs>();
             loadConfigUpdateEventArgs.ConfigAssetName = configAssetName;
-            loadConfigUpdateEventArgs.LoadType = loadType;
             loadConfigUpdateEventArgs.Progress = progress;
             loadConfigUpdateEventArgs.UserData = userData;
             return loadConfigUpdateEventArgs;
@@ -83,7 +71,6 @@ namespace GameFramework.Config
         public override void Clear()
         {
             ConfigAssetName = null;
-            LoadType = LoadType.Asset;
             Progress = 0f;
             UserData = null;
         }

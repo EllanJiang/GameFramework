@@ -270,15 +270,17 @@ namespace GameFramework.Resource
             /// 检查资源是否存在。
             /// </summary>
             /// <param name="assetName">要检查资源的名称。</param>
-            /// <returns>资源是否存在。</returns>
-            public bool HasAsset(string assetName)
+            /// <returns>检查资源是否存在的结果。</returns>
+            public HasAssetResult HasAsset(string assetName)
             {
-                if (string.IsNullOrEmpty(assetName))
+                ResourceInfo? resourceInfo = null;
+                string[] dependencyAssetNames = null;
+                if (!CheckAsset(assetName, out resourceInfo, out dependencyAssetNames))
                 {
-                    return false;
+                    return HasAssetResult.NotExist;
                 }
 
-                return m_ResourceManager.GetAssetInfo(assetName).HasValue;
+                return IsLoadFromBinary(resourceInfo.Value.LoadType) ? HasAssetResult.Binary : HasAssetResult.Asset;
             }
 
             /// <summary>
@@ -440,6 +442,11 @@ namespace GameFramework.Resource
                     return null;
                 }
 
+                if (!IsLoadFromBinary(resourceInfo.Value.LoadType))
+                {
+                    return null;
+                }
+
                 return Utility.Path.GetRegularPath(Path.Combine(resourceInfo.Value.StorageInReadOnly ? m_ResourceManager.m_ReadOnlyPath : m_ResourceManager.m_ReadWritePath, resourceInfo.Value.ResourceName.FullName));
             }
 
@@ -452,12 +459,18 @@ namespace GameFramework.Resource
             /// <returns>获取二进制资源的实际路径是否成功。</returns>
             public bool GetBinaryPath(string binaryAssetName, out bool storageInReadOnly, out string relativePath)
             {
+                storageInReadOnly = false;
+                relativePath = null;
+
                 ResourceInfo? resourceInfo = null;
                 string[] dependencyAssetNames = null;
                 if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
                 {
-                    storageInReadOnly = false;
-                    relativePath = null;
+                    return false;
+                }
+
+                if (!IsLoadFromBinary(resourceInfo.Value.LoadType))
+                {
                     return false;
                 }
 

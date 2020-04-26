@@ -18,7 +18,6 @@ namespace GameFramework.Config
         public LoadConfigSuccessEventArgs()
         {
             ConfigAssetName = null;
-            LoadType = LoadType.Asset;
             Duration = 0f;
             UserData = null;
         }
@@ -27,15 +26,6 @@ namespace GameFramework.Config
         /// 获取全局配置资源名称。
         /// </summary>
         public string ConfigAssetName
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取全局配置加载方式。
-        /// </summary>
-        public LoadType LoadType
         {
             get;
             private set;
@@ -63,15 +53,13 @@ namespace GameFramework.Config
         /// 创建加载全局配置成功事件。
         /// </summary>
         /// <param name="configAssetName">全局配置资源名称。</param>
-        /// <param name="loadType">全局配置加载方式。</param>
         /// <param name="duration">加载持续时间。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>创建的加载全局配置成功事件。</returns>
-        public static LoadConfigSuccessEventArgs Create(string configAssetName, LoadType loadType, float duration, object userData)
+        public static LoadConfigSuccessEventArgs Create(string configAssetName, float duration, object userData)
         {
             LoadConfigSuccessEventArgs loadConfigSuccessEventArgs = ReferencePool.Acquire<LoadConfigSuccessEventArgs>();
             loadConfigSuccessEventArgs.ConfigAssetName = configAssetName;
-            loadConfigSuccessEventArgs.LoadType = loadType;
             loadConfigSuccessEventArgs.Duration = duration;
             loadConfigSuccessEventArgs.UserData = userData;
             return loadConfigSuccessEventArgs;
@@ -83,7 +71,6 @@ namespace GameFramework.Config
         public override void Clear()
         {
             ConfigAssetName = null;
-            LoadType = LoadType.Asset;
             Duration = 0f;
             UserData = null;
         }

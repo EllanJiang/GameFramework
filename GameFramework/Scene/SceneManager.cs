@@ -318,7 +318,7 @@ namespace GameFramework.Scene
         /// <returns>场景资源是否存在。</returns>
         public bool HasScene(string sceneAssetName)
         {
-            return m_ResourceManager.HasScene(sceneAssetName);
+            return m_ResourceManager.HasAsset(sceneAssetName) != HasAssetResult.NotExist;
         }
 
         /// <summary>
