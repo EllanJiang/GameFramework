@@ -15,10 +15,11 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 加载数据表。
         /// </summary>
+        /// <param name="dataTableAssetName">数据表资源名称。</param>
         /// <param name="dataTableObject">数据表对象。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否加载成功。</returns>
-        bool LoadDataTable(object dataTableObject, object userData);
+        bool LoadDataTable(string dataTableAssetName, object dataTableObject, object userData);
 
         /// <summary>
         /// 获取数据表行片段。

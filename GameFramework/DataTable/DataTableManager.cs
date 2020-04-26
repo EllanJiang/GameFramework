@@ -614,7 +614,7 @@ namespace GameFramework.DataTable
         {
             try
             {
-                if (!m_DataTableHelper.LoadDataTable(dataTableAsset, userData))
+                if (!m_DataTableHelper.LoadDataTable(dataTableAssetName, dataTableAsset, userData))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load data table failure in helper, asset name '{0}'.", dataTableAssetName));
                 }
@@ -678,11 +678,11 @@ namespace GameFramework.DataTable
             }
         }
 
-        private void LoadBinarySuccessCallback(string dataTableAssetName, byte[] binaryBytes, float duration, object userData)
+        private void LoadBinarySuccessCallback(string dataTableAssetName, byte[] dataTableBytes, float duration, object userData)
         {
             try
             {
-                if (!m_DataTableHelper.LoadDataTable(binaryBytes, userData))
+                if (!m_DataTableHelper.LoadDataTable(dataTableAssetName, dataTableBytes, userData))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load data table failure in helper, asset name '{0}'.", dataTableAssetName));
                 }

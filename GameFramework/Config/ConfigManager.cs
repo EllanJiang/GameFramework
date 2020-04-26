@@ -441,7 +441,7 @@ namespace GameFramework.Config
         {
             try
             {
-                if (!m_ConfigHelper.LoadConfig(configAsset, userData))
+                if (!m_ConfigHelper.LoadConfig(configAssetName, configAsset, userData))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load config failure in helper, asset name '{0}'.", configAssetName));
                 }
@@ -509,7 +509,7 @@ namespace GameFramework.Config
         {
             try
             {
-                if (!m_ConfigHelper.LoadConfig(configBytes, userData))
+                if (!m_ConfigHelper.LoadConfig(configAssetName, configBytes, userData))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load config failure in helper, asset name '{0}'.", configAssetName));
                 }

@@ -525,7 +525,7 @@ namespace GameFramework.Localization
         {
             try
             {
-                if (!m_LocalizationHelper.LoadDictionary(dictionaryAsset, userData))
+                if (!m_LocalizationHelper.LoadDictionary(dictionaryAssetName, dictionaryAsset, userData))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load dictionary failure in helper, asset name '{0}'.", dictionaryAssetName));
                 }
@@ -593,7 +593,7 @@ namespace GameFramework.Localization
         {
             try
             {
-                if (!m_LocalizationHelper.LoadDictionary(dictionaryBytes, userData))
+                if (!m_LocalizationHelper.LoadDictionary(dictionaryAssetName, dictionaryBytes, userData))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Load dictionary failure in helper, asset name '{0}'.", dictionaryAssetName));
                 }

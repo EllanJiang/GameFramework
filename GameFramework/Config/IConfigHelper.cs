@@ -15,10 +15,11 @@ namespace GameFramework.Config
         /// <summary>
         /// 加载全局配置。
         /// </summary>
+        /// <param name="configAssetName">全局配置资源名称。</param>
         /// <param name="configObject">全局配置对象。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否加载成功。</returns>
-        bool LoadConfig(object configObject, object userData);
+        bool LoadConfig(string configAssetName, object configObject, object userData);
 
         /// <summary>
         /// 解析全局配置。
