@@ -58,6 +58,17 @@ namespace GameFramework
         }
 
         /// <summary>
+        /// 获取数据类型。
+        /// </summary>
+        public Type DataType
+        {
+            get
+            {
+                return m_Data.GetType();
+            }
+        }
+
+        /// <summary>
         /// 获取偏移。
         /// </summary>
         public int Offset
