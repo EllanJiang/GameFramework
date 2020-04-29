@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.Setting
 {
@@ -22,6 +23,17 @@ namespace GameFramework.Setting
         public SettingManager()
         {
             m_SettingHelper = null;
+        }
+
+        /// <summary>
+        /// 获取游戏配置数量。
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                return m_SettingHelper.Count;
+            }
         }
 
         /// <summary>
@@ -71,6 +83,24 @@ namespace GameFramework.Setting
         public bool Save()
         {
             return m_SettingHelper.Save();
+        }
+
+        /// <summary>
+        /// 获取所有游戏配置项的名称。
+        /// </summary>
+        /// <returns>所有游戏配置项的名称。</returns>
+        public string[] GetAllSettingNames()
+        {
+            return m_SettingHelper.GetAllSettingNames();
+        }
+
+        /// <summary>
+        /// 获取所有游戏配置项的名称。
+        /// </summary>
+        /// <param name="results">所有游戏配置项的名称。</param>
+        public void GetAllSettingNames(List<string> results)
+        {
+            m_SettingHelper.GetAllSettingNames(results);
         }
 
         /// <summary>

@@ -18,7 +18,7 @@ namespace GameFramework.Config
         /// <summary>
         /// 获取全局配置数量。
         /// </summary>
-        int ConfigCount
+        int Count
         {
             get;
         }
