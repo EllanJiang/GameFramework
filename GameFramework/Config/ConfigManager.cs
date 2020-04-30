@@ -43,7 +43,7 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 获取全局配置数量。
+        /// 获取全局配置项数量。
         /// </summary>
         public int Count
         {

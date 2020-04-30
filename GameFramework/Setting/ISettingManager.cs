@@ -16,7 +16,7 @@ namespace GameFramework.Setting
     public interface ISettingManager
     {
         /// <summary>
-        /// 获取游戏配置数量。
+        /// 获取游戏配置项数量。
         /// </summary>
         int Count
         {

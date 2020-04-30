@@ -26,7 +26,7 @@ namespace GameFramework.Setting
         }
 
         /// <summary>
-        /// 获取游戏配置数量。
+        /// 获取游戏配置项数量。
         /// </summary>
         public int Count
         {

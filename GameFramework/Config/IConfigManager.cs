@@ -16,7 +16,7 @@ namespace GameFramework.Config
     public interface IConfigManager
     {
         /// <summary>
-        /// 获取全局配置数量。
+        /// 获取全局配置项数量。
         /// </summary>
         int Count
         {
