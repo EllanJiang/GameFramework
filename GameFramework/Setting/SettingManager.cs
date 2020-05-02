@@ -122,14 +122,15 @@ namespace GameFramework.Setting
         /// 移除指定游戏配置项。
         /// </summary>
         /// <param name="settingName">要移除游戏配置项的名称。</param>
-        public void RemoveSetting(string settingName)
+        /// <returns>是否移除指定游戏配置项成功。</returns>
+        public bool RemoveSetting(string settingName)
         {
             if (string.IsNullOrEmpty(settingName))
             {
                 throw new GameFrameworkException("Setting name is invalid.");
             }
 
-            m_SettingHelper.RemoveSetting(settingName);
+            return m_SettingHelper.RemoveSetting(settingName);
         }
 
         /// <summary>
