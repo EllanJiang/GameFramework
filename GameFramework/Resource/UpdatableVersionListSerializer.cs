@@ -12,7 +12,7 @@ namespace GameFramework.Resource
     /// </summary>
     public sealed class UpdatableVersionListSerializer : GameFrameworkSerializer<UpdatableVersionList>
     {
-        private static readonly byte[] Header = new byte[] { (byte)'E', (byte)'L', (byte)'V' };
+        private static readonly byte[] Header = new byte[] { (byte)'E', (byte)'L', (byte)'U' };
 
         /// <summary>
         /// 初始化可更新模式版本资源列表序列化器的新实例。
