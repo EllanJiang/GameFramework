@@ -152,7 +152,12 @@ namespace GameFramework.Resource
                     if (ci.NeedRemove)
                     {
                         removedCount++;
-                        File.Delete(Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, ci.ResourceName.FullName)));
+                        string removeResourceName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, ci.ResourceName.FullName));
+                        if (File.Exists(removeResourceName))
+                        {
+                            File.Delete(removeResourceName);
+                        }
+
                         m_ResourceManager.m_ReadWriteResourceInfos.Remove(ci.ResourceName);
                     }
                 }
