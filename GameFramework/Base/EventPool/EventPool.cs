@@ -219,6 +219,11 @@ namespace GameFramework
         /// <param name="e">事件参数。</param>
         public void Fire(object sender, T e)
         {
+            if (e == null)
+            {
+                throw new GameFrameworkException("Event is invalid.");
+            }
+
             Event eventNode = Event.Create(sender, e);
             lock (m_Events)
             {
@@ -233,6 +238,11 @@ namespace GameFramework
         /// <param name="e">事件参数。</param>
         public void FireNow(object sender, T e)
         {
+            if (e == null)
+            {
+                throw new GameFrameworkException("Event is invalid.");
+            }
+
             HandleEvent(sender, e);
         }
 
