@@ -158,9 +158,14 @@ namespace GameFramework
             using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.UTF8))
             {
                 byte[] header = GetHeader();
-                if (binaryReader.ReadByte() != header[0] || binaryReader.ReadByte() != header[1] || binaryReader.ReadByte() != header[2])
+                byte header0 = binaryReader.ReadByte();
+                byte header1 = binaryReader.ReadByte();
+                byte header2 = binaryReader.ReadByte();
+                if (header0 != header[0] || header1 != header[1] || header2 != header[2])
                 {
-                    throw new GameFrameworkException("Header is invalid.");
+                    throw new GameFrameworkException(Utility.Text.Format("Header is invalid, need '{0}{1}{2}', current '{3}{4}{5}'.",
+                        ((char)header[0]).ToString(), ((char)header[1]).ToString(), ((char)header[2]).ToString(),
+                        ((char)header0).ToString(), ((char)header1).ToString(), ((char)header2).ToString()));
                 }
 
                 byte version = binaryReader.ReadByte();
@@ -187,7 +192,10 @@ namespace GameFramework
             using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.UTF8))
             {
                 byte[] header = GetHeader();
-                if (binaryReader.ReadByte() != header[0] || binaryReader.ReadByte() != header[1] || binaryReader.ReadByte() != header[2])
+                byte header0 = binaryReader.ReadByte();
+                byte header1 = binaryReader.ReadByte();
+                byte header2 = binaryReader.ReadByte();
+                if (header0 != header[0] || header1 != header[1] || header2 != header[2])
                 {
                     return false;
                 }
