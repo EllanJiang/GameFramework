@@ -12,7 +12,7 @@ namespace GameFramework.Resource
     /// </summary>
     public sealed class ReadWriteVersionListSerializer : GameFrameworkSerializer<LocalVersionList>
     {
-        private static readonly byte[] Header = new byte[] { (byte)'E', (byte)'L', (byte)'W' };
+        private static readonly byte[] Header = new byte[] { (byte)'G', (byte)'F', (byte)'W' };
 
         /// <summary>
         /// 初始化本地读写区版本资源列表序列化器的新实例。

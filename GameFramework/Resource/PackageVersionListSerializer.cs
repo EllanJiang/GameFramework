@@ -12,7 +12,7 @@ namespace GameFramework.Resource
     /// </summary>
     public sealed class PackageVersionListSerializer : GameFrameworkSerializer<PackageVersionList>
     {
-        private static readonly byte[] Header = new byte[] { (byte)'E', (byte)'L', (byte)'P' };
+        private static readonly byte[] Header = new byte[] { (byte)'G', (byte)'F', (byte)'P' };
 
         /// <summary>
         /// 初始化单机模式版本资源列表序列化器的新实例。
