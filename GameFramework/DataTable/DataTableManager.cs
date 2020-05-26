@@ -210,7 +210,8 @@ namespace GameFramework.DataTable
                 throw new GameFrameworkException("You must set data table helper first.");
             }
 
-            switch (m_ResourceManager.HasAsset(dataTableAssetName))
+            HasAssetResult result = m_ResourceManager.HasAsset(dataTableAssetName);
+            switch (result)
             {
                 case HasAssetResult.Asset:
                     m_ResourceManager.LoadAsset(dataTableAssetName, priority, m_LoadAssetCallbacks, userData);
@@ -221,7 +222,7 @@ namespace GameFramework.DataTable
                     break;
 
                 default:
-                    throw new GameFrameworkException(Utility.Text.Format("Data table asset '{0}' is not exist.", dataTableAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Data table asset '{0}' is '{1}'.", dataTableAssetName, result.ToString()));
             }
         }
 

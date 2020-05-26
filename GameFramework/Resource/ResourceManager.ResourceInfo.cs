@@ -12,13 +12,14 @@ namespace GameFramework.Resource
         /// <summary>
         /// 资源信息。
         /// </summary>
-        private struct ResourceInfo
+        private sealed class ResourceInfo
         {
             private readonly ResourceName m_ResourceName;
             private readonly LoadType m_LoadType;
             private readonly int m_Length;
             private readonly int m_HashCode;
             private readonly bool m_StorageInReadOnly;
+            private bool m_Ready;
 
             /// <summary>
             /// 初始化资源信息的新实例。
@@ -28,13 +29,15 @@ namespace GameFramework.Resource
             /// <param name="length">资源大小。</param>
             /// <param name="hashCode">资源哈希值。</param>
             /// <param name="storageInReadOnly">资源是否在只读区。</param>
-            public ResourceInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode, bool storageInReadOnly)
+            /// <param name="ready">资源是否准备完毕。</param>
+            public ResourceInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode, bool storageInReadOnly, bool ready)
             {
                 m_ResourceName = resourceName;
                 m_LoadType = loadType;
                 m_Length = length;
                 m_HashCode = hashCode;
                 m_StorageInReadOnly = storageInReadOnly;
+                m_Ready = ready;
             }
 
             /// <summary>
@@ -90,6 +93,25 @@ namespace GameFramework.Resource
                 {
                     return m_StorageInReadOnly;
                 }
+            }
+
+            /// <summary>
+            /// 获取资源是否准备完毕。
+            /// </summary>
+            public bool Ready
+            {
+                get
+                {
+                    return m_Ready;
+                }
+            }
+
+            /// <summary>
+            /// 标记资源准备完毕。
+            /// </summary>
+            public void MarkReady()
+            {
+                m_Ready = true;
             }
         }
     }

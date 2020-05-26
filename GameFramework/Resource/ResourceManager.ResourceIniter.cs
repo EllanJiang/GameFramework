@@ -106,7 +106,7 @@ namespace GameFramework.Resource
                             m_ResourceManager.m_AssetInfos.Add(asset.Name, new AssetInfo(asset.Name, resourceName, dependencyAssetNames));
                         }
 
-                        m_ResourceManager.m_ResourceInfos.Add(resourceName, new ResourceInfo(resourceName, (LoadType)resource.LoadType, resource.Length, resource.HashCode, true));
+                        m_ResourceManager.m_ResourceInfos.Add(resourceName, new ResourceInfo(resourceName, (LoadType)resource.LoadType, resource.Length, resource.HashCode, true, true));
                         defaultResourceGroup.AddResource(resourceName, resource.Length, resource.Length);
                     }
 

@@ -204,7 +204,8 @@ namespace GameFramework.Config
                 throw new GameFrameworkException("You must set config helper first.");
             }
 
-            switch (m_ResourceManager.HasAsset(configAssetName))
+            HasAssetResult result = m_ResourceManager.HasAsset(configAssetName);
+            switch (result)
             {
                 case HasAssetResult.Asset:
                     m_ResourceManager.LoadAsset(configAssetName, priority, m_LoadAssetCallbacks, userData);
@@ -215,7 +216,7 @@ namespace GameFramework.Config
                     break;
 
                 default:
-                    throw new GameFrameworkException(Utility.Text.Format("Config asset '{0}' is not exist.", configAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Config asset '{0}' is '{1}'.", configAssetName, result.ToString()));
             }
         }
 

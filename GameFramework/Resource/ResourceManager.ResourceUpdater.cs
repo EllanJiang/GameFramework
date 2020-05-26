@@ -151,11 +151,6 @@ namespace GameFramework.Resource
             /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
             public void Update(float elapseSeconds, float realElapseSeconds)
             {
-                if (m_UpdatingResourceGroup == null)
-                {
-                    return;
-                }
-
                 if (m_UpdateWaitingInfo.Count > 0)
                 {
                     if (m_DownloadManager.FreeAgentCount > 0)
@@ -166,8 +161,11 @@ namespace GameFramework.Resource
                         m_DownloadManager.AddDownload(updateInfo.ResourcePath, Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_UpdatePrefixUri, resourceFullNameWithCrc32)), updateInfo);
                         m_UpdatingCount++;
                     }
+
+                    return;
                 }
-                else if (m_UpdatingCount <= 0)
+
+                if (m_UpdatingResourceGroup != null && m_UpdatingCount <= 0)
                 {
                     ResourceGroup updatingResourceGroup = m_UpdatingResourceGroup;
                     m_UpdatingResourceGroup = null;
@@ -285,6 +283,29 @@ namespace GameFramework.Resource
 
                 m_UpdatingResourceGroup = resourceGroup;
                 m_FailureFlag = false;
+            }
+
+            public void UpdateResource(ResourceName resourceName)
+            {
+                if (m_DownloadManager == null)
+                {
+                    throw new GameFrameworkException("You must set download manager first.");
+                }
+
+                if (!m_CheckResourcesComplete)
+                {
+                    throw new GameFrameworkException("You must check resources complete first.");
+                }
+
+                foreach (UpdateInfo updateCandidateInfo in m_UpdateCandidateInfo)
+                {
+                    if (updateCandidateInfo.ResourceName == resourceName)
+                    {
+                        m_UpdateWaitingInfo.Add(updateCandidateInfo);
+                        m_UpdateCandidateInfo.Remove(updateCandidateInfo);
+                        break;
+                    }
+                }
             }
 
             private void GenerateReadWriteVersionList()
@@ -528,7 +549,7 @@ namespace GameFramework.Resource
                 }
 
                 m_UpdatingCount--;
-                m_ResourceManager.m_ResourceInfos.Add(updateInfo.ResourceName, new ResourceInfo(updateInfo.ResourceName, updateInfo.LoadType, updateInfo.Length, updateInfo.HashCode, false));
+                m_ResourceManager.m_ResourceInfos[updateInfo.ResourceName].MarkReady();
                 m_ResourceManager.m_ReadWriteResourceInfos.Add(updateInfo.ResourceName, new ReadWriteResourceInfo(updateInfo.LoadType, updateInfo.Length, updateInfo.HashCode));
                 m_CurrentGenerateReadWriteVersionListLength += updateInfo.ZipLength;
                 if (m_UpdatingCount <= 0 || m_CurrentGenerateReadWriteVersionListLength >= m_GenerateReadWriteVersionListLength)

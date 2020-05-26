@@ -23,8 +23,13 @@ namespace GameFramework.Resource
         Package,
 
         /// <summary>
-        /// 可更新模式。
+        /// 预下载的可更新模式。
         /// </summary>
-        Updatable
+        Updatable,
+
+        /// <summary>
+        /// 使用时下载的可更新模式。
+        /// </summary>
+        UpdatableWhilePlaying
     }
 }

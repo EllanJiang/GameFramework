@@ -13,9 +13,14 @@ namespace GameFramework.Resource
     public enum HasAssetResult : byte
     {
         /// <summary>
-        /// 不存在资源。
+        /// 资源不存在。
         /// </summary>
         NotExist = 0,
+
+        /// <summary>
+        /// 资源尚未准备完毕。
+        /// </summary>
+        NotReady,
 
         /// <summary>
         /// 存在资源。

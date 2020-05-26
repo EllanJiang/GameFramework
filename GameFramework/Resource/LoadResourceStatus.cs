@@ -18,14 +18,14 @@ namespace GameFramework.Resource
         Success = 0,
 
         /// <summary>
+        /// 资源不存在。
+        /// </summary>
+        NotExist,
+
+        /// <summary>
         /// 资源尚未准备完毕。
         /// </summary>
         NotReady,
-
-        /// <summary>
-        /// 资源不存在于磁盘上。
-        /// </summary>
-        NotExist,
 
         /// <summary>
         /// 依赖资源错误。

@@ -126,14 +126,16 @@ namespace GameFramework.Resource
 
                     if (ci.Status == CheckInfo.CheckStatus.StorageInReadOnly)
                     {
-                        m_ResourceManager.m_ResourceInfos.Add(ci.ResourceName, new ResourceInfo(ci.ResourceName, ci.LoadType, ci.Length, ci.HashCode, true));
+                        m_ResourceManager.m_ResourceInfos.Add(ci.ResourceName, new ResourceInfo(ci.ResourceName, ci.LoadType, ci.Length, ci.HashCode, true, true));
                     }
                     else if (ci.Status == CheckInfo.CheckStatus.StorageInReadWrite)
                     {
-                        m_ResourceManager.m_ResourceInfos.Add(ci.ResourceName, new ResourceInfo(ci.ResourceName, ci.LoadType, ci.Length, ci.HashCode, false));
+                        m_ResourceManager.m_ResourceInfos.Add(ci.ResourceName, new ResourceInfo(ci.ResourceName, ci.LoadType, ci.Length, ci.HashCode, false, true));
                     }
                     else if (ci.Status == CheckInfo.CheckStatus.NeedUpdate)
                     {
+                        m_ResourceManager.m_ResourceInfos.Add(ci.ResourceName, new ResourceInfo(ci.ResourceName, ci.LoadType, ci.Length, ci.HashCode, false, false));
+
                         updateCount++;
                         updateTotalLength += ci.Length;
                         updateTotalZipLength += ci.ZipLength;

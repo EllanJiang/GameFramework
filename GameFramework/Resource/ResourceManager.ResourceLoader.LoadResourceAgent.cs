@@ -149,6 +149,12 @@ namespace GameFramework.Resource
                     m_Task = task;
                     m_Task.StartTime = DateTime.Now;
 
+                    if (!m_Task.ResourceInfo.Ready)
+                    {
+                        m_Task.StartTime = default(DateTime);
+                        return StartTaskStatus.HasToWait;
+                    }
+
                     if (IsAssetLoading(m_Task.AssetName))
                     {
                         m_Task.StartTime = default(DateTime);

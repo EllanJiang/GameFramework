@@ -720,7 +720,7 @@ namespace GameFramework.Resource
                     m_ResourceIniter = new ResourceIniter(this);
                     m_ResourceIniter.ResourceInitComplete += OnIniterResourceInitComplete;
                 }
-                else if (m_ResourceMode == ResourceMode.Updatable)
+                else if (m_ResourceMode == ResourceMode.Updatable || m_ResourceMode == ResourceMode.UpdatableWhilePlaying)
                 {
                     m_UpdatableVersionListSerializer = new UpdatableVersionListSerializer();
                     m_ReadOnlyVersionListSerializer = new ReadOnlyVersionListSerializer();
@@ -899,7 +899,7 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("You must set resource mode first.");
             }
 
-            if (m_ResourceMode != ResourceMode.Updatable)
+            if (m_ResourceMode != ResourceMode.Updatable && m_ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
                 throw new GameFrameworkException("You can not use CheckVersionList without updatable resource mode.");
             }
@@ -932,7 +932,7 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("You must set resource mode first.");
             }
 
-            if (m_ResourceMode != ResourceMode.Updatable)
+            if (m_ResourceMode != ResourceMode.Updatable && m_ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
                 throw new GameFrameworkException("You can not use UpdateVersionList without updatable resource mode.");
             }
@@ -962,7 +962,7 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("You must set resource mode first.");
             }
 
-            if (m_ResourceMode != ResourceMode.Updatable)
+            if (m_ResourceMode != ResourceMode.Updatable && m_ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
                 throw new GameFrameworkException("You can not use CheckResources without updatable resource mode.");
             }
@@ -1003,7 +1003,7 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("You must set resource mode first.");
             }
 
-            if (m_ResourceMode != ResourceMode.Updatable)
+            if (m_ResourceMode != ResourceMode.Updatable && m_ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
                 throw new GameFrameworkException("You can not use UpdateResources without updatable resource mode.");
             }
@@ -1466,6 +1466,11 @@ namespace GameFramework.Resource
             return m_ResourceLoader.GetAllLoadAssetInfos();
         }
 
+        private void UpdateResource(ResourceName resourceName)
+        {
+            m_ResourceUpdater.UpdateResource(resourceName);
+        }
+
         private ResourceGroup GetOrAddResourceGroup(string resourceGroupName)
         {
             if (resourceGroupName == null)
@@ -1483,7 +1488,7 @@ namespace GameFramework.Resource
             return resourceGroup;
         }
 
-        private AssetInfo? GetAssetInfo(string assetName)
+        private AssetInfo GetAssetInfo(string assetName)
         {
             if (string.IsNullOrEmpty(assetName))
             {
@@ -1495,7 +1500,7 @@ namespace GameFramework.Resource
                 return null;
             }
 
-            AssetInfo assetInfo = default(AssetInfo);
+            AssetInfo assetInfo = null;
             if (m_AssetInfos.TryGetValue(assetName, out assetInfo))
             {
                 return assetInfo;
@@ -1504,14 +1509,14 @@ namespace GameFramework.Resource
             return null;
         }
 
-        private ResourceInfo? GetResourceInfo(ResourceName resourceName)
+        private ResourceInfo GetResourceInfo(ResourceName resourceName)
         {
             if (m_ResourceInfos == null)
             {
                 return null;
             }
 
-            ResourceInfo resourceInfo = default(ResourceInfo);
+            ResourceInfo resourceInfo = null;
             if (m_ResourceInfos.TryGetValue(resourceName, out resourceInfo))
             {
                 return resourceInfo;

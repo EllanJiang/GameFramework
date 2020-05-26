@@ -242,7 +242,8 @@ namespace GameFramework.Localization
                 throw new GameFrameworkException("You must set localization helper first.");
             }
 
-            switch (m_ResourceManager.HasAsset(dictionaryAssetName))
+            HasAssetResult result = m_ResourceManager.HasAsset(dictionaryAssetName);
+            switch (result)
             {
                 case HasAssetResult.Asset:
                     m_ResourceManager.LoadAsset(dictionaryAssetName, priority, m_LoadAssetCallbacks, userData);
@@ -253,7 +254,7 @@ namespace GameFramework.Localization
                     break;
 
                 default:
-                    throw new GameFrameworkException(Utility.Text.Format("Dictionary asset '{0}' is not exist.", dictionaryAssetName));
+                    throw new GameFrameworkException(Utility.Text.Format("Dictionary asset '{0}' is '{1}'.", dictionaryAssetName, result.ToString()));
             }
         }
 
