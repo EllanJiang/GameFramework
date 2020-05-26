@@ -87,7 +87,8 @@ namespace GameFramework.Resource
                     int readyCount = 0;
                     foreach (ResourceName resourceName in m_ResourceNames)
                     {
-                        if (m_ResourceInfos.ContainsKey(resourceName))
+                        ResourceInfo resourceInfo = null;
+                        if (m_ResourceInfos.TryGetValue(resourceName, out resourceInfo) && resourceInfo.Ready)
                         {
                             readyCount++;
                         }
@@ -129,8 +130,8 @@ namespace GameFramework.Resource
                     long totalReadyLength = 0L;
                     foreach (ResourceName resourceName in m_ResourceNames)
                     {
-                        ResourceInfo resourceInfo = default(ResourceInfo);
-                        if (m_ResourceInfos.TryGetValue(resourceName, out resourceInfo))
+                        ResourceInfo resourceInfo = null;
+                        if (m_ResourceInfos.TryGetValue(resourceName, out resourceInfo) && resourceInfo.Ready)
                         {
                             totalReadyLength += resourceInfo.Length;
                         }

@@ -32,7 +32,7 @@ namespace GameFramework.Resource
                 {
                     m_AssetName = null;
                     m_AssetType = null;
-                    m_ResourceInfo = default(ResourceInfo);
+                    m_ResourceInfo = null;
                     m_DependencyAssetNames = null;
                     m_UserData = null;
                     m_DependencyAssets = new List<object>();
@@ -131,7 +131,7 @@ namespace GameFramework.Resource
                     base.Clear();
                     m_AssetName = null;
                     m_AssetType = null;
-                    m_ResourceInfo = default(ResourceInfo);
+                    m_ResourceInfo = null;
                     m_DependencyAssetNames = null;
                     m_UserData = null;
                     m_DependencyAssets.Clear();

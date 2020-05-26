@@ -21,7 +21,7 @@ namespace GameFramework.Resource
                 public LoadBinaryInfo()
                 {
                     m_BinaryAssetName = null;
-                    m_ResourceInfo = default(ResourceInfo);
+                    m_ResourceInfo = null;
                     m_LoadBinaryCallbacks = null;
                     m_UserData = null;
                 }
@@ -71,7 +71,7 @@ namespace GameFramework.Resource
                 public void Clear()
                 {
                     m_BinaryAssetName = null;
-                    m_ResourceInfo = default(ResourceInfo);
+                    m_ResourceInfo = null;
                     m_LoadBinaryCallbacks = null;
                     m_UserData = null;
                 }
