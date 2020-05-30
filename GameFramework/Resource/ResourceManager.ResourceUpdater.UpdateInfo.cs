@@ -32,8 +32,8 @@ namespace GameFramework.Resource
                 /// <param name="loadType">资源加载方式。</param>
                 /// <param name="length">资源大小。</param>
                 /// <param name="hashCode">资源哈希值。</param>
-                /// <param name="zipLength">压缩包大小。</param>
-                /// <param name="zipHashCode">压缩包哈希值。</param>
+                /// <param name="zipLength">压缩后大小。</param>
+                /// <param name="zipHashCode">压缩后哈希值。</param>
                 /// <param name="resourcePath">资源路径。</param>
                 public UpdateInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode, string resourcePath)
                 {
@@ -92,7 +92,7 @@ namespace GameFramework.Resource
                 }
 
                 /// <summary>
-                /// 获取压缩包大小。
+                /// 获取压缩后大小。
                 /// </summary>
                 public int ZipLength
                 {
@@ -103,7 +103,7 @@ namespace GameFramework.Resource
                 }
 
                 /// <summary>
-                /// 获取压缩包哈希值。
+                /// 获取压缩后哈希值。
                 /// </summary>
                 public int ZipHashCode
                 {

@@ -61,7 +61,7 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取压缩包大小。
+        /// 获取压缩后大小。
         /// </summary>
         public int ZipLength
         {
@@ -76,7 +76,7 @@ namespace GameFramework.Resource
         /// <param name="downloadPath">资源下载后存放路径。</param>
         /// <param name="downloadUri">资源下载地址。</param>
         /// <param name="currentLength">当前下载大小。</param>
-        /// <param name="zipLength">压缩包大小。</param>
+        /// <param name="zipLength">压缩后大小。</param>
         /// <returns>创建的资源更新改变事件。</returns>
         public static ResourceUpdateChangedEventArgs Create(string name, string downloadPath, string downloadUri, int currentLength, int zipLength)
         {

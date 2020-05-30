@@ -218,8 +218,8 @@ namespace GameFramework.Resource
             /// <param name="loadType">资源加载方式。</param>
             /// <param name="length">资源大小。</param>
             /// <param name="hashCode">资源哈希值。</param>
-            /// <param name="zipLength">压缩包大小。</param>
-            /// <param name="zipHashCode">压缩包哈希值。</param>
+            /// <param name="zipLength">压缩后大小。</param>
+            /// <param name="zipHashCode">压缩后哈希值。</param>
             /// <param name="resourcePath">资源路径。</param>
             public void AddResourceUpdate(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode, string resourcePath)
             {
