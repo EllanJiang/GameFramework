@@ -130,7 +130,7 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取或设置每下载多少字节的资源，重新生成一次版本资源列表。
+        /// 获取或设置每更新多少字节的资源，重新生成一次版本资源列表。
         /// </summary>
         int GenerateReadWriteVersionListLength
         {

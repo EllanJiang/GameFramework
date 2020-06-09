@@ -40,7 +40,7 @@ namespace GameFramework.Resource
             public GameFrameworkAction<ResourceName, string, string, int, int> ResourceUpdateChanged;
             public GameFrameworkAction<ResourceName, string, string, int, int> ResourceUpdateSuccess;
             public GameFrameworkAction<ResourceName, string, int, int, string> ResourceUpdateFailure;
-            public GameFrameworkAction<ResourceGroup, bool, bool> ResourceUpdateAllComplete;
+            public GameFrameworkAction<ResourceGroup, bool, bool> ResourceUpdateComplete;
 
             /// <summary>
             /// 初始化资源更新器的新实例。
@@ -67,7 +67,7 @@ namespace GameFramework.Resource
                 ResourceUpdateChanged = null;
                 ResourceUpdateSuccess = null;
                 ResourceUpdateFailure = null;
-                ResourceUpdateAllComplete = null;
+                ResourceUpdateComplete = null;
             }
 
             /// <summary>
@@ -169,9 +169,9 @@ namespace GameFramework.Resource
                 {
                     ResourceGroup updatingResourceGroup = m_UpdatingResourceGroup;
                     m_UpdatingResourceGroup = null;
-                    if (ResourceUpdateAllComplete != null)
+                    if (ResourceUpdateComplete != null)
                     {
-                        ResourceUpdateAllComplete(updatingResourceGroup, !m_FailureFlag, m_UpdateCandidateInfo.Count <= 0);
+                        ResourceUpdateComplete(updatingResourceGroup, !m_FailureFlag, m_UpdateCandidateInfo.Count <= 0);
                     }
                 }
             }

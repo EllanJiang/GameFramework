@@ -257,6 +257,9 @@
     <Compile Include="Resource\ResourceManager.ResourceUpdater.UpdateInfo.cs" />
     <Compile Include="Resource\ResourceManager.VersionListProcessor.cs" />
     <Compile Include="Resource\ResourceMode.cs" />
+    <Compile Include="Resource\ResourcePackVersionList.cs" />
+    <Compile Include="Resource\ResourcePackVersionList.Resource.cs" />
+    <Compile Include="Resource\ResourcePackVersionListSerializer.cs" />
     <Compile Include="Resource\ResourceUpdateChangedEventArgs.cs" />
     <Compile Include="Resource\ResourceUpdateFailureEventArgs.cs" />
     <Compile Include="Resource\ResourceUpdateStartEventArgs.cs" />

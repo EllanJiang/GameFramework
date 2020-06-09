@@ -628,7 +628,7 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateChanged -= OnUpdaterResourceUpdateChanged;
                 m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
                 m_ResourceUpdater.ResourceUpdateFailure -= OnUpdaterResourceUpdateFailure;
-                m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
+                m_ResourceUpdater.ResourceUpdateComplete -= OnUpdaterResourceUpdateComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
                 if (m_DecompressCachedStream != null)
@@ -739,7 +739,7 @@ namespace GameFramework.Resource
                     m_ResourceUpdater.ResourceUpdateChanged += OnUpdaterResourceUpdateChanged;
                     m_ResourceUpdater.ResourceUpdateSuccess += OnUpdaterResourceUpdateSuccess;
                     m_ResourceUpdater.ResourceUpdateFailure += OnUpdaterResourceUpdateFailure;
-                    m_ResourceUpdater.ResourceUpdateAllComplete += OnUpdaterResourceUpdateAllComplete;
+                    m_ResourceUpdater.ResourceUpdateComplete += OnUpdaterResourceUpdateComplete;
                 }
             }
             else if (m_ResourceMode != resourceMode)
@@ -1574,7 +1574,7 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateChanged -= OnUpdaterResourceUpdateChanged;
                 m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
                 m_ResourceUpdater.ResourceUpdateFailure -= OnUpdaterResourceUpdateFailure;
-                m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
+                m_ResourceUpdater.ResourceUpdateComplete -= OnUpdaterResourceUpdateComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
                 if (m_DecompressCachedStream != null)
@@ -1628,7 +1628,7 @@ namespace GameFramework.Resource
             }
         }
 
-        private void OnUpdaterResourceUpdateAllComplete(ResourceGroup resourceGroup, bool result, bool isAllDone)
+        private void OnUpdaterResourceUpdateComplete(ResourceGroup resourceGroup, bool result, bool isAllDone)
         {
             m_UpdateResourcesCompleteCallback(resourceGroup, result);
 
@@ -1638,7 +1638,7 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateChanged -= OnUpdaterResourceUpdateChanged;
                 m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
                 m_ResourceUpdater.ResourceUpdateFailure -= OnUpdaterResourceUpdateFailure;
-                m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
+                m_ResourceUpdater.ResourceUpdateComplete -= OnUpdaterResourceUpdateComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
                 if (m_DecompressCachedStream != null)
