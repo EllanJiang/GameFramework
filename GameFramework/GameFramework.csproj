@@ -187,6 +187,7 @@
     <Compile Include="Procedure\ProcedureBase.cs" />
     <Compile Include="Procedure\ProcedureManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource\ApplyResourcesCompleteCallback.cs" />
     <Compile Include="Resource\CheckResourcesCompleteCallback.cs" />
     <Compile Include="Resource\CheckVersionListResult.cs" />
     <Compile Include="Resource\Constant.cs" />
@@ -230,6 +231,8 @@
     <Compile Include="Resource\PackageVersionListSerializer.cs" />
     <Compile Include="Resource\ReadOnlyVersionListSerializer.cs" />
     <Compile Include="Resource\ReadWriteVersionListSerializer.cs" />
+    <Compile Include="Resource\ResourceApplyFailureEventArgs.cs" />
+    <Compile Include="Resource\ResourceApplySuccessEventArgs.cs" />
     <Compile Include="Resource\ResourceManager.AssetInfo.cs" />
     <Compile Include="Resource\ResourceManager.cs" />
     <Compile Include="Resource\ResourceManager.LoadType.cs" />
@@ -253,6 +256,7 @@
     <Compile Include="Resource\ResourceManager.ResourceLoader.ResourceObject.cs" />
     <Compile Include="Resource\ResourceManager.ResourceName.cs" />
     <Compile Include="Resource\ResourceManager.ResourceNameComparer.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceUpdater.ApplyInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceUpdater.cs" />
     <Compile Include="Resource\ResourceManager.ResourceUpdater.UpdateInfo.cs" />
     <Compile Include="Resource\ResourceManager.VersionListProcessor.cs" />

@@ -81,6 +81,14 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 获取资源包版本资源列表序列化器。
+        /// </summary>
+        ResourcePackVersionListSerializer ResourcePackVersionListSerializer
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取当前资源适用的游戏版本号。
         /// </summary>
         string ApplicableGameVersion
@@ -136,6 +144,22 @@ namespace GameFramework.Resource
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// 获取正在应用的资源包路径。
+        /// </summary>
+        string ApplyingResourcePackPath
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取等待应用资源数量。
+        /// </summary>
+        int ApplyWaitingCount
+        {
+            get;
         }
 
         /// <summary>
@@ -284,6 +308,16 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 资源应用成功事件。
+        /// </summary>
+        event EventHandler<ResourceApplySuccessEventArgs> ResourceApplySuccess;
+
+        /// <summary>
+        /// 资源应用失败事件。
+        /// </summary>
+        event EventHandler<ResourceApplyFailureEventArgs> ResourceApplyFailure;
+
+        /// <summary>
         /// 资源更新开始事件。
         /// </summary>
         event EventHandler<ResourceUpdateStartEventArgs> ResourceUpdateStart;
@@ -388,6 +422,13 @@ namespace GameFramework.Resource
         void CheckResources(CheckResourcesCompleteCallback checkResourcesCompleteCallback);
 
         /// <summary>
+        /// 使用可更新模式并应用资源包资源。
+        /// </summary>
+        /// <param name="resourcePackPath">要应用的资源包路径。</param>
+        /// <param name="applyResourcesCompleteCallback">使用可更新模式并应用资源包资源完成时的回调函数。</param>
+        void ApplyResources(string resourcePackPath, ApplyResourcesCompleteCallback applyResourcesCompleteCallback);
+
+        /// <summary>
         /// 使用可更新模式并更新全部资源。
         /// </summary>
         /// <param name="updateResourcesCompleteCallback">使用可更新模式并更新默认资源组完成时的回调函数。</param>
@@ -399,6 +440,13 @@ namespace GameFramework.Resource
         /// <param name="resourceGroupName">要更新的资源组名称。</param>
         /// <param name="updateResourcesCompleteCallback">使用可更新模式并更新指定资源组完成时的回调函数。</param>
         void UpdateResources(string resourceGroupName, UpdateResourcesCompleteCallback updateResourcesCompleteCallback);
+
+        /// <summary>
+        /// 校验资源包。
+        /// </summary>
+        /// <param name="resourcePackPath">要校验的资源包路径。</param>
+        /// <returns>是否校验资源包成功。</returns>
+        bool VerifyResourcePack(string resourcePackPath);
 
         /// <summary>
         /// 检查资源是否存在。
