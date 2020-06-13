@@ -363,9 +363,6 @@ namespace GameFramework.Resource
                             }
                         }
                     }
-
-                    m_ApplyWaitingInfo.RemoveAt(0);
-                    m_ApplyWaitingInfo.RemoveAt(0);
                 }
                 catch (Exception exception)
                 {
