@@ -574,6 +574,12 @@ namespace GameFramework.Resource
                         ResourceApplySuccess(applyInfo.ResourceName, applyInfo.ResourcePath, m_ApplyingResourcePackPath, applyInfo.Length, applyInfo.ZipLength);
                     }
 
+                    string downloadingResource = Utility.Text.Format("{0}.download", applyInfo.ResourcePath);
+                    if (File.Exists(downloadingResource))
+                    {
+                        File.Delete(downloadingResource);
+                    }
+
                     m_CurrentGenerateReadWriteVersionListLength += applyInfo.ZipLength;
                     if (m_ApplyWaitingInfo.Count <= 0 || m_CurrentGenerateReadWriteVersionListLength >= m_GenerateReadWriteVersionListLength)
                     {
