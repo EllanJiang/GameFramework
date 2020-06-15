@@ -25,7 +25,7 @@ namespace GameFramework.Resource
             private readonly ResourceManager m_ResourceManager;
             private readonly List<ApplyInfo> m_ApplyWaitingInfo;
             private readonly List<UpdateInfo> m_UpdateWaitingInfo;
-            private readonly List<UpdateInfo> m_UpdateCandidateInfo;
+            private readonly Dictionary<ResourceName, UpdateInfo> m_UpdateCandidateInfo;
             private readonly byte[] m_CachedHashBytes;
             private readonly byte[] m_CachedBytes;
             private IDownloadManager m_DownloadManager;
@@ -59,7 +59,7 @@ namespace GameFramework.Resource
                 m_ResourceManager = resourceManager;
                 m_ApplyWaitingInfo = new List<ApplyInfo>();
                 m_UpdateWaitingInfo = new List<UpdateInfo>();
-                m_UpdateCandidateInfo = new List<UpdateInfo>();
+                m_UpdateCandidateInfo = new Dictionary<ResourceName, UpdateInfo>();
                 m_CachedHashBytes = new byte[CachedHashBytesLength];
                 m_CachedBytes = new byte[CachedBytesLength];
                 m_DownloadManager = null;
@@ -285,7 +285,7 @@ namespace GameFramework.Resource
             /// <param name="resourcePath">资源路径。</param>
             public void AddResourceUpdate(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode, string resourcePath)
             {
-                m_UpdateCandidateInfo.Add(new UpdateInfo(resourceName, loadType, length, hashCode, zipLength, zipHashCode, resourcePath));
+                m_UpdateCandidateInfo.Add(resourceName, new UpdateInfo(resourceName, loadType, length, hashCode, zipLength, zipHashCode, resourcePath));
             }
 
             /// <summary>
@@ -350,17 +350,16 @@ namespace GameFramework.Resource
                     ResourcePackVersionList.Resource[] resources = versionList.GetResources();
                     foreach (ResourcePackVersionList.Resource resource in resources)
                     {
-                        foreach (UpdateInfo updateInfo in m_UpdateCandidateInfo)
+                        ResourceName resourceName = new ResourceName(resource.Name, resource.Variant, resource.Extension);
+                        UpdateInfo updateInfo = null;
+                        if (!m_UpdateCandidateInfo.TryGetValue(resourceName, out updateInfo))
                         {
-                            if (updateInfo.ResourceName.Name == resource.Name && updateInfo.ResourceName.Variant == resource.Variant && updateInfo.ResourceName.Extension == resource.Extension)
-                            {
-                                if (updateInfo.LoadType == (LoadType)resource.LoadType && updateInfo.Length == resource.Length && updateInfo.HashCode == resource.HashCode)
-                                {
-                                    m_ApplyWaitingInfo.Add(new ApplyInfo(updateInfo.ResourceName, updateInfo.LoadType, resource.Offset, resource.Length, resource.HashCode, resource.ZipLength, resource.ZipHashCode, updateInfo.ResourcePath));
-                                }
+                            continue;
+                        }
 
-                                break;
-                            }
+                        if (updateInfo.LoadType == (LoadType)resource.LoadType && updateInfo.Length == resource.Length && updateInfo.HashCode == resource.HashCode)
+                        {
+                            m_ApplyWaitingInfo.Add(new ApplyInfo(resourceName, (LoadType)resource.LoadType, resource.Offset, resource.Length, resource.HashCode, resource.ZipLength, resource.ZipHashCode, updateInfo.ResourcePath));
                         }
                     }
                 }
@@ -404,22 +403,26 @@ namespace GameFramework.Resource
 
                 if (string.IsNullOrEmpty(resourceGroup.Name))
                 {
-                    m_UpdateWaitingInfo.AddRange(m_UpdateCandidateInfo);
+                    foreach (KeyValuePair<ResourceName, UpdateInfo> updateInfo in m_UpdateCandidateInfo)
+                    {
+                        m_UpdateWaitingInfo.Add(updateInfo.Value);
+                    }
+
                     m_UpdateCandidateInfo.Clear();
                 }
                 else
                 {
-                    int index = 0;
-                    while (index < m_UpdateCandidateInfo.Count)
+                    ResourceName[] resourceNames = resourceGroup.InternalGetResourceNames();
+                    foreach (ResourceName resourceName in resourceNames)
                     {
-                        if (!resourceGroup.HasResource(m_UpdateCandidateInfo[index].ResourceName))
+                        UpdateInfo updateInfo = null;
+                        if (!m_UpdateCandidateInfo.TryGetValue(resourceName, out updateInfo))
                         {
-                            index++;
                             continue;
                         }
 
-                        m_UpdateWaitingInfo.Add(m_UpdateCandidateInfo[index]);
-                        m_UpdateCandidateInfo.RemoveAt(index);
+                        m_UpdateWaitingInfo.Add(updateInfo);
+                        m_UpdateCandidateInfo.Remove(resourceName);
                     }
                 }
 
@@ -444,14 +447,11 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(Utility.Text.Format("There is already a resource pack '{0}' being applied.", m_ApplyingResourcePackPath));
                 }
 
-                foreach (UpdateInfo updateCandidateInfo in m_UpdateCandidateInfo)
+                UpdateInfo updateInfo = null;
+                if (m_UpdateCandidateInfo.TryGetValue(resourceName, out updateInfo))
                 {
-                    if (updateCandidateInfo.ResourceName == resourceName)
-                    {
-                        m_UpdateWaitingInfo.Add(updateCandidateInfo);
-                        m_UpdateCandidateInfo.Remove(updateCandidateInfo);
-                        break;
-                    }
+                    m_UpdateWaitingInfo.Add(updateInfo);
+                    m_UpdateCandidateInfo.Remove(resourceName);
                 }
             }
 
@@ -554,15 +554,7 @@ namespace GameFramework.Resource
                         }
                     }
 
-                    foreach (UpdateInfo updateCandidateInfo in m_UpdateCandidateInfo)
-                    {
-                        if (updateCandidateInfo.ResourceName == applyInfo.ResourceName)
-                        {
-                            m_UpdateCandidateInfo.Remove(updateCandidateInfo);
-                            break;
-                        }
-                    }
-
+                    m_UpdateCandidateInfo.Remove(applyInfo.ResourceName);
                     m_ResourceManager.m_ResourceInfos[applyInfo.ResourceName].MarkReady();
                     m_ResourceManager.m_ReadWriteResourceInfos.Add(applyInfo.ResourceName, new ReadWriteResourceInfo(applyInfo.LoadType, applyInfo.Length, applyInfo.HashCode));
 
@@ -888,7 +880,7 @@ namespace GameFramework.Resource
                 {
                     m_FailureFlag = true;
                     updateInfo.RetryCount = 0;
-                    m_UpdateCandidateInfo.Add(updateInfo);
+                    m_UpdateCandidateInfo.Add(updateInfo.ResourceName, updateInfo);
                 }
             }
         }
