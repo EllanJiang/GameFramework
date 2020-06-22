@@ -96,8 +96,8 @@ namespace GameFramework.Resource
                         {
                             PackageVersionList.Asset asset = assets[assetIndex];
                             int[] dependencyAssetIndexes = asset.GetDependencyAssetIndexes();
-                            string[] dependencyAssetNames = new string[dependencyAssetIndexes.Length];
                             int index = 0;
+                            string[] dependencyAssetNames = new string[dependencyAssetIndexes.Length];
                             foreach (int dependencyAssetIndex in dependencyAssetIndexes)
                             {
                                 dependencyAssetNames[index++] = assets[dependencyAssetIndex].Name;

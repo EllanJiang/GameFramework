@@ -125,8 +125,8 @@ namespace GameFramework.Debugger
 
             private void RefreshDebuggerWindowNames()
             {
-                m_DebuggerWindowNames = new string[m_DebuggerWindows.Count];
                 int index = 0;
+                m_DebuggerWindowNames = new string[m_DebuggerWindows.Count];
                 foreach (KeyValuePair<string, IDebuggerWindow> debuggerWindow in m_DebuggerWindows)
                 {
                     m_DebuggerWindowNames[index++] = debuggerWindow.Key;

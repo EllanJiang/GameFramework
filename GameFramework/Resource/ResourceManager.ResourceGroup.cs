@@ -158,8 +158,8 @@ namespace GameFramework.Resource
             /// <returns>资源组包含的资源名称列表。</returns>
             public string[] GetResourceNames()
             {
-                string[] resourceNames = new string[m_ResourceNames.Count];
                 int index = 0;
+                string[] resourceNames = new string[m_ResourceNames.Count];
                 foreach (ResourceName resourceName in m_ResourceNames)
                 {
                     resourceNames[index++] = resourceName.FullName;
@@ -192,8 +192,8 @@ namespace GameFramework.Resource
             /// <returns>资源组包含的资源名称列表。</returns>
             public ResourceName[] InternalGetResourceNames()
             {
-                ResourceName[] resourceNames = new ResourceName[m_ResourceNames.Count];
                 int index = 0;
+                ResourceName[] resourceNames = new ResourceName[m_ResourceNames.Count];
                 foreach (ResourceName resourceName in m_ResourceNames)
                 {
                     resourceNames[index++] = resourceName;
