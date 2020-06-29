@@ -1,0 +1,71 @@
+﻿//------------------------------------------------------------
+// Game Framework
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
+//------------------------------------------------------------
+
+namespace GameFramework.FileSystem
+{
+    internal sealed partial class FileSystem : IFileSystem
+    {
+        /// <summary>
+        /// 块数据。
+        /// </summary>
+        private struct BlockData
+        {
+            private readonly int m_StringIndex;
+            private readonly int m_ClusterIndex;
+            private readonly int m_Length;
+
+            public BlockData(int clusterIndex, int length)
+                : this(-1, clusterIndex, length)
+            {
+            }
+
+            public BlockData(int stringIndex, int clusterIndex, int length)
+            {
+                m_StringIndex = stringIndex;
+                m_ClusterIndex = clusterIndex;
+                m_Length = length;
+            }
+
+            public bool Using
+            {
+                get
+                {
+                    return m_StringIndex >= 0;
+                }
+            }
+
+            public int StringIndex
+            {
+                get
+                {
+                    return m_StringIndex;
+                }
+            }
+
+            public int ClusterIndex
+            {
+                get
+                {
+                    return m_ClusterIndex;
+                }
+            }
+
+            public int Length
+            {
+                get
+                {
+                    return m_Length;
+                }
+            }
+
+            public BlockData Clear()
+            {
+                return new BlockData(m_ClusterIndex, (int)GetUpBoundClusterOffset(m_Length));
+            }
+        }
+    }
+}

@@ -138,6 +138,17 @@
     <Compile Include="Event\EventManager.cs" />
     <Compile Include="Event\GameEventArgs.cs" />
     <Compile Include="Event\IEventManager.cs" />
+    <Compile Include="FileSystem\DotNetFileSystemStream.cs" />
+    <Compile Include="FileSystem\FileInfo.cs" />
+    <Compile Include="FileSystem\FileSystem.BlockData.cs" />
+    <Compile Include="FileSystem\FileSystem.cs" />
+    <Compile Include="FileSystem\FileSystem.HeaderData.cs" />
+    <Compile Include="FileSystem\FileSystem.StringData.cs" />
+    <Compile Include="FileSystem\FileSystemAccess.cs" />
+    <Compile Include="FileSystem\FileSystemManager.cs" />
+    <Compile Include="FileSystem\FileSystemStream.cs" />
+    <Compile Include="FileSystem\IFileSystem.cs" />
+    <Compile Include="FileSystem\IFileSystemManager.cs" />
     <Compile Include="Fsm\Fsm.cs" />
     <Compile Include="Fsm\FsmBase.cs" />
     <Compile Include="Fsm\FsmManager.cs" />
@@ -335,6 +346,7 @@
     <Compile Include="Utility\Utility.Encryption.cs" />
     <Compile Include="Utility\Utility.Json.cs" />
     <Compile Include="Utility\Utility.Json.IJsonHelper.cs" />
+    <Compile Include="Utility\Utility.Marshal.cs" />
     <Compile Include="Utility\Utility.Nullable.cs" />
     <Compile Include="Utility\Utility.Path.cs" />
     <Compile Include="Utility\Utility.Random.cs" />

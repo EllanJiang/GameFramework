@@ -101,7 +101,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Bytes is invalid.");
                 }
 
-                if (offset < 0 || length <= 0 || offset + length > bytes.Length)
+                if (offset < 0 || length < 0 || offset + length > bytes.Length)
                 {
                     throw new GameFrameworkException("Offset or length is invalid.");
                 }
@@ -257,7 +257,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Bytes is invalid.");
                 }
 
-                if (offset < 0 || length <= 0 || offset + length > bytes.Length)
+                if (offset < 0 || length < 0 || offset + length > bytes.Length)
                 {
                     throw new GameFrameworkException("Offset or length is invalid.");
                 }
