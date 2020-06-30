@@ -363,14 +363,14 @@ namespace GameFramework.FileSystem
         /// <returns>存储读取文件内容的二进制流。</returns>
         public byte[] ReadFile(string name)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new GameFrameworkException("Name is invalid.");
-            }
-
             if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
             {
                 throw new GameFrameworkException("File system is not readable.");
+            }
+
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new GameFrameworkException("Name is invalid.");
             }
 
             FileInfo fileInfo = GetFileInfo(name);
@@ -428,6 +428,11 @@ namespace GameFramework.FileSystem
         /// <returns>实际读取了多少字节。</returns>
         public int ReadFile(string name, byte[] buffer, int startIndex, int length)
         {
+            if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
+            {
+                throw new GameFrameworkException("File system is not readable.");
+            }
+
             if (string.IsNullOrEmpty(name))
             {
                 throw new GameFrameworkException("Name is invalid.");
@@ -436,11 +441,6 @@ namespace GameFramework.FileSystem
             if (buffer == null)
             {
                 throw new GameFrameworkException("Buffer is invalid.");
-            }
-
-            if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
-            {
-                throw new GameFrameworkException("File system is not readable.");
             }
 
             if (startIndex < 0 || length < 0 || startIndex + length > buffer.Length)
@@ -466,6 +466,11 @@ namespace GameFramework.FileSystem
         /// <returns>实际读取了多少字节。</returns>
         public int ReadFile(string name, Stream stream)
         {
+            if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
+            {
+                throw new GameFrameworkException("File system is not readable.");
+            }
+
             if (string.IsNullOrEmpty(name))
             {
                 throw new GameFrameworkException("Name is invalid.");
@@ -481,11 +486,6 @@ namespace GameFramework.FileSystem
                 throw new GameFrameworkException("Stream is not writable.");
             }
 
-            if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
-            {
-                throw new GameFrameworkException("File system is not readable.");
-            }
-
             FileInfo fileInfo = GetFileInfo(name);
             if (!fileInfo.IsValid)
             {
@@ -494,6 +494,237 @@ namespace GameFramework.FileSystem
 
             m_Stream.Position = fileInfo.Offset;
             return m_Stream.Read(stream, fileInfo.Length);
+        }
+
+        /// <summary>
+        /// 读取指定文件的指定片段。
+        /// </summary>
+        /// <param name="name">要读取片段的文件名称。</param>
+        /// <param name="length">要读取片段的长度。</param>
+        /// <returns>存储读取文件片段内容的二进制流。</returns>
+        public byte[] ReadFileSegment(string name, int length)
+        {
+            return ReadFileSegment(name, 0L, length);
+        }
+
+        /// <summary>
+        /// 读取指定文件的指定片段。
+        /// </summary>
+        /// <param name="name">要读取片段的文件名称。</param>
+        /// <param name="offset">要读取片段的偏移。</param>
+        /// <param name="length">要读取片段的长度。</param>
+        /// <returns>存储读取文件片段内容的二进制流。</returns>
+        public byte[] ReadFileSegment(string name, long offset, int length)
+        {
+            if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
+            {
+                throw new GameFrameworkException("File system is not readable.");
+            }
+
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new GameFrameworkException("Name is invalid.");
+            }
+
+            if (offset < 0L)
+            {
+                throw new GameFrameworkException("Index is invalid.");
+            }
+
+            if (length < 0)
+            {
+                throw new GameFrameworkException("Length is invalid.");
+            }
+
+            FileInfo fileInfo = GetFileInfo(name);
+            if (!fileInfo.IsValid)
+            {
+                return null;
+            }
+
+            if (offset > fileInfo.Length)
+            {
+                offset = fileInfo.Length;
+            }
+
+            int leftLength = (int)(fileInfo.Length - offset);
+            if (length > leftLength)
+            {
+                length = leftLength;
+            }
+
+            byte[] buffer = new byte[length];
+            m_Stream.Position = offset;
+            m_Stream.Read(buffer, 0, length);
+            return buffer;
+        }
+
+        /// <summary>
+        /// 读取指定文件的指定片段。
+        /// </summary>
+        /// <param name="name">要读取片段的文件名称。</param>
+        /// <param name="buffer">存储读取文件片段内容的二进制流。</param>
+        /// <param name="length">要读取片段的长度。</param>
+        /// <returns>实际读取了多少字节。</returns>
+        public int ReadFileSegment(string name, byte[] buffer, int length)
+        {
+            return ReadFileSegment(name, 0L, buffer, 0, length);
+        }
+
+        /// <summary>
+        /// 读取指定文件的指定片段。
+        /// </summary>
+        /// <param name="name">要读取片段的文件名称。</param>
+        /// <param name="buffer">存储读取文件片段内容的二进制流。</param>
+        /// <param name="startIndex">存储读取文件片段内容的二进制流的起始位置。</param>
+        /// <param name="length">要读取片段的长度。</param>
+        /// <returns>实际读取了多少字节。</returns>
+        public int ReadFileSegment(string name, byte[] buffer, int startIndex, int length)
+        {
+            return ReadFileSegment(name, 0L, buffer, startIndex, length);
+        }
+
+        /// <summary>
+        /// 读取指定文件的指定片段。
+        /// </summary>
+        /// <param name="name">要读取片段的文件名称。</param>
+        /// <param name="offset">要读取片段的偏移。</param>
+        /// <param name="buffer">存储读取文件片段内容的二进制流。</param>
+        /// <param name="length">要读取片段的长度。</param>
+        /// <returns>实际读取了多少字节。</returns>
+        public int ReadFileSegment(string name, long offset, byte[] buffer, int length)
+        {
+            return ReadFileSegment(name, offset, buffer, 0, length);
+        }
+
+        /// <summary>
+        /// 读取指定文件的指定片段。
+        /// </summary>
+        /// <param name="name">要读取片段的文件名称。</param>
+        /// <param name="offset">要读取片段的偏移。</param>
+        /// <param name="buffer">存储读取文件片段内容的二进制流。</param>
+        /// <param name="startIndex">存储读取文件片段内容的二进制流的起始位置。</param>
+        /// <param name="length">要读取片段的长度。</param>
+        /// <returns>实际读取了多少字节。</returns>
+        public int ReadFileSegment(string name, long offset, byte[] buffer, int startIndex, int length)
+        {
+            if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
+            {
+                throw new GameFrameworkException("File system is not readable.");
+            }
+
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new GameFrameworkException("Name is invalid.");
+            }
+
+            if (offset < 0L)
+            {
+                throw new GameFrameworkException("Index is invalid.");
+            }
+
+            if (buffer == null)
+            {
+                throw new GameFrameworkException("Buffer is invalid.");
+            }
+
+            if (startIndex < 0 || length < 0 || startIndex + length > buffer.Length)
+            {
+                throw new GameFrameworkException("Start index or length is invalid.");
+            }
+
+            FileInfo fileInfo = GetFileInfo(name);
+            if (!fileInfo.IsValid)
+            {
+                return 0;
+            }
+
+            if (offset > fileInfo.Length)
+            {
+                offset = fileInfo.Length;
+            }
+
+            int leftLength = (int)(fileInfo.Length - offset);
+            if (length > leftLength)
+            {
+                length = leftLength;
+            }
+
+            m_Stream.Position = offset;
+            return m_Stream.Read(buffer, startIndex, length);
+        }
+
+        /// <summary>
+        /// 读取指定文件的指定片段。
+        /// </summary>
+        /// <param name="name">要读取片段的文件名称。</param>
+        /// <param name="stream">存储读取文件片段内容的二进制流。</param>
+        /// <param name="length">要读取片段的长度。</param>
+        /// <returns>实际读取了多少字节。</returns>
+        public int ReadFileSegment(string name, Stream stream, int length)
+        {
+            return ReadFileSegment(name, 0L, stream, length);
+        }
+
+        /// <summary>
+        /// 读取指定文件的指定片段。
+        /// </summary>
+        /// <param name="name">要读取片段的文件名称。</param>
+        /// <param name="offset">要读取片段的偏移。</param>
+        /// <param name="stream">存储读取文件片段内容的二进制流。</param>
+        /// <param name="length">要读取片段的长度。</param>
+        /// <returns>实际读取了多少字节。</returns>
+        public int ReadFileSegment(string name, long offset, Stream stream, int length)
+        {
+            if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
+            {
+                throw new GameFrameworkException("File system is not readable.");
+            }
+
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new GameFrameworkException("Name is invalid.");
+            }
+
+            if (offset < 0L)
+            {
+                throw new GameFrameworkException("Index is invalid.");
+            }
+
+            if (stream == null)
+            {
+                throw new GameFrameworkException("Stream is invalid.");
+            }
+
+            if (stream.CanWrite)
+            {
+                throw new GameFrameworkException("Stream is not writable.");
+            }
+
+            if (length < 0)
+            {
+                throw new GameFrameworkException("Length is invalid.");
+            }
+
+            FileInfo fileInfo = GetFileInfo(name);
+            if (!fileInfo.IsValid)
+            {
+                return 0;
+            }
+
+            if (offset > fileInfo.Length)
+            {
+                offset = fileInfo.Length;
+            }
+
+            int leftLength = (int)(fileInfo.Length - offset);
+            if (length > leftLength)
+            {
+                length = leftLength;
+            }
+
+            m_Stream.Position = offset;
+            return m_Stream.Read(stream, length);
         }
 
         /// <summary>
@@ -539,6 +770,11 @@ namespace GameFramework.FileSystem
         /// <returns>写入指定文件是否成功。</returns>
         public bool WriteFile(string name, byte[] buffer, int startIndex, int length)
         {
+            if (m_Access != FileSystemAccess.Write && m_Access != FileSystemAccess.ReadWrite)
+            {
+                throw new GameFrameworkException("File system is not writable.");
+            }
+
             if (string.IsNullOrEmpty(name))
             {
                 throw new GameFrameworkException("Name is invalid.");
@@ -552,11 +788,6 @@ namespace GameFramework.FileSystem
             if (buffer == null)
             {
                 throw new GameFrameworkException("Buffer is invalid.");
-            }
-
-            if (m_Access != FileSystemAccess.Write && m_Access != FileSystemAccess.ReadWrite)
-            {
-                throw new GameFrameworkException("File system is not writable.");
             }
 
             if (startIndex < 0 || length < 0 || startIndex + length > buffer.Length)
@@ -597,6 +828,11 @@ namespace GameFramework.FileSystem
         /// <returns>写入指定文件是否成功。</returns>
         public bool WriteFile(string name, Stream stream)
         {
+            if (m_Access != FileSystemAccess.Write && m_Access != FileSystemAccess.ReadWrite)
+            {
+                throw new GameFrameworkException("File system is not writable.");
+            }
+
             if (string.IsNullOrEmpty(name))
             {
                 throw new GameFrameworkException("Name is invalid.");
@@ -615,11 +851,6 @@ namespace GameFramework.FileSystem
             if (!stream.CanRead)
             {
                 throw new GameFrameworkException("Stream is not readable.");
-            }
-
-            if (m_Access != FileSystemAccess.Write && m_Access != FileSystemAccess.ReadWrite)
-            {
-                throw new GameFrameworkException("File system is not writable.");
             }
 
             bool hasFile = false;
@@ -680,6 +911,11 @@ namespace GameFramework.FileSystem
         /// <returns>将指定文件另存为物理文件是否成功。</returns>
         public bool SaveAsFile(string name, string filePath)
         {
+            if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
+            {
+                throw new GameFrameworkException("File system is not readable.");
+            }
+
             if (string.IsNullOrEmpty(name))
             {
                 throw new GameFrameworkException("Name is invalid.");
@@ -688,11 +924,6 @@ namespace GameFramework.FileSystem
             if (string.IsNullOrEmpty(filePath))
             {
                 throw new GameFrameworkException("File path is invalid");
-            }
-
-            if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
-            {
-                throw new GameFrameworkException("File system is not readable.");
             }
 
             FileInfo fileInfo = GetFileInfo(name);
@@ -734,6 +965,11 @@ namespace GameFramework.FileSystem
         /// <returns>重命名指定文件是否成功。</returns>
         public bool RenameFile(string oldName, string newName)
         {
+            if (m_Access != FileSystemAccess.Write && m_Access != FileSystemAccess.ReadWrite)
+            {
+                throw new GameFrameworkException("File system is not writable.");
+            }
+
             if (string.IsNullOrEmpty(oldName))
             {
                 throw new GameFrameworkException("Old name is invalid.");
@@ -776,6 +1012,11 @@ namespace GameFramework.FileSystem
         /// <param name="name">要删除的文件名称。</param>
         public void DeleteFile(string name)
         {
+            if (m_Access != FileSystemAccess.Write && m_Access != FileSystemAccess.ReadWrite)
+            {
+                throw new GameFrameworkException("File system is not writable.");
+            }
+
             if (string.IsNullOrEmpty(name))
             {
                 throw new GameFrameworkException("Name is invalid.");
