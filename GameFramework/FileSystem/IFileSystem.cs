@@ -194,7 +194,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="name">要写入的文件名称。</param>
         /// <param name="buffer">存储写入文件内容的二进制流。</param>
-        /// <returns>写入指定文件是否成功。</returns>
+        /// <returns>是否写入指定文件成功。</returns>
         bool WriteFile(string name, byte[] buffer);
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace GameFramework.FileSystem
         /// <param name="name">要写入的文件名称。</param>
         /// <param name="buffer">存储写入文件内容的二进制流。</param>
         /// <param name="startIndex">存储写入文件内容的二进制流的起始位置。</param>
-        /// <returns>写入指定文件是否成功。</returns>
+        /// <returns>是否写入指定文件成功。</returns>
         bool WriteFile(string name, byte[] buffer, int startIndex);
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace GameFramework.FileSystem
         /// <param name="buffer">存储写入文件内容的二进制流。</param>
         /// <param name="startIndex">存储写入文件内容的二进制流的起始位置。</param>
         /// <param name="length">存储写入文件内容的二进制流的长度。</param>
-        /// <returns>写入指定文件是否成功。</returns>
+        /// <returns>是否写入指定文件成功。</returns>
         bool WriteFile(string name, byte[] buffer, int startIndex, int length);
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="name">要写入的文件名称。</param>
         /// <param name="stream">存储写入文件内容的二进制流。</param>
-        /// <returns>写入指定文件是否成功。</returns>
+        /// <returns>是否写入指定文件成功。</returns>
         bool WriteFile(string name, Stream stream);
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="name">要写入的文件名称。</param>
         /// <param name="filePath">存储写入文件内容的文件路径。</param>
-        /// <returns>写入指定文件是否成功。</returns>
+        /// <returns>是否写入指定文件成功。</returns>
         bool WriteFile(string name, string filePath);
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="name">要另存为的文件名称。</param>
         /// <param name="filePath">存储写入文件内容的文件路径。</param>
-        /// <returns>将指定文件另存为物理文件是否成功。</returns>
+        /// <returns>是否将指定文件另存为物理文件成功。</returns>
         bool SaveAsFile(string name, string filePath);
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="oldName">要重命名的文件名称。</param>
         /// <param name="newName">重命名后的文件名称。</param>
-        /// <returns>重命名指定文件是否成功。</returns>
+        /// <returns>是否重命名指定文件成功。</returns>
         bool RenameFile(string oldName, string newName);
 
         /// <summary>

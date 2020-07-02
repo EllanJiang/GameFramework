@@ -38,7 +38,7 @@ namespace GameFramework
         /// </summary>
         /// <param name="binaryWriter">目标流。</param>
         /// <param name="data">要序列化的数据。</param>
-        /// <returns>序列化数据是否成功。</returns>
+        /// <returns>是否序列化数据成功。</returns>
         public delegate bool SerializeCallback(BinaryWriter binaryWriter, T data);
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace GameFramework
         /// <param name="binaryReader">指定流。</param>
         /// <param name="key">指定键。</param>
         /// <param name="value">指定键的值。</param>
-        /// <returns>从指定流获取指定键的值是否成功。</returns>
+        /// <returns>是否从指定流获取指定键的值成功。</returns>
         public delegate bool TryGetValueCallback(BinaryReader binaryReader, string key, out object value);
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace GameFramework
         /// </summary>
         /// <param name="stream">目标流。</param>
         /// <param name="data">要序列化的数据。</param>
-        /// <returns>序列化数据是否成功。</returns>
+        /// <returns>是否序列化数据成功。</returns>
         public bool Serialize(Stream stream, T data)
         {
             if (m_SerializeCallbacks.Count <= 0)
@@ -128,7 +128,7 @@ namespace GameFramework
         /// <param name="stream">目标流。</param>
         /// <param name="data">要序列化的数据。</param>
         /// <param name="version">序列化回调函数的版本。</param>
-        /// <returns>序列化数据是否成功。</returns>
+        /// <returns>是否序列化数据成功。</returns>
         public bool Serialize(Stream stream, T data, byte version)
         {
             using (BinaryWriter binaryWriter = new BinaryWriter(stream, Encoding.UTF8))
@@ -185,7 +185,7 @@ namespace GameFramework
         /// <param name="stream">指定流。</param>
         /// <param name="key">指定键。</param>
         /// <param name="value">指定键的值。</param>
-        /// <returns>从指定流获取指定键的值是否成功。</returns>
+        /// <returns>是否从指定流获取指定键的值成功。</returns>
         public bool TryGetValue(Stream stream, string key, out object value)
         {
             value = null;

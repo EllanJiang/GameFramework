@@ -174,7 +174,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="name">要注册的文件系统的名称。</param>
         /// <param name="fileSystem">要注册的文件系统。</param>
-        /// <returns>注册的文件系统是否成功。</returns>
+        /// <returns>是否注册文件系统成功。</returns>
         public bool RegisterFileSystem(string name, IFileSystem fileSystem)
         {
             if (string.IsNullOrEmpty(name))
@@ -202,7 +202,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="name">要解除注册的文件系统的名称。</param>
         /// <param name="fileSystem">要解除注册的文件系统。</param>
-        /// <returns>解除注册的文件系统是否成功。</returns>
+        /// <returns>是否解除注册文件系统成功。</returns>
         public bool UnregisterFileSystem(string name, IFileSystem fileSystem)
         {
             if (string.IsNullOrEmpty(name))

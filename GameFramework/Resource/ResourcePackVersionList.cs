@@ -81,9 +81,9 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取资源集合。
+        /// 获取包含的资源集合。
         /// </summary>
-        /// <returns></returns>
+        /// <returns>包含的资源集合。</returns>
         public Resource[] GetResources()
         {
             return m_Resources;

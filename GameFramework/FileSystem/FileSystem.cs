@@ -243,7 +243,7 @@ namespace GameFramework.FileSystem
         /// 增加文件系统名称。
         /// </summary>
         /// <param name="name">要增加的文件系统名称。</param>
-        /// <returns>增加文件系统名称是否成功。</returns>
+        /// <returns>是否增加文件系统名称成功。</returns>
         public bool AddName(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -266,7 +266,7 @@ namespace GameFramework.FileSystem
         /// 移除文件系统名称。
         /// </summary>
         /// <param name="name">要移除的文件系统名称。</param>
-        /// <returns>移除文件系统名称是否成功。</returns>
+        /// <returns>是否移除文件系统名称成功。</returns>
         public bool RemoveName(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -732,7 +732,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="name">要写入的文件名称。</param>
         /// <param name="buffer">存储写入文件内容的二进制流。</param>
-        /// <returns>写入指定文件是否成功。</returns>
+        /// <returns>是否写入指定文件成功。</returns>
         public bool WriteFile(string name, byte[] buffer)
         {
             if (buffer == null)
@@ -749,7 +749,7 @@ namespace GameFramework.FileSystem
         /// <param name="name">要写入的文件名称。</param>
         /// <param name="buffer">存储写入文件内容的二进制流。</param>
         /// <param name="startIndex">存储写入文件内容的二进制流的起始位置。</param>
-        /// <returns>写入指定文件是否成功。</returns>
+        /// <returns>是否写入指定文件成功。</returns>
         public bool WriteFile(string name, byte[] buffer, int startIndex)
         {
             if (buffer == null)
@@ -767,7 +767,7 @@ namespace GameFramework.FileSystem
         /// <param name="buffer">存储写入文件内容的二进制流。</param>
         /// <param name="startIndex">存储写入文件内容的二进制流的起始位置。</param>
         /// <param name="length">存储写入文件内容的二进制流的长度。</param>
-        /// <returns>写入指定文件是否成功。</returns>
+        /// <returns>是否写入指定文件成功。</returns>
         public bool WriteFile(string name, byte[] buffer, int startIndex, int length)
         {
             if (m_Access != FileSystemAccess.Write && m_Access != FileSystemAccess.ReadWrite)
@@ -825,7 +825,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="name">要写入的文件名称。</param>
         /// <param name="stream">存储写入文件内容的二进制流。</param>
-        /// <returns>写入指定文件是否成功。</returns>
+        /// <returns>是否写入指定文件成功。</returns>
         public bool WriteFile(string name, Stream stream)
         {
             if (m_Access != FileSystemAccess.Write && m_Access != FileSystemAccess.ReadWrite)
@@ -884,7 +884,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="name">要写入的文件名称。</param>
         /// <param name="filePath">存储写入文件内容的文件路径。</param>
-        /// <returns>写入指定文件是否成功。</returns>
+        /// <returns>是否写入指定文件成功。</returns>
         public bool WriteFile(string name, string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
@@ -908,7 +908,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="name">要另存为的文件名称。</param>
         /// <param name="filePath">存储写入文件内容的文件路径。</param>
-        /// <returns>将指定文件另存为物理文件是否成功。</returns>
+        /// <returns>是否将指定文件另存为物理文件成功。</returns>
         public bool SaveAsFile(string name, string filePath)
         {
             if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
@@ -962,7 +962,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="oldName">要重命名的文件名称。</param>
         /// <param name="newName">重命名后的文件名称。</param>
-        /// <returns>重命名指定文件是否成功。</returns>
+        /// <returns>是否重命名指定文件成功。</returns>
         public bool RenameFile(string oldName, string newName)
         {
             if (m_Access != FileSystemAccess.Write && m_Access != FileSystemAccess.ReadWrite)

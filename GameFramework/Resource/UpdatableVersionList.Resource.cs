@@ -147,7 +147,7 @@ namespace GameFramework.Resource
             /// <summary>
             /// 获取资源包含的资源索引集合。
             /// </summary>
-            /// <returns></returns>
+            /// <returns>资源包含的资源索引集合。</returns>
             public int[] GetAssetIndexes()
             {
                 return m_AssetIndexes;

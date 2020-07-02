@@ -1146,7 +1146,7 @@ namespace GameFramework.Resource
         /// 校验资源包。
         /// </summary>
         /// <param name="resourcePackPath">要校验的资源包路径。</param>
-        /// <returns></returns>
+        /// <returns>是否校验资源包成功。</returns>
         public bool VerifyResourcePack(string resourcePackPath)
         {
             if (string.IsNullOrEmpty(resourcePackPath))
@@ -1566,7 +1566,7 @@ namespace GameFramework.Resource
         /// <param name="binaryAssetName">要获取实际路径的二进制资源的名称。</param>
         /// <param name="storageInReadOnly">资源是否在只读区。</param>
         /// <param name="relativePath">二进制资源相对于只读区或者读写区的相对路径。</param>
-        /// <returns>获取二进制资源的实际路径是否成功。</returns>
+        /// <returns>是否获取二进制资源的实际路径成功。</returns>
         public bool GetBinaryPath(string binaryAssetName, out bool storageInReadOnly, out string relativePath)
         {
             return m_ResourceLoader.GetBinaryPath(binaryAssetName, out storageInReadOnly, out relativePath);

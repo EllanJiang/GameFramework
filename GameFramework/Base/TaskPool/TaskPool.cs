@@ -165,7 +165,7 @@ namespace GameFramework
         /// 移除任务。
         /// </summary>
         /// <param name="serialId">要移除任务的序列编号。</param>
-        /// <returns>移除任务是否成功。</returns>
+        /// <returns>是否移除任务成功。</returns>
         public bool RemoveTask(int serialId)
         {
             foreach (T task in m_WaitingTasks)

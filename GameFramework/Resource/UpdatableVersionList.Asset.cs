@@ -49,7 +49,7 @@ namespace GameFramework.Resource
             /// <summary>
             /// 获取资源包含的依赖资源索引集合。
             /// </summary>
-            /// <returns></returns>
+            /// <returns>资源包含的依赖资源索引集合。</returns>
             public int[] GetDependencyAssetIndexes()
             {
                 return m_DependencyAssetIndexes;
