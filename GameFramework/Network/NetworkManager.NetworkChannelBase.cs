@@ -571,7 +571,9 @@ namespace GameFramework.Network
                     m_ReceiveState.PrepareForPacket(packetHeader);
                     if (packetHeader.PacketLength <= 0)
                     {
-                        return ProcessPacket();
+                        bool processSuccess = ProcessPacket();
+                        m_ReceivedPacketCount++;
+                        return processSuccess;
                     }
                 }
                 catch (Exception exception)

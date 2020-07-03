@@ -233,13 +233,13 @@ namespace GameFramework.Network
                         return false;
                     }
 
-                    m_ReceivedPacketCount++;
                     m_ReceiveState.Stream.Position = 0L;
 
                     bool processSuccess = false;
                     if (m_ReceiveState.PacketHeader != null)
                     {
                         processSuccess = ProcessPacket();
+                        m_ReceivedPacketCount++;
                     }
                     else
                     {
