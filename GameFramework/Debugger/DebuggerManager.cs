@@ -109,6 +109,16 @@ namespace GameFramework.Debugger
         }
 
         /// <summary>
+        /// 解除注册调试器窗口。
+        /// </summary>
+        /// <param name="path">调试器窗口路径。</param>
+        /// <returns>是否解除注册调试器窗口成功。</returns>
+        public bool UnregisterDebuggerWindow(string path)
+        {
+            return m_DebuggerWindowRoot.UnregisterDebuggerWindow(path);
+        }
+
+        /// <summary>
         /// 获取调试器窗口。
         /// </summary>
         /// <param name="path">调试器窗口路径。</param>
