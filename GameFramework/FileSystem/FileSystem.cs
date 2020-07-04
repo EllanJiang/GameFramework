@@ -913,6 +913,11 @@ namespace GameFramework.FileSystem
                 throw new GameFrameworkException("New name is invalid.");
             }
 
+            if (newName.Length > byte.MaxValue)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("New name '{0}' is too long.", newName));
+            }
+
             if (oldName == newName)
             {
                 return true;
@@ -943,7 +948,8 @@ namespace GameFramework.FileSystem
         /// 删除指定文件。
         /// </summary>
         /// <param name="name">要删除的文件名称。</param>
-        public void DeleteFile(string name)
+        /// <returns>是否删除指定文件成功。</returns>
+        public bool DeleteFile(string name)
         {
             if (m_Access != FileSystemAccess.Write && m_Access != FileSystemAccess.ReadWrite)
             {
@@ -958,7 +964,7 @@ namespace GameFramework.FileSystem
             int blockIndex = 0;
             if (!m_FileDatas.TryGetValue(name, out blockIndex))
             {
-                return;
+                return false;
             }
 
             m_FileDatas.Remove(name);
@@ -975,6 +981,7 @@ namespace GameFramework.FileSystem
             m_FreeBlockIndexes.Add(blockData.Length, blockIndex);
             WriteBlockData(blockIndex);
             m_Stream.Flush();
+            return true;
         }
 
         private static long GetUpBoundClusterOffset(long offset)

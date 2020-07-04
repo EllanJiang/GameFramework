@@ -246,6 +246,7 @@ namespace GameFramework.FileSystem
         /// 删除指定文件。
         /// </summary>
         /// <param name="name">要删除的文件名称。</param>
-        void DeleteFile(string name);
+        /// <returns>是否删除指定文件成功。</returns>
+        bool DeleteFile(string name);
     }
 }
