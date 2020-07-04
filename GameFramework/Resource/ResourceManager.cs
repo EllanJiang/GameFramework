@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using GameFramework.Download;
+using GameFramework.FileSystem;
 using GameFramework.ObjectPool;
 using System;
 using System.Collections.Generic;
@@ -22,11 +23,15 @@ namespace GameFramework.Resource
         private const string LocalVersionListFileName = "GameFrameworkList.dat";
         private const string DefaultExtension = "dat";
         private const string BackupExtension = "bak";
+        private const int FileSystemMaxFileCount = 1024 * 16;
+        private const int FileSystemMaxBlockCount = 1024 * 256;
 
         private Dictionary<string, AssetInfo> m_AssetInfos;
         private Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
+        private SortedDictionary<ResourceName, ReadWriteResourceInfo> m_ReadWriteResourceInfos;
+        private readonly Dictionary<string, IFileSystem> m_ReadOnlyFileSystems;
+        private readonly Dictionary<string, IFileSystem> m_ReadWriteFileSystems;
         private readonly Dictionary<string, ResourceGroup> m_ResourceGroups;
-        private readonly SortedDictionary<ResourceName, ReadWriteResourceInfo> m_ReadWriteResourceInfos;
 
         private PackageVersionListSerializer m_PackageVersionListSerializer;
         private UpdatableVersionListSerializer m_UpdatableVersionListSerializer;
@@ -34,6 +39,7 @@ namespace GameFramework.Resource
         private ReadWriteVersionListSerializer m_ReadWriteVersionListSerializer;
         private ResourcePackVersionListSerializer m_ResourcePackVersionListSerializer;
 
+        private IFileSystemManager m_FileSystemManager;
         private ResourceIniter m_ResourceIniter;
         private VersionListProcessor m_VersionListProcessor;
         private ResourceChecker m_ResourceChecker;
@@ -70,8 +76,10 @@ namespace GameFramework.Resource
         {
             m_AssetInfos = null;
             m_ResourceInfos = null;
+            m_ReadWriteResourceInfos = null;
+            m_ReadOnlyFileSystems = new Dictionary<string, IFileSystem>();
+            m_ReadWriteFileSystems = new Dictionary<string, IFileSystem>();
             m_ResourceGroups = new Dictionary<string, ResourceGroup>();
-            m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>(new ResourceNameComparer());
 
             m_PackageVersionListSerializer = null;
             m_UpdatableVersionListSerializer = null;
@@ -705,6 +713,10 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateComplete -= OnUpdaterResourceUpdateComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
+
+                m_ReadWriteResourceInfos.Clear();
+                m_ReadWriteResourceInfos = null;
+
                 if (m_DecompressCachedStream != null)
                 {
                     m_DecompressCachedStream.Dispose();
@@ -730,8 +742,9 @@ namespace GameFramework.Resource
                 m_ResourceInfos = null;
             }
 
+            m_ReadOnlyFileSystems.Clear();
+            m_ReadWriteFileSystems.Clear();
             m_ResourceGroups.Clear();
-            m_ReadWriteResourceInfos.Clear();
         }
 
         /// <summary>
@@ -852,6 +865,20 @@ namespace GameFramework.Resource
             }
 
             m_ResourceLoader.SetObjectPoolManager(objectPoolManager);
+        }
+
+        /// <summary>
+        /// 设置文件系统管理器。
+        /// </summary>
+        /// <param name="fileSystemManager">文件系统管理器。</param>
+        public void SetFileSystemManager(IFileSystemManager fileSystemManager)
+        {
+            if (fileSystemManager == null)
+            {
+                throw new GameFrameworkException("File system manager is invalid.");
+            }
+
+            m_FileSystemManager = fileSystemManager;
         }
 
         /// <summary>
@@ -1027,8 +1054,9 @@ namespace GameFramework.Resource
         /// <summary>
         /// 使用可更新模式并检查资源。
         /// </summary>
+        /// <param name="ignoreOtherVariant">是否忽略处理其它变体的资源，若不忽略，将会移除其它变体的资源。</param>
         /// <param name="checkResourcesCompleteCallback">使用可更新模式并检查资源完成时的回调函数。</param>
-        public void CheckResources(CheckResourcesCompleteCallback checkResourcesCompleteCallback)
+        public void CheckResources(bool ignoreOtherVariant, CheckResourcesCompleteCallback checkResourcesCompleteCallback)
         {
             if (checkResourcesCompleteCallback == null)
             {
@@ -1052,7 +1080,7 @@ namespace GameFramework.Resource
 
             m_RefuseSetCurrentVariant = true;
             m_CheckResourcesCompleteCallback = checkResourcesCompleteCallback;
-            m_ResourceChecker.CheckResources(m_CurrentVariant);
+            m_ResourceChecker.CheckResources(m_CurrentVariant, ignoreOtherVariant);
         }
 
         /// <summary>
@@ -1716,6 +1744,58 @@ namespace GameFramework.Resource
             return null;
         }
 
+        private IFileSystem GetFileSystem(string fileSystemName, bool storageInReadOnly)
+        {
+            if (string.IsNullOrEmpty(fileSystemName))
+            {
+                throw new GameFrameworkException("File system name is invalid.");
+            }
+
+            IFileSystem fileSystem = null;
+            if (storageInReadOnly)
+            {
+                if (!m_ReadOnlyFileSystems.TryGetValue(fileSystemName, out fileSystem))
+                {
+                    string fullPath = Utility.Path.GetRegularPath(Path.Combine(m_ReadOnlyPath, Utility.Text.Format("{0}.{1}", fileSystemName, DefaultExtension)));
+                    fileSystem = m_FileSystemManager.GetFileSystem(fullPath);
+                    if (fileSystem == null)
+                    {
+                        fileSystem = m_FileSystemManager.LoadFileSystem(fullPath, FileSystemAccess.Read);
+                        m_ReadOnlyFileSystems.Add(fileSystemName, fileSystem);
+                    }
+                }
+            }
+            else
+            {
+                if (!m_ReadWriteFileSystems.TryGetValue(fileSystemName, out fileSystem))
+                {
+                    string fullPath = Utility.Path.GetRegularPath(Path.Combine(m_ReadWritePath, Utility.Text.Format("{0}.{1}", fileSystemName, DefaultExtension)));
+                    fileSystem = m_FileSystemManager.GetFileSystem(fullPath);
+                    if (fileSystem == null)
+                    {
+                        if (File.Exists(fullPath))
+                        {
+                            fileSystem = m_FileSystemManager.LoadFileSystem(fullPath, FileSystemAccess.ReadWrite);
+                        }
+                        else
+                        {
+                            string directory = Path.GetDirectoryName(fullPath);
+                            if (!Directory.Exists(directory))
+                            {
+                                Directory.CreateDirectory(directory);
+                            }
+
+                            fileSystem = m_FileSystemManager.CreateFileSystem(fullPath, FileSystemAccess.ReadWrite, FileSystemMaxFileCount, FileSystemMaxBlockCount);
+                        }
+
+                        m_ReadWriteFileSystems.Add(fileSystemName, fileSystem);
+                    }
+                }
+            }
+
+            return fileSystem;
+        }
+
         private void OnIniterResourceInitComplete()
         {
             m_ResourceIniter.ResourceInitComplete -= OnIniterResourceInitComplete;
@@ -1739,12 +1819,12 @@ namespace GameFramework.Resource
             }
         }
 
-        private void OnCheckerResourceNeedUpdate(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode)
+        private void OnCheckerResourceNeedUpdate(ResourceName resourceName, string fileSystemName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode)
         {
-            m_ResourceUpdater.AddResourceUpdate(resourceName, loadType, length, hashCode, zipLength, zipHashCode, Utility.Path.GetRegularPath(Path.Combine(m_ReadWritePath, resourceName.FullName)));
+            m_ResourceUpdater.AddResourceUpdate(resourceName, fileSystemName, loadType, length, hashCode, zipLength, zipHashCode, Utility.Path.GetRegularPath(Path.Combine(m_ReadWritePath, resourceName.FullName)));
         }
 
-        private void OnCheckerResourceCheckComplete(int removedCount, int updateCount, long updateTotalLength, long updateTotalZipLength)
+        private void OnCheckerResourceCheckComplete(int movedCount, int removedCount, int updateCount, long updateTotalLength, long updateTotalZipLength)
         {
             m_VersionListProcessor.VersionListUpdateSuccess -= OnVersionListProcessorUpdateSuccess;
             m_VersionListProcessor.VersionListUpdateFailure -= OnVersionListProcessorUpdateFailure;
@@ -1757,7 +1837,7 @@ namespace GameFramework.Resource
             m_ResourceChecker.Shutdown();
             m_ResourceChecker = null;
 
-            m_ResourceUpdater.CheckResourceComplete(removedCount > 0);
+            m_ResourceUpdater.CheckResourceComplete(movedCount > 0 || removedCount > 0);
 
             if (updateCount <= 0)
             {
@@ -1771,6 +1851,10 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateComplete -= OnUpdaterResourceUpdateComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
+
+                m_ReadWriteResourceInfos.Clear();
+                m_ReadWriteResourceInfos = null;
+
                 if (m_DecompressCachedStream != null)
                 {
                     m_DecompressCachedStream.Dispose();
@@ -1778,7 +1862,7 @@ namespace GameFramework.Resource
                 }
             }
 
-            m_CheckResourcesCompleteCallback(removedCount, updateCount, updateTotalLength, updateTotalZipLength);
+            m_CheckResourcesCompleteCallback(movedCount, removedCount, updateCount, updateTotalLength, updateTotalZipLength);
             m_CheckResourcesCompleteCallback = null;
         }
 
@@ -1816,11 +1900,17 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateComplete -= OnUpdaterResourceUpdateComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
+
+                m_ReadWriteResourceInfos.Clear();
+                m_ReadWriteResourceInfos = null;
+
                 if (m_DecompressCachedStream != null)
                 {
                     m_DecompressCachedStream.Dispose();
                     m_DecompressCachedStream = null;
                 }
+
+                Utility.Path.RemoveEmptyDirectory(m_ReadWritePath);
             }
 
             ApplyResourcesCompleteCallback applyResourcesCompleteCallback = m_ApplyResourcesCompleteCallback;
@@ -1882,11 +1972,17 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateComplete -= OnUpdaterResourceUpdateComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
+
+                m_ReadWriteResourceInfos.Clear();
+                m_ReadWriteResourceInfos = null;
+
                 if (m_DecompressCachedStream != null)
                 {
                     m_DecompressCachedStream.Dispose();
                     m_DecompressCachedStream = null;
                 }
+
+                Utility.Path.RemoveEmptyDirectory(m_ReadWritePath);
             }
 
             UpdateResourcesCompleteCallback updateResourcesCompleteCallback = m_UpdateResourcesCompleteCallback;

@@ -234,9 +234,11 @@
     <Compile Include="Resource\LoadSceneSuccessCallback.cs" />
     <Compile Include="Resource\LoadSceneUpdateCallback.cs" />
     <Compile Include="Resource\LocalVersionList.cs" />
+    <Compile Include="Resource\LocalVersionList.FileSystem.cs" />
     <Compile Include="Resource\LocalVersionList.Resource.cs" />
     <Compile Include="Resource\PackageVersionList.Asset.cs" />
     <Compile Include="Resource\PackageVersionList.cs" />
+    <Compile Include="Resource\PackageVersionList.FileSystem.cs" />
     <Compile Include="Resource\PackageVersionList.Resource.cs" />
     <Compile Include="Resource\PackageVersionList.ResourceGroup.cs" />
     <Compile Include="Resource\PackageVersionListSerializer.cs" />
@@ -284,6 +286,7 @@
     <Compile Include="Resource\UnloadSceneSuccessCallback.cs" />
     <Compile Include="Resource\UpdatableVersionList.Asset.cs" />
     <Compile Include="Resource\UpdatableVersionList.cs" />
+    <Compile Include="Resource\UpdatableVersionList.FileSystem.cs" />
     <Compile Include="Resource\UpdatableVersionList.Resource.cs" />
     <Compile Include="Resource\UpdatableVersionList.ResourceGroup.cs" />
     <Compile Include="Resource\UpdatableVersionListSerializer.cs" />

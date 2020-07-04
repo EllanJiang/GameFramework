@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using GameFramework.Download;
+using GameFramework.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,6 +27,7 @@ namespace GameFramework.Resource
             private readonly List<ApplyInfo> m_ApplyWaitingInfo;
             private readonly List<UpdateInfo> m_UpdateWaitingInfo;
             private readonly Dictionary<ResourceName, UpdateInfo> m_UpdateCandidateInfo;
+            private readonly SortedDictionary<string, List<int>> m_CachedFileSystemsForGenerateReadWriteVersionList;
             private readonly byte[] m_CachedHashBytes;
             private readonly byte[] m_CachedBytes;
             private IDownloadManager m_DownloadManager;
@@ -60,6 +62,7 @@ namespace GameFramework.Resource
                 m_ApplyWaitingInfo = new List<ApplyInfo>();
                 m_UpdateWaitingInfo = new List<UpdateInfo>();
                 m_UpdateCandidateInfo = new Dictionary<ResourceName, UpdateInfo>();
+                m_CachedFileSystemsForGenerateReadWriteVersionList = new SortedDictionary<string, List<int>>();
                 m_CachedHashBytes = new byte[CachedHashBytesLength];
                 m_CachedBytes = new byte[CachedBytesLength];
                 m_DownloadManager = null;
@@ -253,6 +256,7 @@ namespace GameFramework.Resource
 
                 m_UpdateWaitingInfo.Clear();
                 m_UpdateCandidateInfo.Clear();
+                m_CachedFileSystemsForGenerateReadWriteVersionList.Clear();
             }
 
             /// <summary>
@@ -277,15 +281,16 @@ namespace GameFramework.Resource
             /// 增加资源更新。
             /// </summary>
             /// <param name="resourceName">资源名称。</param>
+            /// <param name="fileSystemName">资源所在的文件系统名称。</param>
             /// <param name="loadType">资源加载方式。</param>
             /// <param name="length">资源大小。</param>
             /// <param name="hashCode">资源哈希值。</param>
             /// <param name="zipLength">压缩后大小。</param>
             /// <param name="zipHashCode">压缩后哈希值。</param>
             /// <param name="resourcePath">资源路径。</param>
-            public void AddResourceUpdate(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode, string resourcePath)
+            public void AddResourceUpdate(ResourceName resourceName, string fileSystemName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode, string resourcePath)
             {
-                m_UpdateCandidateInfo.Add(resourceName, new UpdateInfo(resourceName, loadType, length, hashCode, zipLength, zipHashCode, resourcePath));
+                m_UpdateCandidateInfo.Add(resourceName, new UpdateInfo(resourceName, fileSystemName, loadType, length, hashCode, zipLength, zipHashCode, resourcePath));
             }
 
             /// <summary>
@@ -359,7 +364,7 @@ namespace GameFramework.Resource
 
                         if (updateInfo.LoadType == (LoadType)resource.LoadType && updateInfo.Length == resource.Length && updateInfo.HashCode == resource.HashCode)
                         {
-                            m_ApplyWaitingInfo.Add(new ApplyInfo(resourceName, (LoadType)resource.LoadType, resource.Offset, resource.Length, resource.HashCode, resource.ZipLength, resource.ZipHashCode, updateInfo.ResourcePath));
+                            m_ApplyWaitingInfo.Add(new ApplyInfo(resourceName, updateInfo.FileSystemName, (LoadType)resource.LoadType, resource.Offset, resource.Length, resource.HashCode, resource.ZipLength, resource.ZipHashCode, updateInfo.ResourcePath));
                         }
                     }
                 }
@@ -554,9 +559,21 @@ namespace GameFramework.Resource
                         }
                     }
 
+                    if (applyInfo.UseFileSystem)
+                    {
+                        IFileSystem fileSystem = m_ResourceManager.GetFileSystem(applyInfo.FileSystemName, false);
+                        bool retVal = fileSystem.WriteFile(applyInfo.ResourceName.FullName, applyInfo.ResourcePath);
+                        if (File.Exists(applyInfo.ResourcePath))
+                        {
+                            File.Delete(applyInfo.ResourcePath);
+                        }
+
+                        return retVal;
+                    }
+
                     m_UpdateCandidateInfo.Remove(applyInfo.ResourceName);
                     m_ResourceManager.m_ResourceInfos[applyInfo.ResourceName].MarkReady();
-                    m_ResourceManager.m_ReadWriteResourceInfos.Add(applyInfo.ResourceName, new ReadWriteResourceInfo(applyInfo.LoadType, applyInfo.Length, applyInfo.HashCode));
+                    m_ResourceManager.m_ReadWriteResourceInfos.Add(applyInfo.ResourceName, new ReadWriteResourceInfo(applyInfo.FileSystemName, applyInfo.LoadType, applyInfo.Length, applyInfo.HashCode));
 
                     if (ResourceApplySuccess != null)
                     {
@@ -616,11 +633,35 @@ namespace GameFramework.Resource
                         int index = 0;
                         foreach (KeyValuePair<ResourceName, ReadWriteResourceInfo> i in m_ResourceManager.m_ReadWriteResourceInfos)
                         {
-                            resources[index++] = new LocalVersionList.Resource(i.Key.Name, i.Key.Variant, i.Key.Extension, (byte)i.Value.LoadType, i.Value.Length, i.Value.HashCode);
+                            resources[index] = new LocalVersionList.Resource(i.Key.Name, i.Key.Variant, i.Key.Extension, (byte)i.Value.LoadType, i.Value.Length, i.Value.HashCode);
+                            if (i.Value.UseFileSystem)
+                            {
+                                List<int> resourceIndexes = null;
+                                if (!m_CachedFileSystemsForGenerateReadWriteVersionList.TryGetValue(i.Value.FileSystemName, out resourceIndexes))
+                                {
+                                    resourceIndexes = new List<int>();
+                                    m_CachedFileSystemsForGenerateReadWriteVersionList.Add(i.Value.FileSystemName, resourceIndexes);
+                                }
+
+                                resourceIndexes.Add(index);
+                            }
+
+                            index++;
                         }
                     }
 
-                    LocalVersionList versionList = new LocalVersionList(resources);
+                    LocalVersionList.FileSystem[] fileSystems = m_CachedFileSystemsForGenerateReadWriteVersionList.Count > 0 ? new LocalVersionList.FileSystem[m_CachedFileSystemsForGenerateReadWriteVersionList.Count] : null;
+                    if (fileSystems != null)
+                    {
+                        int index = 0;
+                        foreach (KeyValuePair<string, List<int>> i in m_CachedFileSystemsForGenerateReadWriteVersionList)
+                        {
+                            fileSystems[index++] = new LocalVersionList.FileSystem(i.Key, i.Value.ToArray());
+                            i.Value.Clear();
+                        }
+                    }
+
+                    LocalVersionList versionList = new LocalVersionList(resources, fileSystems);
                     if (!m_ResourceManager.m_ReadWriteVersionListSerializer.Serialize(fileStream, versionList))
                     {
                         throw new GameFrameworkException("Serialize read write version list failure.");
@@ -632,7 +673,7 @@ namespace GameFramework.Resource
                         fileStream = null;
                     }
 
-                    if (!string.IsNullOrEmpty(m_ReadWriteVersionListBackupFileName))
+                    if (File.Exists(m_ReadWriteVersionListBackupFileName))
                     {
                         File.Delete(m_ReadWriteVersionListBackupFileName);
                     }
@@ -650,7 +691,7 @@ namespace GameFramework.Resource
                         File.Delete(m_ReadWriteVersionListFileName);
                     }
 
-                    if (!string.IsNullOrEmpty(m_ReadWriteVersionListBackupFileName))
+                    if (File.Exists(m_ReadWriteVersionListBackupFileName))
                     {
                         File.Move(m_ReadWriteVersionListBackupFileName, m_ReadWriteVersionListFileName);
                     }
@@ -835,9 +876,27 @@ namespace GameFramework.Resource
                     }
                 }
 
+                if (updateInfo.UseFileSystem)
+                {
+                    IFileSystem fileSystem = m_ResourceManager.GetFileSystem(updateInfo.FileSystemName, false);
+                    bool retVal = fileSystem.WriteFile(updateInfo.ResourceName.FullName, updateInfo.ResourcePath);
+                    if (File.Exists(updateInfo.ResourcePath))
+                    {
+                        File.Delete(updateInfo.ResourcePath);
+                    }
+
+                    if (!retVal)
+                    {
+                        string errorMessage = Utility.Text.Format("Write resource to file system '{0}' error.", fileSystem.FullPath);
+                        DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
+                        OnDownloadFailure(this, downloadFailureEventArgs);
+                        return;
+                    }
+                }
+
                 m_UpdatingCount--;
                 m_ResourceManager.m_ResourceInfos[updateInfo.ResourceName].MarkReady();
-                m_ResourceManager.m_ReadWriteResourceInfos.Add(updateInfo.ResourceName, new ReadWriteResourceInfo(updateInfo.LoadType, updateInfo.Length, updateInfo.HashCode));
+                m_ResourceManager.m_ReadWriteResourceInfos.Add(updateInfo.ResourceName, new ReadWriteResourceInfo(updateInfo.FileSystemName, updateInfo.LoadType, updateInfo.Length, updateInfo.HashCode));
                 m_CurrentGenerateReadWriteVersionListLength += updateInfo.ZipLength;
                 if (m_UpdatingCount <= 0 || m_CurrentGenerateReadWriteVersionListLength >= m_GenerateReadWriteVersionListLength)
                 {

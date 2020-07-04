@@ -5,6 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -148,8 +149,9 @@ namespace GameFramework.Resource
 
                     m_Task = task;
                     m_Task.StartTime = DateTime.Now;
+                    ResourceInfo resourceInfo = m_Task.ResourceInfo;
 
-                    if (!m_Task.ResourceInfo.Ready)
+                    if (!resourceInfo.Ready)
                     {
                         m_Task.StartTime = default(DateTime);
                         return StartTaskStatus.HasToWait;
@@ -180,7 +182,7 @@ namespace GameFramework.Resource
                         }
                     }
 
-                    string resourceName = m_Task.ResourceInfo.ResourceName.Name;
+                    string resourceName = resourceInfo.ResourceName.Name;
                     if (IsResourceLoading(resourceName))
                     {
                         m_Task.StartTime = default(DateTime);
@@ -201,17 +203,37 @@ namespace GameFramework.Resource
                     string fullPath = null;
                     if (!s_CachedResourceNames.TryGetValue(resourceName, out fullPath))
                     {
-                        fullPath = Utility.Path.GetRegularPath(Path.Combine(m_Task.ResourceInfo.StorageInReadOnly ? m_ReadOnlyPath : m_ReadWritePath, m_Task.ResourceInfo.ResourceName.FullName));
+                        fullPath = Utility.Path.GetRegularPath(Path.Combine(resourceInfo.StorageInReadOnly ? m_ReadOnlyPath : m_ReadWritePath, resourceInfo.UseFileSystem ? resourceInfo.FileSystemName : resourceInfo.ResourceName.FullName));
                         s_CachedResourceNames.Add(resourceName, fullPath);
                     }
 
-                    if (m_Task.ResourceInfo.LoadType == LoadType.LoadFromFile)
+                    if (resourceInfo.LoadType == LoadType.LoadFromFile)
                     {
-                        m_Helper.ReadFile(fullPath);
+                        if (resourceInfo.UseFileSystem)
+                        {
+                            IFileSystem fileSystem = m_ResourceLoader.m_ResourceManager.GetFileSystem(resourceInfo.FileSystemName, resourceInfo.StorageInReadOnly);
+                            m_Helper.ReadFile(fileSystem, resourceInfo.ResourceName.FullName);
+                        }
+                        else
+                        {
+                            m_Helper.ReadFile(fullPath);
+                        }
+                    }
+                    else if (resourceInfo.LoadType == LoadType.LoadFromMemory || resourceInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt || resourceInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt)
+                    {
+                        if (resourceInfo.UseFileSystem)
+                        {
+                            IFileSystem fileSystem = m_ResourceLoader.m_ResourceManager.GetFileSystem(resourceInfo.FileSystemName, resourceInfo.StorageInReadOnly);
+                            m_Helper.ReadBytes(fileSystem, resourceInfo.ResourceName.FullName);
+                        }
+                        else
+                        {
+                            m_Helper.ReadBytes(fullPath);
+                        }
                     }
                     else
                     {
-                        m_Helper.ReadBytes(fullPath);
+                        throw new GameFrameworkException(Utility.Text.Format("Resource load type '{0}' is not supported.", resourceInfo.LoadType.ToString()));
                     }
 
                     return StartTaskStatus.CanResume;

@@ -19,13 +19,15 @@ namespace GameFramework.Resource
                 private struct LocalVersionInfo
                 {
                     private readonly bool m_Exist;
+                    private readonly string m_FileSystemName;
                     private readonly LoadType m_LoadType;
                     private readonly int m_Length;
                     private readonly int m_HashCode;
 
-                    public LocalVersionInfo(LoadType loadType, int length, int hashCode)
+                    public LocalVersionInfo(string fileSystemName, LoadType loadType, int length, int hashCode)
                     {
                         m_Exist = true;
+                        m_FileSystemName = fileSystemName;
                         m_LoadType = loadType;
                         m_Length = length;
                         m_HashCode = hashCode;
@@ -36,6 +38,22 @@ namespace GameFramework.Resource
                         get
                         {
                             return m_Exist;
+                        }
+                    }
+
+                    public bool UseFileSystem
+                    {
+                        get
+                        {
+                            return !string.IsNullOrEmpty(m_FileSystemName);
+                        }
+                    }
+
+                    public string FileSystemName
+                    {
+                        get
+                        {
+                            return m_FileSystemName;
                         }
                     }
 

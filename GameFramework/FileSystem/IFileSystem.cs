@@ -34,7 +34,15 @@ namespace GameFramework.FileSystem
         /// <summary>
         /// 获取文件数量。
         /// </summary>
-        int Count
+        int FileCount
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取最大文件数量。
+        /// </summary>
+        int MaxFileCount
         {
             get;
         }

@@ -17,6 +17,7 @@ namespace GameFramework.Resource
             private sealed class ApplyInfo
             {
                 private readonly ResourceName m_ResourceName;
+                private readonly string m_FileSystemName;
                 private readonly LoadType m_LoadType;
                 private readonly long m_Offset;
                 private readonly int m_Length;
@@ -29,6 +30,7 @@ namespace GameFramework.Resource
                 /// 初始化应用信息的新实例。
                 /// </summary>
                 /// <param name="resourceName">资源名称。</param>
+                /// <param name="fileSystemName">资源所在的文件系统名称。</param>
                 /// <param name="loadType">资源加载方式。</param>
                 /// <param name="offset">资源偏移。</param>
                 /// <param name="length">资源大小。</param>
@@ -36,9 +38,10 @@ namespace GameFramework.Resource
                 /// <param name="zipLength">压缩后大小。</param>
                 /// <param name="zipHashCode">压缩后哈希值。</param>
                 /// <param name="resourcePath">资源路径。</param>
-                public ApplyInfo(ResourceName resourceName, LoadType loadType, long offset, int length, int hashCode, int zipLength, int zipHashCode, string resourcePath)
+                public ApplyInfo(ResourceName resourceName, string fileSystemName, LoadType loadType, long offset, int length, int hashCode, int zipLength, int zipHashCode, string resourcePath)
                 {
                     m_ResourceName = resourceName;
+                    m_FileSystemName = fileSystemName;
                     m_LoadType = loadType;
                     m_Offset = offset;
                     m_Length = length;
@@ -56,6 +59,28 @@ namespace GameFramework.Resource
                     get
                     {
                         return m_ResourceName;
+                    }
+                }
+
+                /// <summary>
+                /// 获取资源是否使用文件系统。
+                /// </summary>
+                public bool UseFileSystem
+                {
+                    get
+                    {
+                        return !string.IsNullOrEmpty(m_FileSystemName);
+                    }
+                }
+
+                /// <summary>
+                /// 获取资源所在的文件系统名称。
+                /// </summary>
+                public string FileSystemName
+                {
+                    get
+                    {
+                        return m_FileSystemName;
                     }
                 }
 

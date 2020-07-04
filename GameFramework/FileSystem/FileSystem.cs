@@ -105,11 +105,22 @@ namespace GameFramework.FileSystem
         /// <summary>
         /// 获取文件数量。
         /// </summary>
-        public int Count
+        public int FileCount
         {
             get
             {
                 return m_FileDatas.Count;
+            }
+        }
+
+        /// <summary>
+        /// 获取最大文件数量。
+        /// </summary>
+        public int MaxFileCount
+        {
+            get
+            {
+                return m_HeaderData.MaxFileCount;
             }
         }
 
@@ -1143,7 +1154,9 @@ namespace GameFramework.FileSystem
                 if (index < m_HeaderData.MaxFileCount)
                 {
                     stringIndex = index;
-                    stringData = ReadStringData(stringIndex);
+                    byte[] bytes = new byte[byte.MaxValue];
+                    Utility.Random.GetRandomBytes(bytes);
+                    stringData = new StringData(0, bytes);
                 }
             }
 

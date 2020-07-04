@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using GameFramework.Download;
+using GameFramework.FileSystem;
 using GameFramework.ObjectPool;
 using System;
 
@@ -368,6 +369,12 @@ namespace GameFramework.Resource
         void SetObjectPoolManager(IObjectPoolManager objectPoolManager);
 
         /// <summary>
+        /// 设置文件系统管理器。
+        /// </summary>
+        /// <param name="fileSystemManager">文件系统管理器。</param>
+        void SetFileSystemManager(IFileSystemManager fileSystemManager);
+
+        /// <summary>
         /// 设置下载管理器。
         /// </summary>
         /// <param name="downloadManager">下载管理器。</param>
@@ -418,8 +425,9 @@ namespace GameFramework.Resource
         /// <summary>
         /// 使用可更新模式并检查资源。
         /// </summary>
+        /// <param name="ignoreOtherVariant">是否忽略处理其它变体的资源，若不忽略，将会移除其它变体的资源。</param>
         /// <param name="checkResourcesCompleteCallback">使用可更新模式并检查资源完成时的回调函数。</param>
-        void CheckResources(CheckResourcesCompleteCallback checkResourcesCompleteCallback);
+        void CheckResources(bool ignoreOtherVariant, CheckResourcesCompleteCallback checkResourcesCompleteCallback);
 
         /// <summary>
         /// 使用可更新模式并应用资源包资源。

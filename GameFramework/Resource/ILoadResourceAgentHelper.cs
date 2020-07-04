@@ -5,6 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework.FileSystem;
 using System;
 
 namespace GameFramework.Resource
@@ -51,10 +52,24 @@ namespace GameFramework.Resource
         void ReadFile(string fullPath);
 
         /// <summary>
+        /// 通过加载资源代理辅助器开始异步读取资源文件。
+        /// </summary>
+        /// <param name="fileSystem">要加载资源的文件系统。</param>
+        /// <param name="name">要加载资源的名称。</param>
+        void ReadFile(IFileSystem fileSystem, string name);
+
+        /// <summary>
         /// 通过加载资源代理辅助器开始异步读取资源二进制流。
         /// </summary>
         /// <param name="fullPath">要加载资源的完整路径名。</param>
         void ReadBytes(string fullPath);
+
+        /// <summary>
+        /// 通过加载资源代理辅助器开始异步读取资源二进制流。
+        /// </summary>
+        /// <param name="fileSystem">要加载资源的文件系统。</param>
+        /// <param name="name">要加载资源的名称。</param>
+        void ReadBytes(IFileSystem fileSystem, string name);
 
         /// <summary>
         /// 通过加载资源代理辅助器开始异步将资源二进制流转换为加载对象。
