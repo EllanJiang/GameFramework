@@ -29,14 +29,12 @@ namespace GameFramework.FileSystem
         private readonly string m_FullPath;
         private readonly FileSystemAccess m_Access;
         private readonly FileSystemStream m_Stream;
-        private readonly List<string> m_Names;
         private readonly Dictionary<string, int> m_FileDatas;
         private readonly List<BlockData> m_BlockDatas;
         private readonly GameFrameworkMultiDictionary<int, int> m_FreeBlockIndexes;
         private readonly SortedDictionary<int, StringData> m_StringDatas;
         private readonly Queue<KeyValuePair<int, StringData>> m_FreeStringDatas;
 
-        private string[] m_CachedNames;
         private HeaderData m_HeaderData;
         private int m_BlockDataOffset;
         private int m_StringDataOffset;
@@ -68,14 +66,12 @@ namespace GameFramework.FileSystem
             m_FullPath = fullPath;
             m_Access = access;
             m_Stream = stream;
-            m_Names = new List<string>();
             m_FileDatas = new Dictionary<string, int>();
             m_BlockDatas = new List<BlockData>();
             m_FreeBlockIndexes = new GameFrameworkMultiDictionary<int, int>();
             m_StringDatas = new SortedDictionary<int, StringData>();
             m_FreeStringDatas = new Queue<KeyValuePair<int, StringData>>();
 
-            m_CachedNames = null;
             m_HeaderData = default(HeaderData);
             m_BlockDataOffset = 0;
             m_StringDataOffset = 0;
@@ -207,11 +203,6 @@ namespace GameFramework.FileSystem
         /// </summary>
         public void Shutdown()
         {
-            if (m_Names.Count > 0)
-            {
-                throw new GameFrameworkException("You must remove all names before shutdown.");
-            }
-
             m_Stream.Close();
 
             m_FileDatas.Clear();
@@ -223,64 +214,6 @@ namespace GameFramework.FileSystem
             m_BlockDataOffset = 0;
             m_StringDataOffset = 0;
             m_FileDataOffset = 0;
-        }
-
-        /// <summary>
-        /// 获取文件系统名称集合。
-        /// </summary>
-        /// <returns>文件系统名称集合。</returns>
-        public string[] GetNames()
-        {
-            if (m_CachedNames == null)
-            {
-                m_CachedNames = m_Names.Count > 0 ? m_Names.ToArray() : EmptyStringArray;
-            }
-
-            return m_CachedNames;
-        }
-
-        /// <summary>
-        /// 增加文件系统名称。
-        /// </summary>
-        /// <param name="name">要增加的文件系统名称。</param>
-        /// <returns>是否增加文件系统名称成功。</returns>
-        public bool AddName(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new GameFrameworkException("Name is invalid.");
-            }
-
-            if (m_Names.Contains(name))
-            {
-                return false;
-            }
-
-            m_Names.Add(name);
-            m_Names.Sort();
-            m_CachedNames = null;
-            return true;
-        }
-
-        /// <summary>
-        /// 移除文件系统名称。
-        /// </summary>
-        /// <param name="name">要移除的文件系统名称。</param>
-        /// <returns>是否移除文件系统名称成功。</returns>
-        public bool RemoveName(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new GameFrameworkException("Name is invalid.");
-            }
-
-            if (!m_Names.Remove(name))
-            {
-                return false;
-            }
-
-            m_CachedNames = null;
-            return true;
         }
 
         /// <summary>

@@ -16,7 +16,6 @@ namespace GameFramework.FileSystem
     internal sealed class FileSystemManager : GameFrameworkModule, IFileSystemManager
     {
         private readonly Dictionary<string, FileSystem> m_FileSystems;
-        private readonly GameFrameworkMultiDictionary<string, FileSystem> m_RegisteredFileSystems;
 
         /// <summary>
         /// 初始化文件系统管理器的新实例。
@@ -24,7 +23,6 @@ namespace GameFramework.FileSystem
         public FileSystemManager()
         {
             m_FileSystems = new Dictionary<string, FileSystem>();
-            m_RegisteredFileSystems = new GameFrameworkMultiDictionary<string, FileSystem>();
         }
 
         /// <summary>
@@ -52,7 +50,6 @@ namespace GameFramework.FileSystem
         /// </summary>
         internal override void Shutdown()
         {
-            m_RegisteredFileSystems.Clear();
             while (m_FileSystems.Count > 0)
             {
                 foreach (KeyValuePair<string, FileSystem> fileSystem in m_FileSystems)
@@ -61,6 +58,42 @@ namespace GameFramework.FileSystem
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// 检查是否存在文件系统。
+        /// </summary>
+        /// <param name="fullPath">要检查的文件系统的完整路径。</param>
+        /// <returns>是否存在文件系统。</returns>
+        public bool HasFileSystem(string fullPath)
+        {
+            if (string.IsNullOrEmpty(fullPath))
+            {
+                throw new GameFrameworkException("Full path is invalid.");
+            }
+
+            return m_FileSystems.ContainsKey(fullPath);
+        }
+
+        /// <summary>
+        /// 获取文件系统。
+        /// </summary>
+        /// <param name="fullPath">要获取的文件系统的完整路径。</param>
+        /// <returns>获取的文件系统。</returns>
+        public IFileSystem GetFileSystem(string fullPath)
+        {
+            if (string.IsNullOrEmpty(fullPath))
+            {
+                throw new GameFrameworkException("Full path is invalid.");
+            }
+
+            FileSystem fileSystem = null;
+            if (m_FileSystems.TryGetValue(fullPath, out fileSystem))
+            {
+                return fileSystem;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -152,184 +185,13 @@ namespace GameFramework.FileSystem
                 throw new GameFrameworkException("File system is invalid.");
             }
 
-            FileSystem fileSystemImpl = (FileSystem)fileSystem;
-            string[] names = fileSystemImpl.GetNames();
-            foreach (string name in names)
-            {
-                UnregisterFileSystem(name, fileSystemImpl);
-            }
-
-            string fullPath = fileSystemImpl.FullPath;
-            fileSystemImpl.Shutdown();
+            string fullPath = fileSystem.FullPath;
+            ((FileSystem)fileSystem).Shutdown();
             m_FileSystems.Remove(fullPath);
 
             if (deletePhysicalFile && File.Exists(fullPath))
             {
                 File.Delete(fullPath);
-            }
-        }
-
-        /// <summary>
-        /// 注册文件系统。
-        /// </summary>
-        /// <param name="name">要注册的文件系统的名称。</param>
-        /// <param name="fileSystem">要注册的文件系统。</param>
-        /// <returns>是否注册文件系统成功。</returns>
-        public bool RegisterFileSystem(string name, IFileSystem fileSystem)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new GameFrameworkException("Name is invalid.");
-            }
-
-            if (fileSystem == null)
-            {
-                throw new GameFrameworkException("File system is invalid.");
-            }
-
-            FileSystem fileSystemImpl = (FileSystem)fileSystem;
-            if (!fileSystemImpl.AddName(name))
-            {
-                return false;
-            }
-
-            m_RegisteredFileSystems.Add(name, fileSystemImpl);
-            return true;
-        }
-
-        /// <summary>
-        /// 解除注册文件系统。
-        /// </summary>
-        /// <param name="name">要解除注册的文件系统的名称。</param>
-        /// <param name="fileSystem">要解除注册的文件系统。</param>
-        /// <returns>是否解除注册文件系统成功。</returns>
-        public bool UnregisterFileSystem(string name, IFileSystem fileSystem)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new GameFrameworkException("Name is invalid.");
-            }
-
-            if (fileSystem == null)
-            {
-                throw new GameFrameworkException("File system is invalid.");
-            }
-
-            FileSystem fileSystemImpl = (FileSystem)fileSystem;
-            if (!fileSystemImpl.RemoveName(name))
-            {
-                return false;
-            }
-
-            return m_RegisteredFileSystems.Remove(name, fileSystemImpl);
-        }
-
-        /// <summary>
-        /// 获取文件系统。
-        /// </summary>
-        /// <param name="name">要获取的文件系统的名称。</param>
-        /// <returns>获取的文件系统。</returns>
-        public IFileSystem GetFileSystem(string name)
-        {
-            return GetFileSystem(name, FileSystemAccess.Unspecified);
-        }
-
-        /// <summary>
-        /// 获取文件系统。
-        /// </summary>
-        /// <param name="name">要获取的文件系统的名称。</param>
-        /// <param name="access">要获取的文件系统的访问方式。</param>
-        /// <returns>获取的文件系统。</returns>
-        public IFileSystem GetFileSystem(string name, FileSystemAccess access)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new GameFrameworkException("Name is invalid.");
-            }
-
-            GameFrameworkLinkedListRange<FileSystem> range = default(GameFrameworkLinkedListRange<FileSystem>);
-            if (m_RegisteredFileSystems.TryGetValue(name, out range))
-            {
-                foreach (FileSystem fileSystem in range)
-                {
-                    if (access != FileSystemAccess.Unspecified && (fileSystem.Access & access) != access)
-                    {
-                        continue;
-                    }
-
-                    return fileSystem;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// 获取文件系统集合。
-        /// </summary>
-        /// <param name="name">要获取的文件系统的名称。</param>
-        /// <returns>获取的文件系统集合。</returns>
-        public IFileSystem[] GetFileSystems(string name)
-        {
-            List<IFileSystem> results = new List<IFileSystem>();
-            GetFileSystems(name, FileSystemAccess.Unspecified, results);
-            return results.ToArray();
-        }
-
-        /// <summary>
-        /// 获取文件系统集合。
-        /// </summary>
-        /// <param name="name">要获取的文件系统的名称。</param>
-        /// <param name="access">要获取的文件系统的访问方式。</param>
-        /// <returns>获取的文件系统集合。</returns>
-        public IFileSystem[] GetFileSystems(string name, FileSystemAccess access)
-        {
-            List<IFileSystem> results = new List<IFileSystem>();
-            GetFileSystems(name, access, results);
-            return results.ToArray();
-        }
-
-        /// <summary>
-        /// 获取文件系统集合。
-        /// </summary>
-        /// <param name="name">要获取的文件系统的名称。</param>
-        /// <param name="results">获取的文件系统集合。</param>
-        public void GetFileSystems(string name, List<IFileSystem> results)
-        {
-            GetFileSystems(name, FileSystemAccess.Unspecified, results);
-        }
-
-        /// <summary>
-        /// 获取文件系统集合。
-        /// </summary>
-        /// <param name="name">要获取的文件系统的名称。</param>
-        /// <param name="access">要获取的文件系统的访问方式。</param>
-        /// <param name="results">获取的文件系统集合。</param>
-        public void GetFileSystems(string name, FileSystemAccess access, List<IFileSystem> results)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new GameFrameworkException("Name is invalid.");
-            }
-
-            if (results == null)
-            {
-                throw new GameFrameworkException("Results is invalid.");
-            }
-
-            results.Clear();
-            GameFrameworkLinkedListRange<FileSystem> range = default(GameFrameworkLinkedListRange<FileSystem>);
-            if (m_RegisteredFileSystems.TryGetValue(name, out range))
-            {
-                foreach (FileSystem fileSystem in range)
-                {
-                    if (access != FileSystemAccess.Unspecified && (fileSystem.Access & access) != access)
-                    {
-                        continue;
-                    }
-
-                    results.Add(fileSystem);
-                }
             }
         }
 

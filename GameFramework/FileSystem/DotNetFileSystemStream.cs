@@ -40,11 +40,11 @@ namespace GameFramework.FileSystem
                     break;
 
                 case FileSystemAccess.Write:
-                    m_FileStream = new FileStream(fullPath, createNew ? FileMode.Create : FileMode.Open, FileAccess.Write, FileShare.None);
+                    m_FileStream = new FileStream(fullPath, createNew ? FileMode.Create : FileMode.Open, FileAccess.Write, FileShare.Read);
                     break;
 
                 case FileSystemAccess.ReadWrite:
-                    m_FileStream = new FileStream(fullPath, createNew ? FileMode.Create : FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+                    m_FileStream = new FileStream(fullPath, createNew ? FileMode.Create : FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
                     break;
 
                 default:

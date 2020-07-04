@@ -40,12 +40,6 @@ namespace GameFramework.FileSystem
         }
 
         /// <summary>
-        /// 获取文件系统名称集合。
-        /// </summary>
-        /// <returns>文件系统名称集合。</returns>
-        string[] GetNames();
-
-        /// <summary>
         /// 获取文件信息。
         /// </summary>
         /// <param name="name">要获取文件信息的文件名称。</param>
