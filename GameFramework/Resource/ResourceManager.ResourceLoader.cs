@@ -589,6 +589,120 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
+            /// 从文件系统中加载二进制资源。
+            /// </summary>
+            /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
+            /// <param name="buffer">存储加载二进制资源的二进制流。</param>
+            /// <param name="startIndex">存储加载二进制资源的二进制流的起始位置。</param>
+            /// <param name="length">存储加载二进制资源的二进制流的长度。</param>
+            /// <returns>实际加载了多少字节。</returns>
+            public int LoadBinaryFromFileSystem(string binaryAssetName, byte[] buffer, int startIndex, int length)
+            {
+                ResourceInfo resourceInfo = null;
+                string[] dependencyAssetNames = null;
+                if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is '{1}'.", binaryAssetName, resourceInfo != null && !resourceInfo.Ready ? LoadResourceStatus.NotReady.ToString() : LoadResourceStatus.NotExist.ToString()));
+                }
+
+                if (!resourceInfo.IsLoadFromBinary)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not a binary asset.", binaryAssetName));
+                }
+
+                if (!resourceInfo.UseFileSystem)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not use file system.", binaryAssetName));
+                }
+
+                IFileSystem fileSystem = m_ResourceManager.GetFileSystem(resourceInfo.FileSystemName, resourceInfo.StorageInReadOnly);
+                int bytesRead = fileSystem.ReadFile(resourceInfo.ResourceName.FullName, buffer, startIndex, length);
+                if (resourceInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || resourceInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
+                {
+                    DecryptResourceCallback decryptResourceCallback = m_ResourceManager.m_DecryptResourceCallback ?? DefaultDecryptResourceCallback;
+                    decryptResourceCallback(buffer, startIndex, bytesRead, resourceInfo.ResourceName.Name, resourceInfo.ResourceName.Variant, resourceInfo.ResourceName.Extension, resourceInfo.StorageInReadOnly, resourceInfo.FileSystemName, (byte)resourceInfo.LoadType, resourceInfo.Length, resourceInfo.HashCode);
+                }
+
+                return bytesRead;
+            }
+
+            /// <summary>
+            /// 从文件系统中加载二进制资源的片段。
+            /// </summary>
+            /// <param name="binaryAssetName">要加载片段的二进制资源的名称。</param>
+            /// <param name="offset">要加载片段的偏移。</param>
+            /// <param name="length">要加载片段的长度。</param>
+            /// <returns>存储加载二进制资源片段内容的二进制流。</returns>
+            public byte[] LoadBinarySegmentFromFileSystem(string binaryAssetName, long offset, int length)
+            {
+                ResourceInfo resourceInfo = null;
+                string[] dependencyAssetNames = null;
+                if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is '{1}'.", binaryAssetName, resourceInfo != null && !resourceInfo.Ready ? LoadResourceStatus.NotReady.ToString() : LoadResourceStatus.NotExist.ToString()));
+                }
+
+                if (!resourceInfo.IsLoadFromBinary)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not a binary asset.", binaryAssetName));
+                }
+
+                if (!resourceInfo.UseFileSystem)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not use file system.", binaryAssetName));
+                }
+
+                IFileSystem fileSystem = m_ResourceManager.GetFileSystem(resourceInfo.FileSystemName, resourceInfo.StorageInReadOnly);
+                byte[] bytes = fileSystem.ReadFileSegment(resourceInfo.ResourceName.FullName, offset, length);
+                if (resourceInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || resourceInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
+                {
+                    DecryptResourceCallback decryptResourceCallback = m_ResourceManager.m_DecryptResourceCallback ?? DefaultDecryptResourceCallback;
+                    decryptResourceCallback(bytes, 0, bytes.Length, resourceInfo.ResourceName.Name, resourceInfo.ResourceName.Variant, resourceInfo.ResourceName.Extension, resourceInfo.StorageInReadOnly, resourceInfo.FileSystemName, (byte)resourceInfo.LoadType, resourceInfo.Length, resourceInfo.HashCode);
+                }
+
+                return bytes;
+            }
+
+            /// <summary>
+            /// 从文件系统中加载二进制资源的片段。
+            /// </summary>
+            /// <param name="binaryAssetName">要加载片段的二进制资源的名称。</param>
+            /// <param name="offset">要加载片段的偏移。</param>
+            /// <param name="buffer">存储加载二进制资源片段内容的二进制流。</param>
+            /// <param name="startIndex">存储加载二进制资源片段内容的二进制流的起始位置。</param>
+            /// <param name="length">要加载片段的长度。</param>
+            /// <returns>实际加载了多少字节。</returns>
+            public int LoadBinarySegmentFromFileSystem(string binaryAssetName, long offset, byte[] buffer, int startIndex, int length)
+            {
+                ResourceInfo resourceInfo = null;
+                string[] dependencyAssetNames = null;
+                if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is '{1}'.", binaryAssetName, resourceInfo != null && !resourceInfo.Ready ? LoadResourceStatus.NotReady.ToString() : LoadResourceStatus.NotExist.ToString()));
+                }
+
+                if (!resourceInfo.IsLoadFromBinary)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not a binary asset.", binaryAssetName));
+                }
+
+                if (!resourceInfo.UseFileSystem)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not use file system.", binaryAssetName));
+                }
+
+                IFileSystem fileSystem = m_ResourceManager.GetFileSystem(resourceInfo.FileSystemName, resourceInfo.StorageInReadOnly);
+                int bytesRead = fileSystem.ReadFileSegment(resourceInfo.ResourceName.FullName, offset, buffer, startIndex, length);
+                if (resourceInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || resourceInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
+                {
+                    DecryptResourceCallback decryptResourceCallback = m_ResourceManager.m_DecryptResourceCallback ?? DefaultDecryptResourceCallback;
+                    decryptResourceCallback(buffer, startIndex, bytesRead, resourceInfo.ResourceName.Name, resourceInfo.ResourceName.Variant, resourceInfo.ResourceName.Extension, resourceInfo.StorageInReadOnly, resourceInfo.FileSystemName, (byte)resourceInfo.LoadType, resourceInfo.Length, resourceInfo.HashCode);
+                }
+
+                return bytesRead;
+            }
+
+            /// <summary>
             /// 获取所有加载资源任务的信息。
             /// </summary>
             /// <returns>所有加载资源任务的信息。</returns>
@@ -662,25 +776,24 @@ namespace GameFramework.Resource
 
             private void DefaultDecryptResourceCallback(byte[] bytes, int startIndex, int count, string name, string variant, string extension, bool storageInReadOnly, string fileSystem, byte loadType, int length, int hashCode)
             {
+                Utility.Converter.GetBytes(hashCode, m_CachedHashBytes);
                 switch ((LoadType)loadType)
                 {
                     case LoadType.LoadFromMemoryAndQuickDecrypt:
                     case LoadType.LoadFromBinaryAndQuickDecrypt:
-                        Utility.Converter.GetBytes(hashCode, m_CachedHashBytes);
                         Utility.Encryption.GetQuickSelfXorBytes(bytes, m_CachedHashBytes);
-                        Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
                         break;
 
                     case LoadType.LoadFromMemoryAndDecrypt:
                     case LoadType.LoadFromBinaryAndDecrypt:
-                        Utility.Converter.GetBytes(hashCode, m_CachedHashBytes);
                         Utility.Encryption.GetSelfXorBytes(bytes, m_CachedHashBytes);
-                        Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
                         break;
 
                     default:
                         throw new GameFrameworkException("Not supported load type when decrypt resource.");
                 }
+
+                Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
             }
 
             private void OnLoadBinarySuccess(string fileUri, byte[] bytes, float duration, object userData)

@@ -1660,6 +1660,197 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 从文件系统中加载二进制资源。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
+        /// <param name="buffer">存储加载二进制资源的二进制流。</param>
+        /// <returns>实际加载了多少字节。</returns>
+        public int LoadBinaryFromFileSystem(string binaryAssetName, byte[] buffer)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            if (buffer == null)
+            {
+                throw new GameFrameworkException("Buffer is invalid.");
+            }
+
+            return m_ResourceLoader.LoadBinaryFromFileSystem(binaryAssetName, buffer, 0, buffer.Length);
+        }
+
+        /// <summary>
+        /// 从文件系统中加载二进制资源。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
+        /// <param name="buffer">存储加载二进制资源的二进制流。</param>
+        /// <param name="startIndex">存储加载二进制资源的二进制流的起始位置。</param>
+        /// <returns>实际加载了多少字节。</returns>
+        public int LoadBinaryFromFileSystem(string binaryAssetName, byte[] buffer, int startIndex)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            if (buffer == null)
+            {
+                throw new GameFrameworkException("Buffer is invalid.");
+            }
+
+            return m_ResourceLoader.LoadBinaryFromFileSystem(binaryAssetName, buffer, startIndex, buffer.Length - startIndex);
+        }
+
+        /// <summary>
+        /// 从文件系统中加载二进制资源。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
+        /// <param name="buffer">存储加载二进制资源的二进制流。</param>
+        /// <param name="startIndex">存储加载二进制资源的二进制流的起始位置。</param>
+        /// <param name="length">存储加载二进制资源的二进制流的长度。</param>
+        /// <returns>实际加载了多少字节。</returns>
+        public int LoadBinaryFromFileSystem(string binaryAssetName, byte[] buffer, int startIndex, int length)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            if (buffer == null)
+            {
+                throw new GameFrameworkException("Buffer is invalid.");
+            }
+
+            return m_ResourceLoader.LoadBinaryFromFileSystem(binaryAssetName, buffer, startIndex, length);
+        }
+
+        /// <summary>
+        /// 从文件系统中加载二进制资源的片段。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载片段的二进制资源的名称。</param>
+        /// <param name="length">要加载片段的长度。</param>
+        /// <returns>存储加载二进制资源片段内容的二进制流。</returns>
+        public byte[] LoadBinarySegmentFromFileSystem(string binaryAssetName, int length)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, 0L, length);
+        }
+
+        /// <summary>
+        /// 从文件系统中加载二进制资源的片段。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载片段的二进制资源的名称。</param>
+        /// <param name="offset">要加载片段的偏移。</param>
+        /// <param name="length">要加载片段的长度。</param>
+        /// <returns>存储加载二进制资源片段内容的二进制流。</returns>
+        public byte[] LoadBinarySegmentFromFileSystem(string binaryAssetName, long offset, int length)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, offset, length);
+        }
+
+        /// <summary>
+        /// 从文件系统中加载二进制资源的片段。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载片段的二进制资源的名称。</param>
+        /// <param name="buffer">存储加载二进制资源片段内容的二进制流。</param>
+        /// <param name="length">要加载片段的长度。</param>
+        /// <returns>实际加载了多少字节。</returns>
+        public int LoadBinarySegmentFromFileSystem(string binaryAssetName, byte[] buffer, int length)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            if (buffer == null)
+            {
+                throw new GameFrameworkException("Buffer is invalid.");
+            }
+
+            return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, 0L, buffer, 0, length);
+        }
+
+        /// <summary>
+        /// 从文件系统中加载二进制资源的片段。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载片段的二进制资源的名称。</param>
+        /// <param name="buffer">存储加载二进制资源片段内容的二进制流。</param>
+        /// <param name="startIndex">存储加载二进制资源片段内容的二进制流的起始位置。</param>
+        /// <param name="length">要加载片段的长度。</param>
+        /// <returns>实际加载了多少字节。</returns>
+        public int LoadBinarySegmentFromFileSystem(string binaryAssetName, byte[] buffer, int startIndex, int length)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            if (buffer == null)
+            {
+                throw new GameFrameworkException("Buffer is invalid.");
+            }
+
+            return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, 0L, buffer, startIndex, length);
+        }
+
+        /// <summary>
+        /// 从文件系统中加载二进制资源的片段。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载片段的二进制资源的名称。</param>
+        /// <param name="offset">要加载片段的偏移。</param>
+        /// <param name="buffer">存储加载二进制资源片段内容的二进制流。</param>
+        /// <param name="length">要加载片段的长度。</param>
+        /// <returns>实际加载了多少字节。</returns>
+        public int LoadBinarySegmentFromFileSystem(string binaryAssetName, long offset, byte[] buffer, int length)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            if (buffer == null)
+            {
+                throw new GameFrameworkException("Buffer is invalid.");
+            }
+
+            return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, offset, buffer, 0, length);
+        }
+
+        /// <summary>
+        /// 从文件系统中加载二进制资源的片段。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载片段的二进制资源的名称。</param>
+        /// <param name="offset">要加载片段的偏移。</param>
+        /// <param name="buffer">存储加载二进制资源片段内容的二进制流。</param>
+        /// <param name="startIndex">存储加载二进制资源片段内容的二进制流的起始位置。</param>
+        /// <param name="length">要加载片段的长度。</param>
+        /// <returns>实际加载了多少字节。</returns>
+        public int LoadBinarySegmentFromFileSystem(string binaryAssetName, long offset, byte[] buffer, int startIndex, int length)
+        {
+            if (string.IsNullOrEmpty(binaryAssetName))
+            {
+                throw new GameFrameworkException("Binary asset name is invalid.");
+            }
+
+            if (buffer == null)
+            {
+                throw new GameFrameworkException("Buffer is invalid.");
+            }
+
+            return m_ResourceLoader.LoadBinarySegmentFromFileSystem(binaryAssetName, offset, buffer, startIndex, length);
+        }
+
+        /// <summary>
         /// 检查资源组是否存在。
         /// </summary>
         /// <param name="resourceGroupName">要检查资源组的名称。</param>
