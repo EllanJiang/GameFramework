@@ -9,7 +9,6 @@ using GameFramework.Download;
 using GameFramework.FileSystem;
 using GameFramework.ObjectPool;
 using System;
-using System.IO;
 
 namespace GameFramework.Resource
 {
