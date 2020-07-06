@@ -5,6 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework.FileSystem;
 using GameFramework.ObjectPool;
 using System;
 using System.Collections.Generic;
@@ -441,6 +442,7 @@ namespace GameFramework.Resource
             /// </summary>
             /// <param name="binaryAssetName">要获取实际路径的二进制资源的名称。</param>
             /// <returns>二进制资源的实际路径。</returns>
+            /// <remarks>二进制资源不能存储在文件系统中，否则将返回空。</remarks>
             public string GetBinaryPath(string binaryAssetName)
             {
                 ResourceInfo resourceInfo = null;
@@ -455,6 +457,11 @@ namespace GameFramework.Resource
                     return null;
                 }
 
+                if (resourceInfo.UseFileSystem)
+                {
+                    return null;
+                }
+
                 return Utility.Path.GetRegularPath(Path.Combine(resourceInfo.StorageInReadOnly ? m_ResourceManager.m_ReadOnlyPath : m_ResourceManager.m_ReadWritePath, resourceInfo.ResourceName.FullName));
             }
 
@@ -462,13 +469,17 @@ namespace GameFramework.Resource
             /// 获取二进制资源的实际路径。
             /// </summary>
             /// <param name="binaryAssetName">要获取实际路径的二进制资源的名称。</param>
-            /// <param name="storageInReadOnly">资源是否在只读区。</param>
-            /// <param name="relativePath">二进制资源相对于只读区或者读写区的相对路径。</param>
+            /// <param name="storageInReadOnly">二进制资源是否存储在只读区中。</param>
+            /// <param name="storageInFileSystem">二进制资源是否存储在文件系统中。</param>
+            /// <param name="relativePath">二进制资源或存储二进制资源的文件系统，相对于只读区或者读写区的相对路径。</param>
+            /// <param name="fileName">若二进制资源存储在文件系统中，则指示二进制资源在文件系统中的名称，否则此参数返回空。</param>
             /// <returns>是否获取二进制资源的实际路径成功。</returns>
-            public bool GetBinaryPath(string binaryAssetName, out bool storageInReadOnly, out string relativePath)
+            public bool GetBinaryPath(string binaryAssetName, out bool storageInReadOnly, out bool storageInFileSystem, out string relativePath, out string fileName)
             {
                 storageInReadOnly = false;
+                storageInFileSystem = false;
                 relativePath = null;
+                fileName = null;
 
                 ResourceInfo resourceInfo = null;
                 string[] dependencyAssetNames = null;
@@ -483,7 +494,17 @@ namespace GameFramework.Resource
                 }
 
                 storageInReadOnly = resourceInfo.StorageInReadOnly;
-                relativePath = resourceInfo.ResourceName.FullName;
+                if (resourceInfo.UseFileSystem)
+                {
+                    storageInFileSystem = true;
+                    relativePath = Utility.Text.Format("{0}.{1}", resourceInfo.FileSystemName, DefaultExtension);
+                    fileName = resourceInfo.ResourceName.FullName;
+                }
+                else
+                {
+                    relativePath = resourceInfo.ResourceName.FullName;
+                }
+
                 return true;
             }
 
@@ -521,8 +542,23 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(errorMessage);
                 }
 
-                string path = Utility.Path.GetRemotePath(Path.Combine(resourceInfo.StorageInReadOnly ? m_ResourceManager.m_ReadOnlyPath : m_ResourceManager.m_ReadWritePath, resourceInfo.ResourceName.FullName));
-                m_ResourceManager.m_ResourceHelper.LoadBytes(path, m_LoadBytesCallbacks, LoadBinaryInfo.Create(binaryAssetName, resourceInfo, loadBinaryCallbacks, userData));
+                if (resourceInfo.UseFileSystem)
+                {
+                    IFileSystem fileSystem = m_ResourceManager.GetFileSystem(resourceInfo.FileSystemName, resourceInfo.StorageInReadOnly);
+                    byte[] bytes = fileSystem.ReadFile(resourceInfo.ResourceName.FullName);
+                    if (resourceInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || resourceInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
+                    {
+                        DecryptResourceCallback decryptResourceCallback = m_ResourceManager.m_DecryptResourceCallback ?? DefaultDecryptResourceCallback;
+                        bytes = decryptResourceCallback(resourceInfo.ResourceName.Name, resourceInfo.ResourceName.Variant, (byte)resourceInfo.LoadType, resourceInfo.Length, resourceInfo.HashCode, resourceInfo.StorageInReadOnly, bytes);
+                    }
+
+                    loadBinaryCallbacks.LoadBinarySuccessCallback(binaryAssetName, bytes, 0f, userData);
+                }
+                else
+                {
+                    string path = Utility.Path.GetRemotePath(Path.Combine(resourceInfo.StorageInReadOnly ? m_ResourceManager.m_ReadOnlyPath : m_ResourceManager.m_ReadWritePath, resourceInfo.ResourceName.FullName));
+                    m_ResourceManager.m_ResourceHelper.LoadBytes(path, m_LoadBytesCallbacks, LoadBinaryInfo.Create(binaryAssetName, resourceInfo, loadBinaryCallbacks, userData));
+                }
             }
 
             /// <summary>
