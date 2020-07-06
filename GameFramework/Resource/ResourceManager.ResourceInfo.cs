@@ -77,6 +77,17 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
+            /// 获取资源是否通过二进制方式加载。
+            /// </summary>
+            public bool IsLoadFromBinary
+            {
+                get
+                {
+                    return m_LoadType == LoadType.LoadFromBinary || m_LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || m_LoadType == LoadType.LoadFromBinaryAndDecrypt;
+                }
+            }
+
+            /// <summary>
             /// 获取资源加载方式。
             /// </summary>
             public LoadType LoadType

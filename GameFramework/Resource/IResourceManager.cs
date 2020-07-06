@@ -9,6 +9,7 @@ using GameFramework.Download;
 using GameFramework.FileSystem;
 using GameFramework.ObjectPool;
 using System;
+using System.IO;
 
 namespace GameFramework.Resource
 {
@@ -617,6 +618,13 @@ namespace GameFramework.Resource
         /// <param name="loadBinaryCallbacks">加载二进制资源回调函数集。</param>
         /// <param name="userData">用户自定义数据。</param>
         void LoadBinary(string binaryAssetName, LoadBinaryCallbacks loadBinaryCallbacks, object userData);
+
+        /// <summary>
+        /// 从文件系统中加载二进制资源。
+        /// </summary>
+        /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
+        /// <returns>存储加载二进制资源的二进制流。</returns>
+        byte[] LoadBinaryFromFileSystem(string binaryAssetName);
 
         /// <summary>
         /// 检查资源组是否存在。

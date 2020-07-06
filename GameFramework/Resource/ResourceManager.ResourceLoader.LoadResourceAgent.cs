@@ -302,9 +302,10 @@ namespace GameFramework.Resource
                 private void OnLoadResourceAgentHelperReadBytesComplete(object sender, LoadResourceAgentHelperReadBytesCompleteEventArgs e)
                 {
                     byte[] bytes = e.GetBytes();
-                    if (m_Task.ResourceInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt || m_Task.ResourceInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt)
+                    ResourceInfo resourceInfo = m_Task.ResourceInfo;
+                    if (resourceInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt || resourceInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt)
                     {
-                        bytes = m_DecryptResourceCallback(m_Task.ResourceInfo.ResourceName.Name, m_Task.ResourceInfo.ResourceName.Variant, (byte)m_Task.ResourceInfo.LoadType, m_Task.ResourceInfo.Length, m_Task.ResourceInfo.HashCode, m_Task.ResourceInfo.StorageInReadOnly, bytes);
+                        m_DecryptResourceCallback(bytes, 0, bytes.Length, resourceInfo.ResourceName.Name, resourceInfo.ResourceName.Variant, resourceInfo.ResourceName.Extension, resourceInfo.StorageInReadOnly, resourceInfo.FileSystemName, (byte)resourceInfo.LoadType, resourceInfo.Length, resourceInfo.HashCode);
                     }
 
                     m_Helper.ParseBytes(bytes);

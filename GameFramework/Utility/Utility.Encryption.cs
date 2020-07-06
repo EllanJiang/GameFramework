@@ -76,7 +76,7 @@ namespace GameFramework
 
                 int bytesLength = bytes.Length;
                 byte[] results = new byte[bytesLength];
-                Buffer.BlockCopy(bytes, 0, results, 0, bytesLength);
+                Array.Copy(bytes, 0, results, 0, bytesLength);
                 GetSelfXorBytes(results, code, length);
                 return results;
             }
