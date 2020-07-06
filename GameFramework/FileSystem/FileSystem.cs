@@ -448,7 +448,7 @@ namespace GameFramework.FileSystem
         /// <returns>存储读取文件片段内容的二进制流。</returns>
         public byte[] ReadFileSegment(string name, int length)
         {
-            return ReadFileSegment(name, 0L, length);
+            return ReadFileSegment(name, 0, length);
         }
 
         /// <summary>
@@ -458,7 +458,7 @@ namespace GameFramework.FileSystem
         /// <param name="offset">要读取片段的偏移。</param>
         /// <param name="length">要读取片段的长度。</param>
         /// <returns>存储读取文件片段内容的二进制流。</returns>
-        public byte[] ReadFileSegment(string name, long offset, int length)
+        public byte[] ReadFileSegment(string name, int offset, int length)
         {
             if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
             {
@@ -470,7 +470,7 @@ namespace GameFramework.FileSystem
                 throw new GameFrameworkException("Name is invalid.");
             }
 
-            if (offset < 0L)
+            if (offset < 0)
             {
                 throw new GameFrameworkException("Index is invalid.");
             }
@@ -491,14 +491,14 @@ namespace GameFramework.FileSystem
                 offset = fileInfo.Length;
             }
 
-            int leftLength = (int)(fileInfo.Length - offset);
+            int leftLength = fileInfo.Length - offset;
             if (length > leftLength)
             {
                 length = leftLength;
             }
 
             byte[] buffer = new byte[length];
-            m_Stream.Position = offset;
+            m_Stream.Position = fileInfo.Offset + offset;
             m_Stream.Read(buffer, 0, length);
             return buffer;
         }
@@ -512,7 +512,7 @@ namespace GameFramework.FileSystem
         /// <returns>实际读取了多少字节。</returns>
         public int ReadFileSegment(string name, byte[] buffer, int length)
         {
-            return ReadFileSegment(name, 0L, buffer, 0, length);
+            return ReadFileSegment(name, 0, buffer, 0, length);
         }
 
         /// <summary>
@@ -525,7 +525,7 @@ namespace GameFramework.FileSystem
         /// <returns>实际读取了多少字节。</returns>
         public int ReadFileSegment(string name, byte[] buffer, int startIndex, int length)
         {
-            return ReadFileSegment(name, 0L, buffer, startIndex, length);
+            return ReadFileSegment(name, 0, buffer, startIndex, length);
         }
 
         /// <summary>
@@ -536,7 +536,7 @@ namespace GameFramework.FileSystem
         /// <param name="buffer">存储读取文件片段内容的二进制流。</param>
         /// <param name="length">要读取片段的长度。</param>
         /// <returns>实际读取了多少字节。</returns>
-        public int ReadFileSegment(string name, long offset, byte[] buffer, int length)
+        public int ReadFileSegment(string name, int offset, byte[] buffer, int length)
         {
             return ReadFileSegment(name, offset, buffer, 0, length);
         }
@@ -550,7 +550,7 @@ namespace GameFramework.FileSystem
         /// <param name="startIndex">存储读取文件片段内容的二进制流的起始位置。</param>
         /// <param name="length">要读取片段的长度。</param>
         /// <returns>实际读取了多少字节。</returns>
-        public int ReadFileSegment(string name, long offset, byte[] buffer, int startIndex, int length)
+        public int ReadFileSegment(string name, int offset, byte[] buffer, int startIndex, int length)
         {
             if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
             {
@@ -562,7 +562,7 @@ namespace GameFramework.FileSystem
                 throw new GameFrameworkException("Name is invalid.");
             }
 
-            if (offset < 0L)
+            if (offset < 0)
             {
                 throw new GameFrameworkException("Index is invalid.");
             }
@@ -588,13 +588,13 @@ namespace GameFramework.FileSystem
                 offset = fileInfo.Length;
             }
 
-            int leftLength = (int)(fileInfo.Length - offset);
+            int leftLength = fileInfo.Length - offset;
             if (length > leftLength)
             {
                 length = leftLength;
             }
 
-            m_Stream.Position = offset;
+            m_Stream.Position = fileInfo.Offset + offset;
             return m_Stream.Read(buffer, startIndex, length);
         }
 
@@ -607,7 +607,7 @@ namespace GameFramework.FileSystem
         /// <returns>实际读取了多少字节。</returns>
         public int ReadFileSegment(string name, Stream stream, int length)
         {
-            return ReadFileSegment(name, 0L, stream, length);
+            return ReadFileSegment(name, 0, stream, length);
         }
 
         /// <summary>
@@ -618,7 +618,7 @@ namespace GameFramework.FileSystem
         /// <param name="stream">存储读取文件片段内容的二进制流。</param>
         /// <param name="length">要读取片段的长度。</param>
         /// <returns>实际读取了多少字节。</returns>
-        public int ReadFileSegment(string name, long offset, Stream stream, int length)
+        public int ReadFileSegment(string name, int offset, Stream stream, int length)
         {
             if (m_Access != FileSystemAccess.Read && m_Access != FileSystemAccess.ReadWrite)
             {
@@ -630,7 +630,7 @@ namespace GameFramework.FileSystem
                 throw new GameFrameworkException("Name is invalid.");
             }
 
-            if (offset < 0L)
+            if (offset < 0)
             {
                 throw new GameFrameworkException("Index is invalid.");
             }
@@ -661,13 +661,13 @@ namespace GameFramework.FileSystem
                 offset = fileInfo.Length;
             }
 
-            int leftLength = (int)(fileInfo.Length - offset);
+            int leftLength = fileInfo.Length - offset;
             if (length > leftLength)
             {
                 length = leftLength;
             }
 
-            m_Stream.Position = offset;
+            m_Stream.Position = fileInfo.Offset + offset;
             return m_Stream.Read(stream, length);
         }
 

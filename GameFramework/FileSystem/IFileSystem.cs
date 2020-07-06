@@ -130,7 +130,7 @@ namespace GameFramework.FileSystem
         /// <param name="offset">要读取片段的偏移。</param>
         /// <param name="length">要读取片段的长度。</param>
         /// <returns>存储读取文件片段内容的二进制流。</returns>
-        byte[] ReadFileSegment(string name, long offset, int length);
+        byte[] ReadFileSegment(string name, int offset, int length);
 
         /// <summary>
         /// 读取指定文件的指定片段。
@@ -159,7 +159,7 @@ namespace GameFramework.FileSystem
         /// <param name="buffer">存储读取文件片段内容的二进制流。</param>
         /// <param name="length">要读取片段的长度。</param>
         /// <returns>实际读取了多少字节。</returns>
-        int ReadFileSegment(string name, long offset, byte[] buffer, int length);
+        int ReadFileSegment(string name, int offset, byte[] buffer, int length);
 
         /// <summary>
         /// 读取指定文件的指定片段。
@@ -170,7 +170,7 @@ namespace GameFramework.FileSystem
         /// <param name="startIndex">存储读取文件片段内容的二进制流的起始位置。</param>
         /// <param name="length">要读取片段的长度。</param>
         /// <returns>实际读取了多少字节。</returns>
-        int ReadFileSegment(string name, long offset, byte[] buffer, int startIndex, int length);
+        int ReadFileSegment(string name, int offset, byte[] buffer, int startIndex, int length);
 
         /// <summary>
         /// 读取指定文件的指定片段。
@@ -189,7 +189,7 @@ namespace GameFramework.FileSystem
         /// <param name="stream">存储读取文件片段内容的二进制流。</param>
         /// <param name="length">要读取片段的长度。</param>
         /// <returns>实际读取了多少字节。</returns>
-        int ReadFileSegment(string name, long offset, Stream stream, int length);
+        int ReadFileSegment(string name, int offset, Stream stream, int length);
 
         /// <summary>
         /// 写入指定文件。

@@ -667,7 +667,7 @@ namespace GameFramework.Resource
         /// <param name="offset">要加载片段的偏移。</param>
         /// <param name="length">要加载片段的长度。</param>
         /// <returns>存储加载二进制资源片段内容的二进制流。</returns>
-        byte[] LoadBinarySegmentFromFileSystem(string binaryAssetName, long offset, int length);
+        byte[] LoadBinarySegmentFromFileSystem(string binaryAssetName, int offset, int length);
 
         /// <summary>
         /// 从文件系统中加载二进制资源的片段。
@@ -696,7 +696,7 @@ namespace GameFramework.Resource
         /// <param name="buffer">存储加载二进制资源片段内容的二进制流。</param>
         /// <param name="length">要加载片段的长度。</param>
         /// <returns>实际加载了多少字节。</returns>
-        int LoadBinarySegmentFromFileSystem(string binaryAssetName, long offset, byte[] buffer, int length);
+        int LoadBinarySegmentFromFileSystem(string binaryAssetName, int offset, byte[] buffer, int length);
 
         /// <summary>
         /// 从文件系统中加载二进制资源的片段。
@@ -707,7 +707,7 @@ namespace GameFramework.Resource
         /// <param name="startIndex">存储加载二进制资源片段内容的二进制流的起始位置。</param>
         /// <param name="length">要加载片段的长度。</param>
         /// <returns>实际加载了多少字节。</returns>
-        int LoadBinarySegmentFromFileSystem(string binaryAssetName, long offset, byte[] buffer, int startIndex, int length);
+        int LoadBinarySegmentFromFileSystem(string binaryAssetName, int offset, byte[] buffer, int startIndex, int length);
 
         /// <summary>
         /// 检查资源组是否存在。
