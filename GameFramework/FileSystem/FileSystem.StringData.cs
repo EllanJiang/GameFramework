@@ -38,7 +38,7 @@ namespace GameFramework.FileSystem
                 }
 
                 Array.Copy(m_Bytes, 0, s_CachedBytes, 0, m_Length);
-                Utility.Encryption.GetSelfXorBytes(s_CachedBytes, encryptBytes, m_Length);
+                Utility.Encryption.GetSelfXorBytes(s_CachedBytes, 0, m_Length, encryptBytes);
                 return Utility.Converter.GetString(s_CachedBytes, 0, m_Length);
             }
 
