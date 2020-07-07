@@ -5,6 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -24,7 +25,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         public FileSystemManager()
         {
-            m_FileSystems = new Dictionary<string, FileSystem>();
+            m_FileSystems = new Dictionary<string, FileSystem>(StringComparer.Ordinal);
             m_FileSystemHelper = null;
         }
 

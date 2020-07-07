@@ -44,7 +44,7 @@ namespace GameFramework.Resource
                 m_AssetDependencyCount = new Dictionary<object, int>();
                 m_ResourceDependencyCount = new Dictionary<object, int>();
                 m_AssetToResourceMap = new Dictionary<object, object>();
-                m_SceneToAssetMap = new Dictionary<string, object>();
+                m_SceneToAssetMap = new Dictionary<string, object>(StringComparer.Ordinal);
                 m_LoadBytesCallbacks = new LoadBytesCallbacks(OnLoadBinarySuccess, OnLoadBinaryFailure);
                 m_CachedHashBytes = new byte[CachedHashBytesLength];
                 m_AssetPool = null;

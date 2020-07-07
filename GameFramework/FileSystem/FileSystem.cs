@@ -5,6 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -66,7 +67,7 @@ namespace GameFramework.FileSystem
             m_FullPath = fullPath;
             m_Access = access;
             m_Stream = stream;
-            m_FileDatas = new Dictionary<string, int>();
+            m_FileDatas = new Dictionary<string, int>(StringComparer.Ordinal);
             m_BlockDatas = new List<BlockData>();
             m_FreeBlockIndexes = new GameFrameworkMultiDictionary<int, int>();
             m_StringDatas = new SortedDictionary<int, StringData>();

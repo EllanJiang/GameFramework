@@ -113,7 +113,7 @@ namespace GameFramework.Resource
 
             public bool Equals(ResourceName value)
             {
-                return m_Name == value.m_Name && m_Variant == value.m_Variant && m_Extension == value.m_Extension;
+                return string.Equals(m_Name, value.m_Name, StringComparison.Ordinal) && string.Equals(m_Variant, value.m_Variant, StringComparison.Ordinal) && string.Equals(m_Extension, value.m_Extension, StringComparison.Ordinal);
             }
 
             public static bool operator ==(ResourceName a, ResourceName b)
@@ -143,19 +143,19 @@ namespace GameFramework.Resource
 
             public int CompareTo(ResourceName resourceName)
             {
-                int result = string.Compare(m_Name, resourceName.m_Name);
+                int result = string.CompareOrdinal(m_Name, resourceName.m_Name);
                 if (result != 0)
                 {
                     return result;
                 }
 
-                result = string.Compare(m_Variant, resourceName.m_Variant);
+                result = string.CompareOrdinal(m_Variant, resourceName.m_Variant);
                 if (result != 0)
                 {
                     return result;
                 }
 
-                return string.Compare(m_Extension, resourceName.m_Extension);
+                return string.CompareOrdinal(m_Extension, resourceName.m_Extension);
             }
         }
     }

@@ -29,7 +29,7 @@ namespace GameFramework.Network
         /// </summary>
         public NetworkManager()
         {
-            m_NetworkChannels = new Dictionary<string, NetworkChannelBase>();
+            m_NetworkChannels = new Dictionary<string, NetworkChannelBase>(StringComparer.Ordinal);
 
             m_NetworkConnectedEventHandler = null;
             m_NetworkClosedEventHandler = null;

@@ -32,7 +32,7 @@ namespace GameFramework.Localization
         /// </summary>
         public LocalizationManager()
         {
-            m_Dictionary = new Dictionary<string, string>();
+            m_Dictionary = new Dictionary<string, string>(StringComparer.Ordinal);
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadAssetSuccessCallback, LoadAssetOrBinaryFailureCallback, LoadAssetUpdateCallback, LoadAssetDependencyAssetCallback);
             m_LoadBinaryCallbacks = new LoadBinaryCallbacks(LoadBinarySuccessCallback, LoadAssetOrBinaryFailureCallback);
             m_ResourceManager = null;

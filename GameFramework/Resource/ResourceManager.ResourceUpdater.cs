@@ -62,7 +62,7 @@ namespace GameFramework.Resource
                 m_ApplyWaitingInfo = new List<ApplyInfo>();
                 m_UpdateWaitingInfo = new List<UpdateInfo>();
                 m_UpdateCandidateInfo = new Dictionary<ResourceName, UpdateInfo>();
-                m_CachedFileSystemsForGenerateReadWriteVersionList = new SortedDictionary<string, List<int>>();
+                m_CachedFileSystemsForGenerateReadWriteVersionList = new SortedDictionary<string, List<int>>(StringComparer.Ordinal);
                 m_CachedHashBytes = new byte[CachedHashBytesLength];
                 m_CachedBytes = new byte[CachedBytesLength];
                 m_DownloadManager = null;

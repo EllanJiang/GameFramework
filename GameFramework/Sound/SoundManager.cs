@@ -33,7 +33,7 @@ namespace GameFramework.Sound
         /// </summary>
         public SoundManager()
         {
-            m_SoundGroups = new Dictionary<string, SoundGroup>();
+            m_SoundGroups = new Dictionary<string, SoundGroup>(StringComparer.Ordinal);
             m_SoundsBeingLoaded = new List<int>();
             m_SoundsToReleaseOnLoad = new HashSet<int>();
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadAssetSuccessCallback, LoadAssetFailureCallback, LoadAssetUpdateCallback, LoadAssetDependencyAssetCallback);

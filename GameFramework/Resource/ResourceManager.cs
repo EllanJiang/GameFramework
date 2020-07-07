@@ -77,9 +77,9 @@ namespace GameFramework.Resource
             m_AssetInfos = null;
             m_ResourceInfos = null;
             m_ReadWriteResourceInfos = null;
-            m_ReadOnlyFileSystems = new Dictionary<string, IFileSystem>();
-            m_ReadWriteFileSystems = new Dictionary<string, IFileSystem>();
-            m_ResourceGroups = new Dictionary<string, ResourceGroup>();
+            m_ReadOnlyFileSystems = new Dictionary<string, IFileSystem>(StringComparer.Ordinal);
+            m_ReadWriteFileSystems = new Dictionary<string, IFileSystem>(StringComparer.Ordinal);
+            m_ResourceGroups = new Dictionary<string, ResourceGroup>(StringComparer.Ordinal);
 
             m_PackageVersionListSerializer = null;
             m_UpdatableVersionListSerializer = null;

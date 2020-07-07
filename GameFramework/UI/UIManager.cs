@@ -39,7 +39,7 @@ namespace GameFramework.UI
         /// </summary>
         public UIManager()
         {
-            m_UIGroups = new Dictionary<string, UIGroup>();
+            m_UIGroups = new Dictionary<string, UIGroup>(StringComparer.Ordinal);
             m_UIFormsBeingLoaded = new Dictionary<int, string>();
             m_UIFormsToReleaseOnLoad = new HashSet<int>();
             m_RecycleQueue = new Queue<IUIForm>();

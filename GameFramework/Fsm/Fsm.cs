@@ -30,7 +30,7 @@ namespace GameFramework.Fsm
         {
             m_Owner = null;
             m_States = new Dictionary<Type, FsmState<T>>();
-            m_Datas = new Dictionary<string, Variable>();
+            m_Datas = new Dictionary<string, Variable>(StringComparer.Ordinal);
             m_CurrentState = null;
             m_CurrentStateTime = 0f;
             m_IsDestroyed = true;

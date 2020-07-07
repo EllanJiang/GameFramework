@@ -298,7 +298,7 @@ namespace GameFramework.Resource
                     UpdatableVersionList.ResourceGroup[] resourceGroups = versionList.GetResourceGroups();
                     m_ResourceManager.m_ApplicableGameVersion = versionList.ApplicableGameVersion;
                     m_ResourceManager.m_InternalResourceVersion = versionList.InternalResourceVersion;
-                    m_ResourceManager.m_AssetInfos = new Dictionary<string, AssetInfo>(assets.Length);
+                    m_ResourceManager.m_AssetInfos = new Dictionary<string, AssetInfo>(assets.Length, StringComparer.Ordinal);
                     m_ResourceManager.m_ResourceInfos = new Dictionary<ResourceName, ResourceInfo>(resources.Length, new ResourceNameComparer());
                     m_ResourceManager.m_ReadWriteResourceInfos = new SortedDictionary<ResourceName, ReadWriteResourceInfo>(new ResourceNameComparer());
                     ResourceGroup defaultResourceGroup = m_ResourceManager.GetOrAddResourceGroup(string.Empty);

@@ -31,7 +31,7 @@ namespace GameFramework.Config
         /// </summary>
         public ConfigManager()
         {
-            m_ConfigDatas = new Dictionary<string, ConfigData>();
+            m_ConfigDatas = new Dictionary<string, ConfigData>(StringComparer.Ordinal);
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadAssetSuccessCallback, LoadAssetOrBinaryFailureCallback, LoadAssetUpdateCallback, LoadAssetDependencyAssetCallback);
             m_LoadBinaryCallbacks = new LoadBinaryCallbacks(LoadBinarySuccessCallback, LoadAssetOrBinaryFailureCallback);
             m_ResourceManager = null;
