@@ -5,6 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System;
 using System.IO;
 
 namespace GameFramework.FileSystem
@@ -14,6 +15,9 @@ namespace GameFramework.FileSystem
     /// </summary>
     public abstract class FileSystemStream
     {
+        private const int CachedBytesLength = 0x1000;
+        private static readonly byte[] s_CachedBytes = new byte[CachedBytesLength];
+
         /// <summary>
         /// 获取或设置文件系统流位置。
         /// </summary>
@@ -65,7 +69,19 @@ namespace GameFramework.FileSystem
         /// <param name="stream">存储读取文件内容的二进制流。</param>
         /// <param name="length">存储读取文件内容的二进制流的长度。</param>
         /// <returns>实际读取了多少字节。</returns>
-        protected internal abstract int Read(Stream stream, int length);
+        protected internal int Read(Stream stream, int length)
+        {
+            int bytesRead = 0;
+            int bytesLeft = length;
+            while ((bytesRead = Read(s_CachedBytes, 0, bytesLeft < CachedBytesLength ? bytesLeft : CachedBytesLength)) > 0)
+            {
+                bytesLeft -= bytesRead;
+                stream.Write(s_CachedBytes, 0, bytesRead);
+            }
+
+            Array.Clear(s_CachedBytes, 0, CachedBytesLength);
+            return length - bytesLeft;
+        }
 
         /// <summary>
         /// 向文件系统流中写入一个字节。
@@ -86,7 +102,18 @@ namespace GameFramework.FileSystem
         /// </summary>
         /// <param name="stream">存储写入文件内容的二进制流。</param>
         /// <param name="length">存储写入文件内容的二进制流的长度。</param>
-        protected internal abstract void Write(Stream stream, int length);
+        protected internal void Write(Stream stream, int length)
+        {
+            int bytesRead = 0;
+            int bytesLeft = length;
+            while ((bytesRead = stream.Read(s_CachedBytes, 0, bytesLeft < CachedBytesLength ? bytesLeft : CachedBytesLength)) > 0)
+            {
+                bytesLeft -= bytesRead;
+                Write(s_CachedBytes, 0, bytesRead);
+            }
+
+            Array.Clear(s_CachedBytes, 0, CachedBytesLength);
+        }
 
         /// <summary>
         /// 将文件系统流立刻更新到存储介质中。

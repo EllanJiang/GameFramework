@@ -15,9 +15,6 @@ namespace GameFramework.FileSystem
     /// </summary>
     public sealed class CommonFileSystemStream : FileSystemStream, IDisposable
     {
-        private const int CachedBytesLength = 0x1000;
-        private static readonly byte[] s_CachedBytes = new byte[CachedBytesLength];
-
         private readonly FileStream m_FileStream;
 
         /// <summary>
@@ -119,26 +116,6 @@ namespace GameFramework.FileSystem
         }
 
         /// <summary>
-        /// 从文件系统流中读取二进制流。
-        /// </summary>
-        /// <param name="stream">存储读取文件内容的二进制流。</param>
-        /// <param name="length">存储读取文件内容的二进制流的长度。</param>
-        /// <returns>实际读取了多少字节。</returns>
-        protected internal override int Read(Stream stream, int length)
-        {
-            int bytesRead = 0;
-            int bytesLeft = length;
-            while ((bytesRead = m_FileStream.Read(s_CachedBytes, 0, bytesLeft < CachedBytesLength ? bytesLeft : CachedBytesLength)) > 0)
-            {
-                bytesLeft -= bytesRead;
-                stream.Write(s_CachedBytes, 0, bytesRead);
-            }
-
-            Array.Clear(s_CachedBytes, 0, CachedBytesLength);
-            return length - bytesLeft;
-        }
-
-        /// <summary>
         /// 向文件系统流中写入一个字节。
         /// </summary>
         /// <param name="value">要写入的字节。</param>
@@ -156,24 +133,6 @@ namespace GameFramework.FileSystem
         protected internal override void Write(byte[] buffer, int startIndex, int length)
         {
             m_FileStream.Write(buffer, startIndex, length);
-        }
-
-        /// <summary>
-        /// 向文件系统流中写入二进制流。
-        /// </summary>
-        /// <param name="stream">存储写入文件内容的二进制流。</param>
-        /// <param name="length">存储写入文件内容的二进制流的长度。</param>
-        protected internal override void Write(Stream stream, int length)
-        {
-            int bytesRead = 0;
-            int bytesLeft = length;
-            while ((bytesRead = stream.Read(s_CachedBytes, 0, bytesLeft < CachedBytesLength ? bytesLeft : CachedBytesLength)) > 0)
-            {
-                bytesLeft -= bytesRead;
-                m_FileStream.Write(s_CachedBytes, 0, bytesRead);
-            }
-
-            Array.Clear(s_CachedBytes, 0, CachedBytesLength);
         }
 
         /// <summary>
