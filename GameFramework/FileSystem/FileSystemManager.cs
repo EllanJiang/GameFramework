@@ -17,12 +17,15 @@ namespace GameFramework.FileSystem
     {
         private readonly Dictionary<string, FileSystem> m_FileSystems;
 
+        private IFileSystemHelper m_FileSystemHelper;
+
         /// <summary>
         /// 初始化文件系统管理器的新实例。
         /// </summary>
         public FileSystemManager()
         {
             m_FileSystems = new Dictionary<string, FileSystem>();
+            m_FileSystemHelper = null;
         }
 
         /// <summary>
@@ -58,6 +61,20 @@ namespace GameFramework.FileSystem
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// 设置文件系统辅助器。
+        /// </summary>
+        /// <param name="fileSystemHelper">文件系统辅助器。</param>
+        public void SetFileSystemHelper(IFileSystemHelper fileSystemHelper)
+        {
+            if (fileSystemHelper == null)
+            {
+                throw new GameFrameworkException("File system helper is invalid.");
+            }
+
+            m_FileSystemHelper = fileSystemHelper;
         }
 
         /// <summary>
@@ -106,6 +123,11 @@ namespace GameFramework.FileSystem
         /// <returns>创建的文件系统。</returns>
         public IFileSystem CreateFileSystem(string fullPath, FileSystemAccess access, int maxFileCount, int maxBlockCount)
         {
+            if (m_FileSystemHelper == null)
+            {
+                throw new GameFrameworkException("File system helper is invalid.");
+            }
+
             if (string.IsNullOrEmpty(fullPath))
             {
                 throw new GameFrameworkException("Full path is invalid.");
@@ -127,7 +149,12 @@ namespace GameFramework.FileSystem
                 throw new GameFrameworkException(Utility.Text.Format("File system '{0}' is already exist.", fullPath));
             }
 
-            FileSystemStream fileSystemStream = new DotNetFileSystemStream(fullPath, access, true);
+            FileSystemStream fileSystemStream = m_FileSystemHelper.CreateFileSystemStream(fullPath, access, true);
+            if (fileSystemStream == null)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Create file system stream for '{0}' failure.", fullPath));
+            }
+
             FileSystem fileSystem = FileSystem.Create(fullPath, access, fileSystemStream, maxFileCount, maxBlockCount);
             if (fileSystem == null)
             {
@@ -146,6 +173,11 @@ namespace GameFramework.FileSystem
         /// <returns>加载的文件系统。</returns>
         public IFileSystem LoadFileSystem(string fullPath, FileSystemAccess access)
         {
+            if (m_FileSystemHelper == null)
+            {
+                throw new GameFrameworkException("File system helper is invalid.");
+            }
+
             if (string.IsNullOrEmpty(fullPath))
             {
                 throw new GameFrameworkException("Full path is invalid.");
@@ -162,7 +194,12 @@ namespace GameFramework.FileSystem
                 throw new GameFrameworkException(Utility.Text.Format("File system '{0}' is already exist.", fullPath));
             }
 
-            FileSystemStream fileSystemStream = new DotNetFileSystemStream(fullPath, access, false);
+            FileSystemStream fileSystemStream = m_FileSystemHelper.CreateFileSystemStream(fullPath, access, false);
+            if (fileSystemStream == null)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Create file system stream for '{0}' failure.", fullPath));
+            }
+
             FileSystem fileSystem = FileSystem.Load(fullPath, access, fileSystemStream);
             if (fileSystem == null)
             {

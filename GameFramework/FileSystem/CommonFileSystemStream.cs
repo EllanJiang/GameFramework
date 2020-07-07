@@ -11,9 +11,9 @@ using System.IO;
 namespace GameFramework.FileSystem
 {
     /// <summary>
-    /// 使用 .net 库实现的文件系统流。
+    /// 通用文件系统流。
     /// </summary>
-    public sealed class DotNetFileSystemStream : FileSystemStream, IDisposable
+    public sealed class CommonFileSystemStream : FileSystemStream, IDisposable
     {
         private const int CachedBytesLength = 0x1000;
         private static readonly byte[] s_CachedBytes = new byte[CachedBytesLength];
@@ -21,12 +21,12 @@ namespace GameFramework.FileSystem
         private readonly FileStream m_FileStream;
 
         /// <summary>
-        /// 初始化使用 .net 库实现的文件系统流的新实例。
+        /// 初始化通用文件系统流的新实例。
         /// </summary>
         /// <param name="fullPath">要加载的文件系统的完整路径。</param>
         /// <param name="access">要加载的文件系统的访问方式。</param>
         /// <param name="createNew">是否创建新的文件系统流。</param>
-        public DotNetFileSystemStream(string fullPath, FileSystemAccess access, bool createNew)
+        public CommonFileSystemStream(string fullPath, FileSystemAccess access, bool createNew)
         {
             if (string.IsNullOrEmpty(fullPath))
             {

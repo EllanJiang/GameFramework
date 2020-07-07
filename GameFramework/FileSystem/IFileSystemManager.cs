@@ -23,6 +23,12 @@ namespace GameFramework.FileSystem
         }
 
         /// <summary>
+        /// 设置文件系统辅助器。
+        /// </summary>
+        /// <param name="fileSystemHelper">文件系统辅助器。</param>
+        void SetFileSystemHelper(IFileSystemHelper fileSystemHelper);
+
+        /// <summary>
         /// 检查是否存在文件系统。
         /// </summary>
         /// <param name="fullPath">要检查的文件系统的完整路径。</param>

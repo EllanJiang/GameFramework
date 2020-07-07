@@ -138,7 +138,7 @@
     <Compile Include="Event\EventManager.cs" />
     <Compile Include="Event\GameEventArgs.cs" />
     <Compile Include="Event\IEventManager.cs" />
-    <Compile Include="FileSystem\DotNetFileSystemStream.cs" />
+    <Compile Include="FileSystem\CommonFileSystemStream.cs" />
     <Compile Include="FileSystem\FileInfo.cs" />
     <Compile Include="FileSystem\FileSystem.BlockData.cs" />
     <Compile Include="FileSystem\FileSystem.cs" />
@@ -148,6 +148,7 @@
     <Compile Include="FileSystem\FileSystemManager.cs" />
     <Compile Include="FileSystem\FileSystemStream.cs" />
     <Compile Include="FileSystem\IFileSystem.cs" />
+    <Compile Include="FileSystem\IFileSystemHelper.cs" />
     <Compile Include="FileSystem\IFileSystemManager.cs" />
     <Compile Include="Fsm\Fsm.cs" />
     <Compile Include="Fsm\FsmBase.cs" />
