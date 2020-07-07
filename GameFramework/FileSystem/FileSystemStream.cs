@@ -15,8 +15,15 @@ namespace GameFramework.FileSystem
     /// </summary>
     public abstract class FileSystemStream
     {
-        private const int CachedBytesLength = 0x1000;
-        private static readonly byte[] s_CachedBytes = new byte[CachedBytesLength];
+        /// <summary>
+        /// 缓存二进制流的长度。
+        /// </summary>
+        protected const int CachedBytesLength = 0x1000;
+
+        /// <summary>
+        /// 缓存二进制流。
+        /// </summary>
+        protected static readonly byte[] s_CachedBytes = new byte[CachedBytesLength];
 
         /// <summary>
         /// 获取或设置文件系统流位置。
