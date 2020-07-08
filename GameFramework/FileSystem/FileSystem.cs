@@ -184,7 +184,11 @@ namespace GameFramework.FileSystem
             fileSystem.m_HeaderData = Utility.Marshal.BytesToStructure<HeaderData>(HeaderDataSize, s_CachedBytes);
             CalcOffsets(fileSystem);
 
-            fileSystem.m_BlockDatas.Capacity = fileSystem.m_HeaderData.BlockCount;
+            if (fileSystem.m_BlockDatas.Capacity < fileSystem.m_HeaderData.BlockCount)
+            {
+                fileSystem.m_BlockDatas.Capacity = fileSystem.m_HeaderData.BlockCount;
+            }
+
             for (int i = 0; i < fileSystem.m_HeaderData.BlockCount; i++)
             {
                 stream.Read(s_CachedBytes, 0, BlockDataSize);
