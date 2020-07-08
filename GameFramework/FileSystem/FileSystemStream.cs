@@ -58,8 +58,8 @@ namespace GameFramework.FileSystem
         /// <summary>
         /// 从文件系统流中读取一个字节。
         /// </summary>
-        /// <returns>读取的字节。</returns>
-        protected internal abstract byte ReadByte();
+        /// <returns>读取的字节，若已经到达文件结尾，则返回 -1。</returns>
+        protected internal abstract int ReadByte();
 
         /// <summary>
         /// 从文件系统流中读取二进制流。

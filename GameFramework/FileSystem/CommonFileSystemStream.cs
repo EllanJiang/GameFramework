@@ -97,10 +97,10 @@ namespace GameFramework.FileSystem
         /// <summary>
         /// 从文件系统流中读取一个字节。
         /// </summary>
-        /// <returns>读取的字节。</returns>
-        protected internal override byte ReadByte()
+        /// <returns>读取的字节，若已经到达文件结尾，则返回 -1。</returns>
+        protected internal override int ReadByte()
         {
-            return (byte)m_FileStream.ReadByte();
+            return m_FileStream.ReadByte();
         }
 
         /// <summary>
