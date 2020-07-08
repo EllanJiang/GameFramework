@@ -124,7 +124,13 @@ namespace GameFramework.Resource
                             m_ResourceManager.m_AssetInfos.Add(asset.Name, new AssetInfo(asset.Name, resourceName, dependencyAssetNames));
                         }
 
-                        m_ResourceManager.m_ResourceInfos.Add(resourceName, new ResourceInfo(resourceName, m_CachedFileSystemNames[resourceName], (LoadType)resource.LoadType, resource.Length, resource.HashCode, true, true));
+                        string fileSystemName = null;
+                        if (!m_CachedFileSystemNames.TryGetValue(resourceName, out fileSystemName))
+                        {
+                            fileSystemName = null;
+                        }
+
+                        m_ResourceManager.m_ResourceInfos.Add(resourceName, new ResourceInfo(resourceName, fileSystemName, (LoadType)resource.LoadType, resource.Length, resource.HashCode, true, true));
                         defaultResourceGroup.AddResource(resourceName, resource.Length, resource.Length);
                     }
 
