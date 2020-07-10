@@ -274,11 +274,15 @@ namespace GameFramework.Resource
             /// <returns>检查资源是否存在的结果。</returns>
             public HasAssetResult HasAsset(string assetName)
             {
-                ResourceInfo resourceInfo = null;
-                string[] dependencyAssetNames = null;
-                if (!CheckAsset(assetName, out resourceInfo, out dependencyAssetNames))
+                ResourceInfo resourceInfo = GetResourceInfo(assetName);
+                if (resourceInfo == null)
                 {
-                    return resourceInfo != null && !resourceInfo.Ready ? HasAssetResult.NotReady : HasAssetResult.NotExist;
+                    return HasAssetResult.NotExist;
+                }
+
+                if (!resourceInfo.Ready && m_ResourceManager.m_ResourceMode != ResourceMode.UpdatableWhilePlaying)
+                {
+                    return HasAssetResult.NotReady;
                 }
 
                 if (resourceInfo.UseFileSystem)
@@ -452,9 +456,13 @@ namespace GameFramework.Resource
             /// <remarks>此方法仅适用于二进制资源存储在磁盘（而非文件系统）中的情况。若二进制资源存储在文件系统中时，返回值将始终为空。</remarks>
             public string GetBinaryPath(string binaryAssetName)
             {
-                ResourceInfo resourceInfo = null;
-                string[] dependencyAssetNames = null;
-                if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
+                ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
+                if (resourceInfo == null)
+                {
+                    return null;
+                }
+
+                if (!resourceInfo.Ready)
                 {
                     return null;
                 }
@@ -488,9 +496,13 @@ namespace GameFramework.Resource
                 relativePath = null;
                 fileName = null;
 
-                ResourceInfo resourceInfo = null;
-                string[] dependencyAssetNames = null;
-                if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
+                ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
+                if (resourceInfo == null)
+                {
+                    return false;
+                }
+
+                if (!resourceInfo.Ready)
                 {
                     return false;
                 }
@@ -516,6 +528,32 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
+            /// 获取二进制资源的长度。
+            /// </summary>
+            /// <param name="binaryAssetName">要获取长度的二进制资源的名称。</param>
+            /// <returns>二进制资源的长度。</returns>
+            public int GetBinaryLength(string binaryAssetName)
+            {
+                ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
+                if (resourceInfo == null)
+                {
+                    return -1;
+                }
+
+                if (!resourceInfo.Ready)
+                {
+                    return -1;
+                }
+
+                if (!resourceInfo.IsLoadFromBinary)
+                {
+                    return -1;
+                }
+
+                return resourceInfo.Length;
+            }
+
+            /// <summary>
             /// 异步加载二进制资源。
             /// </summary>
             /// <param name="binaryAssetName">要加载二进制资源的名称。</param>
@@ -523,14 +561,25 @@ namespace GameFramework.Resource
             /// <param name="userData">用户自定义数据。</param>
             public void LoadBinary(string binaryAssetName, LoadBinaryCallbacks loadBinaryCallbacks, object userData)
             {
-                ResourceInfo resourceInfo = null;
-                string[] dependencyAssetNames = null;
-                if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
+                ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
+                if (resourceInfo == null)
                 {
-                    string errorMessage = Utility.Text.Format("Can not load binary '{0}'.", binaryAssetName);
+                    string errorMessage = Utility.Text.Format("Can not load binary '{0}' which is not exist.", binaryAssetName);
                     if (loadBinaryCallbacks.LoadBinaryFailureCallback != null)
                     {
-                        loadBinaryCallbacks.LoadBinaryFailureCallback(binaryAssetName, resourceInfo != null && !resourceInfo.Ready ? LoadResourceStatus.NotReady : LoadResourceStatus.NotExist, errorMessage, userData);
+                        loadBinaryCallbacks.LoadBinaryFailureCallback(binaryAssetName, LoadResourceStatus.NotExist, errorMessage, userData);
+                        return;
+                    }
+
+                    throw new GameFrameworkException(errorMessage);
+                }
+
+                if (!resourceInfo.Ready)
+                {
+                    string errorMessage = Utility.Text.Format("Can not load binary '{0}' which is not ready.", binaryAssetName);
+                    if (loadBinaryCallbacks.LoadBinaryFailureCallback != null)
+                    {
+                        loadBinaryCallbacks.LoadBinaryFailureCallback(binaryAssetName, LoadResourceStatus.NotReady, errorMessage, userData);
                         return;
                     }
 
@@ -567,11 +616,15 @@ namespace GameFramework.Resource
             /// <returns>存储加载二进制资源的二进制流。</returns>
             public byte[] LoadBinaryFromFileSystem(string binaryAssetName)
             {
-                ResourceInfo resourceInfo = null;
-                string[] dependencyAssetNames = null;
-                if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
+                ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
+                if (resourceInfo == null)
                 {
-                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is '{1}'.", binaryAssetName, resourceInfo != null && !resourceInfo.Ready ? LoadResourceStatus.NotReady.ToString() : LoadResourceStatus.NotExist.ToString()));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not exist.", binaryAssetName));
+                }
+
+                if (!resourceInfo.Ready)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not ready.", binaryAssetName));
                 }
 
                 if (!resourceInfo.IsLoadFromBinary)
@@ -610,11 +663,15 @@ namespace GameFramework.Resource
             /// <returns>实际加载了多少字节。</returns>
             public int LoadBinaryFromFileSystem(string binaryAssetName, byte[] buffer, int startIndex, int length)
             {
-                ResourceInfo resourceInfo = null;
-                string[] dependencyAssetNames = null;
-                if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
+                ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
+                if (resourceInfo == null)
                 {
-                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is '{1}'.", binaryAssetName, resourceInfo != null && !resourceInfo.Ready ? LoadResourceStatus.NotReady.ToString() : LoadResourceStatus.NotExist.ToString()));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not exist.", binaryAssetName));
+                }
+
+                if (!resourceInfo.Ready)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not ready.", binaryAssetName));
                 }
 
                 if (!resourceInfo.IsLoadFromBinary)
@@ -647,11 +704,15 @@ namespace GameFramework.Resource
             /// <returns>存储加载二进制资源片段内容的二进制流。</returns>
             public byte[] LoadBinarySegmentFromFileSystem(string binaryAssetName, int offset, int length)
             {
-                ResourceInfo resourceInfo = null;
-                string[] dependencyAssetNames = null;
-                if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
+                ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
+                if (resourceInfo == null)
                 {
-                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is '{1}'.", binaryAssetName, resourceInfo != null && !resourceInfo.Ready ? LoadResourceStatus.NotReady.ToString() : LoadResourceStatus.NotExist.ToString()));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not exist.", binaryAssetName));
+                }
+
+                if (!resourceInfo.Ready)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not ready.", binaryAssetName));
                 }
 
                 if (!resourceInfo.IsLoadFromBinary)
@@ -691,11 +752,15 @@ namespace GameFramework.Resource
             /// <returns>实际加载了多少字节。</returns>
             public int LoadBinarySegmentFromFileSystem(string binaryAssetName, int offset, byte[] buffer, int startIndex, int length)
             {
-                ResourceInfo resourceInfo = null;
-                string[] dependencyAssetNames = null;
-                if (!CheckAsset(binaryAssetName, out resourceInfo, out dependencyAssetNames))
+                ResourceInfo resourceInfo = GetResourceInfo(binaryAssetName);
+                if (resourceInfo == null)
                 {
-                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is '{1}'.", binaryAssetName, resourceInfo != null && !resourceInfo.Ready ? LoadResourceStatus.NotReady.ToString() : LoadResourceStatus.NotExist.ToString()));
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not exist.", binaryAssetName));
+                }
+
+                if (!resourceInfo.Ready)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Can not load binary '{0}' from file system which is not ready.", binaryAssetName));
                 }
 
                 if (!resourceInfo.IsLoadFromBinary)
@@ -763,6 +828,22 @@ namespace GameFramework.Resource
                 }
 
                 return true;
+            }
+
+            private ResourceInfo GetResourceInfo(string assetName)
+            {
+                if (string.IsNullOrEmpty(assetName))
+                {
+                    return null;
+                }
+
+                AssetInfo assetInfo = m_ResourceManager.GetAssetInfo(assetName);
+                if (assetInfo == null)
+                {
+                    return null;
+                }
+
+                return m_ResourceManager.GetResourceInfo(assetInfo.ResourceName);
             }
 
             private bool CheckAsset(string assetName, out ResourceInfo resourceInfo, out string[] dependencyAssetNames)
