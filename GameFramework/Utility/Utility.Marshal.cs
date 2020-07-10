@@ -52,7 +52,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Size is invalid.");
                 }
 
-                if (s_CachedHGlobalPtr == IntPtr.Zero || size > s_CachedHGlobalSize)
+                if (s_CachedHGlobalPtr == IntPtr.Zero || s_CachedHGlobalSize < size)
                 {
                     FreeCachedHGlobal();
                     s_CachedHGlobalPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(size);

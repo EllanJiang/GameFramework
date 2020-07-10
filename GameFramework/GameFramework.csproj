@@ -57,6 +57,7 @@
     <Compile Include="Base\GameFrameworkModule.cs" />
     <Compile Include="Base\GameFrameworkMultiDictionary.cs" />
     <Compile Include="Base\GameFrameworkSerializer.cs" />
+    <Compile Include="Base\GlobalBytes\GlobalBytes.cs" />
     <Compile Include="Base\Log\GameFrameworkLog.cs" />
     <Compile Include="Base\Log\GameFrameworkLog.ILogHelper.cs" />
     <Compile Include="Base\Log\GameFrameworkLogLevel.cs" />
