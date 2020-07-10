@@ -196,18 +196,18 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 返回一个循环访问数据表的枚举器。
+        /// 返回循环访问集合的枚举数。
         /// </summary>
-        /// <returns>可用于循环访问数据表的对象。</returns>
+        /// <returns>循环访问集合的枚举数。</returns>
         IEnumerator<KeyValuePair<TKey, GameFrameworkLinkedListRange<TValue>>> IEnumerable<KeyValuePair<TKey, GameFrameworkLinkedListRange<TValue>>>.GetEnumerator()
         {
             return GetEnumerator();
         }
 
         /// <summary>
-        /// 返回一个循环访问数据表的枚举器。
+        /// 返回循环访问集合的枚举数。
         /// </summary>
-        /// <returns>可用于循环访问数据表的对象。</returns>
+        /// <returns>循环访问集合的枚举数。</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
