@@ -404,6 +404,11 @@ namespace GameFramework.FileSystem
             }
 
             m_Stream.Position = fileInfo.Offset;
+            if (length > fileInfo.Length)
+            {
+                length = fileInfo.Length;
+            }
+
             return m_Stream.Read(buffer, startIndex, length);
         }
 
