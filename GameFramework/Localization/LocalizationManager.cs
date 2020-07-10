@@ -251,8 +251,43 @@ namespace GameFramework.Localization
                     break;
 
                 case HasAssetResult.BinaryOnDisk:
-                case HasAssetResult.BinaryOnFileSystem:
                     m_ResourceManager.LoadBinary(dictionaryAssetName, m_LoadBinaryCallbacks, userData);
+                    break;
+
+                case HasAssetResult.BinaryOnFileSystem:
+                    int length = m_ResourceManager.GetBinaryLength(dictionaryAssetName);
+                    byte[] dictionaryBytes = GlobalBytes.Get(length);
+                    if (length != m_ResourceManager.LoadBinaryFromFileSystem(dictionaryAssetName, dictionaryBytes))
+                    {
+                        throw new GameFrameworkException(Utility.Text.Format("Load binary '{0}' from file system internal error.", dictionaryAssetName));
+                    }
+
+                    try
+                    {
+                        if (!m_LocalizationHelper.LoadDictionary(dictionaryAssetName, dictionaryBytes, 0, length, userData))
+                        {
+                            throw new GameFrameworkException(Utility.Text.Format("Load dictionary failure in helper, asset name '{0}'.", dictionaryAssetName));
+                        }
+
+                        if (m_LoadDictionarySuccessEventHandler != null)
+                        {
+                            LoadDictionarySuccessEventArgs loadDictionarySuccessEventArgs = LoadDictionarySuccessEventArgs.Create(dictionaryAssetName, 0f, userData);
+                            m_LoadDictionarySuccessEventHandler(this, loadDictionarySuccessEventArgs);
+                            ReferencePool.Release(loadDictionarySuccessEventArgs);
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        if (m_LoadDictionaryFailureEventHandler != null)
+                        {
+                            LoadDictionaryFailureEventArgs loadDictionaryFailureEventArgs = LoadDictionaryFailureEventArgs.Create(dictionaryAssetName, exception.ToString(), userData);
+                            m_LoadDictionaryFailureEventHandler(this, loadDictionaryFailureEventArgs);
+                            ReferencePool.Release(loadDictionaryFailureEventArgs);
+                            return;
+                        }
+
+                        throw;
+                    }
                     break;
 
                 default:
@@ -263,29 +298,34 @@ namespace GameFramework.Localization
         /// <summary>
         /// 解析字典。
         /// </summary>
-        /// <param name="dictionaryData">要解析的字典数据。</param>
+        /// <param name="dictionaryString">要解析的字典字符串。</param>
         /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(object dictionaryData)
+        public bool ParseDictionary(string dictionaryString)
         {
-            return ParseDictionary(dictionaryData, null);
+            return ParseDictionary(dictionaryString, null);
         }
 
         /// <summary>
         /// 解析字典。
         /// </summary>
-        /// <param name="dictionaryData">要解析的字典数据。</param>
+        /// <param name="dictionaryString">要解析的字典字符串。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(object dictionaryData, object userData)
+        public bool ParseDictionary(string dictionaryString, object userData)
         {
             if (m_LocalizationHelper == null)
             {
                 throw new GameFrameworkException("You must set localization helper first.");
             }
 
+            if (dictionaryString == null)
+            {
+                throw new GameFrameworkException("Dictionary string is invalid.");
+            }
+
             try
             {
-                return m_LocalizationHelper.ParseDictionary(dictionaryData, userData);
+                return m_LocalizationHelper.ParseDictionary(dictionaryString, userData);
             }
             catch (Exception exception)
             {
@@ -294,7 +334,90 @@ namespace GameFramework.Localization
                     throw;
                 }
 
-                throw new GameFrameworkException(Utility.Text.Format("Can not parse dictionary with exception '{0}'.", exception.ToString()), exception);
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse dictionary string with exception '{0}'.", exception.ToString()), exception);
+            }
+        }
+
+        /// <summary>
+        /// 解析字典。
+        /// </summary>
+        /// <param name="dictionaryBytes">要解析的字典二进制数据。</param>
+        /// <returns>是否解析字典成功。</returns>
+        public bool ParseDictionary(byte[] dictionaryBytes)
+        {
+            if (dictionaryBytes == null)
+            {
+                throw new GameFrameworkException("Dictionary bytes is invalid.");
+            }
+
+            return ParseDictionary(dictionaryBytes, 0, dictionaryBytes.Length, null);
+        }
+
+        /// <summary>
+        /// 解析字典。
+        /// </summary>
+        /// <param name="dictionaryBytes">要解析的字典二进制数据。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析字典成功。</returns>
+        public bool ParseDictionary(byte[] dictionaryBytes, object userData)
+        {
+            if (dictionaryBytes == null)
+            {
+                throw new GameFrameworkException("Dictionary bytes is invalid.");
+            }
+
+            return ParseDictionary(dictionaryBytes, 0, dictionaryBytes.Length, userData);
+        }
+
+        /// <summary>
+        /// 解析字典。
+        /// </summary>
+        /// <param name="dictionaryBytes">要解析的字典二进制数据。</param>
+        /// <param name="startIndex">字典二进制数据的起始位置。</param>
+        /// <param name="length">字典二进制数据的长度。</param>
+        /// <returns>是否解析字典成功。</returns>
+        public bool ParseDictionary(byte[] dictionaryBytes, int startIndex, int length)
+        {
+            return ParseDictionary(dictionaryBytes, startIndex, length, null);
+        }
+
+        /// <summary>
+        /// 解析字典。
+        /// </summary>
+        /// <param name="dictionaryBytes">要解析的字典二进制数据。</param>
+        /// <param name="startIndex">字典二进制数据的起始位置。</param>
+        /// <param name="length">字典二进制数据的长度。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析字典成功。</returns>
+        public bool ParseDictionary(byte[] dictionaryBytes, int startIndex, int length, object userData)
+        {
+            if (m_LocalizationHelper == null)
+            {
+                throw new GameFrameworkException("You must set localization helper first.");
+            }
+
+            if (dictionaryBytes == null)
+            {
+                throw new GameFrameworkException("Dictionary bytes is invalid.");
+            }
+
+            if (startIndex < 0 || length < 0 || startIndex + length > dictionaryBytes.Length)
+            {
+                throw new GameFrameworkException("Start index or length is invalid.");
+            }
+
+            try
+            {
+                return m_LocalizationHelper.ParseDictionary(dictionaryBytes, startIndex, length, userData);
+            }
+            catch (Exception exception)
+            {
+                if (exception is GameFrameworkException)
+                {
+                    throw;
+                }
+
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse dictionary bytes with exception '{0}'.", exception.ToString()), exception);
             }
         }
 

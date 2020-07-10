@@ -103,17 +103,51 @@ namespace GameFramework.Localization
         /// <summary>
         /// 解析字典。
         /// </summary>
-        /// <param name="dictionaryData">要解析的字典数据。</param>
+        /// <param name="dictionaryString">要解析的字典字符串。</param>
         /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(object dictionaryData);
+        bool ParseDictionary(string dictionaryString);
 
         /// <summary>
         /// 解析字典。
         /// </summary>
-        /// <param name="dictionaryData">要解析的字典数据。</param>
+        /// <param name="dictionaryString">要解析的字典字符串。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(object dictionaryData, object userData);
+        bool ParseDictionary(string dictionaryString, object userData);
+
+        /// <summary>
+        /// 解析字典。
+        /// </summary>
+        /// <param name="dictionaryBytes">要解析的字典二进制数据。</param>
+        /// <returns>是否解析字典成功。</returns>
+        bool ParseDictionary(byte[] dictionaryBytes);
+
+        /// <summary>
+        /// 解析字典。
+        /// </summary>
+        /// <param name="dictionaryBytes">要解析的字典二进制数据。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析字典成功。</returns>
+        bool ParseDictionary(byte[] dictionaryBytes, object userData);
+
+        /// <summary>
+        /// 解析字典。
+        /// </summary>
+        /// <param name="dictionaryBytes">要解析的字典二进制数据。</param>
+        /// <param name="startIndex">字典二进制数据的起始位置。</param>
+        /// <param name="length">字典二进制数据的长度。</param>
+        /// <returns>是否解析字典成功。</returns>
+        bool ParseDictionary(byte[] dictionaryBytes, int startIndex, int length);
+
+        /// <summary>
+        /// 解析字典。
+        /// </summary>
+        /// <param name="dictionaryBytes">要解析的字典二进制数据。</param>
+        /// <param name="startIndex">字典二进制数据的起始位置。</param>
+        /// <param name="length">字典二进制数据的长度。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析字典成功。</returns>
+        bool ParseDictionary(byte[] dictionaryBytes, int startIndex, int length, object userData);
 
         /// <summary>
         /// 根据字典主键获取字典内容字符串。
