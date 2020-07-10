@@ -281,7 +281,14 @@ namespace GameFramework.Resource
                     return resourceInfo != null && !resourceInfo.Ready ? HasAssetResult.NotReady : HasAssetResult.NotExist;
                 }
 
-                return resourceInfo.IsLoadFromBinary ? HasAssetResult.Binary : HasAssetResult.Asset;
+                if (resourceInfo.UseFileSystem)
+                {
+                    return resourceInfo.IsLoadFromBinary ? HasAssetResult.BinaryOnFileSystem : HasAssetResult.AssetOnFileSystem;
+                }
+                else
+                {
+                    return resourceInfo.IsLoadFromBinary ? HasAssetResult.BinaryOnDisk : HasAssetResult.AssetOnDisk;
+                }
             }
 
             /// <summary>

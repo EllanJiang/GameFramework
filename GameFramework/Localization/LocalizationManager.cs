@@ -245,11 +245,13 @@ namespace GameFramework.Localization
             HasAssetResult result = m_ResourceManager.HasAsset(dictionaryAssetName);
             switch (result)
             {
-                case HasAssetResult.Asset:
+                case HasAssetResult.AssetOnDisk:
+                case HasAssetResult.AssetOnFileSystem:
                     m_ResourceManager.LoadAsset(dictionaryAssetName, priority, m_LoadAssetCallbacks, userData);
                     break;
 
-                case HasAssetResult.Binary:
+                case HasAssetResult.BinaryOnDisk:
+                case HasAssetResult.BinaryOnFileSystem:
                     m_ResourceManager.LoadBinary(dictionaryAssetName, m_LoadBinaryCallbacks, userData);
                     break;
 

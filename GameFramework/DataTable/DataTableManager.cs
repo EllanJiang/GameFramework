@@ -213,11 +213,13 @@ namespace GameFramework.DataTable
             HasAssetResult result = m_ResourceManager.HasAsset(dataTableAssetName);
             switch (result)
             {
-                case HasAssetResult.Asset:
+                case HasAssetResult.AssetOnDisk:
+                case HasAssetResult.AssetOnFileSystem:
                     m_ResourceManager.LoadAsset(dataTableAssetName, priority, m_LoadAssetCallbacks, userData);
                     break;
 
-                case HasAssetResult.Binary:
+                case HasAssetResult.BinaryOnDisk:
+                case HasAssetResult.BinaryOnFileSystem:
                     m_ResourceManager.LoadBinary(dataTableAssetName, m_LoadBinaryCallbacks, userData);
                     break;
 

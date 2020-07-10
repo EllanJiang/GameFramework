@@ -207,11 +207,13 @@ namespace GameFramework.Config
             HasAssetResult result = m_ResourceManager.HasAsset(configAssetName);
             switch (result)
             {
-                case HasAssetResult.Asset:
+                case HasAssetResult.AssetOnDisk:
+                case HasAssetResult.AssetOnFileSystem:
                     m_ResourceManager.LoadAsset(configAssetName, priority, m_LoadAssetCallbacks, userData);
                     break;
 
-                case HasAssetResult.Binary:
+                case HasAssetResult.BinaryOnDisk:
+                case HasAssetResult.BinaryOnFileSystem:
                     m_ResourceManager.LoadBinary(configAssetName, m_LoadBinaryCallbacks, userData);
                     break;
 
