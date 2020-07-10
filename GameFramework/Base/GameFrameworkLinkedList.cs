@@ -365,11 +365,19 @@ namespace GameFramework
             m_CachedNodes.Enqueue(node);
         }
 
+        /// <summary>
+        /// 返回一个循环访问数据表的枚举器。
+        /// </summary>
+        /// <returns>可用于循环访问数据表的对象。</returns>
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// 返回一个循环访问数据表的枚举器。
+        /// </summary>
+        /// <returns>可用于循环访问数据表的对象。</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

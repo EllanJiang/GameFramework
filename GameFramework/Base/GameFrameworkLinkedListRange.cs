@@ -117,11 +117,19 @@ namespace GameFramework
             return new Enumerator(this);
         }
 
+        /// <summary>
+        /// 返回循环访问集合的枚举数。
+        /// </summary>
+        /// <returns>循环访问集合的枚举数。</returns>
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// 返回循环访问集合的枚举数。
+        /// </summary>
+        /// <returns>循环访问集合的枚举数。</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
