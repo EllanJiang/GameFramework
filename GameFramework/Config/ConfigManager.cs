@@ -394,48 +394,6 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 增加指定全局配置项。
-        /// </summary>
-        /// <param name="configName">要增加全局配置项的名称。</param>
-        /// <param name="boolValue">全局配置项布尔值。</param>
-        /// <param name="intValue">全局配置项整数值。</param>
-        /// <param name="floatValue">全局配置项浮点数值。</param>
-        /// <param name="stringValue">全局配置项字符串值。</param>
-        /// <returns>是否增加全局配置项成功。</returns>
-        public bool AddConfig(string configName, bool boolValue, int intValue, float floatValue, string stringValue)
-        {
-            if (HasConfig(configName))
-            {
-                return false;
-            }
-
-            m_ConfigDatas.Add(configName, new ConfigData(boolValue, intValue, floatValue, stringValue));
-            return true;
-        }
-
-        /// <summary>
-        /// 移除指定全局配置项。
-        /// </summary>
-        /// <param name="configName">要移除全局配置项的名称。</param>
-        public bool RemoveConfig(string configName)
-        {
-            if (!HasConfig(configName))
-            {
-                return false;
-            }
-
-            return m_ConfigDatas.Remove(configName);
-        }
-
-        /// <summary>
-        /// 清空所有全局配置项。
-        /// </summary>
-        public void RemoveAllConfigs()
-        {
-            m_ConfigDatas.Clear();
-        }
-
-        /// <summary>
         /// 从指定全局配置项中读取布尔值。
         /// </summary>
         /// <param name="configName">要获取全局配置项的名称。</param>
@@ -545,6 +503,48 @@ namespace GameFramework.Config
         {
             ConfigData? configData = GetConfigData(configName);
             return configData.HasValue ? configData.Value.StringValue : defaultValue;
+        }
+
+        /// <summary>
+        /// 增加指定全局配置项。
+        /// </summary>
+        /// <param name="configName">要增加全局配置项的名称。</param>
+        /// <param name="boolValue">全局配置项布尔值。</param>
+        /// <param name="intValue">全局配置项整数值。</param>
+        /// <param name="floatValue">全局配置项浮点数值。</param>
+        /// <param name="stringValue">全局配置项字符串值。</param>
+        /// <returns>是否增加全局配置项成功。</returns>
+        public bool AddConfig(string configName, bool boolValue, int intValue, float floatValue, string stringValue)
+        {
+            if (HasConfig(configName))
+            {
+                return false;
+            }
+
+            m_ConfigDatas.Add(configName, new ConfigData(boolValue, intValue, floatValue, stringValue));
+            return true;
+        }
+
+        /// <summary>
+        /// 移除指定全局配置项。
+        /// </summary>
+        /// <param name="configName">要移除全局配置项的名称。</param>
+        public bool RemoveConfig(string configName)
+        {
+            if (!HasConfig(configName))
+            {
+                return false;
+            }
+
+            return m_ConfigDatas.Remove(configName);
+        }
+
+        /// <summary>
+        /// 清空所有全局配置项。
+        /// </summary>
+        public void RemoveAllConfigs()
+        {
+            m_ConfigDatas.Clear();
         }
 
         private ConfigData? GetConfigData(string configName)
