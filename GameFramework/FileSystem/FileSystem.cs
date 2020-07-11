@@ -18,7 +18,7 @@ namespace GameFramework.FileSystem
     internal sealed partial class FileSystem : IFileSystem
     {
         private const int ClusterSize = 1024 * 4;
-        private const int CachedBytesLength = 1024;
+        private const int CachedBytesLength = 0x1000;
 
         private static readonly string[] EmptyStringArray = new string[] { };
         private static readonly byte[] s_CachedBytes = new byte[CachedBytesLength];

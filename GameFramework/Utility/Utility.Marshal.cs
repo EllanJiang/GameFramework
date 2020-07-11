@@ -16,6 +16,8 @@ namespace GameFramework
         /// </summary>
         public static class Marshal
         {
+            private const int BlockSize = 1024 * 4;
+
             private static IntPtr s_CachedHGlobalPtr = IntPtr.Zero;
             private static int s_CachedHGlobalSize = 0;
 
@@ -44,17 +46,18 @@ namespace GameFramework
             /// <summary>
             /// 确保从进程的非托管内存中分配足够大小的内存并缓存。
             /// </summary>
-            /// <param name="size">要确保从进程的非托管内存中分配内存的大小。</param>
-            public static void EnsureCachedHGlobalSize(int size)
+            /// <param name="ensureSize">要确保从进程的非托管内存中分配内存的大小。</param>
+            public static void EnsureCachedHGlobalSize(int ensureSize)
             {
-                if (size < 0)
+                if (ensureSize < 0)
                 {
-                    throw new GameFrameworkException("Size is invalid.");
+                    throw new GameFrameworkException("Ensure size is invalid.");
                 }
 
-                if (s_CachedHGlobalPtr == IntPtr.Zero || s_CachedHGlobalSize < size)
+                if (s_CachedHGlobalPtr == IntPtr.Zero || s_CachedHGlobalSize < ensureSize)
                 {
                     FreeCachedHGlobal();
+                    int size = (ensureSize - 1 + BlockSize) / BlockSize * BlockSize;
                     s_CachedHGlobalPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(size);
                     s_CachedHGlobalSize = size;
                 }
