@@ -14,6 +14,8 @@ namespace GameFramework
     /// </summary>
     internal sealed class GlobalBytes
     {
+        private const int BlockSize = 1024 * 4;
+
         [ThreadStatic]
         private static byte[] s_CachedBytes = null;
 
@@ -31,7 +33,8 @@ namespace GameFramework
 
             if (s_CachedBytes == null || s_CachedBytes.Length < ensureSize)
             {
-                s_CachedBytes = new byte[ensureSize];
+                int size = (ensureSize - 1 + BlockSize) / BlockSize * BlockSize;
+                s_CachedBytes = new byte[size];
             }
 
             return s_CachedBytes;
