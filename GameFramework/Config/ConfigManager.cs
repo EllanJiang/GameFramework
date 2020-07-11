@@ -213,8 +213,43 @@ namespace GameFramework.Config
                     break;
 
                 case HasAssetResult.BinaryOnDisk:
-                case HasAssetResult.BinaryOnFileSystem:
                     m_ResourceManager.LoadBinary(configAssetName, m_LoadBinaryCallbacks, userData);
+                    break;
+
+                case HasAssetResult.BinaryOnFileSystem:
+                    int configLength = m_ResourceManager.GetBinaryLength(configAssetName);
+                    byte[] configBytes = GlobalBytes.Get(configLength);
+                    if (configLength != m_ResourceManager.LoadBinaryFromFileSystem(configAssetName, configBytes))
+                    {
+                        throw new GameFrameworkException(Utility.Text.Format("Load binary '{0}' from file system internal error.", configAssetName));
+                    }
+
+                    try
+                    {
+                        if (!m_ConfigHelper.LoadConfig(configAssetName, configBytes, 0, configLength, userData))
+                        {
+                            throw new GameFrameworkException(Utility.Text.Format("Load config failure in helper, asset name '{0}'.", configAssetName));
+                        }
+
+                        if (m_LoadConfigSuccessEventHandler != null)
+                        {
+                            LoadConfigSuccessEventArgs loadConfigSuccessEventArgs = LoadConfigSuccessEventArgs.Create(configAssetName, 0f, userData);
+                            m_LoadConfigSuccessEventHandler(this, loadConfigSuccessEventArgs);
+                            ReferencePool.Release(loadConfigSuccessEventArgs);
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        if (m_LoadConfigFailureEventHandler != null)
+                        {
+                            LoadConfigFailureEventArgs loadConfigFailureEventArgs = LoadConfigFailureEventArgs.Create(configAssetName, exception.ToString(), userData);
+                            m_LoadConfigFailureEventHandler(this, loadConfigFailureEventArgs);
+                            ReferencePool.Release(loadConfigFailureEventArgs);
+                            return;
+                        }
+
+                        throw;
+                    }
                     break;
 
                 default:
@@ -225,29 +260,34 @@ namespace GameFramework.Config
         /// <summary>
         /// 解析全局配置。
         /// </summary>
-        /// <param name="configData">要解析的全局配置数据。</param>
+        /// <param name="configString">要解析的全局配置字符串。</param>
         /// <returns>是否解析全局配置成功。</returns>
-        public bool ParseConfig(object configData)
+        public bool ParseConfig(string configString)
         {
-            return ParseConfig(configData, null);
+            return ParseConfig(configString, null);
         }
 
         /// <summary>
         /// 解析全局配置。
         /// </summary>
-        /// <param name="configData">要解析的全局配置数据。</param>
+        /// <param name="configString">要解析的全局配置字符串。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析全局配置成功。</returns>
-        public bool ParseConfig(object configData, object userData)
+        public bool ParseConfig(string configString, object userData)
         {
             if (m_ConfigHelper == null)
             {
                 throw new GameFrameworkException("You must set config helper first.");
             }
 
+            if (configString == null)
+            {
+                throw new GameFrameworkException("Config string is invalid.");
+            }
+
             try
             {
-                return m_ConfigHelper.ParseConfig(configData, userData);
+                return m_ConfigHelper.ParseConfig(configString, userData);
             }
             catch (Exception exception)
             {
@@ -256,7 +296,90 @@ namespace GameFramework.Config
                     throw;
                 }
 
-                throw new GameFrameworkException(Utility.Text.Format("Can not parse config with exception '{0}'.", exception.ToString()), exception);
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse config string with exception '{0}'.", exception.ToString()), exception);
+            }
+        }
+
+        /// <summary>
+        /// 解析全局配置。
+        /// </summary>
+        /// <param name="configBytes">要解析的全局配置二进制流。</param>
+        /// <returns>是否解析全局配置成功。</returns>
+        public bool ParseConfig(byte[] configBytes)
+        {
+            if (configBytes == null)
+            {
+                throw new GameFrameworkException("Config bytes is invalid.");
+            }
+
+            return ParseConfig(configBytes, 0, configBytes.Length, null);
+        }
+
+        /// <summary>
+        /// 解析全局配置。
+        /// </summary>
+        /// <param name="configBytes">要解析的全局配置二进制流。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析全局配置成功。</returns>
+        public bool ParseConfig(byte[] configBytes, object userData)
+        {
+            if (configBytes == null)
+            {
+                throw new GameFrameworkException("Config bytes is invalid.");
+            }
+
+            return ParseConfig(configBytes, 0, configBytes.Length, userData);
+        }
+
+        /// <summary>
+        /// 解析全局配置。
+        /// </summary>
+        /// <param name="configBytes">要解析的全局配置二进制流。</param>
+        /// <param name="startIndex">全局配置二进制流的起始位置。</param>
+        /// <param name="length">全局配置二进制流的长度。</param>
+        /// <returns>是否解析全局配置成功。</returns>
+        public bool ParseConfig(byte[] configBytes, int startIndex, int length)
+        {
+            return ParseConfig(configBytes, startIndex, length, null);
+        }
+
+        /// <summary>
+        /// 解析全局配置。
+        /// </summary>
+        /// <param name="configBytes">要解析的全局配置二进制流。</param>
+        /// <param name="startIndex">全局配置二进制流的起始位置。</param>
+        /// <param name="length">全局配置二进制流的长度。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析全局配置成功。</returns>
+        public bool ParseConfig(byte[] configBytes, int startIndex, int length, object userData)
+        {
+            if (m_ConfigHelper == null)
+            {
+                throw new GameFrameworkException("You must set config helper first.");
+            }
+
+            if (configBytes == null)
+            {
+                throw new GameFrameworkException("Config bytes is invalid.");
+            }
+
+            if (startIndex < 0 || length < 0 || startIndex + length > configBytes.Length)
+            {
+                throw new GameFrameworkException("Start index or length is invalid.");
+            }
+
+            try
+            {
+                return m_ConfigHelper.ParseConfig(configBytes, startIndex, length, userData);
+            }
+            catch (Exception exception)
+            {
+                if (exception is GameFrameworkException)
+                {
+                    throw;
+                }
+
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse config bytes with exception '{0}'.", exception.ToString()), exception);
             }
         }
 

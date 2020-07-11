@@ -86,17 +86,51 @@ namespace GameFramework.Config
         /// <summary>
         /// 解析全局配置。
         /// </summary>
-        /// <param name="configData">要解析的全局配置数据。</param>
+        /// <param name="configString">要解析的全局配置字符串。</param>
         /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(object configData);
+        bool ParseConfig(string configString);
 
         /// <summary>
         /// 解析全局配置。
         /// </summary>
-        /// <param name="configData">要解析的全局配置数据。</param>
+        /// <param name="configString">要解析的全局配置字符串。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(object configData, object userData);
+        bool ParseConfig(string configString, object userData);
+
+        /// <summary>
+        /// 解析全局配置。
+        /// </summary>
+        /// <param name="configBytes">要解析的全局配置二进制流。</param>
+        /// <returns>是否解析全局配置成功。</returns>
+        bool ParseConfig(byte[] configBytes);
+
+        /// <summary>
+        /// 解析全局配置。
+        /// </summary>
+        /// <param name="configBytes">要解析的全局配置二进制流。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析全局配置成功。</returns>
+        bool ParseConfig(byte[] configBytes, object userData);
+
+        /// <summary>
+        /// 解析全局配置。
+        /// </summary>
+        /// <param name="configBytes">要解析的全局配置二进制流。</param>
+        /// <param name="startIndex">全局配置二进制流的起始位置。</param>
+        /// <param name="length">全局配置二进制流的长度。</param>
+        /// <returns>是否解析全局配置成功。</returns>
+        bool ParseConfig(byte[] configBytes, int startIndex, int length);
+
+        /// <summary>
+        /// 解析全局配置。
+        /// </summary>
+        /// <param name="configBytes">要解析的全局配置二进制流。</param>
+        /// <param name="startIndex">全局配置二进制流的起始位置。</param>
+        /// <param name="length">全局配置二进制流的长度。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>是否解析全局配置成功。</returns>
+        bool ParseConfig(byte[] configBytes, int startIndex, int length, object userData);
 
         /// <summary>
         /// 检查是否存在指定全局配置项。
