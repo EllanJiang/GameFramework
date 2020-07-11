@@ -5,27 +5,27 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-namespace GameFramework.Config
+namespace GameFramework
 {
     /// <summary>
-    /// 加载全局配置失败事件。
+    /// 读取数据失败事件。
     /// </summary>
-    public sealed class LoadConfigFailureEventArgs : GameFrameworkEventArgs
+    public sealed class ReadDataFailureEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
-        /// 初始化加载全局配置失败事件的新实例。
+        /// 初始化读取数据失败事件的新实例。
         /// </summary>
-        public LoadConfigFailureEventArgs()
+        public ReadDataFailureEventArgs()
         {
-            ConfigAssetName = null;
+            DataAssetName = null;
             ErrorMessage = null;
             UserData = null;
         }
 
         /// <summary>
-        /// 获取全局配置资源名称。
+        /// 获取内容资源名称。
         /// </summary>
-        public string ConfigAssetName
+        public string DataAssetName
         {
             get;
             private set;
@@ -50,27 +50,27 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 创建加载全局配置失败事件。
+        /// 创建读取数据失败事件。
         /// </summary>
-        /// <param name="configAssetName">全局配置资源名称。</param>
+        /// <param name="dataAssetName">内容资源名称。</param>
         /// <param name="errorMessage">错误信息。</param>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>创建的加载全局配置失败事件。</returns>
-        public static LoadConfigFailureEventArgs Create(string configAssetName, string errorMessage, object userData)
+        /// <returns>创建的读取数据失败事件。</returns>
+        public static ReadDataFailureEventArgs Create(string dataAssetName, string errorMessage, object userData)
         {
-            LoadConfigFailureEventArgs loadConfigFailureEventArgs = ReferencePool.Acquire<LoadConfigFailureEventArgs>();
-            loadConfigFailureEventArgs.ConfigAssetName = configAssetName;
-            loadConfigFailureEventArgs.ErrorMessage = errorMessage;
-            loadConfigFailureEventArgs.UserData = userData;
-            return loadConfigFailureEventArgs;
+            ReadDataFailureEventArgs loadDataFailureEventArgs = ReferencePool.Acquire<ReadDataFailureEventArgs>();
+            loadDataFailureEventArgs.DataAssetName = dataAssetName;
+            loadDataFailureEventArgs.ErrorMessage = errorMessage;
+            loadDataFailureEventArgs.UserData = userData;
+            return loadDataFailureEventArgs;
         }
 
         /// <summary>
-        /// 清理加载全局配置失败事件。
+        /// 清理读取数据失败事件。
         /// </summary>
         public override void Clear()
         {
-            ConfigAssetName = null;
+            DataAssetName = null;
             ErrorMessage = null;
             UserData = null;
         }

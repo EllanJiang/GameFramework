@@ -6,14 +6,13 @@
 //------------------------------------------------------------
 
 using GameFramework.Resource;
-using System;
 
 namespace GameFramework.Config
 {
     /// <summary>
     /// 全局配置管理器接口。
     /// </summary>
-    public interface IConfigManager
+    public interface IConfigManager : IDataProvider<IConfigManager>
     {
         /// <summary>
         /// 获取全局配置项数量。
@@ -24,113 +23,22 @@ namespace GameFramework.Config
         }
 
         /// <summary>
-        /// 加载全局配置成功事件。
-        /// </summary>
-        event EventHandler<LoadConfigSuccessEventArgs> LoadConfigSuccess;
-
-        /// <summary>
-        /// 加载全局配置失败事件。
-        /// </summary>
-        event EventHandler<LoadConfigFailureEventArgs> LoadConfigFailure;
-
-        /// <summary>
-        /// 加载全局配置更新事件。
-        /// </summary>
-        event EventHandler<LoadConfigUpdateEventArgs> LoadConfigUpdate;
-
-        /// <summary>
-        /// 加载全局配置时加载依赖资源事件。
-        /// </summary>
-        event EventHandler<LoadConfigDependencyAssetEventArgs> LoadConfigDependencyAsset;
-
-        /// <summary>
         /// 设置资源管理器。
         /// </summary>
         /// <param name="resourceManager">资源管理器。</param>
         void SetResourceManager(IResourceManager resourceManager);
 
         /// <summary>
+        /// 设置全局配置数据提供者辅助器。
+        /// </summary>
+        /// <param name="dataProviderHelper">全局配置数据提供者辅助器。</param>
+        void SetDataProviderHelper(IDataProviderHelper<IConfigManager> dataProviderHelper);
+
+        /// <summary>
         /// 设置全局配置辅助器。
         /// </summary>
         /// <param name="configHelper">全局配置辅助器。</param>
         void SetConfigHelper(IConfigHelper configHelper);
-
-        /// <summary>
-        /// 加载全局配置。
-        /// </summary>
-        /// <param name="configAssetName">全局配置资源名称。</param>
-        void LoadConfig(string configAssetName);
-
-        /// <summary>
-        /// 加载全局配置。
-        /// </summary>
-        /// <param name="configAssetName">全局配置资源名称。</param>
-        /// <param name="priority">加载全局配置资源的优先级。</param>
-        void LoadConfig(string configAssetName, int priority);
-
-        /// <summary>
-        /// 加载全局配置。
-        /// </summary>
-        /// <param name="configAssetName">全局配置资源名称。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        void LoadConfig(string configAssetName, object userData);
-
-        /// <summary>
-        /// 加载全局配置。
-        /// </summary>
-        /// <param name="configAssetName">全局配置资源名称。</param>
-        /// <param name="priority">加载全局配置资源的优先级。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        void LoadConfig(string configAssetName, int priority, object userData);
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="configString">要解析的全局配置字符串。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(string configString);
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="configString">要解析的全局配置字符串。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(string configString, object userData);
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="configBytes">要解析的全局配置二进制流。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(byte[] configBytes);
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="configBytes">要解析的全局配置二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(byte[] configBytes, object userData);
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="configBytes">要解析的全局配置二进制流。</param>
-        /// <param name="startIndex">全局配置二进制流的起始位置。</param>
-        /// <param name="length">全局配置二进制流的长度。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(byte[] configBytes, int startIndex, int length);
-
-        /// <summary>
-        /// 解析全局配置。
-        /// </summary>
-        /// <param name="configBytes">要解析的全局配置二进制流。</param>
-        /// <param name="startIndex">全局配置二进制流的起始位置。</param>
-        /// <param name="length">全局配置二进制流的长度。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析全局配置成功。</returns>
-        bool ParseConfig(byte[] configBytes, int startIndex, int length, object userData);
 
         /// <summary>
         /// 检查是否存在指定全局配置项。
@@ -198,6 +106,14 @@ namespace GameFramework.Config
         /// <param name="defaultValue">当指定的全局配置项不存在时，返回此默认值。</param>
         /// <returns>读取的字符串值。</returns>
         string GetString(string configName, string defaultValue);
+
+        /// <summary>
+        /// 增加指定全局配置项。
+        /// </summary>
+        /// <param name="configName">要增加全局配置项的名称。</param>
+        /// <param name="configValue">全局配置项的值。</param>
+        /// <returns>是否增加全局配置项成功。</returns>
+        bool AddConfig(string configName, string configValue);
 
         /// <summary>
         /// 增加指定全局配置项。

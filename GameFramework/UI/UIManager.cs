@@ -944,7 +944,7 @@ namespace GameFramework.UI
                 IUIForm uiForm = m_UIFormHelper.CreateUIForm(uiFormInstance, uiGroup, userData);
                 if (uiForm == null)
                 {
-                    throw new GameFrameworkException("Can not create UI form in helper.");
+                    throw new GameFrameworkException("Can not create UI form in UI form helper.");
                 }
 
                 uiForm.OnInit(serialId, uiFormAssetName, uiGroup, pauseCoveredUIForm, isNewInstance, userData);

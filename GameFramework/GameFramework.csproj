@@ -41,13 +41,19 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\DataProvider\DataProvider.cs" />
+    <Compile Include="Base\DataProvider\IDataProvider.cs" />
+    <Compile Include="Base\DataProvider\IDataProviderHelper.cs" />
+    <Compile Include="Base\DataProvider\ReadDataDependencyAssetEventArgs.cs" />
+    <Compile Include="Base\DataProvider\ReadDataFailureEventArgs.cs" />
+    <Compile Include="Base\DataProvider\ReadDataSuccessEventArgs.cs" />
+    <Compile Include="Base\DataProvider\ReadDataUpdateEventArgs.cs" />
     <Compile Include="Base\DataStruct\TypeNamePair.cs" />
     <Compile Include="Base\EventPool\BaseEventArgs.cs" />
     <Compile Include="Base\EventPool\EventPool.cs" />
     <Compile Include="Base\EventPool\EventPool.Event.cs" />
     <Compile Include="Base\EventPool\EventPoolMode.cs" />
     <Compile Include="Base\GameFrameworkAction.cs" />
-    <Compile Include="Base\GameFrameworkDataSegment.cs" />
     <Compile Include="Base\GameFrameworkEntry.cs" />
     <Compile Include="Base\GameFrameworkEventArgs.cs" />
     <Compile Include="Base\GameFrameworkException.cs" />
@@ -57,7 +63,6 @@
     <Compile Include="Base\GameFrameworkModule.cs" />
     <Compile Include="Base\GameFrameworkMultiDictionary.cs" />
     <Compile Include="Base\GameFrameworkSerializer.cs" />
-    <Compile Include="Base\GlobalBytes\GlobalBytes.cs" />
     <Compile Include="Base\Log\GameFrameworkLog.cs" />
     <Compile Include="Base\Log\GameFrameworkLog.ILogHelper.cs" />
     <Compile Include="Base\Log\GameFrameworkLogLevel.cs" />
@@ -79,10 +84,6 @@
     <Compile Include="Config\ConfigManager.cs" />
     <Compile Include="Config\IConfigHelper.cs" />
     <Compile Include="Config\IConfigManager.cs" />
-    <Compile Include="Config\LoadConfigDependencyAssetEventArgs.cs" />
-    <Compile Include="Config\LoadConfigFailureEventArgs.cs" />
-    <Compile Include="Config\LoadConfigSuccessEventArgs.cs" />
-    <Compile Include="Config\LoadConfigUpdateEventArgs.cs" />
     <Compile Include="DataNode\DataNodeManager.cs" />
     <Compile Include="DataNode\DataNodeManager.DataNode.cs" />
     <Compile Include="DataNode\IDataNode.cs" />
@@ -94,10 +95,6 @@
     <Compile Include="DataTable\IDataTable.cs" />
     <Compile Include="DataTable\IDataTableHelper.cs" />
     <Compile Include="DataTable\IDataTableManager.cs" />
-    <Compile Include="DataTable\LoadDataTableDependencyAssetEventArgs.cs" />
-    <Compile Include="DataTable\LoadDataTableFailureEventArgs.cs" />
-    <Compile Include="DataTable\LoadDataTableSuccessEventArgs.cs" />
-    <Compile Include="DataTable\LoadDataTableUpdateEventArgs.cs" />
     <Compile Include="Debugger\DebuggerManager.cs" />
     <Compile Include="Debugger\DebuggerManager.DebuggerWindowGroup.cs" />
     <Compile Include="Debugger\IDebuggerManager.cs" />
@@ -160,10 +157,6 @@
     <Compile Include="Localization\ILocalizationHelper.cs" />
     <Compile Include="Localization\ILocalizationManager.cs" />
     <Compile Include="Localization\Language.cs" />
-    <Compile Include="Localization\LoadDictionaryDependencyAssetEventArgs.cs" />
-    <Compile Include="Localization\LoadDictionaryFailureEventArgs.cs" />
-    <Compile Include="Localization\LoadDictionarySuccessEventArgs.cs" />
-    <Compile Include="Localization\LoadDictionaryUpdateEventArgs.cs" />
     <Compile Include="Localization\LocalizationManager.cs" />
     <Compile Include="Network\AddressFamily.cs" />
     <Compile Include="Network\INetworkChannel.cs" />

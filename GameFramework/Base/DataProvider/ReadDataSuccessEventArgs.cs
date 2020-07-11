@@ -5,27 +5,27 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-namespace GameFramework.DataTable
+namespace GameFramework
 {
     /// <summary>
-    /// 加载数据表成功事件。
+    /// 读取数据成功事件。
     /// </summary>
-    public sealed class LoadDataTableSuccessEventArgs : GameFrameworkEventArgs
+    public sealed class ReadDataSuccessEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
-        /// 初始化加载数据表成功事件的新实例。
+        /// 初始化读取数据成功事件的新实例。
         /// </summary>
-        public LoadDataTableSuccessEventArgs()
+        public ReadDataSuccessEventArgs()
         {
-            DataTableAssetName = null;
+            DataAssetName = null;
             Duration = 0f;
             UserData = null;
         }
 
         /// <summary>
-        /// 获取数据表资源名称。
+        /// 获取内容资源名称。
         /// </summary>
-        public string DataTableAssetName
+        public string DataAssetName
         {
             get;
             private set;
@@ -50,27 +50,27 @@ namespace GameFramework.DataTable
         }
 
         /// <summary>
-        /// 创建加载数据表成功事件。
+        /// 创建读取数据成功事件。
         /// </summary>
-        /// <param name="dataTableAssetName">数据表资源名称。</param>
+        /// <param name="dataAssetName">内容资源名称。</param>
         /// <param name="duration">加载持续时间。</param>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>创建的加载数据表成功事件。</returns>
-        public static LoadDataTableSuccessEventArgs Create(string dataTableAssetName, float duration, object userData)
+        /// <returns>创建的读取数据成功事件。</returns>
+        public static ReadDataSuccessEventArgs Create(string dataAssetName, float duration, object userData)
         {
-            LoadDataTableSuccessEventArgs loadDataTableSuccessEventArgs = ReferencePool.Acquire<LoadDataTableSuccessEventArgs>();
-            loadDataTableSuccessEventArgs.DataTableAssetName = dataTableAssetName;
-            loadDataTableSuccessEventArgs.Duration = duration;
-            loadDataTableSuccessEventArgs.UserData = userData;
-            return loadDataTableSuccessEventArgs;
+            ReadDataSuccessEventArgs loadDataSuccessEventArgs = ReferencePool.Acquire<ReadDataSuccessEventArgs>();
+            loadDataSuccessEventArgs.DataAssetName = dataAssetName;
+            loadDataSuccessEventArgs.Duration = duration;
+            loadDataSuccessEventArgs.UserData = userData;
+            return loadDataSuccessEventArgs;
         }
 
         /// <summary>
-        /// 清理加载数据表成功事件。
+        /// 清理读取数据成功事件。
         /// </summary>
         public override void Clear()
         {
-            DataTableAssetName = null;
+            DataAssetName = null;
             Duration = 0f;
             UserData = null;
         }

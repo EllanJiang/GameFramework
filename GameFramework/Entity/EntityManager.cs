@@ -1119,7 +1119,7 @@ namespace GameFramework.Entity
                 IEntity entity = m_EntityHelper.CreateEntity(entityInstance, entityGroup, userData);
                 if (entity == null)
                 {
-                    throw new GameFrameworkException("Can not create entity in helper.");
+                    throw new GameFrameworkException("Can not create entity in entity helper.");
                 }
 
                 EntityInfo entityInfo = EntityInfo.Create(entity);

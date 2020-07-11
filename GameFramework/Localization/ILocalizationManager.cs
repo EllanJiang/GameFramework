@@ -6,14 +6,13 @@
 //------------------------------------------------------------
 
 using GameFramework.Resource;
-using System;
 
 namespace GameFramework.Localization
 {
     /// <summary>
     /// 本地化管理器接口。
     /// </summary>
-    public interface ILocalizationManager
+    public interface ILocalizationManager : IDataProvider<ILocalizationManager>
     {
         /// <summary>
         /// 获取或设置本地化语言。
@@ -41,113 +40,22 @@ namespace GameFramework.Localization
         }
 
         /// <summary>
-        /// 加载字典成功事件。
-        /// </summary>
-        event EventHandler<LoadDictionarySuccessEventArgs> LoadDictionarySuccess;
-
-        /// <summary>
-        /// 加载字典失败事件。
-        /// </summary>
-        event EventHandler<LoadDictionaryFailureEventArgs> LoadDictionaryFailure;
-
-        /// <summary>
-        /// 加载字典更新事件。
-        /// </summary>
-        event EventHandler<LoadDictionaryUpdateEventArgs> LoadDictionaryUpdate;
-
-        /// <summary>
-        /// 加载字典时加载依赖资源事件。
-        /// </summary>
-        event EventHandler<LoadDictionaryDependencyAssetEventArgs> LoadDictionaryDependencyAsset;
-
-        /// <summary>
         /// 设置资源管理器。
         /// </summary>
         /// <param name="resourceManager">资源管理器。</param>
         void SetResourceManager(IResourceManager resourceManager);
 
         /// <summary>
+        /// 设置本地化数据提供者辅助器。
+        /// </summary>
+        /// <param name="dataProviderHelper">本地化数据提供者辅助器。</param>
+        void SetDataProviderHelper(IDataProviderHelper<ILocalizationManager> dataProviderHelper);
+
+        /// <summary>
         /// 设置本地化辅助器。
         /// </summary>
         /// <param name="localizationHelper">本地化辅助器。</param>
         void SetLocalizationHelper(ILocalizationHelper localizationHelper);
-
-        /// <summary>
-        /// 加载字典。
-        /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        void LoadDictionary(string dictionaryAssetName);
-
-        /// <summary>
-        /// 加载字典。
-        /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="priority">加载字典资源的优先级。</param>
-        void LoadDictionary(string dictionaryAssetName, int priority);
-
-        /// <summary>
-        /// 加载字典。
-        /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        void LoadDictionary(string dictionaryAssetName, object userData);
-
-        /// <summary>
-        /// 加载字典。
-        /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="priority">加载字典资源的优先级。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        void LoadDictionary(string dictionaryAssetName, int priority, object userData);
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="dictionaryString">要解析的字典字符串。</param>
-        /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(string dictionaryString);
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="dictionaryString">要解析的字典字符串。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(string dictionaryString, object userData);
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="dictionaryBytes">要解析的字典二进制流。</param>
-        /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(byte[] dictionaryBytes);
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="dictionaryBytes">要解析的字典二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(byte[] dictionaryBytes, object userData);
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="dictionaryBytes">要解析的字典二进制流。</param>
-        /// <param name="startIndex">字典二进制流的起始位置。</param>
-        /// <param name="length">字典二进制流的长度。</param>
-        /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(byte[] dictionaryBytes, int startIndex, int length);
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="dictionaryBytes">要解析的字典二进制流。</param>
-        /// <param name="startIndex">字典二进制流的起始位置。</param>
-        /// <param name="length">字典二进制流的长度。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(byte[] dictionaryBytes, int startIndex, int length, object userData);
 
         /// <summary>
         /// 根据字典主键获取字典内容字符串。

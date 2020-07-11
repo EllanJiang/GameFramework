@@ -162,10 +162,18 @@ namespace GameFramework.DataTable
         /// <summary>
         /// 增加数据表行。
         /// </summary>
-        /// <param name="dataRowSegment">要解析的数据表行片段。</param>
-        /// <param name="dataTableUserData">数据表用户自定义数据。</param>
+        /// <param name="dataRowString">要解析的数据表行字符串。</param>
         /// <returns>是否增加数据表行成功。</returns>
-        bool AddDataRow(GameFrameworkDataSegment dataRowSegment, object dataTableUserData);
+        bool AddDataRow(string dataRowString);
+
+        /// <summary>
+        /// 增加数据表行。
+        /// </summary>
+        /// <param name="dataRowBytes">要解析的数据表行二进制流。</param>
+        /// <param name="startIndex">数据表行二进制流的起始位置。</param>
+        /// <param name="length">数据表行二进制流的长度。</param>
+        /// <returns>是否增加数据表行成功。</returns>
+        bool AddDataRow(byte[] dataRowBytes, int startIndex, int length);
 
         /// <summary>
         /// 移除指定数据表行。

@@ -5,19 +5,19 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
-namespace GameFramework.Localization
+namespace GameFramework
 {
     /// <summary>
-    /// 加载字典时加载依赖资源事件。
+    /// 读取数据时加载依赖资源事件。
     /// </summary>
-    public sealed class LoadDictionaryDependencyAssetEventArgs : GameFrameworkEventArgs
+    public sealed class ReadDataDependencyAssetEventArgs : GameFrameworkEventArgs
     {
         /// <summary>
-        /// 初始化加载字典时加载依赖资源事件的新实例。
+        /// 初始化读取数据时加载依赖资源事件的新实例。
         /// </summary>
-        public LoadDictionaryDependencyAssetEventArgs()
+        public ReadDataDependencyAssetEventArgs()
         {
-            DictionaryAssetName = null;
+            DataAssetName = null;
             DependencyAssetName = null;
             LoadedCount = 0;
             TotalCount = 0;
@@ -25,9 +25,9 @@ namespace GameFramework.Localization
         }
 
         /// <summary>
-        /// 获取字典资源名称。
+        /// 获取内容资源名称。
         /// </summary>
-        public string DictionaryAssetName
+        public string DataAssetName
         {
             get;
             private set;
@@ -70,31 +70,31 @@ namespace GameFramework.Localization
         }
 
         /// <summary>
-        /// 创建加载字典时加载依赖资源事件。
+        /// 创建读取数据时加载依赖资源事件。
         /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
+        /// <param name="dataAssetName">内容资源名称。</param>
         /// <param name="dependencyAssetName">被加载的依赖资源名称。</param>
         /// <param name="loadedCount">当前已加载依赖资源数量。</param>
         /// <param name="totalCount">总共加载依赖资源数量。</param>
         /// <param name="userData">用户自定义数据。</param>
-        /// <returns>创建的加载字典时加载依赖资源事件。</returns>
-        public static LoadDictionaryDependencyAssetEventArgs Create(string dictionaryAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
+        /// <returns>创建的读取数据时加载依赖资源事件。</returns>
+        public static ReadDataDependencyAssetEventArgs Create(string dataAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
         {
-            LoadDictionaryDependencyAssetEventArgs loadDictionaryDependencyAssetEventArgs = ReferencePool.Acquire<LoadDictionaryDependencyAssetEventArgs>();
-            loadDictionaryDependencyAssetEventArgs.DictionaryAssetName = dictionaryAssetName;
-            loadDictionaryDependencyAssetEventArgs.DependencyAssetName = dependencyAssetName;
-            loadDictionaryDependencyAssetEventArgs.LoadedCount = loadedCount;
-            loadDictionaryDependencyAssetEventArgs.TotalCount = totalCount;
-            loadDictionaryDependencyAssetEventArgs.UserData = userData;
-            return loadDictionaryDependencyAssetEventArgs;
+            ReadDataDependencyAssetEventArgs loadDataDependencyAssetEventArgs = ReferencePool.Acquire<ReadDataDependencyAssetEventArgs>();
+            loadDataDependencyAssetEventArgs.DataAssetName = dataAssetName;
+            loadDataDependencyAssetEventArgs.DependencyAssetName = dependencyAssetName;
+            loadDataDependencyAssetEventArgs.LoadedCount = loadedCount;
+            loadDataDependencyAssetEventArgs.TotalCount = totalCount;
+            loadDataDependencyAssetEventArgs.UserData = userData;
+            return loadDataDependencyAssetEventArgs;
         }
 
         /// <summary>
-        /// 清理加载字典时加载依赖资源事件。
+        /// 清理读取数据时加载依赖资源事件。
         /// </summary>
         public override void Clear()
         {
-            DictionaryAssetName = null;
+            DataAssetName = null;
             DependencyAssetName = null;
             LoadedCount = 0;
             TotalCount = 0;
