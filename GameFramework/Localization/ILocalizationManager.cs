@@ -118,14 +118,14 @@ namespace GameFramework.Localization
         /// <summary>
         /// 解析字典。
         /// </summary>
-        /// <param name="dictionaryBytes">要解析的字典二进制数据。</param>
+        /// <param name="dictionaryBytes">要解析的字典二进制流。</param>
         /// <returns>是否解析字典成功。</returns>
         bool ParseDictionary(byte[] dictionaryBytes);
 
         /// <summary>
         /// 解析字典。
         /// </summary>
-        /// <param name="dictionaryBytes">要解析的字典二进制数据。</param>
+        /// <param name="dictionaryBytes">要解析的字典二进制流。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析字典成功。</returns>
         bool ParseDictionary(byte[] dictionaryBytes, object userData);
@@ -133,18 +133,18 @@ namespace GameFramework.Localization
         /// <summary>
         /// 解析字典。
         /// </summary>
-        /// <param name="dictionaryBytes">要解析的字典二进制数据。</param>
-        /// <param name="startIndex">字典二进制数据的起始位置。</param>
-        /// <param name="length">字典二进制数据的长度。</param>
+        /// <param name="dictionaryBytes">要解析的字典二进制流。</param>
+        /// <param name="startIndex">字典二进制流的起始位置。</param>
+        /// <param name="length">字典二进制流的长度。</param>
         /// <returns>是否解析字典成功。</returns>
         bool ParseDictionary(byte[] dictionaryBytes, int startIndex, int length);
 
         /// <summary>
         /// 解析字典。
         /// </summary>
-        /// <param name="dictionaryBytes">要解析的字典二进制数据。</param>
-        /// <param name="startIndex">字典二进制数据的起始位置。</param>
-        /// <param name="length">字典二进制数据的长度。</param>
+        /// <param name="dictionaryBytes">要解析的字典二进制流。</param>
+        /// <param name="startIndex">字典二进制流的起始位置。</param>
+        /// <param name="length">字典二进制流的长度。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>是否解析字典成功。</returns>
         bool ParseDictionary(byte[] dictionaryBytes, int startIndex, int length, object userData);
