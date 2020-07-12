@@ -178,8 +178,8 @@ namespace GameFramework.DataNode
         public IDataNode GetNode(string path, IDataNode node)
         {
             IDataNode current = node ?? m_Root;
-            string[] splitPath = GetSplitPath(path);
-            foreach (string i in splitPath)
+            string[] splitedPath = GetSplitedPath(path);
+            foreach (string i in splitedPath)
             {
                 current = current.GetChild(i);
                 if (current == null)
@@ -210,8 +210,8 @@ namespace GameFramework.DataNode
         public IDataNode GetOrAddNode(string path, IDataNode node)
         {
             IDataNode current = node ?? m_Root;
-            string[] splitPath = GetSplitPath(path);
-            foreach (string i in splitPath)
+            string[] splitedPath = GetSplitedPath(path);
+            foreach (string i in splitedPath)
             {
                 current = current.GetOrAddChild(i);
             }
@@ -237,8 +237,8 @@ namespace GameFramework.DataNode
         {
             IDataNode current = node ?? m_Root;
             IDataNode parent = current.Parent;
-            string[] splitPath = GetSplitPath(path);
-            foreach (string i in splitPath)
+            string[] splitedPath = GetSplitedPath(path);
+            foreach (string i in splitedPath)
             {
                 parent = current;
                 current = current.GetChild(i);
@@ -267,7 +267,7 @@ namespace GameFramework.DataNode
         /// </summary>
         /// <param name="path">要切分的数据结点路径。</param>
         /// <returns>切分后的字符串数组。</returns>
-        private static string[] GetSplitPath(string path)
+        private static string[] GetSplitedPath(string path)
         {
             if (string.IsNullOrEmpty(path))
             {
