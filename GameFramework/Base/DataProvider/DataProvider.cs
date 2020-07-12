@@ -362,10 +362,9 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 获取全局二进制流缓存。
+        /// 确保二进制流缓存分配足够大小的内存并缓存。
         /// </summary>
-        /// <param name="ensureSize">要确保全局二进制流缓存分配内存的大小。</param>
-        /// <returns>全局二进制流缓存。</returns>
+        /// <param name="ensureSize">要确保二进制流缓存分配内存的大小。</param>
         private void EnsureCachedBytesSize(int ensureSize)
         {
             if (ensureSize < 0)
