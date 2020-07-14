@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\DataProvider\DataProvider.cs" />
+    <Compile Include="Base\DataProvider\DataProviderCreator.cs" />
     <Compile Include="Base\DataProvider\IDataProvider.cs" />
     <Compile Include="Base\DataProvider\IDataProviderHelper.cs" />
     <Compile Include="Base\DataProvider\ReadDataDependencyAssetEventArgs.cs" />

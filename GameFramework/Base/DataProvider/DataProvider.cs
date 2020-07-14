@@ -33,7 +33,7 @@ namespace GameFramework
         /// 初始化数据提供者的新实例。
         /// </summary>
         /// <param name="owner">数据提供者的持有者。</param>
-        public DataProvider(T owner)
+        internal DataProvider(T owner)
         {
             m_Owner = owner;
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadAssetSuccessCallback, LoadAssetOrBinaryFailureCallback, LoadAssetUpdateCallback, LoadAssetDependencyAssetCallback);
@@ -104,34 +104,6 @@ namespace GameFramework
             {
                 m_ReadDataDependencyAssetEventHandler -= value;
             }
-        }
-
-        /// <summary>
-        /// 设置资源管理器。
-        /// </summary>
-        /// <param name="resourceManager">资源管理器。</param>
-        public void SetResourceManager(IResourceManager resourceManager)
-        {
-            if (resourceManager == null)
-            {
-                throw new GameFrameworkException("Resource manager is invalid.");
-            }
-
-            m_ResourceManager = resourceManager;
-        }
-
-        /// <summary>
-        /// 设置数据提供者辅助器。
-        /// </summary>
-        /// <param name="dataProviderHelper">数据提供者辅助器。</param>
-        public void SetDataProviderHelper(IDataProviderHelper<T> dataProviderHelper)
-        {
-            if (dataProviderHelper == null)
-            {
-                throw new GameFrameworkException("Data provider helper is invalid.");
-            }
-
-            m_DataProviderHelper = dataProviderHelper;
         }
 
         /// <summary>
@@ -359,6 +331,34 @@ namespace GameFramework
 
                 throw new GameFrameworkException(Utility.Text.Format("Can not parse data bytes with exception '{0}'.", exception.ToString()), exception);
             }
+        }
+
+        /// <summary>
+        /// 设置资源管理器。
+        /// </summary>
+        /// <param name="resourceManager">资源管理器。</param>
+        internal void SetResourceManager(IResourceManager resourceManager)
+        {
+            if (resourceManager == null)
+            {
+                throw new GameFrameworkException("Resource manager is invalid.");
+            }
+
+            m_ResourceManager = resourceManager;
+        }
+
+        /// <summary>
+        /// 设置数据提供者辅助器。
+        /// </summary>
+        /// <param name="dataProviderHelper">数据提供者辅助器。</param>
+        internal void SetDataProviderHelper(IDataProviderHelper<T> dataProviderHelper)
+        {
+            if (dataProviderHelper == null)
+            {
+                throw new GameFrameworkException("Data provider helper is invalid.");
+            }
+
+            m_DataProviderHelper = dataProviderHelper;
         }
 
         /// <summary>
