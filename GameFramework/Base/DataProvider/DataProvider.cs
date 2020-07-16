@@ -33,7 +33,7 @@ namespace GameFramework
         /// 初始化数据提供者的新实例。
         /// </summary>
         /// <param name="owner">数据提供者的持有者。</param>
-        internal DataProvider(T owner)
+        public DataProvider(T owner)
         {
             m_Owner = owner;
             m_LoadAssetCallbacks = new LoadAssetCallbacks(LoadAssetSuccessCallback, LoadAssetOrBinaryFailureCallback, LoadAssetUpdateCallback, LoadAssetDependencyAssetCallback);
@@ -44,6 +44,17 @@ namespace GameFramework
             m_ReadDataFailureEventHandler = null;
             m_ReadDataUpdateEventHandler = null;
             m_ReadDataDependencyAssetEventHandler = null;
+        }
+
+        /// <summary>
+        /// 获取缓冲二进制流的大小。
+        /// </summary>
+        public static int CachedBytesSize
+        {
+            get
+            {
+                return s_CachedBytes != null ? s_CachedBytes.Length : 0;
+            }
         }
 
         /// <summary>

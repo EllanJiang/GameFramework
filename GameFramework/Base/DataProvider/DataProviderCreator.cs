@@ -15,6 +15,17 @@ namespace GameFramework
     public static class DataProviderCreator
     {
         /// <summary>
+        /// 获取缓冲二进制流的大小。
+        /// </summary>
+        public static int CachedBytesSize
+        {
+            get
+            {
+                return DataProvider<object>.CachedBytesSize;
+            }
+        }
+
+        /// <summary>
         /// 创建数据提供者。
         /// </summary>
         /// <typeparam name="T">数据提供者的持有者的类型。</typeparam>
