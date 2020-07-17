@@ -52,7 +52,7 @@ namespace GameFramework.FileSystem
             {
                 get
                 {
-                    return m_Header.Length == HeaderLength && m_Header[0] == Header[0] && m_Header[1] == Header[1] && m_Header[2] == m_Header[2] && m_Version == 0 && m_EncryptBytes.Length == EncryptBytesLength
+                    return m_Header.Length == HeaderLength && m_Header[0] == Header[0] && m_Header[1] == Header[1] && m_Header[2] == Header[2] && m_Version == 0 && m_EncryptBytes.Length == EncryptBytesLength
                         && m_MaxFileCount > 0 && m_MaxBlockCount > 0 && m_MaxFileCount <= m_MaxBlockCount && m_BlockCount > 0 && m_BlockCount <= m_MaxBlockCount;
                 }
             }
