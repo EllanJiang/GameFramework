@@ -106,7 +106,7 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取已准备完毕资源数量。
+        /// 获取资源数量。
         /// </summary>
         int AssetCount
         {
@@ -114,7 +114,7 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取已准备完毕资源数量。
+        /// 获取资源数量。
         /// </summary>
         int ResourceCount
         {
