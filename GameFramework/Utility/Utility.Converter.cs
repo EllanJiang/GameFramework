@@ -690,45 +690,95 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 以字节数组的形式获取指定的 UTF-8 字符串。
+            /// 以字节数组的形式获取 UTF-8 编码的字符串。
             /// </summary>
             /// <param name="value">要转换的字符串。</param>
             /// <returns>用于存放结果的字节数组。</returns>
             public static byte[] GetBytes(string value)
             {
-                return Encoding.UTF8.GetBytes(value);
+                return GetBytes(value, Encoding.UTF8);
             }
 
             /// <summary>
-            /// 返回由字节数组转换来的 UTF-8 字符串。
+            /// 以字节数组的形式获取指定编码的字符串。
+            /// </summary>
+            /// <param name="value">要转换的字符串。</param>
+            /// <param name="encoding">要使用的编码。</param>
+            /// <returns>用于存放结果的字节数组。</returns>
+            public static byte[] GetBytes(string value, Encoding encoding)
+            {
+                if (encoding == null)
+                {
+                    throw new GameFrameworkException("Encoding is invalid.");
+                }
+
+                return encoding.GetBytes(value);
+            }
+
+            /// <summary>
+            /// 返回由字节数组使用 UTF-8 编码转换成的字符串。
             /// </summary>
             /// <param name="value">字节数组。</param>
-            /// <returns>UTF-8 字符串。</returns>
+            /// <returns>转换后的字符串。</returns>
             public static string GetString(byte[] value)
+            {
+                return GetString(value, Encoding.UTF8);
+            }
+
+            /// <summary>
+            /// 返回由字节数组使用指定编码转换成的字符串。
+            /// </summary>
+            /// <param name="value">字节数组。</param>
+            /// <param name="encoding">要使用的编码。</param>
+            /// <returns>转换后的字符串。</returns>
+            public static string GetString(byte[] value, Encoding encoding)
             {
                 if (value == null)
                 {
                     throw new GameFrameworkException("Value is invalid.");
                 }
 
-                return Encoding.UTF8.GetString(value);
+                if (encoding == null)
+                {
+                    throw new GameFrameworkException("Encoding is invalid.");
+                }
+
+                return encoding.GetString(value);
             }
 
             /// <summary>
-            /// 返回由字节数组转换来的 UTF-8 字符串。
+            /// 返回由字节数组使用 UTF-8 编码转换成的字符串。
             /// </summary>
             /// <param name="value">字节数组。</param>
             /// <param name="startIndex">value 内的起始位置。</param>
             /// <param name="length">长度。</param>
-            /// <returns>UTF-8 字符串。</returns>
+            /// <returns>转换后的字符串。</returns>
             public static string GetString(byte[] value, int startIndex, int length)
+            {
+                return GetString(value, startIndex, length, Encoding.UTF8);
+            }
+
+            /// <summary>
+            /// 返回由字节数组使用指定编码转换成的字符串。
+            /// </summary>
+            /// <param name="value">字节数组。</param>
+            /// <param name="startIndex">value 内的起始位置。</param>
+            /// <param name="length">长度。</param>
+            /// <param name="encoding">要使用的编码。</param>
+            /// <returns>转换后的字符串。</returns>
+            public static string GetString(byte[] value, int startIndex, int length, Encoding encoding)
             {
                 if (value == null)
                 {
                     throw new GameFrameworkException("Value is invalid.");
                 }
 
-                return Encoding.UTF8.GetString(value, startIndex, length);
+                if (encoding == null)
+                {
+                    throw new GameFrameworkException("Encoding is invalid.");
+                }
+
+                return encoding.GetString(value, startIndex, length);
             }
         }
     }
