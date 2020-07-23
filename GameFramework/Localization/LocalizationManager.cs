@@ -301,13 +301,8 @@ namespace GameFramework.Localization
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString(string key)
         {
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new GameFrameworkException("Key is invalid.");
-            }
-
-            string value = null;
-            if (!m_Dictionary.TryGetValue(key, out value))
+            string value = GetRawString(key);
+            if (value == null)
             {
                 return Utility.Text.Format("<NoKey>{0}", key);
             }
@@ -323,13 +318,8 @@ namespace GameFramework.Localization
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString(string key, object arg0)
         {
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new GameFrameworkException("Key is invalid.");
-            }
-
-            string value = null;
-            if (!m_Dictionary.TryGetValue(key, out value))
+            string value = GetRawString(key);
+            if (value == null)
             {
                 return Utility.Text.Format("<NoKey>{0}", key);
             }
@@ -353,13 +343,8 @@ namespace GameFramework.Localization
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString(string key, object arg0, object arg1)
         {
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new GameFrameworkException("Key is invalid.");
-            }
-
-            string value = null;
-            if (!m_Dictionary.TryGetValue(key, out value))
+            string value = GetRawString(key);
+            if (value == null)
             {
                 return Utility.Text.Format("<NoKey>{0}", key);
             }
@@ -384,13 +369,8 @@ namespace GameFramework.Localization
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString(string key, object arg0, object arg1, object arg2)
         {
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new GameFrameworkException("Key is invalid.");
-            }
-
-            string value = null;
-            if (!m_Dictionary.TryGetValue(key, out value))
+            string value = GetRawString(key);
+            if (value == null)
             {
                 return Utility.Text.Format("<NoKey>{0}", key);
             }
@@ -413,13 +393,8 @@ namespace GameFramework.Localization
         /// <returns>要获取的字典内容字符串。</returns>
         public string GetString(string key, params object[] args)
         {
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new GameFrameworkException("Key is invalid.");
-            }
-
-            string value = null;
-            if (!m_Dictionary.TryGetValue(key, out value))
+            string value = GetRawString(key);
+            if (value == null)
             {
                 return Utility.Text.Format("<NoKey>{0}", key);
             }
@@ -472,12 +447,12 @@ namespace GameFramework.Localization
             }
 
             string value = null;
-            if (m_Dictionary.TryGetValue(key, out value))
+            if (!m_Dictionary.TryGetValue(key, out value))
             {
-                return value;
+                return null;
             }
 
-            return Utility.Text.Format("<NoKey>{0}", key);
+            return value;
         }
 
         /// <summary>
@@ -488,7 +463,12 @@ namespace GameFramework.Localization
         /// <returns>是否增加字典成功。</returns>
         public bool AddRawString(string key, string value)
         {
-            if (HasRawString(key))
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new GameFrameworkException("Key is invalid.");
+            }
+
+            if (m_Dictionary.ContainsKey(key))
             {
                 return false;
             }
@@ -504,9 +484,9 @@ namespace GameFramework.Localization
         /// <returns>是否移除字典成功。</returns>
         public bool RemoveRawString(string key)
         {
-            if (!HasRawString(key))
+            if (string.IsNullOrEmpty(key))
             {
-                return false;
+                throw new GameFrameworkException("Key is invalid.");
             }
 
             return m_Dictionary.Remove(key);
