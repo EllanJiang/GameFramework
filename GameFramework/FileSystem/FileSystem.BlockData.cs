@@ -14,6 +14,8 @@ namespace GameFramework.FileSystem
         /// </summary>
         private struct BlockData
         {
+            public static readonly BlockData Empty = new BlockData(0, 0);
+
             private readonly int m_StringIndex;
             private readonly int m_ClusterIndex;
             private readonly int m_Length;
@@ -62,7 +64,7 @@ namespace GameFramework.FileSystem
                 }
             }
 
-            public BlockData Clear()
+            public BlockData Free()
             {
                 return new BlockData(m_ClusterIndex, (int)GetUpBoundClusterOffset(m_Length));
             }
