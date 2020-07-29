@@ -22,8 +22,8 @@ namespace GameFramework.Resource
             private sealed partial class LoadResourceAgent : ITaskAgent<LoadResourceTaskBase>
             {
                 private static readonly Dictionary<string, string> s_CachedResourceNames = new Dictionary<string, string>(StringComparer.Ordinal);
-                private static readonly HashSet<string> s_LoadingAssetNames = new HashSet<string>();
-                private static readonly HashSet<string> s_LoadingResourceNames = new HashSet<string>();
+                private static readonly HashSet<string> s_LoadingAssetNames = new HashSet<string>(StringComparer.Ordinal);
+                private static readonly HashSet<string> s_LoadingResourceNames = new HashSet<string>(StringComparer.Ordinal);
 
                 private readonly ILoadResourceAgentHelper m_Helper;
                 private readonly IResourceHelper m_ResourceHelper;
