@@ -1065,8 +1065,11 @@ namespace GameFramework.FileSystem
 
                 oldBlockData = oldBlockData.Free();
                 m_BlockDatas[oldBlockIndex] = oldBlockData;
-                m_FreeBlockIndexes.Add(oldBlockData.Length, oldBlockIndex);
-                WriteBlockData(oldBlockIndex);
+                if (!TryCombineFreeBlocks(oldBlockIndex))
+                {
+                    m_FreeBlockIndexes.Add(oldBlockData.Length, oldBlockIndex);
+                    WriteBlockData(oldBlockIndex);
+                }
             }
             else
             {
