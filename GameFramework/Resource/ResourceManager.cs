@@ -714,8 +714,11 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
 
-                m_ReadWriteResourceInfos.Clear();
-                m_ReadWriteResourceInfos = null;
+                if (m_ReadWriteResourceInfos != null)
+                {
+                    m_ReadWriteResourceInfos.Clear();
+                    m_ReadWriteResourceInfos = null;
+                }
 
                 if (m_DecompressCachedStream != null)
                 {
