@@ -90,7 +90,7 @@ namespace GameFramework.FileSystem
                 throw new GameFrameworkException("Full path is invalid.");
             }
 
-            return m_FileSystems.ContainsKey(fullPath);
+            return m_FileSystems.ContainsKey(Utility.Path.GetRegularPath(fullPath));
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace GameFramework.FileSystem
             }
 
             FileSystem fileSystem = null;
-            if (m_FileSystems.TryGetValue(fullPath, out fileSystem))
+            if (m_FileSystems.TryGetValue(Utility.Path.GetRegularPath(fullPath), out fileSystem))
             {
                 return fileSystem;
             }
