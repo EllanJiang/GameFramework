@@ -700,6 +700,27 @@ namespace GameFramework
             }
 
             /// <summary>
+            /// 以字节数组的形式获取 UTF-8 编码的字符串。
+            /// </summary>
+            /// <param name="value">要转换的字符串。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            public static void GetBytes(string value, byte[] buffer)
+            {
+                GetBytes(value, Encoding.UTF8, buffer, 0);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取 UTF-8 编码的字符串。
+            /// </summary>
+            /// <param name="value">要转换的字符串。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            /// <param name="startIndex">buffer 内的起始位置。</param>
+            public static void GetBytes(string value, byte[] buffer, int startIndex)
+            {
+                GetBytes(value, Encoding.UTF8, buffer, startIndex);
+            }
+
+            /// <summary>
             /// 以字节数组的形式获取指定编码的字符串。
             /// </summary>
             /// <param name="value">要转换的字符串。</param>
@@ -707,12 +728,50 @@ namespace GameFramework
             /// <returns>用于存放结果的字节数组。</returns>
             public static byte[] GetBytes(string value, Encoding encoding)
             {
+                if (value == null)
+                {
+                    throw new GameFrameworkException("Value is invalid.");
+                }
+
                 if (encoding == null)
                 {
                     throw new GameFrameworkException("Encoding is invalid.");
                 }
 
                 return encoding.GetBytes(value);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定编码的字符串。
+            /// </summary>
+            /// <param name="value">要转换的字符串。</param>
+            /// <param name="encoding">要使用的编码。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            public static void GetBytes(string value, Encoding encoding, byte[] buffer)
+            {
+                GetBytes(value, encoding, buffer, 0);
+            }
+
+            /// <summary>
+            /// 以字节数组的形式获取指定编码的字符串。
+            /// </summary>
+            /// <param name="value">要转换的字符串。</param>
+            /// <param name="encoding">要使用的编码。</param>
+            /// <param name="buffer">用于存放结果的字节数组。</param>
+            /// <param name="startIndex">buffer 内的起始位置。</param>
+            public static void GetBytes(string value, Encoding encoding, byte[] buffer, int startIndex)
+            {
+                if (value == null)
+                {
+                    throw new GameFrameworkException("Value is invalid.");
+                }
+
+                if (encoding == null)
+                {
+                    throw new GameFrameworkException("Encoding is invalid.");
+                }
+
+                encoding.GetBytes(value, 0, value.Length, buffer, startIndex);
             }
 
             /// <summary>
