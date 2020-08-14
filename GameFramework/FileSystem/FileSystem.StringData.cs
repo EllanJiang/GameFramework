@@ -17,7 +17,7 @@ namespace GameFramework.FileSystem
         /// </summary>
         private struct StringData
         {
-            private static readonly byte[] s_CachedBytes = new byte[byte.MaxValue];
+            private static readonly byte[] s_CachedBytes = new byte[byte.MaxValue + 1];
 
             private readonly byte m_Length;
 
@@ -49,15 +49,14 @@ namespace GameFramework.FileSystem
                     return Clear();
                 }
 
-                byte[] encryptedStringBytes = Utility.Converter.GetBytes(value);
-                int length = encryptedStringBytes.Length;
+                int length = Utility.Converter.GetBytes(value, s_CachedBytes);
                 if (length > byte.MaxValue)
                 {
                     throw new GameFrameworkException(Utility.Text.Format("String '{0}' is too long.", value));
                 }
 
-                Utility.Encryption.GetSelfXorBytes(encryptedStringBytes, encryptBytes);
-                Array.Copy(encryptedStringBytes, 0, m_Bytes, 0, length);
+                Utility.Encryption.GetSelfXorBytes(s_CachedBytes, encryptBytes);
+                Array.Copy(s_CachedBytes, 0, m_Bytes, 0, length);
                 return new StringData((byte)length, m_Bytes);
             }
 

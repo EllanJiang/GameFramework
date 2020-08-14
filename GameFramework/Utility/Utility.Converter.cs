@@ -704,9 +704,10 @@ namespace GameFramework
             /// </summary>
             /// <param name="value">要转换的字符串。</param>
             /// <param name="buffer">用于存放结果的字节数组。</param>
-            public static void GetBytes(string value, byte[] buffer)
+            /// <returns>buffer 内实际填充了多少字节。</returns>
+            public static int GetBytes(string value, byte[] buffer)
             {
-                GetBytes(value, Encoding.UTF8, buffer, 0);
+                return GetBytes(value, Encoding.UTF8, buffer, 0);
             }
 
             /// <summary>
@@ -715,9 +716,10 @@ namespace GameFramework
             /// <param name="value">要转换的字符串。</param>
             /// <param name="buffer">用于存放结果的字节数组。</param>
             /// <param name="startIndex">buffer 内的起始位置。</param>
-            public static void GetBytes(string value, byte[] buffer, int startIndex)
+            /// <returns>buffer 内实际填充了多少字节。</returns>
+            public static int GetBytes(string value, byte[] buffer, int startIndex)
             {
-                GetBytes(value, Encoding.UTF8, buffer, startIndex);
+                return GetBytes(value, Encoding.UTF8, buffer, startIndex);
             }
 
             /// <summary>
@@ -747,9 +749,10 @@ namespace GameFramework
             /// <param name="value">要转换的字符串。</param>
             /// <param name="encoding">要使用的编码。</param>
             /// <param name="buffer">用于存放结果的字节数组。</param>
-            public static void GetBytes(string value, Encoding encoding, byte[] buffer)
+            /// <returns>buffer 内实际填充了多少字节。</returns>
+            public static int GetBytes(string value, Encoding encoding, byte[] buffer)
             {
-                GetBytes(value, encoding, buffer, 0);
+                return GetBytes(value, encoding, buffer, 0);
             }
 
             /// <summary>
@@ -759,7 +762,8 @@ namespace GameFramework
             /// <param name="encoding">要使用的编码。</param>
             /// <param name="buffer">用于存放结果的字节数组。</param>
             /// <param name="startIndex">buffer 内的起始位置。</param>
-            public static void GetBytes(string value, Encoding encoding, byte[] buffer, int startIndex)
+            /// <returns>buffer 内实际填充了多少字节。</returns>
+            public static int GetBytes(string value, Encoding encoding, byte[] buffer, int startIndex)
             {
                 if (value == null)
                 {
@@ -771,7 +775,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Encoding is invalid.");
                 }
 
-                encoding.GetBytes(value, 0, value.Length, buffer, startIndex);
+                return encoding.GetBytes(value, 0, value.Length, buffer, startIndex);
             }
 
             /// <summary>

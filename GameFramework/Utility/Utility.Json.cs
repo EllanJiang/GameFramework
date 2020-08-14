@@ -55,16 +55,6 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 将对象序列化为 JSON 流。
-            /// </summary>
-            /// <param name="obj">要序列化的对象。</param>
-            /// <returns>序列化后的 JSON 流。</returns>
-            public static byte[] ToJsonData(object obj)
-            {
-                return Converter.GetBytes(ToJson(obj));
-            }
-
-            /// <summary>
             /// 将 JSON 字符串反序列化为对象。
             /// </summary>
             /// <typeparam name="T">对象类型。</typeparam>
@@ -123,28 +113,6 @@ namespace GameFramework
 
                     throw new GameFrameworkException(Text.Format("Can not convert to object with exception '{0}'.", exception.ToString()), exception);
                 }
-            }
-
-            /// <summary>
-            /// 将 JSON 流反序列化为对象。
-            /// </summary>
-            /// <typeparam name="T">对象类型。</typeparam>
-            /// <param name="jsonData">要反序列化的 JSON 流。</param>
-            /// <returns>反序列化后的对象。</returns>
-            public static T ToObject<T>(byte[] jsonData)
-            {
-                return ToObject<T>(Converter.GetString(jsonData));
-            }
-
-            /// <summary>
-            /// 将 JSON 字符串反序列化为对象。
-            /// </summary>
-            /// <param name="objectType">对象类型。</param>
-            /// <param name="jsonData">要反序列化的 JSON 流。</param>
-            /// <returns>反序列化后的对象。</returns>
-            public static object ToObject(Type objectType, byte[] jsonData)
-            {
-                return ToObject(objectType, Converter.GetString(jsonData));
             }
         }
     }
