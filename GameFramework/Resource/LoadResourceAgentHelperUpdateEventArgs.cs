@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Resource
@@ -15,12 +15,10 @@ namespace GameFramework.Resource
         /// <summary>
         /// 初始化加载资源代理辅助器更新事件的新实例。
         /// </summary>
-        /// <param name="type">进度类型。</param>
-        /// <param name="progress">进度。</param>
-        public LoadResourceAgentHelperUpdateEventArgs(LoadResourceProgress type, float progress)
+        public LoadResourceAgentHelperUpdateEventArgs()
         {
-            Type = type;
-            Progress = progress;
+            Type = LoadResourceProgress.Unknown;
+            Progress = 0f;
         }
 
         /// <summary>
@@ -39,6 +37,29 @@ namespace GameFramework.Resource
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建加载资源代理辅助器更新事件。
+        /// </summary>
+        /// <param name="type">进度类型。</param>
+        /// <param name="progress">进度。</param>
+        /// <returns>创建的加载资源代理辅助器更新事件。</returns>
+        public static LoadResourceAgentHelperUpdateEventArgs Create(LoadResourceProgress type, float progress)
+        {
+            LoadResourceAgentHelperUpdateEventArgs loadResourceAgentHelperUpdateEventArgs = ReferencePool.Acquire<LoadResourceAgentHelperUpdateEventArgs>();
+            loadResourceAgentHelperUpdateEventArgs.Type = type;
+            loadResourceAgentHelperUpdateEventArgs.Progress = progress;
+            return loadResourceAgentHelperUpdateEventArgs;
+        }
+
+        /// <summary>
+        /// 清理加载资源代理辅助器更新事件。
+        /// </summary>
+        public override void Clear()
+        {
+            Type = LoadResourceProgress.Unknown;
+            Progress = 0f;
         }
     }
 }

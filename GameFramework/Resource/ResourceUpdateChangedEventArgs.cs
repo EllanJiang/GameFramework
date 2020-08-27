@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Resource
@@ -15,18 +15,13 @@ namespace GameFramework.Resource
         /// <summary>
         /// 初始化资源更新改变事件的新实例。
         /// </summary>
-        /// <param name="name">资源名称。</param>
-        /// <param name="downloadPath">资源下载后存放路径。</param>
-        /// <param name="downloadUri">资源下载地址。</param>
-        /// <param name="currentLength">当前下载大小。</param>
-        /// <param name="zipLength">压缩包大小。</param>
-        public ResourceUpdateChangedEventArgs(string name, string downloadPath, string downloadUri, int currentLength, int zipLength)
+        public ResourceUpdateChangedEventArgs()
         {
-            Name = name;
-            DownloadPath = downloadPath;
-            DownloadUri = downloadUri;
-            CurrentLength = currentLength;
-            ZipLength = zipLength;
+            Name = null;
+            DownloadPath = null;
+            DownloadUri = null;
+            CurrentLength = 0;
+            ZipLength = 0;
         }
 
         /// <summary>
@@ -66,12 +61,44 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取压缩包大小。
+        /// 获取压缩后大小。
         /// </summary>
         public int ZipLength
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建资源更新改变事件。
+        /// </summary>
+        /// <param name="name">资源名称。</param>
+        /// <param name="downloadPath">资源下载后存放路径。</param>
+        /// <param name="downloadUri">资源下载地址。</param>
+        /// <param name="currentLength">当前下载大小。</param>
+        /// <param name="zipLength">压缩后大小。</param>
+        /// <returns>创建的资源更新改变事件。</returns>
+        public static ResourceUpdateChangedEventArgs Create(string name, string downloadPath, string downloadUri, int currentLength, int zipLength)
+        {
+            ResourceUpdateChangedEventArgs resourceUpdateChangedEventArgs = ReferencePool.Acquire<ResourceUpdateChangedEventArgs>();
+            resourceUpdateChangedEventArgs.Name = name;
+            resourceUpdateChangedEventArgs.DownloadPath = downloadPath;
+            resourceUpdateChangedEventArgs.DownloadUri = downloadUri;
+            resourceUpdateChangedEventArgs.CurrentLength = currentLength;
+            resourceUpdateChangedEventArgs.ZipLength = zipLength;
+            return resourceUpdateChangedEventArgs;
+        }
+
+        /// <summary>
+        /// 清理资源更新改变事件。
+        /// </summary>
+        public override void Clear()
+        {
+            Name = null;
+            DownloadPath = null;
+            DownloadUri = null;
+            CurrentLength = 0;
+            ZipLength = 0;
         }
     }
 }

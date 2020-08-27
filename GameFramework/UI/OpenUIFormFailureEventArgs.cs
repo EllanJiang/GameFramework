@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.UI
@@ -15,20 +15,14 @@ namespace GameFramework.UI
         /// <summary>
         /// 初始化打开界面失败事件的新实例。
         /// </summary>
-        /// <param name="serialId">界面序列编号。</param>
-        /// <param name="uiFormAssetName">界面资源名称。</param>
-        /// <param name="uiGroupName">界面组名称。</param>
-        /// <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
-        /// <param name="errorMessage">错误信息。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public OpenUIFormFailureEventArgs(int serialId, string uiFormAssetName, string uiGroupName, bool pauseCoveredUIForm, string errorMessage, object userData)
+        public OpenUIFormFailureEventArgs()
         {
-            SerialId = serialId;
-            UIFormAssetName = uiFormAssetName;
-            UIGroupName = uiGroupName;
-            PauseCoveredUIForm = pauseCoveredUIForm;
-            ErrorMessage = errorMessage;
-            UserData = userData;
+            SerialId = 0;
+            UIFormAssetName = null;
+            UIGroupName = null;
+            PauseCoveredUIForm = false;
+            ErrorMessage = null;
+            UserData = null;
         }
 
         /// <summary>
@@ -83,6 +77,41 @@ namespace GameFramework.UI
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建打开界面失败事件。
+        /// </summary>
+        /// <param name="serialId">界面序列编号。</param>
+        /// <param name="uiFormAssetName">界面资源名称。</param>
+        /// <param name="uiGroupName">界面组名称。</param>
+        /// <param name="pauseCoveredUIForm">是否暂停被覆盖的界面。</param>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的打开界面失败事件。</returns>
+        public static OpenUIFormFailureEventArgs Create(int serialId, string uiFormAssetName, string uiGroupName, bool pauseCoveredUIForm, string errorMessage, object userData)
+        {
+            OpenUIFormFailureEventArgs openUIFormFailureEventArgs = ReferencePool.Acquire<OpenUIFormFailureEventArgs>();
+            openUIFormFailureEventArgs.SerialId = serialId;
+            openUIFormFailureEventArgs.UIFormAssetName = uiFormAssetName;
+            openUIFormFailureEventArgs.UIGroupName = uiGroupName;
+            openUIFormFailureEventArgs.PauseCoveredUIForm = pauseCoveredUIForm;
+            openUIFormFailureEventArgs.ErrorMessage = errorMessage;
+            openUIFormFailureEventArgs.UserData = userData;
+            return openUIFormFailureEventArgs;
+        }
+
+        /// <summary>
+        /// 清理打开界面失败事件。
+        /// </summary>
+        public override void Clear()
+        {
+            SerialId = 0;
+            UIFormAssetName = null;
+            UIGroupName = null;
+            PauseCoveredUIForm = false;
+            ErrorMessage = null;
+            UserData = null;
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -68,11 +68,11 @@ namespace GameFramework
             /// <returns>压缩后的数据的二进制流。</returns>
             public static byte[] Compress(byte[] bytes, int offset, int length)
             {
-                using (MemoryStream result = new MemoryStream())
+                using (MemoryStream compressedStream = new MemoryStream())
                 {
-                    if (Compress(bytes, offset, length, result))
+                    if (Compress(bytes, offset, length, compressedStream))
                     {
-                        return result.ToArray();
+                        return compressedStream.ToArray();
                     }
                     else
                     {
@@ -101,19 +101,14 @@ namespace GameFramework
                     throw new GameFrameworkException("Bytes is invalid.");
                 }
 
-                if (offset < 0)
+                if (offset < 0 || length < 0 || offset + length > bytes.Length)
                 {
-                    throw new GameFrameworkException("Offset is invalid.");
-                }
-
-                if (length > bytes.Length)
-                {
-                    throw new GameFrameworkException("Length is invalid.");
+                    throw new GameFrameworkException("Offset or length is invalid.");
                 }
 
                 if (compressedStream == null)
                 {
-                    throw new GameFrameworkException("Result is invalid.");
+                    throw new GameFrameworkException("Compressed stream is invalid.");
                 }
 
                 try
@@ -127,7 +122,65 @@ namespace GameFramework
                         throw;
                     }
 
-                    throw new GameFrameworkException(Text.Format("Can not compress bytes with exception '{0}'.", exception.ToString()), exception);
+                    throw new GameFrameworkException(Text.Format("Can not compress with exception '{0}'.", exception.ToString()), exception);
+                }
+            }
+
+            /// <summary>
+            /// 压缩数据。
+            /// </summary>
+            /// <param name="stream">要压缩的数据的二进制流。</param>
+            /// <returns>压缩后的数据的二进制流。</returns>
+            public static byte[] Compress(Stream stream)
+            {
+                using (MemoryStream compressedStream = new MemoryStream())
+                {
+                    if (Compress(stream, compressedStream))
+                    {
+                        return compressedStream.ToArray();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 压缩数据。
+            /// </summary>
+            /// <param name="stream">要压缩的数据的二进制流。</param>
+            /// <param name="compressedStream">压缩后的数据的二进制流。</param>
+            /// <returns>是否压缩数据成功。</returns>
+            public static bool Compress(Stream stream, Stream compressedStream)
+            {
+                if (s_ZipHelper == null)
+                {
+                    throw new GameFrameworkException("Zip helper is invalid.");
+                }
+
+                if (stream == null)
+                {
+                    throw new GameFrameworkException("Stream is invalid.");
+                }
+
+                if (compressedStream == null)
+                {
+                    throw new GameFrameworkException("Compressed stream is invalid.");
+                }
+
+                try
+                {
+                    return s_ZipHelper.Compress(stream, compressedStream);
+                }
+                catch (Exception exception)
+                {
+                    if (exception is GameFrameworkException)
+                    {
+                        throw;
+                    }
+
+                    throw new GameFrameworkException(Text.Format("Can not compress with exception '{0}'.", exception.ToString()), exception);
                 }
             }
 
@@ -171,11 +224,11 @@ namespace GameFramework
             /// <returns>解压缩后的数据的二进制流。</returns>
             public static byte[] Decompress(byte[] bytes, int offset, int length)
             {
-                using (MemoryStream result = new MemoryStream())
+                using (MemoryStream decompressedStream = new MemoryStream())
                 {
-                    if (Decompress(bytes, offset, length, result))
+                    if (Decompress(bytes, offset, length, decompressedStream))
                     {
-                        return result.ToArray();
+                        return decompressedStream.ToArray();
                     }
                     else
                     {
@@ -204,19 +257,14 @@ namespace GameFramework
                     throw new GameFrameworkException("Bytes is invalid.");
                 }
 
-                if (offset < 0)
+                if (offset < 0 || length < 0 || offset + length > bytes.Length)
                 {
-                    throw new GameFrameworkException("Offset is invalid.");
-                }
-
-                if (length > bytes.Length)
-                {
-                    throw new GameFrameworkException("Length is invalid.");
+                    throw new GameFrameworkException("Offset or length is invalid.");
                 }
 
                 if (decompressedStream == null)
                 {
-                    throw new GameFrameworkException("Result is invalid.");
+                    throw new GameFrameworkException("Decompressed stream is invalid.");
                 }
 
                 try
@@ -230,7 +278,65 @@ namespace GameFramework
                         throw;
                     }
 
-                    throw new GameFrameworkException(Text.Format("Can not decompress bytes with exception '{0}'.", exception.ToString()), exception);
+                    throw new GameFrameworkException(Text.Format("Can not decompress with exception '{0}'.", exception.ToString()), exception);
+                }
+            }
+
+            /// <summary>
+            /// 解压缩数据。
+            /// </summary>
+            /// <param name="stream">要解压缩的数据的二进制流。</param>
+            /// <returns>是否解压缩数据成功。</returns>
+            public static byte[] Decompress(Stream stream)
+            {
+                using (MemoryStream decompressedStream = new MemoryStream())
+                {
+                    if (Decompress(stream, decompressedStream))
+                    {
+                        return decompressedStream.ToArray();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 解压缩数据。
+            /// </summary>
+            /// <param name="stream">要解压缩的数据的二进制流。</param>
+            /// <param name="decompressedStream">解压缩后的数据的二进制流。</param>
+            /// <returns>是否解压缩数据成功。</returns>
+            public static bool Decompress(Stream stream, Stream decompressedStream)
+            {
+                if (s_ZipHelper == null)
+                {
+                    throw new GameFrameworkException("Zip helper is invalid.");
+                }
+
+                if (stream == null)
+                {
+                    throw new GameFrameworkException("Stream is invalid.");
+                }
+
+                if (decompressedStream == null)
+                {
+                    throw new GameFrameworkException("Decompressed stream is invalid.");
+                }
+
+                try
+                {
+                    return s_ZipHelper.Decompress(stream, decompressedStream);
+                }
+                catch (Exception exception)
+                {
+                    if (exception is GameFrameworkException)
+                    {
+                        throw;
+                    }
+
+                    throw new GameFrameworkException(Text.Format("Can not decompress with exception '{0}'.", exception.ToString()), exception);
                 }
             }
         }

@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -18,7 +18,7 @@ namespace GameFramework
         public static class Text
         {
             [ThreadStatic]
-            private static StringBuilder s_CachedStringBuilder = new StringBuilder(1024);
+            private static StringBuilder s_CachedStringBuilder = null;
 
             /// <summary>
             /// 获取格式化字符串。
@@ -33,6 +33,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Format is invalid.");
                 }
 
+                CheckCachedStringBuilder();
                 s_CachedStringBuilder.Length = 0;
                 s_CachedStringBuilder.AppendFormat(format, arg0);
                 return s_CachedStringBuilder.ToString();
@@ -52,6 +53,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Format is invalid.");
                 }
 
+                CheckCachedStringBuilder();
                 s_CachedStringBuilder.Length = 0;
                 s_CachedStringBuilder.AppendFormat(format, arg0, arg1);
                 return s_CachedStringBuilder.ToString();
@@ -72,6 +74,7 @@ namespace GameFramework
                     throw new GameFrameworkException("Format is invalid.");
                 }
 
+                CheckCachedStringBuilder();
                 s_CachedStringBuilder.Length = 0;
                 s_CachedStringBuilder.AppendFormat(format, arg0, arg1, arg2);
                 return s_CachedStringBuilder.ToString();
@@ -95,37 +98,18 @@ namespace GameFramework
                     throw new GameFrameworkException("Args is invalid.");
                 }
 
+                CheckCachedStringBuilder();
                 s_CachedStringBuilder.Length = 0;
                 s_CachedStringBuilder.AppendFormat(format, args);
                 return s_CachedStringBuilder.ToString();
             }
 
-            /// <summary>
-            /// 根据类型和名称获取完整名称。
-            /// </summary>
-            /// <typeparam name="T">类型。</typeparam>
-            /// <param name="name">名称。</param>
-            /// <returns>完整名称。</returns>
-            public static string GetFullName<T>(string name)
+            private static void CheckCachedStringBuilder()
             {
-                return GetFullName(typeof(T), name);
-            }
-
-            /// <summary>
-            /// 根据类型和名称获取完整名称。
-            /// </summary>
-            /// <param name="type">类型。</param>
-            /// <param name="name">名称。</param>
-            /// <returns>完整名称。</returns>
-            public static string GetFullName(Type type, string name)
-            {
-                if (type == null)
+                if (s_CachedStringBuilder == null)
                 {
-                    throw new GameFrameworkException("Type is invalid.");
+                    s_CachedStringBuilder = new StringBuilder(1024);
                 }
-
-                string typeName = type.FullName;
-                return string.IsNullOrEmpty(name) ? typeName : Format("{0}.{1}", typeName, name);
             }
         }
     }

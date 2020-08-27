@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Network
@@ -15,12 +15,10 @@ namespace GameFramework.Network
         /// <summary>
         /// 初始化用户自定义网络错误事件的新实例。
         /// </summary>
-        /// <param name="networkChannel">网络频道。</param>
-        /// <param name="customErrorData">用户自定义错误数据。</param>
-        public NetworkCustomErrorEventArgs(INetworkChannel networkChannel, object customErrorData)
+        public NetworkCustomErrorEventArgs()
         {
-            NetworkChannel = networkChannel;
-            CustomErrorData = customErrorData;
+            NetworkChannel = null;
+            CustomErrorData = null;
         }
 
         /// <summary>
@@ -39,6 +37,29 @@ namespace GameFramework.Network
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建用户自定义网络错误事件。
+        /// </summary>
+        /// <param name="networkChannel">网络频道。</param>
+        /// <param name="customErrorData">用户自定义错误数据。</param>
+        /// <returns>创建的用户自定义网络错误事件。</returns>
+        public static NetworkCustomErrorEventArgs Create(INetworkChannel networkChannel, object customErrorData)
+        {
+            NetworkCustomErrorEventArgs networkCustomErrorEventArgs = ReferencePool.Acquire<NetworkCustomErrorEventArgs>();
+            networkCustomErrorEventArgs.NetworkChannel = networkChannel;
+            networkCustomErrorEventArgs.CustomErrorData = customErrorData;
+            return networkCustomErrorEventArgs;
+        }
+
+        /// <summary>
+        /// 清理用户自定义网络错误事件。
+        /// </summary>
+        public override void Clear()
+        {
+            NetworkChannel = null;
+            CustomErrorData = null;
         }
     }
 }

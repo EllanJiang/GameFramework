@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Scene
@@ -15,14 +15,11 @@ namespace GameFramework.Scene
         /// <summary>
         /// 初始化加载场景失败事件的新实例。
         /// </summary>
-        /// <param name="sceneAssetName">场景资源名称。</param>
-        /// <param name="errorMessage">错误信息。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public LoadSceneFailureEventArgs(string sceneAssetName, string errorMessage, object userData)
+        public LoadSceneFailureEventArgs()
         {
-            SceneAssetName = sceneAssetName;
-            ErrorMessage = errorMessage;
-            UserData = userData;
+            SceneAssetName = null;
+            ErrorMessage = null;
+            UserData = null;
         }
 
         /// <summary>
@@ -50,6 +47,32 @@ namespace GameFramework.Scene
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建加载场景失败事件。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资源名称。</param>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的加载场景失败事件。</returns>
+        public static LoadSceneFailureEventArgs Create(string sceneAssetName, string errorMessage, object userData)
+        {
+            LoadSceneFailureEventArgs loadSceneFailureEventArgs = ReferencePool.Acquire<LoadSceneFailureEventArgs>();
+            loadSceneFailureEventArgs.SceneAssetName = sceneAssetName;
+            loadSceneFailureEventArgs.ErrorMessage = errorMessage;
+            loadSceneFailureEventArgs.UserData = userData;
+            return loadSceneFailureEventArgs;
+        }
+
+        /// <summary>
+        /// 清理加载场景失败事件。
+        /// </summary>
+        public override void Clear()
+        {
+            SceneAssetName = null;
+            ErrorMessage = null;
+            UserData = null;
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -20,6 +20,14 @@ namespace GameFramework.Fsm
         /// 获取有限状态机名称。
         /// </summary>
         string Name
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取有限状态机完整名称。
+        /// </summary>
+        string FullName
         {
             get;
         }
@@ -123,21 +131,6 @@ namespace GameFramework.Fsm
         /// </summary>
         /// <param name="results">有限状态机的所有状态。</param>
         void GetAllStates(List<FsmState<T>> results);
-
-        /// <summary>
-        /// 抛出有限状态机事件。
-        /// </summary>
-        /// <param name="sender">事件源。</param>
-        /// <param name="eventId">事件编号。</param>
-        void FireEvent(object sender, int eventId);
-
-        /// <summary>
-        /// 抛出有限状态机事件。
-        /// </summary>
-        /// <param name="sender">事件源。</param>
-        /// <param name="eventId">事件编号。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        void FireEvent(object sender, int eventId, object userData);
 
         /// <summary>
         /// 是否存在有限状态机数据。

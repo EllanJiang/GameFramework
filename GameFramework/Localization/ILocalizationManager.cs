@@ -1,20 +1,18 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using GameFramework.Resource;
-using System;
-using System.IO;
 
 namespace GameFramework.Localization
 {
     /// <summary>
     /// 本地化管理器接口。
     /// </summary>
-    public interface ILocalizationManager
+    public interface ILocalizationManager : IDataProvider<ILocalizationManager>
     {
         /// <summary>
         /// 获取或设置本地化语言。
@@ -42,113 +40,22 @@ namespace GameFramework.Localization
         }
 
         /// <summary>
-        /// 加载字典成功事件。
-        /// </summary>
-        event EventHandler<LoadDictionarySuccessEventArgs> LoadDictionarySuccess;
-
-        /// <summary>
-        /// 加载字典失败事件。
-        /// </summary>
-        event EventHandler<LoadDictionaryFailureEventArgs> LoadDictionaryFailure;
-
-        /// <summary>
-        /// 加载字典更新事件。
-        /// </summary>
-        event EventHandler<LoadDictionaryUpdateEventArgs> LoadDictionaryUpdate;
-
-        /// <summary>
-        /// 加载字典时加载依赖资源事件。
-        /// </summary>
-        event EventHandler<LoadDictionaryDependencyAssetEventArgs> LoadDictionaryDependencyAsset;
-
-        /// <summary>
         /// 设置资源管理器。
         /// </summary>
         /// <param name="resourceManager">资源管理器。</param>
         void SetResourceManager(IResourceManager resourceManager);
 
         /// <summary>
+        /// 设置本地化数据提供者辅助器。
+        /// </summary>
+        /// <param name="dataProviderHelper">本地化数据提供者辅助器。</param>
+        void SetDataProviderHelper(IDataProviderHelper<ILocalizationManager> dataProviderHelper);
+
+        /// <summary>
         /// 设置本地化辅助器。
         /// </summary>
         /// <param name="localizationHelper">本地化辅助器。</param>
         void SetLocalizationHelper(ILocalizationHelper localizationHelper);
-
-        /// <summary>
-        /// 加载字典。
-        /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
-        void LoadDictionary(string dictionaryAssetName, LoadType loadType);
-
-        /// <summary>
-        /// 加载字典。
-        /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
-        /// <param name="priority">加载字典资源的优先级。</param>
-        void LoadDictionary(string dictionaryAssetName, LoadType loadType, int priority);
-
-        /// <summary>
-        /// 加载字典。
-        /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        void LoadDictionary(string dictionaryAssetName, LoadType loadType, object userData);
-
-        /// <summary>
-        /// 加载字典。
-        /// </summary>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
-        /// <param name="priority">加载字典资源的优先级。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        void LoadDictionary(string dictionaryAssetName, LoadType loadType, int priority, object userData);
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="text">要解析的字典文本。</param>
-        /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(string text);
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="text">要解析的字典文本。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(string text, object userData);
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="bytes">要解析的字典二进制流。</param>
-        /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(byte[] bytes);
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="bytes">要解析的字典二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(byte[] bytes, object userData);
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="stream">要解析的字典二进制流。</param>
-        /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(Stream stream);
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="stream">要解析的字典二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        bool ParseDictionary(Stream stream, object userData);
 
         /// <summary>
         /// 根据字典主键获取字典内容字符串。
@@ -220,5 +127,10 @@ namespace GameFramework.Localization
         /// <param name="key">字典主键。</param>
         /// <returns>是否移除字典成功。</returns>
         bool RemoveRawString(string key);
+
+        /// <summary>
+        /// 清空所有字典。
+        /// </summary>
+        void RemoveAllRawStrings();
     }
 }

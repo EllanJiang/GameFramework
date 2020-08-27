@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using GameFramework.ObjectPool;
@@ -19,26 +19,15 @@ namespace GameFramework.Resource
             /// </summary>
             private sealed class ResourceObject : ObjectBase
             {
-                private readonly List<object> m_DependencyResources;
-                private readonly IResourceHelper m_ResourceHelper;
-                private readonly ResourceLoader m_ResourceLoader;
+                private List<object> m_DependencyResources;
+                private IResourceHelper m_ResourceHelper;
+                private ResourceLoader m_ResourceLoader;
 
-                public ResourceObject(string name, object target, IResourceHelper resourceHelper, ResourceLoader resourceLoader)
-                    : base(name, target)
+                public ResourceObject()
                 {
-                    if (resourceHelper == null)
-                    {
-                        throw new GameFrameworkException("Resource helper is invalid.");
-                    }
-
-                    if (resourceLoader == null)
-                    {
-                        throw new GameFrameworkException("Resource loader is invalid.");
-                    }
-
                     m_DependencyResources = new List<object>();
-                    m_ResourceHelper = resourceHelper;
-                    m_ResourceLoader = resourceLoader;
+                    m_ResourceHelper = null;
+                    m_ResourceLoader = null;
                 }
 
                 public override bool CustomCanReleaseFlag
@@ -51,8 +40,40 @@ namespace GameFramework.Resource
                     }
                 }
 
+                public static ResourceObject Create(string name, object target, IResourceHelper resourceHelper, ResourceLoader resourceLoader)
+                {
+                    if (resourceHelper == null)
+                    {
+                        throw new GameFrameworkException("Resource helper is invalid.");
+                    }
+
+                    if (resourceLoader == null)
+                    {
+                        throw new GameFrameworkException("Resource loader is invalid.");
+                    }
+
+                    ResourceObject resourceObject = ReferencePool.Acquire<ResourceObject>();
+                    resourceObject.Initialize(name, target);
+                    resourceObject.m_ResourceHelper = resourceHelper;
+                    resourceObject.m_ResourceLoader = resourceLoader;
+                    return resourceObject;
+                }
+
+                public override void Clear()
+                {
+                    base.Clear();
+                    m_DependencyResources.Clear();
+                    m_ResourceHelper = null;
+                    m_ResourceLoader = null;
+                }
+
                 public void AddDependencyResource(object dependencyResource)
                 {
+                    if (Target == dependencyResource)
+                    {
+                        return;
+                    }
+
                     if (m_DependencyResources.Contains(dependencyResource))
                     {
                         return;

@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Entity
@@ -15,14 +15,11 @@ namespace GameFramework.Entity
         /// <summary>
         /// 初始化显示实体成功事件的新实例。
         /// </summary>
-        /// <param name="entity">加载成功的实体。</param>
-        /// <param name="duration">加载持续时间。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public ShowEntitySuccessEventArgs(IEntity entity, float duration, object userData)
+        public ShowEntitySuccessEventArgs()
         {
-            Entity = entity;
-            Duration = duration;
-            UserData = userData;
+            Entity = null;
+            Duration = 0f;
+            UserData = null;
         }
 
         /// <summary>
@@ -50,6 +47,32 @@ namespace GameFramework.Entity
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建显示实体成功事件。
+        /// </summary>
+        /// <param name="entity">加载成功的实体。</param>
+        /// <param name="duration">加载持续时间。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的显示实体成功事件。</returns>
+        public static ShowEntitySuccessEventArgs Create(IEntity entity, float duration, object userData)
+        {
+            ShowEntitySuccessEventArgs showEntitySuccessEventArgs = ReferencePool.Acquire<ShowEntitySuccessEventArgs>();
+            showEntitySuccessEventArgs.Entity = entity;
+            showEntitySuccessEventArgs.Duration = duration;
+            showEntitySuccessEventArgs.UserData = userData;
+            return showEntitySuccessEventArgs;
+        }
+
+        /// <summary>
+        /// 清理显示实体成功事件。
+        /// </summary>
+        public override void Clear()
+        {
+            Entity = null;
+            Duration = 0f;
+            UserData = null;
         }
     }
 }

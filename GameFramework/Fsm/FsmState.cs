@@ -1,12 +1,11 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 
 namespace GameFramework.Fsm
 {
@@ -16,14 +15,11 @@ namespace GameFramework.Fsm
     /// <typeparam name="T">有限状态机持有者类型。</typeparam>
     public abstract class FsmState<T> where T : class
     {
-        private readonly Dictionary<int, FsmEventHandler<T>> m_EventHandlers;
-
         /// <summary>
         /// 初始化有限状态机状态基类的新实例。
         /// </summary>
         public FsmState()
         {
-            m_EventHandlers = new Dictionary<int, FsmEventHandler<T>>();
         }
 
         /// <summary>
@@ -67,47 +63,6 @@ namespace GameFramework.Fsm
         /// <param name="fsm">有限状态机引用。</param>
         protected internal virtual void OnDestroy(IFsm<T> fsm)
         {
-            m_EventHandlers.Clear();
-        }
-
-        /// <summary>
-        /// 订阅有限状态机事件。
-        /// </summary>
-        /// <param name="eventId">事件编号。</param>
-        /// <param name="eventHandler">有限状态机事件响应函数。</param>
-        protected void SubscribeEvent(int eventId, FsmEventHandler<T> eventHandler)
-        {
-            if (eventHandler == null)
-            {
-                throw new GameFrameworkException("Event handler is invalid.");
-            }
-
-            if (!m_EventHandlers.ContainsKey(eventId))
-            {
-                m_EventHandlers[eventId] = eventHandler;
-            }
-            else
-            {
-                m_EventHandlers[eventId] += eventHandler;
-            }
-        }
-
-        /// <summary>
-        /// 取消订阅有限状态机事件。
-        /// </summary>
-        /// <param name="eventId">事件编号。</param>
-        /// <param name="eventHandler">有限状态机事件响应函数。</param>
-        protected void UnsubscribeEvent(int eventId, FsmEventHandler<T> eventHandler)
-        {
-            if (eventHandler == null)
-            {
-                throw new GameFrameworkException("Event handler is invalid.");
-            }
-
-            if (m_EventHandlers.ContainsKey(eventId))
-            {
-                m_EventHandlers[eventId] -= eventHandler;
-            }
         }
 
         /// <summary>
@@ -150,25 +105,6 @@ namespace GameFramework.Fsm
             }
 
             fsmImplement.ChangeState(stateType);
-        }
-
-        /// <summary>
-        /// 响应有限状态机事件时调用。
-        /// </summary>
-        /// <param name="fsm">有限状态机引用。</param>
-        /// <param name="sender">事件源。</param>
-        /// <param name="eventId">事件编号。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        internal void OnEvent(IFsm<T> fsm, object sender, int eventId, object userData)
-        {
-            FsmEventHandler<T> eventHandlers = null;
-            if (m_EventHandlers.TryGetValue(eventId, out eventHandlers))
-            {
-                if (eventHandlers != null)
-                {
-                    eventHandlers(fsm, sender, userData);
-                }
-            }
         }
     }
 }

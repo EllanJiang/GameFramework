@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Task
@@ -42,10 +42,6 @@ namespace GameFramework.Task
             {
                 return m_SerialId;
             }
-            internal set
-            {
-                m_SerialId = value;
-            }
         }
 
         /// <summary>
@@ -56,10 +52,6 @@ namespace GameFramework.Task
             get
             {
                 return m_Priority;
-            }
-            internal set
-            {
-                m_Priority = value;
             }
         }
 
@@ -87,6 +79,17 @@ namespace GameFramework.Task
             {
                 m_UserData = value;
             }
+        }
+
+        /// <summary>
+        /// 初始化任务基类。
+        /// </summary>
+        /// <param name="serialId">任务的序列编号。</param>
+        /// <param name="priority">任务的优先级。</param>
+        internal void Initialize(int serialId, int priority)
+        {
+            m_SerialId = serialId;
+            m_Priority = priority;
         }
 
         /// <summary>

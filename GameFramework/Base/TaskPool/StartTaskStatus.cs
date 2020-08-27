@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework
@@ -10,12 +10,12 @@ namespace GameFramework
     /// <summary>
     /// 开始处理任务的状态。
     /// </summary>
-    public enum StartTaskStatus
+    public enum StartTaskStatus : byte
     {
         /// <summary>
         /// 可以立刻处理完成此任务。
         /// </summary>
-        Done,
+        Done = 0,
 
         /// <summary>
         /// 可以继续处理此任务。
@@ -30,6 +30,6 @@ namespace GameFramework
         /// <summary>
         /// 不能继续处理此任务，出现未知错误。
         /// </summary>
-        UnknownError,
+        UnknownError
     }
 }

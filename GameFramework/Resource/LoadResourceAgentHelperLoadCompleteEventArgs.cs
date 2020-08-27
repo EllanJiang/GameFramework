@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Resource
@@ -15,10 +15,9 @@ namespace GameFramework.Resource
         /// <summary>
         /// 初始化加载资源代理辅助器异步加载资源完成事件的新实例。
         /// </summary>
-        /// <param name="asset">加载的资源。</param>
-        public LoadResourceAgentHelperLoadCompleteEventArgs(object asset)
+        public LoadResourceAgentHelperLoadCompleteEventArgs()
         {
-            Asset = asset;
+            Asset = null;
         }
 
         /// <summary>
@@ -28,6 +27,26 @@ namespace GameFramework.Resource
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建加载资源代理辅助器异步加载资源完成事件。
+        /// </summary>
+        /// <param name="asset">加载的资源。</param>
+        /// <returns>创建的加载资源代理辅助器异步加载资源完成事件。</returns>
+        public static LoadResourceAgentHelperLoadCompleteEventArgs Create(object asset)
+        {
+            LoadResourceAgentHelperLoadCompleteEventArgs loadResourceAgentHelperLoadCompleteEventArgs = ReferencePool.Acquire<LoadResourceAgentHelperLoadCompleteEventArgs>();
+            loadResourceAgentHelperLoadCompleteEventArgs.Asset = asset;
+            return loadResourceAgentHelperLoadCompleteEventArgs;
+        }
+
+        /// <summary>
+        /// 清理加载资源代理辅助器异步加载资源完成事件。
+        /// </summary>
+        public override void Clear()
+        {
+            Asset = null;
         }
     }
 }

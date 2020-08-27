@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -56,13 +56,6 @@ namespace GameFramework.ObjectPool
         /// <summary>
         /// 检查是否存在对象池。
         /// </summary>
-        /// <param name="fullName">对象池完整名称。</param>
-        /// <returns>是否存在对象池。</returns>
-        bool HasObjectPool(string fullName);
-
-        /// <summary>
-        /// 检查是否存在对象池。
-        /// </summary>
         /// <param name="condition">要检查的条件。</param>
         /// <returns>是否存在对象池。</returns>
         bool HasObjectPool(Predicate<ObjectPoolBase> condition);
@@ -96,13 +89,6 @@ namespace GameFramework.ObjectPool
         /// <param name="name">对象池名称。</param>
         /// <returns>要获取的对象池。</returns>
         ObjectPoolBase GetObjectPool(Type objectType, string name);
-
-        /// <summary>
-        /// 获取对象池。
-        /// </summary>
-        /// <param name="fullName">对象池完整名称。</param>
-        /// <returns>要获取的对象池。</returns>
-        ObjectPoolBase GetObjectPool(string fullName);
 
         /// <summary>
         /// 获取对象池。

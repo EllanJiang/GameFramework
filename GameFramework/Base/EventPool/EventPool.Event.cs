@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework
@@ -12,15 +12,15 @@ namespace GameFramework
         /// <summary>
         /// 事件结点。
         /// </summary>
-        private sealed class Event
+        private sealed class Event : IReference
         {
-            private readonly object m_Sender;
-            private readonly T m_EventArgs;
+            private object m_Sender;
+            private T m_EventArgs;
 
-            public Event(object sender, T e)
+            public Event()
             {
-                m_Sender = sender;
-                m_EventArgs = e;
+                m_Sender = null;
+                m_EventArgs = null;
             }
 
             public object Sender
@@ -37,6 +37,20 @@ namespace GameFramework
                 {
                     return m_EventArgs;
                 }
+            }
+
+            public static Event Create(object sender, T e)
+            {
+                Event eventNode = ReferencePool.Acquire<Event>();
+                eventNode.m_Sender = sender;
+                eventNode.m_EventArgs = e;
+                return eventNode;
+            }
+
+            public void Clear()
+            {
+                m_Sender = null;
+                m_EventArgs = null;
             }
         }
     }

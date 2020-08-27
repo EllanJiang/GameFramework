@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.IO;
@@ -32,71 +32,19 @@ namespace GameFramework
             }
 
             /// <summary>
-            /// 获取连接后的路径。
-            /// </summary>
-            /// <param name="path">路径片段。</param>
-            /// <returns>连接后的路径。</returns>
-            public static string GetCombinePath(params string[] path)
-            {
-                if (path == null || path.Length < 1)
-                {
-                    return null;
-                }
-
-                string combinePath = path[0];
-                for (int i = 1; i < path.Length; i++)
-                {
-                    combinePath = System.IO.Path.Combine(combinePath, path[i]);
-                }
-
-                return GetRegularPath(combinePath);
-            }
-
-            /// <summary>
             /// 获取远程格式的路径（带有file:// 或 http:// 前缀）。
             /// </summary>
             /// <param name="path">原始路径。</param>
             /// <returns>远程格式路径。</returns>
-            public static string GetRemotePath(params string[] path)
+            public static string GetRemotePath(string path)
             {
-                string combinePath = GetCombinePath(path);
-                if (combinePath == null)
+                string regularPath = GetRegularPath(path);
+                if (regularPath == null)
                 {
                     return null;
                 }
 
-                return combinePath.Contains("://") ? combinePath : ("file:///" + combinePath).Replace("file:////", "file:///");
-            }
-
-            /// <summary>
-            /// 获取带有后缀的资源名。
-            /// </summary>
-            /// <param name="resourceName">原始资源名。</param>
-            /// <returns>带有后缀的资源名。</returns>
-            public static string GetResourceNameWithSuffix(string resourceName)
-            {
-                if (string.IsNullOrEmpty(resourceName))
-                {
-                    throw new GameFrameworkException("Resource name is invalid.");
-                }
-
-                return Text.Format("{0}.dat", resourceName);
-            }
-
-            /// <summary>
-            /// 获取带有 CRC32 和后缀的资源名。
-            /// </summary>
-            /// <param name="resourceName">原始资源名。</param>
-            /// <param name="hashCode">CRC32 哈希值。</param>
-            /// <returns>带有 CRC32 和后缀的资源名。</returns>
-            public static string GetResourceNameWithCrc32AndSuffix(string resourceName, int hashCode)
-            {
-                if (string.IsNullOrEmpty(resourceName))
-                {
-                    throw new GameFrameworkException("Resource name is invalid.");
-                }
-
-                return Text.Format("{0}.{1:x8}.dat", resourceName, hashCode);
+                return regularPath.Contains("://") ? regularPath : ("file:///" + regularPath).Replace("file:////", "file:///");
             }
 
             /// <summary>

@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -14,6 +14,15 @@ namespace GameFramework.Download
     /// </summary>
     public interface IDownloadManager
     {
+        /// <summary>
+        /// 获取或设置下载是否被暂停。
+        /// </summary>
+        bool Paused
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// 获取下载代理总数量。
         /// </summary>
@@ -144,6 +153,12 @@ namespace GameFramework.Download
         /// <summary>
         /// 移除所有下载任务。
         /// </summary>
-        void RemoveAllDownload();
+        void RemoveAllDownloads();
+
+        /// <summary>
+        /// 获取所有下载任务的信息。
+        /// </summary>
+        /// <returns>所有下载任务的信息。</returns>
+        TaskInfo[] GetAllDownloadInfos();
     }
 }

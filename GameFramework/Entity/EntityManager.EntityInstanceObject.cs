@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using GameFramework.ObjectPool;
@@ -16,11 +16,16 @@ namespace GameFramework.Entity
         /// </summary>
         private sealed class EntityInstanceObject : ObjectBase
         {
-            private readonly object m_EntityAsset;
-            private readonly IEntityHelper m_EntityHelper;
+            private object m_EntityAsset;
+            private IEntityHelper m_EntityHelper;
 
-            public EntityInstanceObject(string name, object entityAsset, object entityInstance, IEntityHelper entityHelper)
-                : base(name, entityInstance)
+            public EntityInstanceObject()
+            {
+                m_EntityAsset = null;
+                m_EntityHelper = null;
+            }
+
+            public static EntityInstanceObject Create(string name, object entityAsset, object entityInstance, IEntityHelper entityHelper)
             {
                 if (entityAsset == null)
                 {
@@ -32,8 +37,18 @@ namespace GameFramework.Entity
                     throw new GameFrameworkException("Entity helper is invalid.");
                 }
 
-                m_EntityAsset = entityAsset;
-                m_EntityHelper = entityHelper;
+                EntityInstanceObject entityInstanceObject = ReferencePool.Acquire<EntityInstanceObject>();
+                entityInstanceObject.Initialize(name, entityInstance);
+                entityInstanceObject.m_EntityAsset = entityAsset;
+                entityInstanceObject.m_EntityHelper = entityHelper;
+                return entityInstanceObject;
+            }
+
+            public override void Clear()
+            {
+                base.Clear();
+                m_EntityAsset = null;
+                m_EntityHelper = null;
             }
 
             protected internal override void Release(bool isShutdown)

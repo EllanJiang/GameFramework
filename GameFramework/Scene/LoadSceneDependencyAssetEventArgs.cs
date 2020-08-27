@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Scene
@@ -15,18 +15,13 @@ namespace GameFramework.Scene
         /// <summary>
         /// 初始化加载场景时加载依赖资源事件的新实例。
         /// </summary>
-        /// <param name="sceneAssetName">场景资源名称。</param>
-        /// <param name="dependencyAssetName">被加载的依赖资源名称。</param>
-        /// <param name="loadedCount">当前已加载依赖资源数量。</param>
-        /// <param name="totalCount">总共加载依赖资源数量。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public LoadSceneDependencyAssetEventArgs(string sceneAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
+        public LoadSceneDependencyAssetEventArgs()
         {
-            SceneAssetName = sceneAssetName;
-            DependencyAssetName = dependencyAssetName;
-            LoadedCount = loadedCount;
-            TotalCount = totalCount;
-            UserData = userData;
+            SceneAssetName = null;
+            DependencyAssetName = null;
+            LoadedCount = 0;
+            TotalCount = 0;
+            UserData = null;
         }
 
         /// <summary>
@@ -72,6 +67,38 @@ namespace GameFramework.Scene
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建场景时加载依赖资源事件。
+        /// </summary>
+        /// <param name="sceneAssetName">场景资源名称。</param>
+        /// <param name="dependencyAssetName">被加载的依赖资源名称。</param>
+        /// <param name="loadedCount">当前已加载依赖资源数量。</param>
+        /// <param name="totalCount">总共加载依赖资源数量。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的场景时加载依赖资源事件。</returns>
+        public static LoadSceneDependencyAssetEventArgs Create(string sceneAssetName, string dependencyAssetName, int loadedCount, int totalCount, object userData)
+        {
+            LoadSceneDependencyAssetEventArgs loadSceneDependencyAssetEventArgs = ReferencePool.Acquire<LoadSceneDependencyAssetEventArgs>();
+            loadSceneDependencyAssetEventArgs.SceneAssetName = sceneAssetName;
+            loadSceneDependencyAssetEventArgs.DependencyAssetName = dependencyAssetName;
+            loadSceneDependencyAssetEventArgs.LoadedCount = loadedCount;
+            loadSceneDependencyAssetEventArgs.TotalCount = totalCount;
+            loadSceneDependencyAssetEventArgs.UserData = userData;
+            return loadSceneDependencyAssetEventArgs;
+        }
+
+        /// <summary>
+        /// 清理场景时加载依赖资源事件。
+        /// </summary>
+        public override void Clear()
+        {
+            SceneAssetName = null;
+            DependencyAssetName = null;
+            LoadedCount = 0;
+            TotalCount = 0;
+            UserData = null;
         }
     }
 }

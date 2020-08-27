@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.UI
@@ -14,31 +14,19 @@ namespace GameFramework.UI
             /// <summary>
             /// 界面组界面信息。
             /// </summary>
-            private sealed class UIFormInfo
+            private sealed class UIFormInfo : IReference
             {
-                private readonly IUIForm m_UIForm;
+                private IUIForm m_UIForm;
                 private bool m_Paused;
                 private bool m_Covered;
 
-                /// <summary>
-                /// 初始化界面组界面信息的新实例。
-                /// </summary>
-                /// <param name="uiForm">界面。</param>
-                public UIFormInfo(IUIForm uiForm)
+                public UIFormInfo()
                 {
-                    if (uiForm == null)
-                    {
-                        throw new GameFrameworkException("UI form is invalid.");
-                    }
-
-                    m_UIForm = uiForm;
-                    m_Paused = true;
-                    m_Covered = true;
+                    m_UIForm = null;
+                    m_Paused = false;
+                    m_Covered = false;
                 }
 
-                /// <summary>
-                /// 获取界面。
-                /// </summary>
                 public IUIForm UIForm
                 {
                     get
@@ -47,9 +35,6 @@ namespace GameFramework.UI
                     }
                 }
 
-                /// <summary>
-                /// 获取或设置界面是否暂停。
-                /// </summary>
                 public bool Paused
                 {
                     get
@@ -62,9 +47,6 @@ namespace GameFramework.UI
                     }
                 }
 
-                /// <summary>
-                /// 获取或设置界面是否遮挡。
-                /// </summary>
                 public bool Covered
                 {
                     get
@@ -75,6 +57,27 @@ namespace GameFramework.UI
                     {
                         m_Covered = value;
                     }
+                }
+
+                public static UIFormInfo Create(IUIForm uiForm)
+                {
+                    if (uiForm == null)
+                    {
+                        throw new GameFrameworkException("UI form is invalid.");
+                    }
+
+                    UIFormInfo uiFormInfo = ReferencePool.Acquire<UIFormInfo>();
+                    uiFormInfo.m_UIForm = uiForm;
+                    uiFormInfo.m_Paused = true;
+                    uiFormInfo.m_Covered = true;
+                    return uiFormInfo;
+                }
+
+                public void Clear()
+                {
+                    m_UIForm = null;
+                    m_Paused = false;
+                    m_Covered = false;
                 }
             }
         }

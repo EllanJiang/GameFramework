@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -15,12 +15,11 @@ namespace GameFramework.Resource
         {
             private sealed class LoadAssetTask : LoadResourceTaskBase
             {
-                private readonly LoadAssetCallbacks m_LoadAssetCallbacks;
+                private LoadAssetCallbacks m_LoadAssetCallbacks;
 
-                public LoadAssetTask(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
-                    : base(assetName, assetType, priority, resourceInfo, dependencyAssetNames, userData)
+                public LoadAssetTask()
                 {
-                    m_LoadAssetCallbacks = loadAssetCallbacks;
+                    m_LoadAssetCallbacks = null;
                 }
 
                 public override bool IsScene
@@ -29,6 +28,20 @@ namespace GameFramework.Resource
                     {
                         return false;
                     }
+                }
+
+                public static LoadAssetTask Create(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, LoadAssetCallbacks loadAssetCallbacks, object userData)
+                {
+                    LoadAssetTask loadAssetTask = ReferencePool.Acquire<LoadAssetTask>();
+                    loadAssetTask.Initialize(assetName, assetType, priority, resourceInfo, dependencyAssetNames, userData);
+                    loadAssetTask.m_LoadAssetCallbacks = loadAssetCallbacks;
+                    return loadAssetTask;
+                }
+
+                public override void Clear()
+                {
+                    base.Clear();
+                    m_LoadAssetCallbacks = null;
                 }
 
                 public override void OnLoadAssetSuccess(LoadResourceAgent agent, object asset, float duration)

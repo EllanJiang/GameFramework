@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.WebRequest
@@ -15,10 +15,9 @@ namespace GameFramework.WebRequest
         /// <summary>
         /// 初始化 Web 请求代理辅助器错误事件的新实例。
         /// </summary>
-        /// <param name="errorMessage">错误信息。</param>
-        public WebRequestAgentHelperErrorEventArgs(string errorMessage)
+        public WebRequestAgentHelperErrorEventArgs()
         {
-            ErrorMessage = errorMessage;
+            ErrorMessage = null;
         }
 
         /// <summary>
@@ -28,6 +27,26 @@ namespace GameFramework.WebRequest
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建 Web 请求代理辅助器错误事件。
+        /// </summary>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <returns>创建的 Web 请求代理辅助器错误事件。</returns>
+        public static WebRequestAgentHelperErrorEventArgs Create(string errorMessage)
+        {
+            WebRequestAgentHelperErrorEventArgs webRequestAgentHelperErrorEventArgs = ReferencePool.Acquire<WebRequestAgentHelperErrorEventArgs>();
+            webRequestAgentHelperErrorEventArgs.ErrorMessage = errorMessage;
+            return webRequestAgentHelperErrorEventArgs;
+        }
+
+        /// <summary>
+        /// 清理 Web 请求代理辅助器错误事件。
+        /// </summary>
+        public override void Clear()
+        {
+            ErrorMessage = null;
         }
     }
 }

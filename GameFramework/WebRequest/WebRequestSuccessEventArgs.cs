@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.WebRequest
@@ -12,21 +12,17 @@ namespace GameFramework.WebRequest
     /// </summary>
     public sealed class WebRequestSuccessEventArgs : GameFrameworkEventArgs
     {
-        private readonly byte[] m_WebResponseBytes;
+        private byte[] m_WebResponseBytes;
 
         /// <summary>
         /// 初始化 Web 请求成功事件的新实例。
         /// </summary>
-        /// <param name="serialId">Web 请求任务的序列编号。</param>
-        /// <param name="webRequestUri">Web 请求地址。</param>
-        /// <param name="webResponseBytes">Web 响应的数据流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public WebRequestSuccessEventArgs(int serialId, string webRequestUri, byte[] webResponseBytes, object userData)
+        public WebRequestSuccessEventArgs()
         {
-            SerialId = serialId;
-            WebRequestUri = webRequestUri;
-            m_WebResponseBytes = webResponseBytes;
-            UserData = userData;
+            SerialId = 0;
+            WebRequestUri = null;
+            m_WebResponseBytes = null;
+            UserData = null;
         }
 
         /// <summary>
@@ -54,6 +50,35 @@ namespace GameFramework.WebRequest
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建 Web 请求成功事件。
+        /// </summary>
+        /// <param name="serialId">Web 请求任务的序列编号。</param>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="webResponseBytes">Web 响应的数据流。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的 Web 请求成功事件。</returns>
+        public static WebRequestSuccessEventArgs Create(int serialId, string webRequestUri, byte[] webResponseBytes, object userData)
+        {
+            WebRequestSuccessEventArgs webRequestSuccessEventArgs = ReferencePool.Acquire<WebRequestSuccessEventArgs>();
+            webRequestSuccessEventArgs.SerialId = serialId;
+            webRequestSuccessEventArgs.WebRequestUri = webRequestUri;
+            webRequestSuccessEventArgs.m_WebResponseBytes = webResponseBytes;
+            webRequestSuccessEventArgs.UserData = userData;
+            return webRequestSuccessEventArgs;
+        }
+
+        /// <summary>
+        /// 清理 Web 请求成功事件。
+        /// </summary>
+        public override void Clear()
+        {
+            SerialId = 0;
+            WebRequestUri = null;
+            m_WebResponseBytes = null;
+            UserData = null;
         }
 
         /// <summary>

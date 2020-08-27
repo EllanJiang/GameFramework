@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Network
@@ -15,12 +15,10 @@ namespace GameFramework.Network
         /// <summary>
         /// 初始化网络心跳包丢失事件的新实例。
         /// </summary>
-        /// <param name="networkChannel">网络频道。</param>
-        /// <param name="missCount">心跳包已丢失次数。</param>
-        public NetworkMissHeartBeatEventArgs(INetworkChannel networkChannel, int missCount)
+        public NetworkMissHeartBeatEventArgs()
         {
-            NetworkChannel = networkChannel;
-            MissCount = missCount;
+            NetworkChannel = null;
+            MissCount = 0;
         }
 
         /// <summary>
@@ -39,6 +37,29 @@ namespace GameFramework.Network
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建网络心跳包丢失事件。
+        /// </summary>
+        /// <param name="networkChannel">网络频道。</param>
+        /// <param name="missCount">心跳包已丢失次数。</param>
+        /// <returns>创建的网络心跳包丢失事件。</returns>
+        public static NetworkMissHeartBeatEventArgs Create(INetworkChannel networkChannel, int missCount)
+        {
+            NetworkMissHeartBeatEventArgs networkMissHeartBeatEventArgs = ReferencePool.Acquire<NetworkMissHeartBeatEventArgs>();
+            networkMissHeartBeatEventArgs.NetworkChannel = networkChannel;
+            networkMissHeartBeatEventArgs.MissCount = missCount;
+            return networkMissHeartBeatEventArgs;
+        }
+
+        /// <summary>
+        /// 清理网络心跳包丢失事件。
+        /// </summary>
+        public override void Clear()
+        {
+            NetworkChannel = null;
+            MissCount = 0;
         }
     }
 }

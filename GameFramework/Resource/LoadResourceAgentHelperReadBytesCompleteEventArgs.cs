@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Resource
@@ -12,26 +12,34 @@ namespace GameFramework.Resource
     /// </summary>
     public sealed class LoadResourceAgentHelperReadBytesCompleteEventArgs : GameFrameworkEventArgs
     {
-        private readonly byte[] m_Bytes;
+        private byte[] m_Bytes;
 
         /// <summary>
         /// 初始化加载资源代理辅助器异步读取资源二进制流完成事件的新实例。
         /// </summary>
-        /// <param name="bytes">资源的二进制流。</param>
-        /// <param name="loadType">资源加载方式。</param>
-        public LoadResourceAgentHelperReadBytesCompleteEventArgs(byte[] bytes, int loadType)
+        public LoadResourceAgentHelperReadBytesCompleteEventArgs()
         {
-            m_Bytes = bytes;
-            LoadType = loadType;
+            m_Bytes = null;
         }
 
         /// <summary>
-        /// 获取资源加载方式。
+        /// 创建加载资源代理辅助器异步读取资源二进制流完成事件。
         /// </summary>
-        public int LoadType
+        /// <param name="bytes">资源的二进制流。</param>
+        /// <returns>创建的加载资源代理辅助器异步读取资源二进制流完成事件。</returns>
+        public static LoadResourceAgentHelperReadBytesCompleteEventArgs Create(byte[] bytes)
         {
-            get;
-            private set;
+            LoadResourceAgentHelperReadBytesCompleteEventArgs loadResourceAgentHelperReadBytesCompleteEventArgs = ReferencePool.Acquire<LoadResourceAgentHelperReadBytesCompleteEventArgs>();
+            loadResourceAgentHelperReadBytesCompleteEventArgs.m_Bytes = bytes;
+            return loadResourceAgentHelperReadBytesCompleteEventArgs;
+        }
+
+        /// <summary>
+        /// 清理加载资源代理辅助器异步读取资源二进制流完成事件。
+        /// </summary>
+        public override void Clear()
+        {
+            m_Bytes = null;
         }
 
         /// <summary>

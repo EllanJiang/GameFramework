@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -49,6 +49,21 @@ namespace GameFramework.Download
             get
             {
                 return 80;
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置下载是否被暂停。
+        /// </summary>
+        public bool Paused
+        {
+            get
+            {
+                return m_TaskPool.Paused;
+            }
+            set
+            {
+                m_TaskPool.Paused = value;
             }
         }
 
@@ -292,9 +307,8 @@ namespace GameFramework.Download
                 throw new GameFrameworkException("You must add download agent first.");
             }
 
-            DownloadTask downloadTask = new DownloadTask(downloadPath, downloadUri, priority, m_FlushSize, m_Timeout, userData);
+            DownloadTask downloadTask = DownloadTask.Create(downloadPath, downloadUri, priority, m_FlushSize, m_Timeout, userData);
             m_TaskPool.AddTask(downloadTask);
-
             return downloadTask.SerialId;
         }
 
@@ -305,22 +319,33 @@ namespace GameFramework.Download
         /// <returns>是否移除下载任务成功。</returns>
         public bool RemoveDownload(int serialId)
         {
-            return m_TaskPool.RemoveTask(serialId) != null;
+            return m_TaskPool.RemoveTask(serialId);
         }
 
         /// <summary>
         /// 移除所有下载任务。
         /// </summary>
-        public void RemoveAllDownload()
+        public void RemoveAllDownloads()
         {
             m_TaskPool.RemoveAllTasks();
+        }
+
+        /// <summary>
+        /// 获取所有下载任务的信息。
+        /// </summary>
+        /// <returns>所有下载任务的信息。</returns>
+        public TaskInfo[] GetAllDownloadInfos()
+        {
+            return m_TaskPool.GetAllTaskInfos();
         }
 
         private void OnDownloadAgentStart(DownloadAgent sender)
         {
             if (m_DownloadStartEventHandler != null)
             {
-                m_DownloadStartEventHandler(this, new DownloadStartEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData));
+                DownloadStartEventArgs downloadStartEventArgs = DownloadStartEventArgs.Create(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData);
+                m_DownloadStartEventHandler(this, downloadStartEventArgs);
+                ReferencePool.Release(downloadStartEventArgs);
             }
         }
 
@@ -329,16 +354,19 @@ namespace GameFramework.Download
             m_DownloadCounter.RecordDownloadedLength(lastDownloadedLength);
             if (m_DownloadUpdateEventHandler != null)
             {
-                m_DownloadUpdateEventHandler(this, new DownloadUpdateEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData));
+                DownloadUpdateEventArgs downloadUpdateEventArgs = DownloadUpdateEventArgs.Create(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData);
+                m_DownloadUpdateEventHandler(this, downloadUpdateEventArgs);
+                ReferencePool.Release(downloadUpdateEventArgs);
             }
         }
 
         private void OnDownloadAgentSuccess(DownloadAgent sender, int lastDownloadedLength)
         {
-            m_DownloadCounter.RecordDownloadedLength(lastDownloadedLength);
             if (m_DownloadSuccessEventHandler != null)
             {
-                m_DownloadSuccessEventHandler(this, new DownloadSuccessEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData));
+                DownloadSuccessEventArgs downloadSuccessEventArgs = DownloadSuccessEventArgs.Create(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData);
+                m_DownloadSuccessEventHandler(this, downloadSuccessEventArgs);
+                ReferencePool.Release(downloadSuccessEventArgs);
             }
         }
 
@@ -346,7 +374,9 @@ namespace GameFramework.Download
         {
             if (m_DownloadFailureEventHandler != null)
             {
-                m_DownloadFailureEventHandler(this, new DownloadFailureEventArgs(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, errorMessage, sender.Task.UserData));
+                DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, errorMessage, sender.Task.UserData);
+                m_DownloadFailureEventHandler(this, downloadFailureEventArgs);
+                ReferencePool.Release(downloadFailureEventArgs);
             }
         }
     }

@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.Diagnostics;
@@ -26,7 +26,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 记录调试级别日志，用于记录调试类日志信息。
+        /// 打印调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="message">日志内容。</param>
         /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
@@ -42,7 +42,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 记录调试级别日志，用于记录调试类日志信息。
+        /// 打印调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="message">日志内容。</param>
         /// <remarks>仅在带有 DEBUG 预编译选项时生效。</remarks>
@@ -58,7 +58,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 记录调试级别日志，用于记录调试类日志信息。
+        /// 打印调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="format">日志格式。</param>
         /// <param name="arg0">日志参数 0。</param>
@@ -75,7 +75,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 记录调试级别日志，用于记录调试类日志信息。
+        /// 打印调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="format">日志格式。</param>
         /// <param name="arg0">日志参数 0。</param>
@@ -93,7 +93,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 记录调试级别日志，用于记录调试类日志信息。
+        /// 打印调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="format">日志格式。</param>
         /// <param name="arg0">日志参数 0。</param>
@@ -112,7 +112,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 记录调试级别日志，用于记录调试类日志信息。
+        /// 打印调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="format">日志格式。</param>
         /// <param name="args">日志参数。</param>

@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -264,9 +264,8 @@ namespace GameFramework.WebRequest
                 throw new GameFrameworkException("You must add web request agent first.");
             }
 
-            WebRequestTask webRequestTask = new WebRequestTask(webRequestUri, postData, priority, m_Timeout, userData);
+            WebRequestTask webRequestTask = WebRequestTask.Create(webRequestUri, postData, priority, m_Timeout, userData);
             m_TaskPool.AddTask(webRequestTask);
-
             return webRequestTask.SerialId;
         }
 
@@ -277,7 +276,7 @@ namespace GameFramework.WebRequest
         /// <returns>是否移除 Web 请求任务成功。</returns>
         public bool RemoveWebRequest(int serialId)
         {
-            return m_TaskPool.RemoveTask(serialId) != null;
+            return m_TaskPool.RemoveTask(serialId);
         }
 
         /// <summary>
@@ -288,11 +287,22 @@ namespace GameFramework.WebRequest
             m_TaskPool.RemoveAllTasks();
         }
 
+        /// <summary>
+        /// 获取所有 Web 请求任务的信息。
+        /// </summary>
+        /// <returns>所有 Web 请求任务的信息。</returns>
+        public TaskInfo[] GetAllWebRequestInfos()
+        {
+            return m_TaskPool.GetAllTaskInfos();
+        }
+
         private void OnWebRequestAgentStart(WebRequestAgent sender)
         {
             if (m_WebRequestStartEventHandler != null)
             {
-                m_WebRequestStartEventHandler(this, new WebRequestStartEventArgs(sender.Task.SerialId, sender.Task.WebRequestUri, sender.Task.UserData));
+                WebRequestStartEventArgs webRequestStartEventArgs = WebRequestStartEventArgs.Create(sender.Task.SerialId, sender.Task.WebRequestUri, sender.Task.UserData);
+                m_WebRequestStartEventHandler(this, webRequestStartEventArgs);
+                ReferencePool.Release(webRequestStartEventArgs);
             }
         }
 
@@ -300,7 +310,9 @@ namespace GameFramework.WebRequest
         {
             if (m_WebRequestSuccessEventHandler != null)
             {
-                m_WebRequestSuccessEventHandler(this, new WebRequestSuccessEventArgs(sender.Task.SerialId, sender.Task.WebRequestUri, webResponseBytes, sender.Task.UserData));
+                WebRequestSuccessEventArgs webRequestSuccessEventArgs = WebRequestSuccessEventArgs.Create(sender.Task.SerialId, sender.Task.WebRequestUri, webResponseBytes, sender.Task.UserData);
+                m_WebRequestSuccessEventHandler(this, webRequestSuccessEventArgs);
+                ReferencePool.Release(webRequestSuccessEventArgs);
             }
         }
 
@@ -308,7 +320,9 @@ namespace GameFramework.WebRequest
         {
             if (m_WebRequestFailureEventHandler != null)
             {
-                m_WebRequestFailureEventHandler(this, new WebRequestFailureEventArgs(sender.Task.SerialId, sender.Task.WebRequestUri, errorMessage, sender.Task.UserData));
+                WebRequestFailureEventArgs webRequestFailureEventArgs = WebRequestFailureEventArgs.Create(sender.Task.SerialId, sender.Task.WebRequestUri, errorMessage, sender.Task.UserData);
+                m_WebRequestFailureEventHandler(this, webRequestFailureEventArgs);
+                ReferencePool.Release(webRequestFailureEventArgs);
             }
         }
     }

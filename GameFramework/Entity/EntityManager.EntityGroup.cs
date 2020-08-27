@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using GameFramework.ObjectPool;
@@ -20,7 +20,8 @@ namespace GameFramework.Entity
             private readonly string m_Name;
             private readonly IEntityGroupHelper m_EntityGroupHelper;
             private readonly IObjectPool<EntityInstanceObject> m_InstancePool;
-            private readonly LinkedList<IEntity> m_Entities;
+            private readonly GameFrameworkLinkedList<IEntity> m_Entities;
+            private LinkedListNode<IEntity> m_CachedNode;
 
             /// <summary>
             /// 初始化实体组的新实例。
@@ -48,7 +49,8 @@ namespace GameFramework.Entity
                 m_EntityGroupHelper = entityGroupHelper;
                 m_InstancePool = objectPoolManager.CreateSingleSpawnObjectPool<EntityInstanceObject>(Utility.Text.Format("Entity Instance Pool ({0})", name), instanceCapacity, instanceExpireTime, instancePriority);
                 m_InstancePool.AutoReleaseInterval = instanceAutoReleaseInterval;
-                m_Entities = new LinkedList<IEntity>();
+                m_Entities = new GameFrameworkLinkedList<IEntity>();
+                m_CachedNode = null;
             }
 
             /// <summary>
@@ -154,9 +156,10 @@ namespace GameFramework.Entity
                 LinkedListNode<IEntity> current = m_Entities.First;
                 while (current != null)
                 {
-                    LinkedListNode<IEntity> next = current.Next;
+                    m_CachedNode = current.Next;
                     current.Value.OnUpdate(elapseSeconds, realElapseSeconds);
-                    current = next;
+                    current = m_CachedNode;
+                    m_CachedNode = null;
                 }
             }
 
@@ -341,7 +344,15 @@ namespace GameFramework.Entity
             /// <param name="entity">要移除的实体。</param>
             public void RemoveEntity(IEntity entity)
             {
-                m_Entities.Remove(entity);
+                if (m_CachedNode != null && m_CachedNode.Value == entity)
+                {
+                    m_CachedNode = m_CachedNode.Next;
+                }
+
+                if (!m_Entities.Remove(entity))
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Entity group '{0}' not exists specified entity '[{1}]{2}'.", m_Name, entity.Id.ToString(), entity.EntityAssetName));
+                }
             }
 
             public void RegisterEntityInstanceObject(EntityInstanceObject obj, bool spawned)

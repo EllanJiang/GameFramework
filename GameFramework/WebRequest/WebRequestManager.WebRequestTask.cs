@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.WebRequest
@@ -12,74 +12,23 @@ namespace GameFramework.WebRequest
         /// <summary>
         /// Web 请求任务。
         /// </summary>
-        private sealed class WebRequestTask : ITask
+        private sealed class WebRequestTask : TaskBase
         {
             private static int s_Serial = 0;
 
-            private readonly int m_SerialId;
-            private readonly int m_Priority;
-            private bool m_Done;
             private WebRequestTaskStatus m_Status;
-            private readonly string m_WebRequestUri;
-            private readonly byte[] m_PostData;
-            private readonly float m_Timeout;
-            private readonly object m_UserData;
+            private string m_WebRequestUri;
+            private byte[] m_PostData;
+            private float m_Timeout;
+            private object m_UserData;
 
-            /// <summary>
-            /// 初始化 Web 请求任务的新实例。
-            /// </summary>
-            /// <param name="webRequestUri">要发送的远程地址。</param>
-            /// <param name="postData">要发送的数据流。</param>
-            /// <param name="priority">Web 请求任务的优先级。</param>
-            /// <param name="timeout">下载超时时长，以秒为单位。</param>
-            /// <param name="userData">用户自定义数据。</param>
-            public WebRequestTask(string webRequestUri, byte[] postData, int priority, float timeout, object userData)
+            public WebRequestTask()
             {
-                m_SerialId = s_Serial++;
-                m_Priority = priority;
-                m_Done = false;
                 m_Status = WebRequestTaskStatus.Todo;
-                m_WebRequestUri = webRequestUri;
-                m_PostData = postData;
-                m_Timeout = timeout;
-                m_UserData = userData;
-            }
-
-            /// <summary>
-            /// 获取 Web 请求任务的序列编号。
-            /// </summary>
-            public int SerialId
-            {
-                get
-                {
-                    return m_SerialId;
-                }
-            }
-
-            /// <summary>
-            /// 获取 Web 请求任务的优先级。
-            /// </summary>
-            public int Priority
-            {
-                get
-                {
-                    return m_Priority;
-                }
-            }
-
-            /// <summary>
-            /// 获取或设置 Web 请求任务是否完成。
-            /// </summary>
-            public bool Done
-            {
-                get
-                {
-                    return m_Done;
-                }
-                set
-                {
-                    m_Done = value;
-                }
+                m_WebRequestUri = null;
+                m_PostData = null;
+                m_Timeout = 0f;
+                m_UserData = null;
             }
 
             /// <summary>
@@ -128,6 +77,50 @@ namespace GameFramework.WebRequest
                 {
                     return m_UserData;
                 }
+            }
+
+            /// <summary>
+            /// 获取 Web 请求任务的描述。
+            /// </summary>
+            public override string Description
+            {
+                get
+                {
+                    return m_WebRequestUri;
+                }
+            }
+
+            /// <summary>
+            /// 创建 Web 请求任务。
+            /// </summary>
+            /// <param name="webRequestUri">要发送的远程地址。</param>
+            /// <param name="postData">要发送的数据流。</param>
+            /// <param name="priority">Web 请求任务的优先级。</param>
+            /// <param name="timeout">下载超时时长，以秒为单位。</param>
+            /// <param name="userData">用户自定义数据。</param>
+            /// <returns>创建的 Web 请求任务。</returns>
+            public static WebRequestTask Create(string webRequestUri, byte[] postData, int priority, float timeout, object userData)
+            {
+                WebRequestTask webRequestTask = ReferencePool.Acquire<WebRequestTask>();
+                webRequestTask.Initialize(++s_Serial, priority);
+                webRequestTask.m_WebRequestUri = webRequestUri;
+                webRequestTask.m_PostData = postData;
+                webRequestTask.m_Timeout = timeout;
+                webRequestTask.m_UserData = userData;
+                return webRequestTask;
+            }
+
+            /// <summary>
+            /// 清理 Web 请求任务。
+            /// </summary>
+            public override void Clear()
+            {
+                base.Clear();
+                m_Status = WebRequestTaskStatus.Todo;
+                m_WebRequestUri = null;
+                m_PostData = null;
+                m_Timeout = 0f;
+                m_UserData = null;
             }
 
             /// <summary>

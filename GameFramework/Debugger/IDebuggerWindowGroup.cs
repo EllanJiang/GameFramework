@@ -1,19 +1,19 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Debugger
 {
     /// <summary>
-    /// 调试窗口组接口。
+    /// 调试器窗口组接口。
     /// </summary>
     public interface IDebuggerWindowGroup : IDebuggerWindow
     {
         /// <summary>
-        /// 获取调试窗口数量。
+        /// 获取调试器窗口数量。
         /// </summary>
         int DebuggerWindowCount
         {
@@ -21,7 +21,7 @@ namespace GameFramework.Debugger
         }
 
         /// <summary>
-        /// 获取或设置当前选中的调试窗口索引。
+        /// 获取或设置当前选中的调试器窗口索引。
         /// </summary>
         int SelectedIndex
         {
@@ -30,7 +30,7 @@ namespace GameFramework.Debugger
         }
 
         /// <summary>
-        /// 获取当前选中的调试窗口。
+        /// 获取当前选中的调试器窗口。
         /// </summary>
         IDebuggerWindow SelectedWindow
         {
@@ -38,22 +38,22 @@ namespace GameFramework.Debugger
         }
 
         /// <summary>
-        /// 获取调试组的调试窗口名称集合。
+        /// 获取调试组的调试器窗口名称集合。
         /// </summary>
         string[] GetDebuggerWindowNames();
 
         /// <summary>
-        /// 获取调试窗口。
+        /// 获取调试器窗口。
         /// </summary>
-        /// <param name="path">调试窗口路径。</param>
-        /// <returns>要获取的调试窗口。</returns>
+        /// <param name="path">调试器窗口路径。</param>
+        /// <returns>要获取的调试器窗口。</returns>
         IDebuggerWindow GetDebuggerWindow(string path);
 
         /// <summary>
-        /// 注册调试窗口。
+        /// 注册调试器窗口。
         /// </summary>
-        /// <param name="path">调试窗口路径。</param>
-        /// <param name="debuggerWindow">要注册的调试窗口。</param>
+        /// <param name="path">调试器窗口路径。</param>
+        /// <param name="debuggerWindow">要注册的调试器窗口。</param>
         void RegisterDebuggerWindow(string path, IDebuggerWindow debuggerWindow);
     }
 }

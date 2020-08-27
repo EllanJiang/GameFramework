@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Entity
@@ -68,8 +68,9 @@ namespace GameFramework.Entity
         /// <summary>
         /// 实体隐藏。
         /// </summary>
+        /// <param name="isShutdown">是否是关闭实体管理器时触发。</param>
         /// <param name="userData">用户自定义数据。</param>
-        void OnHide(object userData);
+        void OnHide(bool isShutdown, object userData);
 
         /// <summary>
         /// 实体附加子实体。

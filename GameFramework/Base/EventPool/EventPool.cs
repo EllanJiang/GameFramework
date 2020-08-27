@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -16,8 +16,10 @@ namespace GameFramework
     /// <typeparam name="T">事件类型。</typeparam>
     internal sealed partial class EventPool<T> where T : BaseEventArgs
     {
-        private readonly Dictionary<int, LinkedList<EventHandler<T>>> m_EventHandlers;
+        private readonly GameFrameworkMultiDictionary<int, EventHandler<T>> m_EventHandlers;
         private readonly Queue<Event> m_Events;
+        private readonly Dictionary<object, LinkedListNode<EventHandler<T>>> m_CachedNodes;
+        private readonly Dictionary<object, LinkedListNode<EventHandler<T>>> m_TempNodes;
         private readonly EventPoolMode m_EventPoolMode;
         private EventHandler<T> m_DefaultHandler;
 
@@ -27,8 +29,10 @@ namespace GameFramework
         /// <param name="mode">事件池模式。</param>
         public EventPool(EventPoolMode mode)
         {
-            m_EventHandlers = new Dictionary<int, LinkedList<EventHandler<T>>>();
+            m_EventHandlers = new GameFrameworkMultiDictionary<int, EventHandler<T>>();
             m_Events = new Queue<Event>();
+            m_CachedNodes = new Dictionary<object, LinkedListNode<EventHandler<T>>>();
+            m_TempNodes = new Dictionary<object, LinkedListNode<EventHandler<T>>>();
             m_EventPoolMode = mode;
             m_DefaultHandler = null;
         }
@@ -62,13 +66,16 @@ namespace GameFramework
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         public void Update(float elapseSeconds, float realElapseSeconds)
         {
-            lock (m_Events)
+            while (m_Events.Count > 0)
             {
-                while (m_Events.Count > 0)
+                Event eventNode = null;
+                lock (m_Events)
                 {
-                    Event e = m_Events.Dequeue();
-                    HandleEvent(e.Sender, e.EventArgs);
+                    eventNode = m_Events.Dequeue();
+                    HandleEvent(eventNode.Sender, eventNode.EventArgs);
                 }
+
+                ReferencePool.Release(eventNode);
             }
         }
 
@@ -79,6 +86,8 @@ namespace GameFramework
         {
             Clear();
             m_EventHandlers.Clear();
+            m_CachedNodes.Clear();
+            m_TempNodes.Clear();
             m_DefaultHandler = null;
         }
 
@@ -100,10 +109,10 @@ namespace GameFramework
         /// <returns>事件处理函数的数量。</returns>
         public int Count(int id)
         {
-            LinkedList<EventHandler<T>> handlers = null;
-            if (m_EventHandlers.TryGetValue(id, out handlers))
+            GameFrameworkLinkedListRange<EventHandler<T>> range = default(GameFrameworkLinkedListRange<EventHandler<T>>);
+            if (m_EventHandlers.TryGetValue(id, out range))
             {
-                return handlers.Count;
+                return range.Count;
             }
 
             return 0;
@@ -122,13 +131,7 @@ namespace GameFramework
                 throw new GameFrameworkException("Event handler is invalid.");
             }
 
-            LinkedList<EventHandler<T>> handlers = null;
-            if (!m_EventHandlers.TryGetValue(id, out handlers))
-            {
-                return false;
-            }
-
-            return handlers.Contains(handler);
+            return m_EventHandlers.Contains(id, handler);
         }
 
         /// <summary>
@@ -143,24 +146,21 @@ namespace GameFramework
                 throw new GameFrameworkException("Event handler is invalid.");
             }
 
-            LinkedList<EventHandler<T>> handlers = null;
-            if (!m_EventHandlers.TryGetValue(id, out handlers))
+            if (!m_EventHandlers.Contains(id))
             {
-                handlers = new LinkedList<EventHandler<T>>();
-                handlers.AddLast(handler);
-                m_EventHandlers.Add(id, handlers);
+                m_EventHandlers.Add(id, handler);
             }
-            else if ((m_EventPoolMode & EventPoolMode.AllowMultiHandler) == 0)
+            else if ((m_EventPoolMode & EventPoolMode.AllowMultiHandler) != EventPoolMode.AllowMultiHandler)
             {
                 throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not allow multi handler.", id.ToString()));
             }
-            else if ((m_EventPoolMode & EventPoolMode.AllowDuplicateHandler) == 0 && Check(id, handler))
+            else if ((m_EventPoolMode & EventPoolMode.AllowDuplicateHandler) != EventPoolMode.AllowDuplicateHandler && Check(id, handler))
             {
                 throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not allow duplicate handler.", id.ToString()));
             }
             else
             {
-                handlers.AddLast(handler);
+                m_EventHandlers.Add(id, handler);
             }
         }
 
@@ -176,13 +176,28 @@ namespace GameFramework
                 throw new GameFrameworkException("Event handler is invalid.");
             }
 
-            LinkedList<EventHandler<T>> handlers = null;
-            if (!m_EventHandlers.TryGetValue(id, out handlers))
+            if (m_CachedNodes.Count > 0)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not exists any handler.", id.ToString()));
+                foreach (KeyValuePair<object, LinkedListNode<EventHandler<T>>> cachedNode in m_CachedNodes)
+                {
+                    if (cachedNode.Value != null && cachedNode.Value.Value == handler)
+                    {
+                        m_TempNodes.Add(cachedNode.Key, cachedNode.Value.Next);
+                    }
+                }
+
+                if (m_TempNodes.Count > 0)
+                {
+                    foreach (KeyValuePair<object, LinkedListNode<EventHandler<T>>> cachedNode in m_TempNodes)
+                    {
+                        m_CachedNodes[cachedNode.Key] = cachedNode.Value;
+                    }
+
+                    m_TempNodes.Clear();
+                }
             }
 
-            if (!handlers.Remove(handler))
+            if (!m_EventHandlers.Remove(id, handler))
             {
                 throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not exists specified handler.", id.ToString()));
             }
@@ -204,7 +219,12 @@ namespace GameFramework
         /// <param name="e">事件参数。</param>
         public void Fire(object sender, T e)
         {
-            Event eventNode = new Event(sender, e);
+            if (e == null)
+            {
+                throw new GameFrameworkException("Event is invalid.");
+            }
+
+            Event eventNode = Event.Create(sender, e);
             lock (m_Events)
             {
                 m_Events.Enqueue(eventNode);
@@ -218,6 +238,11 @@ namespace GameFramework
         /// <param name="e">事件参数。</param>
         public void FireNow(object sender, T e)
         {
+            if (e == null)
+            {
+                throw new GameFrameworkException("Event is invalid.");
+            }
+
             HandleEvent(sender, e);
         }
 
@@ -228,18 +253,19 @@ namespace GameFramework
         /// <param name="e">事件参数。</param>
         private void HandleEvent(object sender, T e)
         {
-            int eventId = e.Id;
             bool noHandlerException = false;
-            LinkedList<EventHandler<T>> handlers = null;
-            if (m_EventHandlers.TryGetValue(eventId, out handlers) && handlers.Count > 0)
+            GameFrameworkLinkedListRange<EventHandler<T>> range = default(GameFrameworkLinkedListRange<EventHandler<T>>);
+            if (m_EventHandlers.TryGetValue(e.Id, out range))
             {
-                LinkedListNode<EventHandler<T>> current = handlers.First;
-                while (current != null)
+                LinkedListNode<EventHandler<T>> current = range.First;
+                while (current != null && current != range.Terminal)
                 {
-                    LinkedListNode<EventHandler<T>> next = current.Next;
+                    m_CachedNodes[e] = current.Next != range.Terminal ? current.Next : null;
                     current.Value(sender, e);
-                    current = next;
+                    current = m_CachedNodes[e];
                 }
+
+                m_CachedNodes.Remove(e);
             }
             else if (m_DefaultHandler != null)
             {
@@ -250,11 +276,11 @@ namespace GameFramework
                 noHandlerException = true;
             }
 
-            ReferencePool.Release((IReference)e);
+            ReferencePool.Release(e);
 
             if (noHandlerException)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not allow no handler.", eventId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Event '{0}' not allow no handler.", e.Id.ToString()));
             }
         }
     }

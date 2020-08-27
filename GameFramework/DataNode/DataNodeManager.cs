@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -25,7 +25,7 @@ namespace GameFramework.DataNode
         /// </summary>
         public DataNodeManager()
         {
-            m_Root = new DataNode(RootName, null);
+            m_Root = DataNode.Create(RootName, null);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace GameFramework.DataNode
         /// </summary>
         internal override void Shutdown()
         {
-            Clear();
+            ReferencePool.Release(m_Root);
             m_Root = null;
         }
 
@@ -90,7 +90,7 @@ namespace GameFramework.DataNode
             IDataNode current = GetNode(path, node);
             if (current == null)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Data node is not exist, path '{0}', node '{1}'.", path, (node != null ? node.FullName : string.Empty)));
+                throw new GameFrameworkException(Utility.Text.Format("Data node is not exist, path '{0}', node '{1}'.", path, node != null ? node.FullName : string.Empty));
             }
 
             return current.GetData<T>();
@@ -107,7 +107,7 @@ namespace GameFramework.DataNode
             IDataNode current = GetNode(path, node);
             if (current == null)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Data node is not exist, path '{0}', node '{1}'.", path, (node != null ? node.FullName : string.Empty)));
+                throw new GameFrameworkException(Utility.Text.Format("Data node is not exist, path '{0}', node '{1}'.", path, node != null ? node.FullName : string.Empty));
             }
 
             return current.GetData();
@@ -177,9 +177,9 @@ namespace GameFramework.DataNode
         /// <returns>指定位置的数据结点，如果没有找到，则返回空。</returns>
         public IDataNode GetNode(string path, IDataNode node)
         {
-            IDataNode current = (node ?? m_Root);
-            string[] splitPath = GetSplitPath(path);
-            foreach (string i in splitPath)
+            IDataNode current = node ?? m_Root;
+            string[] splitedPath = GetSplitedPath(path);
+            foreach (string i in splitedPath)
             {
                 current = current.GetChild(i);
                 if (current == null)
@@ -209,9 +209,9 @@ namespace GameFramework.DataNode
         /// <returns>指定位置的数据结点，如果没有找到，则增加相应的数据结点。</returns>
         public IDataNode GetOrAddNode(string path, IDataNode node)
         {
-            IDataNode current = (node ?? m_Root);
-            string[] splitPath = GetSplitPath(path);
-            foreach (string i in splitPath)
+            IDataNode current = node ?? m_Root;
+            string[] splitedPath = GetSplitedPath(path);
+            foreach (string i in splitedPath)
             {
                 current = current.GetOrAddChild(i);
             }
@@ -235,10 +235,10 @@ namespace GameFramework.DataNode
         /// <param name="node">查找起始结点。</param>
         public void RemoveNode(string path, IDataNode node)
         {
-            IDataNode current = (node ?? m_Root);
+            IDataNode current = node ?? m_Root;
             IDataNode parent = current.Parent;
-            string[] splitPath = GetSplitPath(path);
-            foreach (string i in splitPath)
+            string[] splitedPath = GetSplitedPath(path);
+            foreach (string i in splitedPath)
             {
                 parent = current;
                 current = current.GetChild(i);
@@ -267,7 +267,7 @@ namespace GameFramework.DataNode
         /// </summary>
         /// <param name="path">要切分的数据结点路径。</param>
         /// <returns>切分后的字符串数组。</returns>
-        private static string[] GetSplitPath(string path)
+        private static string[] GetSplitedPath(string path)
         {
             if (string.IsNullOrEmpty(path))
             {

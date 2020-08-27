@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -71,6 +71,20 @@ namespace GameFramework.DataNode
         /// </summary>
         /// <param name="data">要设置的数据。</param>
         void SetData(Variable data);
+
+        /// <summary>
+        /// 根据索引检查是否存在子数据结点。
+        /// </summary>
+        /// <param name="index">子数据结点的索引。</param>
+        /// <returns>是否存在子数据结点。</returns>
+        bool HasChild(int index);
+
+        /// <summary>
+        /// 根据名称检查是否存在子数据结点。
+        /// </summary>
+        /// <param name="name">子数据结点名称。</param>
+        /// <returns>是否存在子数据结点。</returns>
+        bool HasChild(string name);
 
         /// <summary>
         /// 根据索引获取子数据结点。

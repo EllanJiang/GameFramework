@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -20,7 +20,8 @@ namespace GameFramework.UI
             private int m_Depth;
             private bool m_Pause;
             private readonly IUIGroupHelper m_UIGroupHelper;
-            private readonly LinkedList<UIFormInfo> m_UIFormInfos;
+            private readonly GameFrameworkLinkedList<UIFormInfo> m_UIFormInfos;
+            private LinkedListNode<UIFormInfo> m_CachedNode;
 
             /// <summary>
             /// 初始化界面组的新实例。
@@ -43,7 +44,8 @@ namespace GameFramework.UI
                 m_Name = name;
                 m_Pause = false;
                 m_UIGroupHelper = uiGroupHelper;
-                m_UIFormInfos = new LinkedList<UIFormInfo>();
+                m_UIFormInfos = new GameFrameworkLinkedList<UIFormInfo>();
+                m_CachedNode = null;
                 Depth = depth;
             }
 
@@ -149,9 +151,10 @@ namespace GameFramework.UI
                         break;
                     }
 
-                    LinkedListNode<UIFormInfo> next = current.Next;
+                    m_CachedNode = current.Next;
                     current.Value.UIForm.OnUpdate(elapseSeconds, realElapseSeconds);
-                    current = next;
+                    current = m_CachedNode;
+                    m_CachedNode = null;
                 }
             }
 
@@ -327,8 +330,7 @@ namespace GameFramework.UI
             /// <param name="uiForm">要增加的界面。</param>
             public void AddUIForm(IUIForm uiForm)
             {
-                UIFormInfo uiFormInfo = new UIFormInfo(uiForm);
-                m_UIFormInfos.AddFirst(uiFormInfo);
+                m_UIFormInfos.AddFirst(UIFormInfo.Create(uiForm));
             }
 
             /// <summary>
@@ -355,7 +357,17 @@ namespace GameFramework.UI
                     uiForm.OnPause();
                 }
 
-                m_UIFormInfos.Remove(uiFormInfo);
+                if (m_CachedNode != null && m_CachedNode.Value.UIForm == uiForm)
+                {
+                    m_CachedNode = m_CachedNode.Next;
+                }
+
+                if (!m_UIFormInfos.Remove(uiFormInfo))
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("UI group '{0}' not exists specified UI form '[{1}]{2}'.", m_Name, uiForm.SerialId.ToString(), uiForm.UIFormAssetName));
+                }
+
+                ReferencePool.Release(uiFormInfo);
             }
 
             /// <summary>
@@ -384,22 +396,35 @@ namespace GameFramework.UI
                 bool pause = m_Pause;
                 bool cover = false;
                 int depth = UIFormCount;
-                while (current != null)
+                while (current != null && current.Value != null)
                 {
                     LinkedListNode<UIFormInfo> next = current.Next;
                     current.Value.UIForm.OnDepthChanged(Depth, depth--);
+                    if (current.Value == null)
+                    {
+                        return;
+                    }
+
                     if (pause)
                     {
                         if (!current.Value.Covered)
                         {
                             current.Value.Covered = true;
                             current.Value.UIForm.OnCover();
+                            if (current.Value == null)
+                            {
+                                return;
+                            }
                         }
 
                         if (!current.Value.Paused)
                         {
                             current.Value.Paused = true;
                             current.Value.UIForm.OnPause();
+                            if (current.Value == null)
+                            {
+                                return;
+                            }
                         }
                     }
                     else
@@ -408,6 +433,10 @@ namespace GameFramework.UI
                         {
                             current.Value.Paused = false;
                             current.Value.UIForm.OnResume();
+                            if (current.Value == null)
+                            {
+                                return;
+                            }
                         }
 
                         if (current.Value.UIForm.PauseCoveredUIForm)
@@ -421,6 +450,10 @@ namespace GameFramework.UI
                             {
                                 current.Value.Covered = true;
                                 current.Value.UIForm.OnCover();
+                                if (current.Value == null)
+                                {
+                                    return;
+                                }
                             }
                         }
                         else
@@ -429,6 +462,10 @@ namespace GameFramework.UI
                             {
                                 current.Value.Covered = false;
                                 current.Value.UIForm.OnReveal();
+                                if (current.Value == null)
+                                {
+                                    return;
+                                }
                             }
 
                             cover = true;

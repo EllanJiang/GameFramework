@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Resource
@@ -15,10 +15,9 @@ namespace GameFramework.Resource
         /// <summary>
         /// 初始化加载资源代理辅助器异步将资源二进制流转换为加载对象完成事件的新实例。
         /// </summary>
-        /// <param name="resource">资源对象。</param>
-        public LoadResourceAgentHelperParseBytesCompleteEventArgs(object resource)
+        public LoadResourceAgentHelperParseBytesCompleteEventArgs()
         {
-            Resource = resource;
+            Resource = null;
         }
 
         /// <summary>
@@ -28,6 +27,26 @@ namespace GameFramework.Resource
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建加载资源代理辅助器异步将资源二进制流转换为加载对象完成事件。
+        /// </summary>
+        /// <param name="resource">资源对象。</param>
+        /// <returns>创建的加载资源代理辅助器异步将资源二进制流转换为加载对象完成事件。</returns>
+        public static LoadResourceAgentHelperParseBytesCompleteEventArgs Create(object resource)
+        {
+            LoadResourceAgentHelperParseBytesCompleteEventArgs loadResourceAgentHelperParseBytesCompleteEventArgs = ReferencePool.Acquire<LoadResourceAgentHelperParseBytesCompleteEventArgs>();
+            loadResourceAgentHelperParseBytesCompleteEventArgs.Resource = resource;
+            return loadResourceAgentHelperParseBytesCompleteEventArgs;
+        }
+
+        /// <summary>
+        /// 清理加载资源代理辅助器异步将资源二进制流转换为加载对象完成事件。
+        /// </summary>
+        public override void Clear()
+        {
+            Resource = null;
         }
     }
 }

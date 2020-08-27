@@ -1,14 +1,14 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Debugger
 {
     /// <summary>
-    /// 调试管理器。
+    /// 调试器管理器。
     /// </summary>
     internal sealed partial class DebuggerManager : GameFrameworkModule, IDebuggerManager
     {
@@ -16,7 +16,7 @@ namespace GameFramework.Debugger
         private bool m_ActiveWindow;
 
         /// <summary>
-        /// 初始化调试管理器的新实例。
+        /// 初始化调试器管理器的新实例。
         /// </summary>
         public DebuggerManager()
         {
@@ -37,7 +37,7 @@ namespace GameFramework.Debugger
         }
 
         /// <summary>
-        /// 获取或设置调试窗口是否激活。
+        /// 获取或设置调试器窗口是否激活。
         /// </summary>
         public bool ActiveWindow
         {
@@ -52,7 +52,7 @@ namespace GameFramework.Debugger
         }
 
         /// <summary>
-        /// 调试窗口根节点。
+        /// 调试器窗口根结点。
         /// </summary>
         public IDebuggerWindowGroup DebuggerWindowRoot
         {
@@ -63,7 +63,7 @@ namespace GameFramework.Debugger
         }
 
         /// <summary>
-        /// 调试管理器轮询。
+        /// 调试器管理器轮询。
         /// </summary>
         /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
@@ -78,7 +78,7 @@ namespace GameFramework.Debugger
         }
 
         /// <summary>
-        /// 关闭并清理调试管理器。
+        /// 关闭并清理调试器管理器。
         /// </summary>
         internal override void Shutdown()
         {
@@ -87,11 +87,11 @@ namespace GameFramework.Debugger
         }
 
         /// <summary>
-        /// 注册调试窗口。
+        /// 注册调试器窗口。
         /// </summary>
-        /// <param name="path">调试窗口路径。</param>
-        /// <param name="debuggerWindow">要注册的调试窗口。</param>
-        /// <param name="args">初始化调试窗口参数。</param>
+        /// <param name="path">调试器窗口路径。</param>
+        /// <param name="debuggerWindow">要注册的调试器窗口。</param>
+        /// <param name="args">初始化调试器窗口参数。</param>
         public void RegisterDebuggerWindow(string path, IDebuggerWindow debuggerWindow, params object[] args)
         {
             if (string.IsNullOrEmpty(path))
@@ -109,20 +109,30 @@ namespace GameFramework.Debugger
         }
 
         /// <summary>
-        /// 获取调试窗口。
+        /// 解除注册调试器窗口。
         /// </summary>
-        /// <param name="path">调试窗口路径。</param>
-        /// <returns>要获取的调试窗口。</returns>
+        /// <param name="path">调试器窗口路径。</param>
+        /// <returns>是否解除注册调试器窗口成功。</returns>
+        public bool UnregisterDebuggerWindow(string path)
+        {
+            return m_DebuggerWindowRoot.UnregisterDebuggerWindow(path);
+        }
+
+        /// <summary>
+        /// 获取调试器窗口。
+        /// </summary>
+        /// <param name="path">调试器窗口路径。</param>
+        /// <returns>要获取的调试器窗口。</returns>
         public IDebuggerWindow GetDebuggerWindow(string path)
         {
             return m_DebuggerWindowRoot.GetDebuggerWindow(path);
         }
 
         /// <summary>
-        /// 选中调试窗口。
+        /// 选中调试器窗口。
         /// </summary>
-        /// <param name="path">调试窗口路径。</param>
-        /// <returns>是否成功选中调试窗口。</returns>
+        /// <param name="path">调试器窗口路径。</param>
+        /// <returns>是否成功选中调试器窗口。</returns>
         public bool SelectDebuggerWindow(string path)
         {
             return m_DebuggerWindowRoot.SelectDebuggerWindow(path);

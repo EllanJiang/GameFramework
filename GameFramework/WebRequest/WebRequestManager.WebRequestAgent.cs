@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.WebRequest
@@ -85,7 +85,9 @@ namespace GameFramework.WebRequest
                     m_WaitTime += realElapseSeconds;
                     if (m_WaitTime >= m_Task.Timeout)
                     {
-                        OnWebRequestAgentHelperError(this, new WebRequestAgentHelperErrorEventArgs("Timeout"));
+                        WebRequestAgentHelperErrorEventArgs webRequestAgentHelperErrorEventArgs = WebRequestAgentHelperErrorEventArgs.Create("Timeout");
+                        OnWebRequestAgentHelperError(this, webRequestAgentHelperErrorEventArgs);
+                        ReferencePool.Release(webRequestAgentHelperErrorEventArgs);
                     }
                 }
             }

@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using GameFramework.Resource;
@@ -108,6 +108,13 @@ namespace GameFramework.Scene
         /// </summary>
         /// <param name="results">正在卸载场景的资源名称。</param>
         void GetUnloadingSceneAssetNames(List<string> results);
+
+        /// <summary>
+        /// 检查场景资源是否存在。
+        /// </summary>
+        /// <param name="sceneAssetName">要检查场景资源的名称。</param>
+        /// <returns>场景资源是否存在。</returns>
+        bool HasScene(string sceneAssetName);
 
         /// <summary>
         /// 加载场景。

@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -14,31 +14,40 @@ namespace GameFramework.DataNode
         /// <summary>
         /// 数据结点。
         /// </summary>
-        private sealed class DataNode : IDataNode
+        private sealed class DataNode : IDataNode, IReference
         {
-            private static readonly DataNode[] EmptyArray = new DataNode[] { };
+            private static readonly DataNode[] EmptyDataNodeArray = new DataNode[] { };
 
-            private readonly string m_Name;
+            private string m_Name;
             private Variable m_Data;
-            private readonly DataNode m_Parent;
+            private DataNode m_Parent;
             private List<DataNode> m_Childs;
 
+            public DataNode()
+            {
+                m_Name = null;
+                m_Data = null;
+                m_Parent = null;
+                m_Childs = null;
+            }
+
             /// <summary>
-            /// 初始化数据结点的新实例。
+            /// 创建数据结点。
             /// </summary>
             /// <param name="name">数据结点名称。</param>
             /// <param name="parent">父数据结点。</param>
-            public DataNode(string name, DataNode parent)
+            /// <returns>创建的数据结点。</returns>
+            public static DataNode Create(string name, DataNode parent)
             {
                 if (!IsValidName(name))
                 {
                     throw new GameFrameworkException("Name of data node is invalid.");
                 }
 
-                m_Name = name;
-                m_Data = null;
-                m_Parent = parent;
-                m_Childs = null;
+                DataNode node = ReferencePool.Acquire<DataNode>();
+                node.m_Name = name;
+                node.m_Parent = parent;
+                return node;
             }
 
             /// <summary>
@@ -124,13 +133,51 @@ namespace GameFramework.DataNode
             }
 
             /// <summary>
+            /// 根据索引检查是否存在子数据结点。
+            /// </summary>
+            /// <param name="index">子数据结点的索引。</param>
+            /// <returns>是否存在子数据结点。</returns>
+            public bool HasChild(int index)
+            {
+                return index >= 0 && index < ChildCount;
+            }
+
+            /// <summary>
+            /// 根据名称检查是否存在子数据结点。
+            /// </summary>
+            /// <param name="name">子数据结点名称。</param>
+            /// <returns>是否存在子数据结点。</returns>
+            public bool HasChild(string name)
+            {
+                if (!IsValidName(name))
+                {
+                    throw new GameFrameworkException("Name is invalid.");
+                }
+
+                if (m_Childs == null)
+                {
+                    return false;
+                }
+
+                foreach (DataNode child in m_Childs)
+                {
+                    if (child.Name == name)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            /// <summary>
             /// 根据索引获取子数据结点。
             /// </summary>
             /// <param name="index">子数据结点的索引。</param>
             /// <returns>指定索引的子数据结点，如果索引越界，则返回空。</returns>
             public IDataNode GetChild(int index)
             {
-                return index >= ChildCount ? null : m_Childs[index];
+                return index >= 0 && index < ChildCount ? m_Childs[index] : null;
             }
 
             /// <summary>
@@ -174,7 +221,7 @@ namespace GameFramework.DataNode
                     return node;
                 }
 
-                node = new DataNode(name, this);
+                node = Create(name, this);
 
                 if (m_Childs == null)
                 {
@@ -194,7 +241,7 @@ namespace GameFramework.DataNode
             {
                 if (m_Childs == null)
                 {
-                    return EmptyArray;
+                    return EmptyDataNodeArray;
                 }
 
                 return m_Childs.ToArray();
@@ -235,8 +282,8 @@ namespace GameFramework.DataNode
                     return;
                 }
 
-                node.Clear();
                 m_Childs.Remove(node);
+                ReferencePool.Release(node);
             }
 
             /// <summary>
@@ -251,13 +298,10 @@ namespace GameFramework.DataNode
                     return;
                 }
 
-                node.Clear();
                 m_Childs.Remove(node);
+                ReferencePool.Release(node);
             }
 
-            /// <summary>
-            /// 移除当前数据结点的数据和所有子数据结点。
-            /// </summary>
             public void Clear()
             {
                 m_Data = null;
@@ -265,7 +309,7 @@ namespace GameFramework.DataNode
                 {
                     foreach (DataNode child in m_Childs)
                     {
-                        child.Clear();
+                        ReferencePool.Release(child);
                     }
 
                     m_Childs.Clear();
@@ -298,7 +342,7 @@ namespace GameFramework.DataNode
             /// <summary>
             /// 检测数据结点名称是否合法。
             /// </summary>
-            /// <param name="name">要检测的数据节点名称。</param>
+            /// <param name="name">要检测的数据结点名称。</param>
             /// <returns>是否是合法的数据结点名称。</returns>
             private static bool IsValidName(string name)
             {
@@ -316,6 +360,13 @@ namespace GameFramework.DataNode
                 }
 
                 return true;
+            }
+
+            void IReference.Clear()
+            {
+                m_Name = null;
+                m_Parent = null;
+                Clear();
             }
         }
     }

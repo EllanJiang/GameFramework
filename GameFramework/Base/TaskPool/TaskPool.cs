@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -13,11 +13,12 @@ namespace GameFramework
     /// 任务池。
     /// </summary>
     /// <typeparam name="T">任务类型。</typeparam>
-    internal sealed class TaskPool<T> where T : ITask
+    internal sealed class TaskPool<T> where T : TaskBase
     {
         private readonly Stack<ITaskAgent<T>> m_FreeAgents;
-        private readonly LinkedList<ITaskAgent<T>> m_WorkingAgents;
-        private readonly LinkedList<T> m_WaitingTasks;
+        private readonly GameFrameworkLinkedList<ITaskAgent<T>> m_WorkingAgents;
+        private readonly GameFrameworkLinkedList<T> m_WaitingTasks;
+        private bool m_Paused;
 
         /// <summary>
         /// 初始化任务池的新实例。
@@ -25,8 +26,24 @@ namespace GameFramework
         public TaskPool()
         {
             m_FreeAgents = new Stack<ITaskAgent<T>>();
-            m_WorkingAgents = new LinkedList<ITaskAgent<T>>();
-            m_WaitingTasks = new LinkedList<T>();
+            m_WorkingAgents = new GameFrameworkLinkedList<ITaskAgent<T>>();
+            m_WaitingTasks = new GameFrameworkLinkedList<T>();
+            m_Paused = false;
+        }
+
+        /// <summary>
+        /// 获取或设置任务池是否被暂停。
+        /// </summary>
+        public bool Paused
+        {
+            get
+            {
+                return m_Paused;
+            }
+            set
+            {
+                m_Paused = value;
+            }
         }
 
         /// <summary>
@@ -80,6 +97,11 @@ namespace GameFramework
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         public void Update(float elapseSeconds, float realElapseSeconds)
         {
+            if (m_Paused)
+            {
+                return;
+            }
+
             ProcessRunningTasks(elapseSeconds, realElapseSeconds);
             ProcessWaitingTasks(elapseSeconds, realElapseSeconds);
         }
@@ -89,18 +111,12 @@ namespace GameFramework
         /// </summary>
         public void Shutdown()
         {
+            RemoveAllTasks();
+
             while (FreeAgentCount > 0)
             {
                 m_FreeAgents.Pop().Shutdown();
             }
-
-            foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
-            {
-                workingAgent.Shutdown();
-            }
-            m_WorkingAgents.Clear();
-
-            m_WaitingTasks.Clear();
         }
 
         /// <summary>
@@ -149,15 +165,16 @@ namespace GameFramework
         /// 移除任务。
         /// </summary>
         /// <param name="serialId">要移除任务的序列编号。</param>
-        /// <returns>被移除的任务。</returns>
-        public T RemoveTask(int serialId)
+        /// <returns>是否移除任务成功。</returns>
+        public bool RemoveTask(int serialId)
         {
-            foreach (T waitingTask in m_WaitingTasks)
+            foreach (T task in m_WaitingTasks)
             {
-                if (waitingTask.SerialId == serialId)
+                if (task.SerialId == serialId)
                 {
-                    m_WaitingTasks.Remove(waitingTask);
-                    return waitingTask;
+                    m_WaitingTasks.Remove(task);
+                    ReferencePool.Release(task);
+                    return true;
                 }
             }
 
@@ -165,14 +182,16 @@ namespace GameFramework
             {
                 if (workingAgent.Task.SerialId == serialId)
                 {
+                    T task = workingAgent.Task;
                     workingAgent.Reset();
                     m_FreeAgents.Push(workingAgent);
                     m_WorkingAgents.Remove(workingAgent);
-                    return workingAgent.Task;
+                    ReferencePool.Release(task);
+                    return true;
                 }
             }
 
-            return default(T);
+            return false;
         }
 
         /// <summary>
@@ -180,13 +199,39 @@ namespace GameFramework
         /// </summary>
         public void RemoveAllTasks()
         {
+            foreach (T task in m_WaitingTasks)
+            {
+                ReferencePool.Release(task);
+            }
+
             m_WaitingTasks.Clear();
+
             foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
             {
+                T task = workingAgent.Task;
                 workingAgent.Reset();
                 m_FreeAgents.Push(workingAgent);
+                ReferencePool.Release(task);
             }
+
             m_WorkingAgents.Clear();
+        }
+
+        public TaskInfo[] GetAllTaskInfos()
+        {
+            List<TaskInfo> results = new List<TaskInfo>();
+            foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
+            {
+                T workingTask = workingAgent.Task;
+                results.Add(new TaskInfo(workingTask.SerialId, workingTask.Priority, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description));
+            }
+
+            foreach (T waitingTask in m_WaitingTasks)
+            {
+                results.Add(new TaskInfo(waitingTask.SerialId, waitingTask.Priority, TaskStatus.Todo, waitingTask.Description));
+            }
+
+            return results.ToArray();
         }
 
         private void ProcessRunningTasks(float elapseSeconds, float realElapseSeconds)
@@ -194,7 +239,8 @@ namespace GameFramework
             LinkedListNode<ITaskAgent<T>> current = m_WorkingAgents.First;
             while (current != null)
             {
-                if (!current.Value.Task.Done)
+                T task = current.Value.Task;
+                if (!task.Done)
                 {
                     current.Value.Update(elapseSeconds, realElapseSeconds);
                     current = current.Next;
@@ -205,6 +251,7 @@ namespace GameFramework
                 current.Value.Reset();
                 m_FreeAgents.Push(current.Value);
                 m_WorkingAgents.Remove(current);
+                ReferencePool.Release(task);
                 current = next;
             }
         }
@@ -216,8 +263,9 @@ namespace GameFramework
             {
                 ITaskAgent<T> agent = m_FreeAgents.Pop();
                 LinkedListNode<ITaskAgent<T>> agentNode = m_WorkingAgents.AddLast(agent);
+                T task = current.Value;
                 LinkedListNode<T> next = current.Next;
-                StartTaskStatus status = agent.Start(current.Value);
+                StartTaskStatus status = agent.Start(task);
                 if (status == StartTaskStatus.Done || status == StartTaskStatus.HasToWait || status == StartTaskStatus.UnknownError)
                 {
                     agent.Reset();
@@ -228,6 +276,11 @@ namespace GameFramework
                 if (status == StartTaskStatus.Done || status == StartTaskStatus.CanResume || status == StartTaskStatus.UnknownError)
                 {
                     m_WaitingTasks.Remove(current);
+                }
+
+                if (status == StartTaskStatus.Done || status == StartTaskStatus.UnknownError)
+                {
+                    ReferencePool.Release(task);
                 }
 
                 current = next;

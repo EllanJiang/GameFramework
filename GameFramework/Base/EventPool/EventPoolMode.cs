@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -13,7 +13,7 @@ namespace GameFramework
     /// 事件池模式。
     /// </summary>
     [Flags]
-    internal enum EventPoolMode
+    internal enum EventPoolMode : byte
     {
         /// <summary>
         /// 默认事件池模式，即必须存在有且只有一个事件处理函数。
@@ -33,6 +33,6 @@ namespace GameFramework
         /// <summary>
         /// 允许存在重复的事件处理函数。
         /// </summary>
-        AllowDuplicateHandler = 4,
+        AllowDuplicateHandler = 4
     }
 }

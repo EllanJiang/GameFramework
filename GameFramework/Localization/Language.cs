@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Localization
@@ -10,7 +10,7 @@ namespace GameFramework.Localization
     /// <summary>
     /// 本地化语言。
     /// </summary>
-    public enum Language
+    public enum Language : byte
     {
         /// <summary>
         /// 未指定。
@@ -265,6 +265,6 @@ namespace GameFramework.Localization
         /// <summary>
         /// 越南语。
         /// </summary>
-        Vietnamese,
+        Vietnamese
     }
 }

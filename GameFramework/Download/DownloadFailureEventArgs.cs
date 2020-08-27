@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Download
@@ -15,18 +15,13 @@ namespace GameFramework.Download
         /// <summary>
         /// 初始化下载失败事件的新实例。
         /// </summary>
-        /// <param name="serialId">下载任务的序列编号。</param>
-        /// <param name="downloadPath">下载后存放路径。</param>
-        /// <param name="downloadUri">下载地址。</param>
-        /// <param name="errorMessage">错误信息。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public DownloadFailureEventArgs(int serialId, string downloadPath, string downloadUri, string errorMessage, object userData)
+        public DownloadFailureEventArgs()
         {
-            SerialId = serialId;
-            DownloadPath = downloadPath;
-            DownloadUri = downloadUri;
-            ErrorMessage = errorMessage;
-            UserData = userData;
+            SerialId = 0;
+            DownloadPath = null;
+            DownloadUri = null;
+            ErrorMessage = null;
+            UserData = null;
         }
 
         /// <summary>
@@ -72,6 +67,38 @@ namespace GameFramework.Download
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建下载失败事件。
+        /// </summary>
+        /// <param name="serialId">下载任务的序列编号。</param>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">下载地址。</param>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的下载失败事件。</returns>
+        public static DownloadFailureEventArgs Create(int serialId, string downloadPath, string downloadUri, string errorMessage, object userData)
+        {
+            DownloadFailureEventArgs downloadFailureEventArgs = ReferencePool.Acquire<DownloadFailureEventArgs>();
+            downloadFailureEventArgs.SerialId = serialId;
+            downloadFailureEventArgs.DownloadPath = downloadPath;
+            downloadFailureEventArgs.DownloadUri = downloadUri;
+            downloadFailureEventArgs.ErrorMessage = errorMessage;
+            downloadFailureEventArgs.UserData = userData;
+            return downloadFailureEventArgs;
+        }
+
+        /// <summary>
+        /// 清理下载失败事件。
+        /// </summary>
+        public override void Clear()
+        {
+            SerialId = 0;
+            DownloadPath = null;
+            DownloadUri = null;
+            ErrorMessage = null;
+            UserData = null;
         }
     }
 }

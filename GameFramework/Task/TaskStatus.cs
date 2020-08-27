@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Task
@@ -10,12 +10,12 @@ namespace GameFramework.Task
     /// <summary>
     /// 任务状态。
     /// </summary>
-    public enum TaskStatus
+    public enum TaskStatus : byte
     {
         /// <summary>
         /// 空闲。
         /// </summary>
-        Free,
+        Free = 0,
 
         /// <summary>
         /// 等待中。
@@ -40,6 +40,6 @@ namespace GameFramework.Task
         /// <summary>
         /// 已取消。
         /// </summary>
-        Canceled,
+        Canceled
     }
 }

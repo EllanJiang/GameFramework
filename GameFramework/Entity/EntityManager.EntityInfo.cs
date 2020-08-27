@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -14,26 +14,19 @@ namespace GameFramework.Entity
         /// <summary>
         /// 实体信息。
         /// </summary>
-        private sealed class EntityInfo
+        private sealed class EntityInfo : IReference
         {
-            private static readonly IEntity[] EmptyArray = new IEntity[] { };
-
-            private readonly IEntity m_Entity;
+            private IEntity m_Entity;
             private EntityStatus m_Status;
             private IEntity m_ParentEntity;
             private List<IEntity> m_ChildEntities;
 
-            public EntityInfo(IEntity entity)
+            public EntityInfo()
             {
-                if (entity == null)
-                {
-                    throw new GameFrameworkException("Entity is invalid.");
-                }
-
-                m_Entity = entity;
-                m_Status = EntityStatus.WillInit;
+                m_Entity = null;
+                m_Status = EntityStatus.Unknown;
                 m_ParentEntity = null;
-                m_ChildEntities = null;
+                m_ChildEntities = new List<IEntity>();
             }
 
             public IEntity Entity
@@ -68,13 +61,29 @@ namespace GameFramework.Entity
                 }
             }
 
-            public IEntity[] GetChildEntities()
+            public static EntityInfo Create(IEntity entity)
             {
-                if (m_ChildEntities == null)
+                if (entity == null)
                 {
-                    return EmptyArray;
+                    throw new GameFrameworkException("Entity is invalid.");
                 }
 
+                EntityInfo entityInfo = ReferencePool.Acquire<EntityInfo>();
+                entityInfo.m_Entity = entity;
+                entityInfo.m_Status = EntityStatus.WillInit;
+                return entityInfo;
+            }
+
+            public void Clear()
+            {
+                m_Entity = null;
+                m_Status = EntityStatus.Unknown;
+                m_ParentEntity = null;
+                m_ChildEntities.Clear();
+            }
+
+            public IEntity[] GetChildEntities()
+            {
                 return m_ChildEntities.ToArray();
             }
 
@@ -86,11 +95,6 @@ namespace GameFramework.Entity
                 }
 
                 results.Clear();
-                if (m_ChildEntities == null)
-                {
-                    return;
-                }
-
                 foreach (IEntity childEntity in m_ChildEntities)
                 {
                     results.Add(childEntity);
@@ -99,11 +103,6 @@ namespace GameFramework.Entity
 
             public void AddChildEntity(IEntity childEntity)
             {
-                if (m_ChildEntities == null)
-                {
-                    m_ChildEntities = new List<IEntity>();
-                }
-
                 if (m_ChildEntities.Contains(childEntity))
                 {
                     throw new GameFrameworkException("Can not add child entity which is already exist.");
@@ -114,7 +113,7 @@ namespace GameFramework.Entity
 
             public void RemoveChildEntity(IEntity childEntity)
             {
-                if (m_ChildEntities == null || !m_ChildEntities.Remove(childEntity))
+                if (!m_ChildEntities.Remove(childEntity))
                 {
                     throw new GameFrameworkException("Can not remove child entity which is not exist.");
                 }

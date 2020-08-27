@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -41,9 +41,17 @@ namespace GameFramework.Network
         }
 
         /// <summary>
-        /// 获取网络类型。
+        /// 获取网络服务类型。
         /// </summary>
-        NetworkType NetworkType
+        ServiceType ServiceType
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 获取网络地址类型。
+        /// </summary>
+        AddressFamily AddressFamily
         {
             get;
         }

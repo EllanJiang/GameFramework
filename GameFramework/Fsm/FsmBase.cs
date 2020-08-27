@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -14,23 +14,14 @@ namespace GameFramework.Fsm
     /// </summary>
     public abstract class FsmBase
     {
-        private readonly string m_Name;
+        private string m_Name;
 
         /// <summary>
         /// 初始化有限状态机基类的新实例。
         /// </summary>
         public FsmBase()
-            : this(null)
         {
-        }
-
-        /// <summary>
-        /// 初始化有限状态机基类的新实例。
-        /// </summary>
-        /// <param name="name">有限状态机名称。</param>
-        public FsmBase(string name)
-        {
-            m_Name = name ?? string.Empty;
+            m_Name = string.Empty;
         }
 
         /// <summary>
@@ -41,6 +32,21 @@ namespace GameFramework.Fsm
             get
             {
                 return m_Name;
+            }
+            protected set
+            {
+                m_Name = value ?? string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// 获取有限状态机完整名称。
+        /// </summary>
+        public string FullName
+        {
+            get
+            {
+                return new TypeNamePair(OwnerType, m_Name).ToString();
             }
         }
 

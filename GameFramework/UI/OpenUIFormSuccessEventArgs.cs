@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.UI
@@ -15,14 +15,11 @@ namespace GameFramework.UI
         /// <summary>
         /// 初始化打开界面成功事件的新实例。
         /// </summary>
-        /// <param name="uiForm">加载成功的界面。</param>
-        /// <param name="duration">加载持续时间。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public OpenUIFormSuccessEventArgs(IUIForm uiForm, float duration, object userData)
+        public OpenUIFormSuccessEventArgs()
         {
-            UIForm = uiForm;
-            Duration = duration;
-            UserData = userData;
+            UIForm = null;
+            Duration = 0f;
+            UserData = null;
         }
 
         /// <summary>
@@ -50,6 +47,32 @@ namespace GameFramework.UI
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建打开界面成功事件。
+        /// </summary>
+        /// <param name="uiForm">加载成功的界面。</param>
+        /// <param name="duration">加载持续时间。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的打开界面成功事件。</returns>
+        public static OpenUIFormSuccessEventArgs Create(IUIForm uiForm, float duration, object userData)
+        {
+            OpenUIFormSuccessEventArgs openUIFormSuccessEventArgs = ReferencePool.Acquire<OpenUIFormSuccessEventArgs>();
+            openUIFormSuccessEventArgs.UIForm = uiForm;
+            openUIFormSuccessEventArgs.Duration = duration;
+            openUIFormSuccessEventArgs.UserData = userData;
+            return openUIFormSuccessEventArgs;
+        }
+
+        /// <summary>
+        /// 清理打开界面成功事件。
+        /// </summary>
+        public override void Clear()
+        {
+            UIForm = null;
+            Duration = 0f;
+            UserData = null;
         }
     }
 }

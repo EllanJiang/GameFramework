@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -148,7 +148,9 @@ namespace GameFramework.Download
                     m_WaitTime += realElapseSeconds;
                     if (m_WaitTime >= m_Task.Timeout)
                     {
-                        OnDownloadAgentHelperError(this, new DownloadAgentHelperErrorEventArgs("Timeout"));
+                        DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = DownloadAgentHelperErrorEventArgs.Create(false, "Timeout");
+                        OnDownloadAgentHelperError(this, downloadAgentHelperErrorEventArgs);
+                        ReferencePool.Release(downloadAgentHelperErrorEventArgs);
                     }
                 }
             }
@@ -222,7 +224,9 @@ namespace GameFramework.Download
                 }
                 catch (Exception exception)
                 {
-                    OnDownloadAgentHelperError(this, new DownloadAgentHelperErrorEventArgs(exception.Message));
+                    DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = DownloadAgentHelperErrorEventArgs.Create(false, exception.ToString());
+                    OnDownloadAgentHelperError(this, downloadAgentHelperErrorEventArgs);
+                    ReferencePool.Release(downloadAgentHelperErrorEventArgs);
                     return StartTaskStatus.UnknownError;
                 }
             }
@@ -297,7 +301,9 @@ namespace GameFramework.Download
                 }
                 catch (Exception exception)
                 {
-                    OnDownloadAgentHelperError(this, new DownloadAgentHelperErrorEventArgs(exception.Message));
+                    DownloadAgentHelperErrorEventArgs downloadAgentHelperErrorEventArgs = DownloadAgentHelperErrorEventArgs.Create(false, exception.ToString());
+                    OnDownloadAgentHelperError(this, downloadAgentHelperErrorEventArgs);
+                    ReferencePool.Release(downloadAgentHelperErrorEventArgs);
                 }
             }
 
@@ -348,6 +354,11 @@ namespace GameFramework.Download
                 {
                     m_FileStream.Close();
                     m_FileStream = null;
+                }
+
+                if (e.DeleteDownloading)
+                {
+                    File.Delete(Utility.Text.Format("{0}.download", m_Task.DownloadPath));
                 }
 
                 m_Task.Status = DownloadTaskStatus.Error;

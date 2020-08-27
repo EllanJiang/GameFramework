@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Sound
@@ -10,8 +10,13 @@ namespace GameFramework.Sound
     /// <summary>
     /// 播放声音错误码。
     /// </summary>
-    public enum PlaySoundErrorCode
+    public enum PlaySoundErrorCode : byte
     {
+        /// <summary>
+        /// 未知错误。
+        /// </summary>
+        Unknown = 0,
+
         /// <summary>
         /// 声音组不存在。
         /// </summary>
@@ -35,6 +40,6 @@ namespace GameFramework.Sound
         /// <summary>
         /// 设置声音资源失败。
         /// </summary>
-        SetSoundAssetFailure,
+        SetSoundAssetFailure
     }
 }

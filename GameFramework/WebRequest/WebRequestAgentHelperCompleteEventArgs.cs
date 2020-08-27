@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.WebRequest
@@ -12,15 +12,34 @@ namespace GameFramework.WebRequest
     /// </summary>
     public sealed class WebRequestAgentHelperCompleteEventArgs : GameFrameworkEventArgs
     {
-        private readonly byte[] m_WebResponseBytes;
+        private byte[] m_WebResponseBytes;
 
         /// <summary>
         /// 初始化 Web 请求代理辅助器完成事件的新实例。
         /// </summary>
-        /// <param name="webResponseBytes">Web 响应的数据流。</param>
-        public WebRequestAgentHelperCompleteEventArgs(byte[] webResponseBytes)
+        public WebRequestAgentHelperCompleteEventArgs()
         {
-            m_WebResponseBytes = webResponseBytes;
+            m_WebResponseBytes = null;
+        }
+
+        /// <summary>
+        /// 创建 Web 请求代理辅助器完成事件。
+        /// </summary>
+        /// <param name="webResponseBytes">Web 响应的数据流。</param>
+        /// <returns>创建的 Web 请求代理辅助器完成事件。</returns>
+        public static WebRequestAgentHelperCompleteEventArgs Create(byte[] webResponseBytes)
+        {
+            WebRequestAgentHelperCompleteEventArgs webRequestAgentHelperCompleteEventArgs = ReferencePool.Acquire<WebRequestAgentHelperCompleteEventArgs>();
+            webRequestAgentHelperCompleteEventArgs.m_WebResponseBytes = webResponseBytes;
+            return webRequestAgentHelperCompleteEventArgs;
+        }
+
+        /// <summary>
+        /// 清理 Web 请求代理辅助器完成事件。
+        /// </summary>
+        public override void Clear()
+        {
+            m_WebResponseBytes = null;
         }
 
         /// <summary>

@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 using System;
@@ -18,7 +18,7 @@ namespace GameFramework
         public static class Assembly
         {
             private static readonly System.Reflection.Assembly[] s_Assemblies = null;
-            private static readonly Dictionary<string, Type> s_CachedTypes = new Dictionary<string, Type>();
+            private static readonly Dictionary<string, Type> s_CachedTypes = new Dictionary<string, Type>(StringComparer.Ordinal);
 
             static Assembly()
             {

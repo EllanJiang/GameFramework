@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework
@@ -12,7 +12,7 @@ namespace GameFramework
     /// </summary>
     public static partial class Version
     {
-        private const string GameFrameworkVersionString = "2019.2.1";
+        private const string GameFrameworkVersionString = "2020.07.30";
 
         private static IVersionHelper s_VersionHelper = null;
 

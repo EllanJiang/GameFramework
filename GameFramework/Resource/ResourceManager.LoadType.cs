@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.Resource
@@ -12,27 +12,42 @@ namespace GameFramework.Resource
         /// <summary>
         /// 资源加载方式类型。
         /// </summary>
-        private enum LoadType
+        private enum LoadType : byte
         {
             /// <summary>
-            /// 从文件加载。
+            /// 使用文件方式加载。
             /// </summary>
             LoadFromFile = 0,
 
             /// <summary>
-            /// 从内存加载。
+            /// 使用内存方式加载。
             /// </summary>
             LoadFromMemory,
 
             /// <summary>
-            /// 从内存快速解密加载。
+            /// 使用内存快速解密方式加载。
             /// </summary>
             LoadFromMemoryAndQuickDecrypt,
 
             /// <summary>
-            /// 从内存解密加载。
+            /// 使用内存解密方式加载。
             /// </summary>
             LoadFromMemoryAndDecrypt,
+
+            /// <summary>
+            /// 使用二进制方式加载。
+            /// </summary>
+            LoadFromBinary,
+
+            /// <summary>
+            /// 使用二进制快速解密方式加载。
+            /// </summary>
+            LoadFromBinaryAndQuickDecrypt,
+
+            /// <summary>
+            /// 使用二进制解密方式加载。
+            /// </summary>
+            LoadFromBinaryAndDecrypt
         }
     }
 }

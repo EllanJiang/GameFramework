@@ -1,27 +1,27 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.UI
 {
     internal sealed partial class UIManager : GameFrameworkModule, IUIManager
     {
-        private sealed class OpenUIFormInfo
+        private sealed class OpenUIFormInfo : IReference
         {
-            private readonly int m_SerialId;
-            private readonly UIGroup m_UIGroup;
-            private readonly bool m_PauseCoveredUIForm;
-            private readonly object m_UserData;
+            private int m_SerialId;
+            private UIGroup m_UIGroup;
+            private bool m_PauseCoveredUIForm;
+            private object m_UserData;
 
-            public OpenUIFormInfo(int serialId, UIGroup uiGroup, bool pauseCoveredUIForm, object userData)
+            public OpenUIFormInfo()
             {
-                m_SerialId = serialId;
-                m_UIGroup = uiGroup;
-                m_PauseCoveredUIForm = pauseCoveredUIForm;
-                m_UserData = userData;
+                m_SerialId = 0;
+                m_UIGroup = null;
+                m_PauseCoveredUIForm = false;
+                m_UserData = null;
             }
 
             public int SerialId
@@ -54,6 +54,24 @@ namespace GameFramework.UI
                 {
                     return m_UserData;
                 }
+            }
+
+            public static OpenUIFormInfo Create(int serialId, UIGroup uiGroup, bool pauseCoveredUIForm, object userData)
+            {
+                OpenUIFormInfo openUIFormInfo = ReferencePool.Acquire<OpenUIFormInfo>();
+                openUIFormInfo.m_SerialId = serialId;
+                openUIFormInfo.m_UIGroup = uiGroup;
+                openUIFormInfo.m_PauseCoveredUIForm = pauseCoveredUIForm;
+                openUIFormInfo.m_UserData = userData;
+                return openUIFormInfo;
+            }
+
+            public void Clear()
+            {
+                m_SerialId = 0;
+                m_UIGroup = null;
+                m_PauseCoveredUIForm = false;
+                m_UserData = null;
             }
         }
     }

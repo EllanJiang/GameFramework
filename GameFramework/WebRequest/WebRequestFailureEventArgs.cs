@@ -1,8 +1,8 @@
 ﻿//------------------------------------------------------------
 // Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
-// Homepage: http://gameframework.cn/
-// Feedback: mailto:jiangyin@gameframework.cn
+// Copyright © 2013-2020 Jiang Yin. All rights reserved.
+// Homepage: https://gameframework.cn/
+// Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
 namespace GameFramework.WebRequest
@@ -15,16 +15,12 @@ namespace GameFramework.WebRequest
         /// <summary>
         /// 初始化 Web 请求失败事件的新实例。
         /// </summary>
-        /// <param name="serialId">Web 请求任务的序列编号。</param>
-        /// <param name="webRequestUri">Web 请求地址。</param>
-        /// <param name="errorMessage">错误信息。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public WebRequestFailureEventArgs(int serialId, string webRequestUri, string errorMessage, object userData)
+        public WebRequestFailureEventArgs()
         {
-            SerialId = serialId;
-            WebRequestUri = webRequestUri;
-            ErrorMessage = errorMessage;
-            UserData = userData;
+            SerialId = 0;
+            WebRequestUri = null;
+            ErrorMessage = null;
+            UserData = null;
         }
 
         /// <summary>
@@ -61,6 +57,35 @@ namespace GameFramework.WebRequest
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// 创建 Web 请求失败事件。
+        /// </summary>
+        /// <param name="serialId">Web 请求任务的序列编号。</param>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="errorMessage">错误信息。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>创建的 Web 请求失败事件。</returns>
+        public static WebRequestFailureEventArgs Create(int serialId, string webRequestUri, string errorMessage, object userData)
+        {
+            WebRequestFailureEventArgs webRequestFailureEventArgs = ReferencePool.Acquire<WebRequestFailureEventArgs>();
+            webRequestFailureEventArgs.SerialId = serialId;
+            webRequestFailureEventArgs.WebRequestUri = webRequestUri;
+            webRequestFailureEventArgs.ErrorMessage = errorMessage;
+            webRequestFailureEventArgs.UserData = userData;
+            return webRequestFailureEventArgs;
+        }
+
+        /// <summary>
+        /// 清理 Web 请求失败事件。
+        /// </summary>
+        public override void Clear()
+        {
+            SerialId = 0;
+            WebRequestUri = null;
+            ErrorMessage = null;
+            UserData = null;
         }
     }
 }
