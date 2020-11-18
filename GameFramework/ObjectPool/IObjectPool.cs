@@ -173,6 +173,20 @@ namespace GameFramework.ObjectPool
         void SetPriority(object target, int priority);
 
         /// <summary>
+        /// 释放对象。
+        /// </summary>
+        /// <param name="obj">要释放的对象。</param>
+        /// <returns>释放对象是否成功。</returns>
+        bool ReleaseObject(T obj);
+
+        /// <summary>
+        /// 释放对象。
+        /// </summary>
+        /// <param name="target">要释放的对象。</param>
+        /// <returns>释放对象是否成功。</returns>
+        bool ReleaseObject(object target);
+
+        /// <summary>
         /// 释放对象池中的可释放对象。
         /// </summary>
         void Release();
