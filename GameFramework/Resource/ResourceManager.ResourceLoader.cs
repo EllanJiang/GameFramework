@@ -439,6 +439,10 @@ namespace GameFramework.Resource
                 {
                     m_SceneToAssetMap.Remove(sceneAssetName);
                     m_AssetPool.Unspawn(asset);
+                    if (!m_AssetPool.ReleaseObject(asset))
+                    {
+                        throw new GameFrameworkException(Utility.Text.Format("Unload scene '{0}' failure.", sceneAssetName));
+                    }
                 }
                 else
                 {
