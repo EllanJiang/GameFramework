@@ -416,7 +416,7 @@ namespace GameFramework.ObjectPool
                     throw new GameFrameworkException("Can not release object which is not found.");
                 }
 
-                if (internalObject.Locked || internalObject.SpawnCount > 0)
+                if (internalObject.IsInUse || internalObject.Locked || !internalObject.CustomCanReleaseFlag)
                 {
                     return false;
                 }
