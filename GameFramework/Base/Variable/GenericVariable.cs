@@ -20,18 +20,9 @@ namespace GameFramework
         /// <summary>
         /// 初始化变量的新实例。
         /// </summary>
-        protected Variable()
+        public Variable()
         {
             m_Value = default(T);
-        }
-
-        /// <summary>
-        /// 初始化变量的新实例。
-        /// </summary>
-        /// <param name="value">初始值。</param>
-        protected Variable(T value)
-        {
-            m_Value = value;
         }
 
         /// <summary>
@@ -79,9 +70,9 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 重置变量值。
+        /// 清理变量值。
         /// </summary>
-        public override void Reset()
+        public override void Clear()
         {
             m_Value = default(T);
         }

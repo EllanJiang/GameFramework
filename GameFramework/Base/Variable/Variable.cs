@@ -12,12 +12,12 @@ namespace GameFramework
     /// <summary>
     /// 变量。
     /// </summary>
-    public abstract class Variable
+    public abstract class Variable : IReference
     {
         /// <summary>
         /// 初始化变量的新实例。
         /// </summary>
-        protected Variable()
+        public Variable()
         {
         }
 
@@ -42,8 +42,8 @@ namespace GameFramework
         public abstract void SetValue(object value);
 
         /// <summary>
-        /// 重置变量值。
+        /// 清理变量值。
         /// </summary>
-        public abstract void Reset();
+        public abstract void Clear();
     }
 }

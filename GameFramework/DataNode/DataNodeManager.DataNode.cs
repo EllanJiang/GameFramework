@@ -120,7 +120,7 @@ namespace GameFramework.DataNode
             /// <param name="data">要设置的数据。</param>
             public void SetData<T>(T data) where T : Variable
             {
-                m_Data = data;
+                SetData((Variable)data);
             }
 
             /// <summary>
@@ -129,6 +129,11 @@ namespace GameFramework.DataNode
             /// <param name="data">要设置的数据。</param>
             public void SetData(Variable data)
             {
+                if (m_Data != null)
+                {
+                    ReferencePool.Release(m_Data);
+                }
+
                 m_Data = data;
             }
 
@@ -304,7 +309,12 @@ namespace GameFramework.DataNode
 
             public void Clear()
             {
-                m_Data = null;
+                if (m_Data != null)
+                {
+                    ReferencePool.Release(m_Data);
+                    m_Data = null;
+                }
+
                 if (m_Childs != null)
                 {
                     foreach (DataNode child in m_Childs)
