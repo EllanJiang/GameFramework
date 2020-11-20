@@ -287,31 +287,52 @@ namespace GameFramework.Entity
         IEntity GetParentEntity(IEntity childEntity);
 
         /// <summary>
+        /// 获取子实体数量。
+        /// </summary>
+        /// <param name="parentEntityId">要获取子实体数量的父实体的实体编号。</param>
+        /// <returns>子实体数量。</returns>
+        int GetChildEntityCount(int parentEntityId);
+
+        /// <summary>
         /// 获取子实体。
         /// </summary>
         /// <param name="parentEntityId">要获取子实体的父实体的实体编号。</param>
-        /// <returns>子实体数组。</returns>
+        /// <returns>子实体。</returns>
+        IEntity GetChildEntity(int parentEntityId);
+
+        /// <summary>
+        /// 获取子实体。
+        /// </summary>
+        /// <param name="parentEntity">要获取子实体的父实体。</param>
+        /// <returns>子实体。</returns>
+        IEntity GetChildEntity(IEntity parentEntity);
+
+        /// <summary>
+        /// 获取所有子实体。
+        /// </summary>
+        /// <param name="parentEntityId">要获取所有子实体的父实体的实体编号。</param>
+        /// <returns>所有子实体。</returns>
         IEntity[] GetChildEntities(int parentEntityId);
 
         /// <summary>
-        /// 获取子实体。
+        /// 获取所有子实体。
         /// </summary>
-        /// <param name="parentEntityId">要获取子实体的父实体的实体编号。</param>
-        /// <param name="results">子实体数组。</param>
+        /// <param name="parentEntityId">要获取所有子实体的父实体的实体编号。</param>
+        /// <param name="results">所有子实体。</param>
         void GetChildEntities(int parentEntityId, List<IEntity> results);
 
         /// <summary>
-        /// 获取子实体。
+        /// 获取所有子实体。
         /// </summary>
-        /// <param name="parentEntity">要获取子实体的父实体。</param>
-        /// <returns>子实体数组。</returns>
+        /// <param name="parentEntity">要获取所有子实体的父实体。</param>
+        /// <returns>所有子实体。</returns>
         IEntity[] GetChildEntities(IEntity parentEntity);
 
         /// <summary>
-        /// 获取子实体。
+        /// 获取所有子实体。
         /// </summary>
-        /// <param name="parentEntity">要获取子实体的父实体。</param>
-        /// <param name="results">子实体数组。</param>
+        /// <param name="parentEntity">要获取所有子实体的父实体。</param>
+        /// <param name="results">所有子实体。</param>
         void GetChildEntities(IEntity parentEntity, List<IEntity> results);
 
         /// <summary>

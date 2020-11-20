@@ -61,6 +61,14 @@ namespace GameFramework.Entity
                 }
             }
 
+            public int ChildEntityCount
+            {
+                get
+                {
+                    return m_ChildEntities.Count;
+                }
+            }
+
             public static EntityInfo Create(IEntity entity)
             {
                 if (entity == null)
@@ -80,6 +88,11 @@ namespace GameFramework.Entity
                 m_Status = EntityStatus.Unknown;
                 m_ParentEntity = null;
                 m_ChildEntities.Clear();
+            }
+
+            public IEntity GetChildEntity()
+            {
+                return m_ChildEntities.Count > 0 ? m_ChildEntities[0] : null;
             }
 
             public IEntity[] GetChildEntities()

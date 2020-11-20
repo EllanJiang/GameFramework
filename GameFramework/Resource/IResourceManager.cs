@@ -437,7 +437,7 @@ namespace GameFramework.Resource
         void ApplyResources(string resourcePackPath, ApplyResourcesCompleteCallback applyResourcesCompleteCallback);
 
         /// <summary>
-        /// 使用可更新模式并更新全部资源。
+        /// 使用可更新模式并更新所有资源。
         /// </summary>
         /// <param name="updateResourcesCompleteCallback">使用可更新模式并更新默认资源组完成时的回调函数。</param>
         void UpdateResources(UpdateResourcesCompleteCallback updateResourcesCompleteCallback);

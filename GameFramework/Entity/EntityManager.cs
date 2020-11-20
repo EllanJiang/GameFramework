@@ -780,10 +780,57 @@ namespace GameFramework.Entity
         }
 
         /// <summary>
+        /// 获取子实体数量。
+        /// </summary>
+        /// <param name="parentEntityId">要获取子实体数量的父实体的实体编号。</param>
+        /// <returns>子实体数量。</returns>
+        public int GetChildEntityCount(int parentEntityId)
+        {
+            EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
+            if (parentEntityInfo == null)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId.ToString()));
+            }
+
+            return parentEntityInfo.ChildEntityCount;
+        }
+
+        /// <summary>
         /// 获取子实体。
         /// </summary>
         /// <param name="parentEntityId">要获取子实体的父实体的实体编号。</param>
-        /// <returns>子实体数组。</returns>
+        /// <returns>子实体。</returns>
+        public IEntity GetChildEntity(int parentEntityId)
+        {
+            EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
+            if (parentEntityInfo == null)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId.ToString()));
+            }
+
+            return parentEntityInfo.GetChildEntity();
+        }
+
+        /// <summary>
+        /// 获取子实体。
+        /// </summary>
+        /// <param name="parentEntity">要获取子实体的父实体。</param>
+        /// <returns>子实体。</returns>
+        public IEntity GetChildEntity(IEntity parentEntity)
+        {
+            if (parentEntity == null)
+            {
+                throw new GameFrameworkException("Parent entity is invalid.");
+            }
+
+            return GetChildEntity(parentEntity.Id);
+        }
+
+        /// <summary>
+        /// 获取所有子实体。
+        /// </summary>
+        /// <param name="parentEntityId">要获取所有子实体的父实体的实体编号。</param>
+        /// <returns>所有子实体。</returns>
         public IEntity[] GetChildEntities(int parentEntityId)
         {
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
@@ -796,10 +843,10 @@ namespace GameFramework.Entity
         }
 
         /// <summary>
-        /// 获取子实体。
+        /// 获取所有子实体。
         /// </summary>
-        /// <param name="parentEntityId">要获取子实体的父实体的实体编号。</param>
-        /// <param name="results">子实体数组。</param>
+        /// <param name="parentEntityId">要获取所有子实体的父实体的实体编号。</param>
+        /// <param name="results">所有子实体。</param>
         public void GetChildEntities(int parentEntityId, List<IEntity> results)
         {
             EntityInfo parentEntityInfo = GetEntityInfo(parentEntityId);
@@ -812,10 +859,10 @@ namespace GameFramework.Entity
         }
 
         /// <summary>
-        /// 获取子实体。
+        /// 获取所有子实体。
         /// </summary>
-        /// <param name="parentEntity">要获取子实体的父实体。</param>
-        /// <returns>子实体数组。</returns>
+        /// <param name="parentEntity">要获取所有子实体的父实体。</param>
+        /// <returns>所有子实体。</returns>
         public IEntity[] GetChildEntities(IEntity parentEntity)
         {
             if (parentEntity == null)
@@ -827,10 +874,10 @@ namespace GameFramework.Entity
         }
 
         /// <summary>
-        /// 获取子实体。
+        /// 获取所有子实体。
         /// </summary>
-        /// <param name="parentEntity">要获取子实体的父实体。</param>
-        /// <param name="results">子实体数组。</param>
+        /// <param name="parentEntity">要获取所有子实体的父实体。</param>
+        /// <param name="results">所有子实体。</param>
         public void GetChildEntities(IEntity parentEntity, List<IEntity> results)
         {
             if (parentEntity == null)
@@ -1065,9 +1112,9 @@ namespace GameFramework.Entity
                 throw new GameFrameworkException(Utility.Text.Format("Can not find parent entity '{0}'.", parentEntityId.ToString()));
             }
 
-            IEntity[] childEntities = parentEntityInfo.GetChildEntities();
-            foreach (IEntity childEntity in childEntities)
+            while (parentEntityInfo.ChildEntityCount > 0)
             {
+                IEntity childEntity = parentEntityInfo.GetChildEntity();
                 DetachEntity(childEntity.Id, userData);
             }
         }
@@ -1155,10 +1202,9 @@ namespace GameFramework.Entity
 
         private void InternalHideEntity(EntityInfo entityInfo, object userData)
         {
-            IEntity entity = entityInfo.Entity;
-            IEntity[] childEntities = entityInfo.GetChildEntities();
-            foreach (IEntity childEntity in childEntities)
+            while (entityInfo.ChildEntityCount > 0)
             {
+                IEntity childEntity = entityInfo.GetChildEntity();
                 HideEntity(childEntity.Id, userData);
             }
 
@@ -1167,6 +1213,7 @@ namespace GameFramework.Entity
                 return;
             }
 
+            IEntity entity = entityInfo.Entity;
             DetachEntity(entity.Id, userData);
             entityInfo.Status = EntityStatus.WillHide;
             entity.OnHide(m_IsShutdown, userData);
