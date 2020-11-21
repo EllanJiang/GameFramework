@@ -25,6 +25,25 @@ namespace GameFramework
         }
 
         /// <summary>
+        /// 确保二进制流缓存分配足够大小的内存并缓存。
+        /// </summary>
+        /// <typeparam name="T">数据提供者的持有者的类型。</typeparam>
+        /// <param name="ensureSize">要确保二进制流缓存分配内存的大小。</param>
+        public static void EnsureCachedBytesSize<T>(int ensureSize)
+        {
+            DataProvider<T>.EnsureCachedBytesSize(ensureSize);
+        }
+
+        /// <summary>
+        /// 释放缓存的二进制流。
+        /// </summary>
+        /// <typeparam name="T">数据提供者的持有者的类型。</typeparam>
+        public static void FreeCachedBytes<T>()
+        {
+            DataProvider<T>.FreeCachedBytes();
+        }
+
+        /// <summary>
         /// 创建数据提供者。
         /// </summary>
         /// <typeparam name="T">数据提供者的持有者的类型。</typeparam>

@@ -40,6 +40,14 @@ namespace GameFramework.Localization
         }
 
         /// <summary>
+        /// 获取缓冲二进制流的大小。
+        /// </summary>
+        int CachedBytesSize
+        {
+            get;
+        }
+
+        /// <summary>
         /// 设置资源管理器。
         /// </summary>
         /// <param name="resourceManager">资源管理器。</param>
@@ -56,6 +64,17 @@ namespace GameFramework.Localization
         /// </summary>
         /// <param name="localizationHelper">本地化辅助器。</param>
         void SetLocalizationHelper(ILocalizationHelper localizationHelper);
+
+        /// <summary>
+        /// 确保二进制流缓存分配足够大小的内存并缓存。
+        /// </summary>
+        /// <param name="ensureSize">要确保二进制流缓存分配内存的大小。</param>
+        void EnsureCachedBytesSize(int ensureSize);
+
+        /// <summary>
+        /// 释放缓存的二进制流。
+        /// </summary>
+        void FreeCachedBytes();
 
         /// <summary>
         /// 根据字典主键获取字典内容字符串。

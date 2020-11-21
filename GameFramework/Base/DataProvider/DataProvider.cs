@@ -118,6 +118,33 @@ namespace GameFramework
         }
 
         /// <summary>
+        /// 确保二进制流缓存分配足够大小的内存并缓存。
+        /// </summary>
+        /// <param name="ensureSize">要确保二进制流缓存分配内存的大小。</param>
+        public static void EnsureCachedBytesSize(int ensureSize)
+        {
+            if (ensureSize < 0)
+            {
+                throw new GameFrameworkException("Ensure size is invalid.");
+            }
+
+            if (s_CachedBytes == null || s_CachedBytes.Length < ensureSize)
+            {
+                FreeCachedBytes();
+                int size = (ensureSize - 1 + BlockSize) / BlockSize * BlockSize;
+                s_CachedBytes = new byte[size];
+            }
+        }
+
+        /// <summary>
+        /// 释放缓存的二进制流。
+        /// </summary>
+        public static void FreeCachedBytes()
+        {
+            s_CachedBytes = null;
+        }
+
+        /// <summary>
         /// 读取数据。
         /// </summary>
         /// <param name="dataAssetName">内容资源名称。</param>
@@ -370,24 +397,6 @@ namespace GameFramework
             }
 
             m_DataProviderHelper = dataProviderHelper;
-        }
-
-        /// <summary>
-        /// 确保二进制流缓存分配足够大小的内存并缓存。
-        /// </summary>
-        /// <param name="ensureSize">要确保二进制流缓存分配内存的大小。</param>
-        private void EnsureCachedBytesSize(int ensureSize)
-        {
-            if (ensureSize < 0)
-            {
-                throw new GameFrameworkException("Ensure size is invalid.");
-            }
-
-            if (s_CachedBytes == null || s_CachedBytes.Length < ensureSize)
-            {
-                int size = (ensureSize - 1 + BlockSize) / BlockSize * BlockSize;
-                s_CachedBytes = new byte[size];
-            }
         }
 
         private void LoadAssetSuccessCallback(string dataAssetName, object dataAsset, float duration, object userData)

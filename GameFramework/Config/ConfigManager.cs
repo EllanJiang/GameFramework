@@ -42,6 +42,17 @@ namespace GameFramework.Config
         }
 
         /// <summary>
+        /// 获取缓冲二进制流的大小。
+        /// </summary>
+        public int CachedBytesSize
+        {
+            get
+            {
+                return DataProvider<IConfigManager>.CachedBytesSize;
+            }
+        }
+
+        /// <summary>
         /// 读取全局配置成功事件。
         /// </summary>
         public event EventHandler<ReadDataSuccessEventArgs> ReadDataSuccess
@@ -147,6 +158,23 @@ namespace GameFramework.Config
             }
 
             m_ConfigHelper = configHelper;
+        }
+
+        /// <summary>
+        /// 确保二进制流缓存分配足够大小的内存并缓存。
+        /// </summary>
+        /// <param name="ensureSize">要确保二进制流缓存分配内存的大小。</param>
+        public void EnsureCachedBytesSize(int ensureSize)
+        {
+            DataProvider<IConfigManager>.EnsureCachedBytesSize(ensureSize);
+        }
+
+        /// <summary>
+        /// 释放缓存的二进制流。
+        /// </summary>
+        public void FreeCachedBytes()
+        {
+            DataProvider<IConfigManager>.FreeCachedBytes();
         }
 
         /// <summary>

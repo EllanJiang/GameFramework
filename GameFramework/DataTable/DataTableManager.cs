@@ -44,6 +44,17 @@ namespace GameFramework.DataTable
         }
 
         /// <summary>
+        /// 获取缓冲二进制流的大小。
+        /// </summary>
+        public int CachedBytesSize
+        {
+            get
+            {
+                return DataProvider<DataTableBase>.CachedBytesSize;
+            }
+        }
+
+        /// <summary>
         /// 数据表管理器轮询。
         /// </summary>
         /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
@@ -105,6 +116,23 @@ namespace GameFramework.DataTable
             }
 
             m_DataTableHelper = dataTableHelper;
+        }
+
+        /// <summary>
+        /// 确保二进制流缓存分配足够大小的内存并缓存。
+        /// </summary>
+        /// <param name="ensureSize">要确保二进制流缓存分配内存的大小。</param>
+        public void EnsureCachedBytesSize(int ensureSize)
+        {
+            DataProvider<DataTableBase>.EnsureCachedBytesSize(ensureSize);
+        }
+
+        /// <summary>
+        /// 释放缓存的二进制流。
+        /// </summary>
+        public void FreeCachedBytes()
+        {
+            DataProvider<DataTableBase>.FreeCachedBytes();
         }
 
         /// <summary>

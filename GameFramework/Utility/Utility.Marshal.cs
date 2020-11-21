@@ -17,20 +17,8 @@ namespace GameFramework
         public static class Marshal
         {
             private const int BlockSize = 1024 * 4;
-
             private static IntPtr s_CachedHGlobalPtr = IntPtr.Zero;
             private static int s_CachedHGlobalSize = 0;
-
-            /// <summary>
-            /// 获取缓存的指向从进程的非托管内存中分配的内存的指针。
-            /// </summary>
-            internal static IntPtr CachedHGlobalPtr
-            {
-                get
-                {
-                    return s_CachedHGlobalPtr;
-                }
-            }
 
             /// <summary>
             /// 获取缓存的从进程的非托管内存中分配的内存的大小。
