@@ -17,12 +17,11 @@ namespace GameFramework
         /// <summary>
         /// 获取缓冲二进制流的大小。
         /// </summary>
-        public static int CachedBytesSize
+        /// <typeparam name="T">数据提供者的持有者的类型。</typeparam>
+        /// <returns>缓冲二进制流的大小。</returns>
+        public static int GetCachedBytesSize<T>()
         {
-            get
-            {
-                return DataProvider<object>.CachedBytesSize;
-            }
+            return DataProvider<T>.CachedBytesSize;
         }
 
         /// <summary>
