@@ -173,6 +173,11 @@ namespace GameFramework.Entity
 
                 entityInfo.Status = EntityStatus.WillRecycle;
                 entity.OnRecycle();
+                if (entityInfo.Status != EntityStatus.WillRecycle)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Entity status '{0}' is invalid.", entityInfo.Status.ToString()));
+                }
+
                 entityInfo.Status = EntityStatus.Recycled;
                 entityGroup.UnspawnEntity(entity);
                 ReferencePool.Release(entityInfo);
@@ -1173,10 +1178,20 @@ namespace GameFramework.Entity
                 m_EntityInfos.Add(entityId, entityInfo);
                 entityInfo.Status = EntityStatus.WillInit;
                 entity.OnInit(entityId, entityAssetName, entityGroup, isNewInstance, userData);
+                if (entityInfo.Status != EntityStatus.WillInit)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Entity status '{0}' is invalid.", entityInfo.Status.ToString()));
+                }
+
                 entityInfo.Status = EntityStatus.Inited;
                 entityGroup.AddEntity(entity);
                 entityInfo.Status = EntityStatus.WillShow;
                 entity.OnShow(userData);
+                if (entityInfo.Status != EntityStatus.WillShow)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Entity status '{0}' is invalid.", entityInfo.Status.ToString()));
+                }
+
                 entityInfo.Status = EntityStatus.Showed;
 
                 if (m_ShowEntitySuccessEventHandler != null)
@@ -1217,6 +1232,11 @@ namespace GameFramework.Entity
             DetachEntity(entity.Id, userData);
             entityInfo.Status = EntityStatus.WillHide;
             entity.OnHide(m_IsShutdown, userData);
+            if (entityInfo.Status != EntityStatus.WillHide)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Entity status '{0}' is invalid.", entityInfo.Status.ToString()));
+            }
+
             entityInfo.Status = EntityStatus.Hidden;
 
             EntityGroup entityGroup = (EntityGroup)entity.EntityGroup;
