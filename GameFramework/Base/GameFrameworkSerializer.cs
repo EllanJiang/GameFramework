@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace GameFramework
 {
@@ -36,26 +35,26 @@ namespace GameFramework
         /// <summary>
         /// 序列化回调函数。
         /// </summary>
-        /// <param name="binaryWriter">目标流。</param>
+        /// <param name="stream">目标流。</param>
         /// <param name="data">要序列化的数据。</param>
         /// <returns>是否序列化数据成功。</returns>
-        public delegate bool SerializeCallback(BinaryWriter binaryWriter, T data);
+        public delegate bool SerializeCallback(Stream stream, T data);
 
         /// <summary>
         /// 反序列化回调函数。
         /// </summary>
-        /// <param name="binaryReader">指定流。</param>
+        /// <param name="stream">指定流。</param>
         /// <returns>反序列化的数据。</returns>
-        public delegate T DeserializeCallback(BinaryReader binaryReader);
+        public delegate T DeserializeCallback(Stream stream);
 
         /// <summary>
         /// 尝试从指定流获取指定键的值回调函数。
         /// </summary>
-        /// <param name="binaryReader">指定流。</param>
+        /// <param name="stream">指定流。</param>
         /// <param name="key">指定键。</param>
         /// <param name="value">指定键的值。</param>
         /// <returns>是否从指定流获取指定键的值成功。</returns>
-        public delegate bool TryGetValueCallback(BinaryReader binaryReader, string key, out object value);
+        public delegate bool TryGetValueCallback(Stream stream, string key, out object value);
 
         /// <summary>
         /// 注册序列化回调函数。
@@ -131,21 +130,18 @@ namespace GameFramework
         /// <returns>是否序列化数据成功。</returns>
         public bool Serialize(Stream stream, T data, byte version)
         {
-            using (BinaryWriter binaryWriter = new BinaryWriter(stream, Encoding.UTF8))
+            byte[] header = GetHeader();
+            stream.WriteByte(header[0]);
+            stream.WriteByte(header[1]);
+            stream.WriteByte(header[2]);
+            stream.WriteByte(version);
+            SerializeCallback callback = null;
+            if (!m_SerializeCallbacks.TryGetValue(version, out callback))
             {
-                byte[] header = GetHeader();
-                binaryWriter.Write(header[0]);
-                binaryWriter.Write(header[1]);
-                binaryWriter.Write(header[2]);
-                binaryWriter.Write(version);
-                SerializeCallback callback = null;
-                if (!m_SerializeCallbacks.TryGetValue(version, out callback))
-                {
-                    throw new GameFrameworkException(Utility.Text.Format("Serialize callback '{0}' is not exist.", version.ToString()));
-                }
-
-                return callback(binaryWriter, data);
+                throw new GameFrameworkException(Utility.Text.Format("Serialize callback '{0}' is not exist.", version.ToString()));
             }
+
+            return callback(stream, data);
         }
 
         /// <summary>
@@ -155,28 +151,25 @@ namespace GameFramework
         /// <returns>反序列化的数据。</returns>
         public T Deserialize(Stream stream)
         {
-            using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.UTF8))
+            byte[] header = GetHeader();
+            byte header0 = (byte)stream.ReadByte();
+            byte header1 = (byte)stream.ReadByte();
+            byte header2 = (byte)stream.ReadByte();
+            if (header0 != header[0] || header1 != header[1] || header2 != header[2])
             {
-                byte[] header = GetHeader();
-                byte header0 = binaryReader.ReadByte();
-                byte header1 = binaryReader.ReadByte();
-                byte header2 = binaryReader.ReadByte();
-                if (header0 != header[0] || header1 != header[1] || header2 != header[2])
-                {
-                    throw new GameFrameworkException(Utility.Text.Format("Header is invalid, need '{0}{1}{2}', current '{3}{4}{5}'.",
-                        ((char)header[0]).ToString(), ((char)header[1]).ToString(), ((char)header[2]).ToString(),
-                        ((char)header0).ToString(), ((char)header1).ToString(), ((char)header2).ToString()));
-                }
-
-                byte version = binaryReader.ReadByte();
-                DeserializeCallback callback = null;
-                if (!m_DeserializeCallbacks.TryGetValue(version, out callback))
-                {
-                    throw new GameFrameworkException(Utility.Text.Format("Deserialize callback '{0}' is not exist.", version.ToString()));
-                }
-
-                return callback(binaryReader);
+                throw new GameFrameworkException(Utility.Text.Format("Header is invalid, need '{0}{1}{2}', current '{3}{4}{5}'.",
+                    ((char)header[0]).ToString(), ((char)header[1]).ToString(), ((char)header[2]).ToString(),
+                    ((char)header0).ToString(), ((char)header1).ToString(), ((char)header2).ToString()));
             }
+
+            byte version = (byte)stream.ReadByte();
+            DeserializeCallback callback = null;
+            if (!m_DeserializeCallbacks.TryGetValue(version, out callback))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Deserialize callback '{0}' is not exist.", version.ToString()));
+            }
+
+            return callback(stream);
         }
 
         /// <summary>
@@ -189,26 +182,23 @@ namespace GameFramework
         public bool TryGetValue(Stream stream, string key, out object value)
         {
             value = null;
-            using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.UTF8))
+            byte[] header = GetHeader();
+            byte header0 = (byte)stream.ReadByte();
+            byte header1 = (byte)stream.ReadByte();
+            byte header2 = (byte)stream.ReadByte();
+            if (header0 != header[0] || header1 != header[1] || header2 != header[2])
             {
-                byte[] header = GetHeader();
-                byte header0 = binaryReader.ReadByte();
-                byte header1 = binaryReader.ReadByte();
-                byte header2 = binaryReader.ReadByte();
-                if (header0 != header[0] || header1 != header[1] || header2 != header[2])
-                {
-                    return false;
-                }
-
-                byte version = binaryReader.ReadByte();
-                TryGetValueCallback callback = null;
-                if (!m_TryGetValueCallbacks.TryGetValue(version, out callback))
-                {
-                    return false;
-                }
-
-                return callback(binaryReader, key, out value);
+                return false;
             }
+
+            byte version = (byte)stream.ReadByte();
+            TryGetValueCallback callback = null;
+            if (!m_TryGetValueCallbacks.TryGetValue(version, out callback))
+            {
+                return false;
+            }
+
+            return callback(stream, key, out value);
         }
 
         /// <summary>
