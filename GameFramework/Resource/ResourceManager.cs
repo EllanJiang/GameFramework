@@ -850,7 +850,7 @@ namespace GameFramework.Resource
         {
             if (m_RefuseSetCurrentVariant)
             {
-                throw new GameFrameworkException("You can net set current variant at this time.");
+                throw new GameFrameworkException("You can not set current variant at this time.");
             }
 
             m_CurrentVariant = currentVariant;
