@@ -5,11 +5,14 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace GameFramework
 {
     /// <summary>
     /// 任务信息。
     /// </summary>
+    [StructLayout(LayoutKind.Auto)]
     public struct TaskInfo
     {
         private readonly int m_SerialId;

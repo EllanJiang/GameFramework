@@ -6,12 +6,14 @@
 //------------------------------------------------------------
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace GameFramework
 {
     /// <summary>
     /// 引用池信息。
     /// </summary>
+    [StructLayout(LayoutKind.Auto)]
     public struct ReferencePoolInfo
     {
         private readonly Type m_Type;

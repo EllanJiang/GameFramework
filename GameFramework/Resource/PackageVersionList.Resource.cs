@@ -5,6 +5,8 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace GameFramework.Resource
 {
     public partial struct PackageVersionList
@@ -12,6 +14,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 资源。
         /// </summary>
+        [StructLayout(LayoutKind.Auto)]
         public struct Resource
         {
             private static readonly int[] EmptyIntArray = new int[] { };

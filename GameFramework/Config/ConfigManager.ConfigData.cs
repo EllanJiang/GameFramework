@@ -5,10 +5,13 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace GameFramework.Config
 {
     internal sealed partial class ConfigManager : GameFrameworkModule, IConfigManager
     {
+        [StructLayout(LayoutKind.Auto)]
         private struct ConfigData
         {
             private readonly bool m_BoolValue;

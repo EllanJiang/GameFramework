@@ -5,11 +5,14 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace GameFramework.FileSystem
 {
     /// <summary>
     /// 文件信息。
     /// </summary>
+    [StructLayout(LayoutKind.Auto)]
     public struct FileInfo
     {
         private readonly string m_Name;

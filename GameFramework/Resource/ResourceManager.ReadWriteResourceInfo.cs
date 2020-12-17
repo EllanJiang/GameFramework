@@ -5,10 +5,13 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace GameFramework.Resource
 {
     internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
     {
+        [StructLayout(LayoutKind.Auto)]
         private struct ReadWriteResourceInfo
         {
             private readonly string m_FileSystemName;

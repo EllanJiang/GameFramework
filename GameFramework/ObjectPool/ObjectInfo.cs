@@ -6,12 +6,14 @@
 //------------------------------------------------------------
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace GameFramework.ObjectPool
 {
     /// <summary>
     /// 对象信息。
     /// </summary>
+    [StructLayout(LayoutKind.Auto)]
     public struct ObjectInfo
     {
         private readonly string m_Name;

@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace GameFramework
 {
@@ -386,6 +387,7 @@ namespace GameFramework
         /// <summary>
         /// 循环访问集合的枚举数。
         /// </summary>
+        [StructLayout(LayoutKind.Auto)]
         public struct Enumerator : IEnumerator<T>, IEnumerator
         {
             private LinkedList<T>.Enumerator m_Enumerator;

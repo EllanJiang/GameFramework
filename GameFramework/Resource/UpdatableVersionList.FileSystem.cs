@@ -5,6 +5,8 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace GameFramework.Resource
 {
     public partial struct UpdatableVersionList
@@ -12,6 +14,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 文件系统。
         /// </summary>
+        [StructLayout(LayoutKind.Auto)]
         public struct FileSystem
         {
             private static readonly int[] EmptyIntArray = new int[] { };

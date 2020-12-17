@@ -5,11 +5,14 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace GameFramework.Resource
 {
     /// <summary>
     /// 资源包版本资源列表。
     /// </summary>
+    [StructLayout(LayoutKind.Auto)]
     public partial struct ResourcePackVersionList
     {
         private static readonly Resource[] EmptyResourceArray = new Resource[] { };

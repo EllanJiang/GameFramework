@@ -5,11 +5,14 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace GameFramework.Resource
 {
     /// <summary>
     /// 本地版本资源列表。
     /// </summary>
+    [StructLayout(LayoutKind.Auto)]
     public partial struct LocalVersionList
     {
         private static readonly Resource[] EmptyResourceArray = new Resource[] { };

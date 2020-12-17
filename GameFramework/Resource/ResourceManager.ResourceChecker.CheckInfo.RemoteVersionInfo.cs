@@ -5,6 +5,8 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace GameFramework.Resource
 {
     internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
@@ -16,6 +18,7 @@ namespace GameFramework.Resource
                 /// <summary>
                 /// 远程资源状态信息。
                 /// </summary>
+                [StructLayout(LayoutKind.Auto)]
                 private struct RemoteVersionInfo
                 {
                     private readonly bool m_Exist;

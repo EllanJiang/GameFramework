@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace GameFramework.Resource
 {
@@ -14,6 +15,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 资源名称。
         /// </summary>
+        [StructLayout(LayoutKind.Auto)]
         private struct ResourceName : IComparable, IComparable<ResourceName>, IEquatable<ResourceName>
         {
             private readonly string m_Name;

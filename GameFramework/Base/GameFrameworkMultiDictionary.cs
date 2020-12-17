@@ -7,6 +7,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace GameFramework
 {
@@ -216,6 +217,7 @@ namespace GameFramework
         /// <summary>
         /// 循环访问集合的枚举数。
         /// </summary>
+        [StructLayout(LayoutKind.Auto)]
         public struct Enumerator : IEnumerator<KeyValuePair<TKey, GameFrameworkLinkedListRange<TValue>>>, IEnumerator
         {
             private Dictionary<TKey, GameFrameworkLinkedListRange<TValue>>.Enumerator m_Enumerator;

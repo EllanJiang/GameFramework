@@ -7,6 +7,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace GameFramework
 {
@@ -14,6 +15,7 @@ namespace GameFramework
     /// 游戏框架链表范围。
     /// </summary>
     /// <typeparam name="T">指定链表范围的元素类型。</typeparam>
+    [StructLayout(LayoutKind.Auto)]
     public struct GameFrameworkLinkedListRange<T> : IEnumerable<T>, IEnumerable
     {
         private readonly LinkedListNode<T> m_First;
@@ -138,6 +140,7 @@ namespace GameFramework
         /// <summary>
         /// 循环访问集合的枚举数。
         /// </summary>
+        [StructLayout(LayoutKind.Auto)]
         public struct Enumerator : IEnumerator<T>, IEnumerator
         {
             private readonly GameFrameworkLinkedListRange<T> m_GameFrameworkLinkedListRange;

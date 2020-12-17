@@ -5,11 +5,14 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace GameFramework.Resource
 {
     /// <summary>
     /// 单机模式版本资源列表。
     /// </summary>
+    [StructLayout(LayoutKind.Auto)]
     public partial struct PackageVersionList
     {
         private static readonly Asset[] EmptyAssetArray = new Asset[] { };
