@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2013-2020 Jiang Yin
+Copyright (c) 2013-2021 Jiang Yin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
