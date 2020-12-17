@@ -14,6 +14,7 @@ namespace GameFramework.FileSystem
         /// <summary>
         /// 头数据。
         /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
         private struct HeaderData
         {
             private const int HeaderLength = 3;

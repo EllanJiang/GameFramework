@@ -5,6 +5,8 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace GameFramework.FileSystem
 {
     internal sealed partial class FileSystem : IFileSystem
@@ -12,6 +14,7 @@ namespace GameFramework.FileSystem
         /// <summary>
         /// 块数据。
         /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
         private struct BlockData
         {
             public static readonly BlockData Empty = new BlockData(0, 0);

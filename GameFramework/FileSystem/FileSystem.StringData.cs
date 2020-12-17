@@ -15,6 +15,7 @@ namespace GameFramework.FileSystem
         /// <summary>
         /// 字符串数据。
         /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
         private struct StringData
         {
             private static readonly byte[] s_CachedBytes = new byte[byte.MaxValue + 1];
