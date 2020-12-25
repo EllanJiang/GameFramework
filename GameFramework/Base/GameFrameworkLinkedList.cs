@@ -108,15 +108,6 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 将值添加到 ICollection`1 的结尾处。
-        /// </summary>
-        /// <param name="value">要添加的值。</param>
-        public void Add(T value)
-        {
-            AddLast(value);
-        }
-
-        /// <summary>
         /// 在链表中指定的现有结点后添加包含指定值的新结点。
         /// </summary>
         /// <param name="node">指定的现有结点。</param>
@@ -364,6 +355,15 @@ namespace GameFramework
         {
             node.Value = default(T);
             m_CachedNodes.Enqueue(node);
+        }
+
+        /// <summary>
+        /// 将值添加到 ICollection`1 的结尾处。
+        /// </summary>
+        /// <param name="value">要添加的值。</param>
+        void ICollection<T>.Add(T value)
+        {
+            AddLast(value);
         }
 
         /// <summary>
