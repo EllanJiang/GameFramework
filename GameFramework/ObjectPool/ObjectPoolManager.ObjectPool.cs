@@ -413,7 +413,7 @@ namespace GameFramework.ObjectPool
                 Object<T> internalObject = GetObject(target);
                 if (internalObject == null)
                 {
-                    throw new GameFrameworkException("Can not release object which is not found.");
+                    return false;
                 }
 
                 if (internalObject.IsInUse || internalObject.Locked || !internalObject.CustomCanReleaseFlag)
