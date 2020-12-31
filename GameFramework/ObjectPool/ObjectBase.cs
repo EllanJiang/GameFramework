@@ -169,7 +169,7 @@ namespace GameFramework.ObjectPool
             m_Target = target;
             m_Locked = locked;
             m_Priority = priority;
-            m_LastUseTime = DateTime.Now;
+            m_LastUseTime = DateTime.UtcNow;
         }
 
         /// <summary>

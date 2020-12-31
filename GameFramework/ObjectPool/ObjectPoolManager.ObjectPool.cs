@@ -475,7 +475,7 @@ namespace GameFramework.ObjectPool
                 DateTime expireTime = DateTime.MinValue;
                 if (m_ExpireTime < float.MaxValue)
                 {
-                    expireTime = DateTime.Now.AddSeconds(-m_ExpireTime);
+                    expireTime = DateTime.UtcNow.AddSeconds(-m_ExpireTime);
                 }
 
                 m_AutoReleaseTime = 0f;

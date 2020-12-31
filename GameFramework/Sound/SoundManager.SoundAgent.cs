@@ -398,7 +398,7 @@ namespace GameFramework.Sound
             {
                 Reset();
                 m_SoundAsset = soundAsset;
-                m_SetSoundAssetTime = DateTime.Now;
+                m_SetSoundAssetTime = DateTime.UtcNow;
                 return m_SoundAgentHelper.SetSoundAsset(soundAsset);
             }
 

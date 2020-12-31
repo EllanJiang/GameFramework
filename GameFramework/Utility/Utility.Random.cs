@@ -16,7 +16,7 @@ namespace GameFramework
         /// </summary>
         public static class Random
         {
-            private static System.Random s_Random = new System.Random((int)DateTime.Now.Ticks);
+            private static System.Random s_Random = new System.Random((int)DateTime.UtcNow.Ticks);
 
             /// <summary>
             /// 设置随机数种子。
