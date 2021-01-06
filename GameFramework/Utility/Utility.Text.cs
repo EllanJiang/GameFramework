@@ -17,6 +17,8 @@ namespace GameFramework
         /// </summary>
         public static class Text
         {
+            private const int StringBuilderCapacity = 1024;
+
             [ThreadStatic]
             private static StringBuilder s_CachedStringBuilder = null;
 
@@ -108,7 +110,7 @@ namespace GameFramework
             {
                 if (s_CachedStringBuilder == null)
                 {
-                    s_CachedStringBuilder = new StringBuilder(1024);
+                    s_CachedStringBuilder = new StringBuilder(StringBuilderCapacity);
                 }
             }
         }
