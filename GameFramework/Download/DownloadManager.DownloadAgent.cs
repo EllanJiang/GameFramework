@@ -28,7 +28,7 @@ namespace GameFramework.Download
             private bool m_Disposed;
 
             public GameFrameworkAction<DownloadAgent> DownloadAgentStart;
-            public GameFrameworkAction<DownloadAgent, long> DownloadAgentUpdate;
+            public GameFrameworkAction<DownloadAgent, int> DownloadAgentUpdate;
             public GameFrameworkAction<DownloadAgent, long> DownloadAgentSuccess;
             public GameFrameworkAction<DownloadAgent, string> DownloadAgentFailure;
 

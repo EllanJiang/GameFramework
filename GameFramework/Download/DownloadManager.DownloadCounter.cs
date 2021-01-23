@@ -135,9 +135,9 @@ namespace GameFramework.Download
                 }
             }
 
-            public void RecordDeltaLength(long deltaLength)
+            public void RecordDeltaLength(int deltaLength)
             {
-                if (deltaLength <= 0L)
+                if (deltaLength <= 0)
                 {
                     return;
                 }

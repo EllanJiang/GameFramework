@@ -48,7 +48,7 @@ namespace GameFramework.Download
                     m_ElapseSeconds += realElapseSeconds;
                 }
 
-                public void AddDeltaLength(long deltaLength)
+                public void AddDeltaLength(int deltaLength)
                 {
                     m_DeltaLength += deltaLength;
                 }

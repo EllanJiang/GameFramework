@@ -349,7 +349,7 @@ namespace GameFramework.Download
             }
         }
 
-        private void OnDownloadAgentUpdate(DownloadAgent sender, long deltaLength)
+        private void OnDownloadAgentUpdate(DownloadAgent sender, int deltaLength)
         {
             m_DownloadCounter.RecordDeltaLength(deltaLength);
             if (m_DownloadUpdateEventHandler != null)
