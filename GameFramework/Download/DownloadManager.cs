@@ -349,9 +349,9 @@ namespace GameFramework.Download
             }
         }
 
-        private void OnDownloadAgentUpdate(DownloadAgent sender, int lastDownloadedLength)
+        private void OnDownloadAgentUpdate(DownloadAgent sender, long deltaLength)
         {
-            m_DownloadCounter.RecordDownloadedLength(lastDownloadedLength);
+            m_DownloadCounter.RecordDeltaLength(deltaLength);
             if (m_DownloadUpdateEventHandler != null)
             {
                 DownloadUpdateEventArgs downloadUpdateEventArgs = DownloadUpdateEventArgs.Create(sender.Task.SerialId, sender.Task.DownloadPath, sender.Task.DownloadUri, sender.CurrentLength, sender.Task.UserData);
@@ -360,7 +360,7 @@ namespace GameFramework.Download
             }
         }
 
-        private void OnDownloadAgentSuccess(DownloadAgent sender, int lastDownloadedLength)
+        private void OnDownloadAgentSuccess(DownloadAgent sender, long length)
         {
             if (m_DownloadSuccessEventHandler != null)
             {

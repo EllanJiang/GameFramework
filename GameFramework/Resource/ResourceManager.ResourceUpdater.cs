@@ -713,9 +713,14 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("You must set download manager first.");
                 }
 
+                if (e.CurrentLength > int.MaxValue)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("File '{0}' is too large.", e.DownloadPath));
+                }
+
                 if (ResourceUpdateStart != null)
                 {
-                    ResourceUpdateStart(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, e.CurrentLength, updateInfo.ZipLength, updateInfo.RetryCount);
+                    ResourceUpdateStart(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, (int)e.CurrentLength, updateInfo.ZipLength, updateInfo.RetryCount);
                 }
             }
 
@@ -750,7 +755,7 @@ namespace GameFramework.Resource
 
                 if (ResourceUpdateChanged != null)
                 {
-                    ResourceUpdateChanged(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, e.CurrentLength, updateInfo.ZipLength);
+                    ResourceUpdateChanged(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, (int)e.CurrentLength, updateInfo.ZipLength);
                 }
             }
 

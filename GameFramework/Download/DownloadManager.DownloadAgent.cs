@@ -22,14 +22,14 @@ namespace GameFramework.Download
             private FileStream m_FileStream;
             private int m_WaitFlushSize;
             private float m_WaitTime;
-            private int m_StartLength;
-            private int m_DownloadedLength;
-            private int m_SavedLength;
+            private long m_StartLength;
+            private long m_DownloadedLength;
+            private long m_SavedLength;
             private bool m_Disposed;
 
             public GameFrameworkAction<DownloadAgent> DownloadAgentStart;
-            public GameFrameworkAction<DownloadAgent, int> DownloadAgentUpdate;
-            public GameFrameworkAction<DownloadAgent, int> DownloadAgentSuccess;
+            public GameFrameworkAction<DownloadAgent, long> DownloadAgentUpdate;
+            public GameFrameworkAction<DownloadAgent, long> DownloadAgentSuccess;
             public GameFrameworkAction<DownloadAgent, string> DownloadAgentFailure;
 
             /// <summary>
@@ -48,9 +48,9 @@ namespace GameFramework.Download
                 m_FileStream = null;
                 m_WaitFlushSize = 0;
                 m_WaitTime = 0f;
-                m_StartLength = 0;
-                m_DownloadedLength = 0;
-                m_SavedLength = 0;
+                m_StartLength = 0L;
+                m_DownloadedLength = 0L;
+                m_SavedLength = 0L;
                 m_Disposed = false;
 
                 DownloadAgentStart = null;
@@ -84,7 +84,7 @@ namespace GameFramework.Download
             /// <summary>
             /// 获取开始下载时已经存在的大小。
             /// </summary>
-            public int StartLength
+            public long StartLength
             {
                 get
                 {
@@ -95,7 +95,7 @@ namespace GameFramework.Download
             /// <summary>
             /// 获取本次已经下载的大小。
             /// </summary>
-            public int DownloadedLength
+            public long DownloadedLength
             {
                 get
                 {
@@ -106,7 +106,7 @@ namespace GameFramework.Download
             /// <summary>
             /// 获取当前的大小。
             /// </summary>
-            public int CurrentLength
+            public long CurrentLength
             {
                 get
                 {
@@ -117,7 +117,7 @@ namespace GameFramework.Download
             /// <summary>
             /// 获取已经存盘的大小。
             /// </summary>
-            public int SavedLength
+            public long SavedLength
             {
                 get
                 {
@@ -190,9 +190,9 @@ namespace GameFramework.Download
                     if (File.Exists(downloadFile))
                     {
                         m_FileStream = File.OpenWrite(downloadFile);
-                        m_FileStream.Seek(0, SeekOrigin.End);
-                        m_StartLength = m_SavedLength = (int)m_FileStream.Length;
-                        m_DownloadedLength = 0;
+                        m_FileStream.Seek(0L, SeekOrigin.End);
+                        m_StartLength = m_SavedLength = m_FileStream.Length;
+                        m_DownloadedLength = 0L;
                     }
                     else
                     {
@@ -203,7 +203,7 @@ namespace GameFramework.Download
                         }
 
                         m_FileStream = new FileStream(downloadFile, FileMode.Create, FileAccess.Write);
-                        m_StartLength = m_SavedLength = m_DownloadedLength = 0;
+                        m_StartLength = m_SavedLength = m_DownloadedLength = 0L;
                     }
 
                     if (DownloadAgentStart != null)
@@ -211,7 +211,7 @@ namespace GameFramework.Download
                         DownloadAgentStart(this);
                     }
 
-                    if (m_StartLength > 0)
+                    if (m_StartLength > 0L)
                     {
                         m_Helper.Download(m_Task.DownloadUri, m_StartLength, m_Task.UserData);
                     }
@@ -247,9 +247,9 @@ namespace GameFramework.Download
                 m_Task = null;
                 m_WaitFlushSize = 0;
                 m_WaitTime = 0f;
-                m_StartLength = 0;
-                m_DownloadedLength = 0;
-                m_SavedLength = 0;
+                m_StartLength = 0L;
+                m_DownloadedLength = 0L;
+                m_SavedLength = 0L;
             }
 
             /// <summary>

@@ -20,7 +20,7 @@ namespace GameFramework.Download
             SerialId = 0;
             DownloadPath = null;
             DownloadUri = null;
-            CurrentLength = 0;
+            CurrentLength = 0L;
             UserData = null;
         }
 
@@ -54,7 +54,7 @@ namespace GameFramework.Download
         /// <summary>
         /// 获取当前大小。
         /// </summary>
-        public int CurrentLength
+        public long CurrentLength
         {
             get;
             private set;
@@ -78,7 +78,7 @@ namespace GameFramework.Download
         /// <param name="currentLength">当前大小。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>创建的下载成功事件。</returns>
-        public static DownloadSuccessEventArgs Create(int serialId, string downloadPath, string downloadUri, int currentLength, object userData)
+        public static DownloadSuccessEventArgs Create(int serialId, string downloadPath, string downloadUri, long currentLength, object userData)
         {
             DownloadSuccessEventArgs downloadSuccessEventArgs = ReferencePool.Acquire<DownloadSuccessEventArgs>();
             downloadSuccessEventArgs.SerialId = serialId;
@@ -97,7 +97,7 @@ namespace GameFramework.Download
             SerialId = 0;
             DownloadPath = null;
             DownloadUri = null;
-            CurrentLength = 0;
+            CurrentLength = 0L;
             UserData = null;
         }
     }

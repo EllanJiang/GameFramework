@@ -17,13 +17,13 @@ namespace GameFramework.Download
         /// </summary>
         public DownloadAgentHelperCompleteEventArgs()
         {
-            Length = 0;
+            Length = 0L;
         }
 
         /// <summary>
         /// 获取下载的数据大小。
         /// </summary>
-        public int Length
+        public long Length
         {
             get;
             private set;
@@ -34,9 +34,9 @@ namespace GameFramework.Download
         /// </summary>
         /// <param name="length">下载的数据大小。</param>
         /// <returns>创建的下载代理辅助器完成事件。</returns>
-        public static DownloadAgentHelperCompleteEventArgs Create(int length)
+        public static DownloadAgentHelperCompleteEventArgs Create(long length)
         {
-            if (length < 0)
+            if (length < 0L)
             {
                 throw new GameFrameworkException("Length is invalid.");
             }
@@ -51,7 +51,7 @@ namespace GameFramework.Download
         /// </summary>
         public override void Clear()
         {
-            Length = 0;
+            Length = 0L;
         }
     }
 }

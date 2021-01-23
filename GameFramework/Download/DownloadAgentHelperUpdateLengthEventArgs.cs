@@ -17,13 +17,13 @@ namespace GameFramework.Download
         /// </summary>
         public DownloadAgentHelperUpdateLengthEventArgs()
         {
-            DeltaLength = 0;
+            DeltaLength = 0L;
         }
 
         /// <summary>
         /// 获取下载的增量数据大小。
         /// </summary>
-        public int DeltaLength
+        public long DeltaLength
         {
             get;
             private set;
@@ -34,9 +34,9 @@ namespace GameFramework.Download
         /// </summary>
         /// <param name="deltaLength">下载的增量数据大小。</param>
         /// <returns>创建的下载代理辅助器更新数据大小事件。</returns>
-        public static DownloadAgentHelperUpdateLengthEventArgs Create(int deltaLength)
+        public static DownloadAgentHelperUpdateLengthEventArgs Create(long deltaLength)
         {
-            if (deltaLength <= 0)
+            if (deltaLength <= 0L)
             {
                 throw new GameFrameworkException("Delta length is invalid.");
             }
@@ -51,7 +51,7 @@ namespace GameFramework.Download
         /// </summary>
         public override void Clear()
         {
-            DeltaLength = 0;
+            DeltaLength = 0L;
         }
     }
 }

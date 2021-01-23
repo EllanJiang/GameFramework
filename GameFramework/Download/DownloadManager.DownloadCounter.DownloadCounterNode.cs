@@ -13,20 +13,20 @@ namespace GameFramework.Download
         {
             private sealed class DownloadCounterNode : IReference
             {
-                private int m_DownloadedLength;
+                private long m_DeltaLength;
                 private float m_ElapseSeconds;
 
                 public DownloadCounterNode()
                 {
-                    m_DownloadedLength = 0;
+                    m_DeltaLength = 0L;
                     m_ElapseSeconds = 0f;
                 }
 
-                public int DownloadedLength
+                public long DeltaLength
                 {
                     get
                     {
-                        return m_DownloadedLength;
+                        return m_DeltaLength;
                     }
                 }
 
@@ -38,11 +38,9 @@ namespace GameFramework.Download
                     }
                 }
 
-                public static DownloadCounterNode Create(int downloadedLength)
+                public static DownloadCounterNode Create()
                 {
-                    DownloadCounterNode downloadCounterNode = ReferencePool.Acquire<DownloadCounterNode>();
-                    downloadCounterNode.m_DownloadedLength = downloadedLength;
-                    return downloadCounterNode;
+                    return ReferencePool.Acquire<DownloadCounterNode>();
                 }
 
                 public void Update(float elapseSeconds, float realElapseSeconds)
@@ -50,14 +48,14 @@ namespace GameFramework.Download
                     m_ElapseSeconds += realElapseSeconds;
                 }
 
-                public void AddDownloadedLength(int downloadedLength)
+                public void AddDeltaLength(long deltaLength)
                 {
-                    m_DownloadedLength += downloadedLength;
+                    m_DeltaLength += deltaLength;
                 }
 
                 public void Clear()
                 {
-                    m_DownloadedLength = 0;
+                    m_DeltaLength = 0L;
                     m_ElapseSeconds = 0f;
                 }
             }
