@@ -23,7 +23,7 @@ namespace GameFramework
             /// 设置压缩解压缩辅助器。
             /// </summary>
             /// <param name="compressionHelper">要设置的压缩解压缩辅助器。</param>
-            public static void SetCompressedHelper(ICompressionHelper compressionHelper)
+            public static void SetCompressionHelper(ICompressionHelper compressionHelper)
             {
                 s_CompressionHelper = compressionHelper;
             }
