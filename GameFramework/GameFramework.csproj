@@ -340,6 +340,8 @@
     <Compile Include="UI\UIManager.UIGroup.cs" />
     <Compile Include="UI\UIManager.UIGroup.UIFormInfo.cs" />
     <Compile Include="Utility\Utility.Assembly.cs" />
+    <Compile Include="Utility\Utility.Compression.cs" />
+    <Compile Include="Utility\Utility.Compression.ICompressionHelper.cs" />
     <Compile Include="Utility\Utility.Converter.cs" />
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Utility\Utility.Encryption.cs" />
@@ -351,8 +353,6 @@
     <Compile Include="Utility\Utility.Text.cs" />
     <Compile Include="Utility\Utility.Verifier.Crc32.cs" />
     <Compile Include="Utility\Utility.Verifier.cs" />
-    <Compile Include="Utility\Utility.Zip.cs" />
-    <Compile Include="Utility\Utility.Zip.IZipHelper.cs" />
     <Compile Include="WebRequest\Constant.cs" />
     <Compile Include="WebRequest\IWebRequestAgentHelper.cs" />
     <Compile Include="WebRequest\IWebRequestManager.cs" />

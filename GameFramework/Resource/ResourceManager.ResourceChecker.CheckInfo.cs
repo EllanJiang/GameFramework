@@ -167,22 +167,22 @@ namespace GameFramework.Resource
                 /// <summary>
                 /// 获取压缩后大小。
                 /// </summary>
-                public int ZipLength
+                public int CompressedLength
                 {
                     get
                     {
-                        return m_VersionInfo.ZipLength;
+                        return m_VersionInfo.CompressedLength;
                     }
                 }
 
                 /// <summary>
                 /// 获取压缩后哈希值。
                 /// </summary>
-                public int ZipHashCode
+                public int CompressedHashCode
                 {
                     get
                     {
-                        return m_VersionInfo.ZipHashCode;
+                        return m_VersionInfo.CompressedHashCode;
                     }
                 }
 
@@ -201,16 +201,16 @@ namespace GameFramework.Resource
                 /// <param name="loadType">资源加载方式。</param>
                 /// <param name="length">资源大小。</param>
                 /// <param name="hashCode">资源哈希值。</param>
-                /// <param name="zipLength">压缩后大小。</param>
-                /// <param name="zipHashCode">压缩后哈希值。</param>
-                public void SetVersionInfo(LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode)
+                /// <param name="compressedLength">压缩后大小。</param>
+                /// <param name="compressedHashCode">压缩后哈希值。</param>
+                public void SetVersionInfo(LoadType loadType, int length, int hashCode, int compressedLength, int compressedHashCode)
                 {
                     if (m_VersionInfo.Exist)
                     {
                         throw new GameFrameworkException(Utility.Text.Format("You must set version info of '{0}' only once.", m_ResourceName.FullName));
                     }
 
-                    m_VersionInfo = new RemoteVersionInfo(m_CachedFileSystemName, loadType, length, hashCode, zipLength, zipHashCode);
+                    m_VersionInfo = new RemoteVersionInfo(m_CachedFileSystemName, loadType, length, hashCode, compressedLength, compressedHashCode);
                     m_CachedFileSystemName = null;
                 }
 

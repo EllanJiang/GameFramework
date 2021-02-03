@@ -15,17 +15,17 @@ namespace GameFramework
         /// <summary>
         /// 压缩解压缩相关的实用函数。
         /// </summary>
-        public static partial class Zip
+        public static partial class Compression
         {
-            private static IZipHelper s_ZipHelper = null;
+            private static ICompressionHelper s_CompressionHelper = null;
 
             /// <summary>
             /// 设置压缩解压缩辅助器。
             /// </summary>
-            /// <param name="zipHelper">要设置的压缩解压缩辅助器。</param>
-            public static void SetZipHelper(IZipHelper zipHelper)
+            /// <param name="compressionHelper">要设置的压缩解压缩辅助器。</param>
+            public static void SetCompressedHelper(ICompressionHelper compressionHelper)
             {
-                s_ZipHelper = zipHelper;
+                s_CompressionHelper = compressionHelper;
             }
 
             /// <summary>
@@ -91,9 +91,9 @@ namespace GameFramework
             /// <returns>是否压缩数据成功。</returns>
             public static bool Compress(byte[] bytes, int offset, int length, Stream compressedStream)
             {
-                if (s_ZipHelper == null)
+                if (s_CompressionHelper == null)
                 {
-                    throw new GameFrameworkException("Zip helper is invalid.");
+                    throw new GameFrameworkException("Compressed helper is invalid.");
                 }
 
                 if (bytes == null)
@@ -113,7 +113,7 @@ namespace GameFramework
 
                 try
                 {
-                    return s_ZipHelper.Compress(bytes, offset, length, compressedStream);
+                    return s_CompressionHelper.Compress(bytes, offset, length, compressedStream);
                 }
                 catch (Exception exception)
                 {
@@ -154,9 +154,9 @@ namespace GameFramework
             /// <returns>是否压缩数据成功。</returns>
             public static bool Compress(Stream stream, Stream compressedStream)
             {
-                if (s_ZipHelper == null)
+                if (s_CompressionHelper == null)
                 {
-                    throw new GameFrameworkException("Zip helper is invalid.");
+                    throw new GameFrameworkException("Compressed helper is invalid.");
                 }
 
                 if (stream == null)
@@ -171,7 +171,7 @@ namespace GameFramework
 
                 try
                 {
-                    return s_ZipHelper.Compress(stream, compressedStream);
+                    return s_CompressionHelper.Compress(stream, compressedStream);
                 }
                 catch (Exception exception)
                 {
@@ -247,9 +247,9 @@ namespace GameFramework
             /// <returns>是否解压缩数据成功。</returns>
             public static bool Decompress(byte[] bytes, int offset, int length, Stream decompressedStream)
             {
-                if (s_ZipHelper == null)
+                if (s_CompressionHelper == null)
                 {
-                    throw new GameFrameworkException("Zip helper is invalid.");
+                    throw new GameFrameworkException("Compressed helper is invalid.");
                 }
 
                 if (bytes == null)
@@ -269,7 +269,7 @@ namespace GameFramework
 
                 try
                 {
-                    return s_ZipHelper.Decompress(bytes, offset, length, decompressedStream);
+                    return s_CompressionHelper.Decompress(bytes, offset, length, decompressedStream);
                 }
                 catch (Exception exception)
                 {
@@ -310,9 +310,9 @@ namespace GameFramework
             /// <returns>是否解压缩数据成功。</returns>
             public static bool Decompress(Stream stream, Stream decompressedStream)
             {
-                if (s_ZipHelper == null)
+                if (s_CompressionHelper == null)
                 {
-                    throw new GameFrameworkException("Zip helper is invalid.");
+                    throw new GameFrameworkException("Compressed helper is invalid.");
                 }
 
                 if (stream == null)
@@ -327,7 +327,7 @@ namespace GameFramework
 
                 try
                 {
-                    return s_ZipHelper.Decompress(stream, decompressedStream);
+                    return s_CompressionHelper.Decompress(stream, decompressedStream);
                 }
                 catch (Exception exception)
                 {

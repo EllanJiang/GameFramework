@@ -21,8 +21,8 @@ namespace GameFramework.Resource
                 private readonly LoadType m_LoadType;
                 private readonly int m_Length;
                 private readonly int m_HashCode;
-                private readonly int m_ZipLength;
-                private readonly int m_ZipHashCode;
+                private readonly int m_CompressedLength;
+                private readonly int m_CompressedHashCode;
                 private readonly string m_ResourcePath;
                 private int m_RetryCount;
 
@@ -34,18 +34,18 @@ namespace GameFramework.Resource
                 /// <param name="loadType">资源加载方式。</param>
                 /// <param name="length">资源大小。</param>
                 /// <param name="hashCode">资源哈希值。</param>
-                /// <param name="zipLength">压缩后大小。</param>
-                /// <param name="zipHashCode">压缩后哈希值。</param>
+                /// <param name="compressedLength">压缩后大小。</param>
+                /// <param name="compressedHashCode">压缩后哈希值。</param>
                 /// <param name="resourcePath">资源路径。</param>
-                public UpdateInfo(ResourceName resourceName, string fileSystemName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode, string resourcePath)
+                public UpdateInfo(ResourceName resourceName, string fileSystemName, LoadType loadType, int length, int hashCode, int compressedLength, int compressedHashCode, string resourcePath)
                 {
                     m_ResourceName = resourceName;
                     m_FileSystemName = fileSystemName;
                     m_LoadType = loadType;
                     m_Length = length;
                     m_HashCode = hashCode;
-                    m_ZipLength = zipLength;
-                    m_ZipHashCode = zipHashCode;
+                    m_CompressedLength = compressedLength;
+                    m_CompressedHashCode = compressedHashCode;
                     m_ResourcePath = resourcePath;
                     m_RetryCount = 0;
                 }
@@ -119,22 +119,22 @@ namespace GameFramework.Resource
                 /// <summary>
                 /// 获取压缩后大小。
                 /// </summary>
-                public int ZipLength
+                public int CompressedLength
                 {
                     get
                     {
-                        return m_ZipLength;
+                        return m_CompressedLength;
                     }
                 }
 
                 /// <summary>
                 /// 获取压缩后哈希值。
                 /// </summary>
-                public int ZipHashCode
+                public int CompressedHashCode
                 {
                     get
                     {
-                        return m_ZipHashCode;
+                        return m_CompressedHashCode;
                     }
                 }
 

@@ -11,12 +11,12 @@ namespace GameFramework
 {
     public static partial class Utility
     {
-        public static partial class Zip
+        public static partial class Compression
         {
             /// <summary>
             /// 压缩解压缩辅助器接口。
             /// </summary>
-            public interface IZipHelper
+            public interface ICompressionHelper
             {
                 /// <summary>
                 /// 压缩数据。

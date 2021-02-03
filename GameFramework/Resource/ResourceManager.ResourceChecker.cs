@@ -88,9 +88,9 @@ namespace GameFramework.Resource
                 GetOrAddCheckInfo(resourceName).SetCachedFileSystemName(fileSystemName);
             }
 
-            private void SetVersionInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode)
+            private void SetVersionInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode, int compressedLength, int compressedHashCode)
             {
-                GetOrAddCheckInfo(resourceName).SetVersionInfo(loadType, length, hashCode, zipLength, zipHashCode);
+                GetOrAddCheckInfo(resourceName).SetVersionInfo(loadType, length, hashCode, compressedLength, compressedHashCode);
             }
 
             private void SetReadOnlyInfo(ResourceName resourceName, LoadType loadType, int length, int hashCode)
@@ -128,7 +128,7 @@ namespace GameFramework.Resource
                 int removedCount = 0;
                 int updateCount = 0;
                 long updateTotalLength = 0L;
-                long updateTotalZipLength = 0L;
+                long updateTotalCompressedLength = 0L;
                 foreach (KeyValuePair<ResourceName, CheckInfo> checkInfo in m_CheckInfos)
                 {
                     CheckInfo ci = checkInfo.Value;
@@ -178,8 +178,8 @@ namespace GameFramework.Resource
                         m_ResourceManager.m_ResourceInfos.Add(ci.ResourceName, new ResourceInfo(ci.ResourceName, ci.FileSystemName, ci.LoadType, ci.Length, ci.HashCode, false, false));
                         updateCount++;
                         updateTotalLength += ci.Length;
-                        updateTotalZipLength += ci.ZipLength;
-                        ResourceNeedUpdate(ci.ResourceName, ci.FileSystemName, ci.LoadType, ci.Length, ci.HashCode, ci.ZipLength, ci.ZipHashCode);
+                        updateTotalCompressedLength += ci.CompressedLength;
+                        ResourceNeedUpdate(ci.ResourceName, ci.FileSystemName, ci.LoadType, ci.Length, ci.HashCode, ci.CompressedLength, ci.CompressedHashCode);
                     }
                     else if (ci.Status == CheckInfo.CheckStatus.Unavailable || ci.Status == CheckInfo.CheckStatus.Disuse)
                     {
@@ -215,7 +215,7 @@ namespace GameFramework.Resource
                     Utility.Path.RemoveEmptyDirectory(m_ResourceManager.m_ReadWritePath);
                 }
 
-                ResourceCheckComplete(movedCount, removedCount, updateCount, updateTotalLength, updateTotalZipLength);
+                ResourceCheckComplete(movedCount, removedCount, updateCount, updateTotalLength, updateTotalCompressedLength);
             }
 
             /// <summary>
@@ -341,8 +341,8 @@ namespace GameFramework.Resource
                             m_ResourceManager.m_AssetInfos.Add(asset.Name, new AssetInfo(asset.Name, resourceName, dependencyAssetNames));
                         }
 
-                        SetVersionInfo(resourceName, (LoadType)resource.LoadType, resource.Length, resource.HashCode, resource.ZipLength, resource.ZipHashCode);
-                        defaultResourceGroup.AddResource(resourceName, resource.Length, resource.ZipLength);
+                        SetVersionInfo(resourceName, (LoadType)resource.LoadType, resource.Length, resource.HashCode, resource.CompressedLength, resource.CompressedHashCode);
+                        defaultResourceGroup.AddResource(resourceName, resource.Length, resource.CompressedLength);
                     }
 
                     foreach (UpdatableVersionList.ResourceGroup resourceGroup in resourceGroups)
@@ -357,7 +357,7 @@ namespace GameFramework.Resource
                                 continue;
                             }
 
-                            group.AddResource(new ResourceName(resource.Name, resource.Variant, resource.Extension), resource.Length, resource.ZipLength);
+                            group.AddResource(new ResourceName(resource.Name, resource.Variant, resource.Extension), resource.Length, resource.CompressedLength);
                         }
                     }
 

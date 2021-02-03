@@ -24,8 +24,8 @@ namespace GameFramework.Resource
             private readonly long m_Offset;
             private readonly int m_Length;
             private readonly int m_HashCode;
-            private readonly int m_ZipLength;
-            private readonly int m_ZipHashCode;
+            private readonly int m_CompressedLength;
+            private readonly int m_CompressedHashCode;
 
             /// <summary>
             /// 初始化资源的新实例。
@@ -37,9 +37,9 @@ namespace GameFramework.Resource
             /// <param name="offset">资源偏移。</param>
             /// <param name="length">资源长度。</param>
             /// <param name="hashCode">资源哈希值。</param>
-            /// <param name="zipLength">资源压缩后长度。</param>
-            /// <param name="zipHashCode">资源压缩后哈希值。</param>
-            public Resource(string name, string variant, string extension, byte loadType, long offset, int length, int hashCode, int zipLength, int zipHashCode)
+            /// <param name="compressedLength">资源压缩后长度。</param>
+            /// <param name="compressedHashCode">资源压缩后哈希值。</param>
+            public Resource(string name, string variant, string extension, byte loadType, long offset, int length, int hashCode, int compressedLength, int compressedHashCode)
             {
                 if (string.IsNullOrEmpty(name))
                 {
@@ -53,8 +53,8 @@ namespace GameFramework.Resource
                 m_Offset = offset;
                 m_Length = length;
                 m_HashCode = hashCode;
-                m_ZipLength = zipLength;
-                m_ZipHashCode = zipHashCode;
+                m_CompressedLength = compressedLength;
+                m_CompressedHashCode = compressedHashCode;
             }
 
             /// <summary>
@@ -137,22 +137,22 @@ namespace GameFramework.Resource
             /// <summary>
             /// 获取资源压缩后长度。
             /// </summary>
-            public int ZipLength
+            public int CompressedLength
             {
                 get
                 {
-                    return m_ZipLength;
+                    return m_CompressedLength;
                 }
             }
 
             /// <summary>
             /// 获取资源压缩后哈希值。
             /// </summary>
-            public int ZipHashCode
+            public int CompressedHashCode
             {
                 get
                 {
-                    return m_ZipHashCode;
+                    return m_CompressedHashCode;
                 }
             }
         }

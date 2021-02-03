@@ -57,7 +57,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 获取资源组包含资源压缩后的总大小。
         /// </summary>
-        long TotalZipLength
+        long TotalCompressedLength
         {
             get;
         }

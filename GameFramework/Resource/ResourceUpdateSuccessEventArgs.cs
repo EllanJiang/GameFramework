@@ -21,7 +21,7 @@ namespace GameFramework.Resource
             DownloadPath = null;
             DownloadUri = null;
             Length = 0;
-            ZipLength = 0;
+            CompressedLength = 0;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 获取压缩后大小。
         /// </summary>
-        public int ZipLength
+        public int CompressedLength
         {
             get;
             private set;
@@ -76,16 +76,16 @@ namespace GameFramework.Resource
         /// <param name="downloadPath">资源下载后存放路径。</param>
         /// <param name="downloadUri">资源下载地址。</param>
         /// <param name="length">资源大小。</param>
-        /// <param name="zipLength">压缩后大小。</param>
+        /// <param name="compressedLength">压缩后大小。</param>
         /// <returns>创建的资源更新成功事件。</returns>
-        public static ResourceUpdateSuccessEventArgs Create(string name, string downloadPath, string downloadUri, int length, int zipLength)
+        public static ResourceUpdateSuccessEventArgs Create(string name, string downloadPath, string downloadUri, int length, int compressedLength)
         {
             ResourceUpdateSuccessEventArgs resourceUpdateSuccessEventArgs = ReferencePool.Acquire<ResourceUpdateSuccessEventArgs>();
             resourceUpdateSuccessEventArgs.Name = name;
             resourceUpdateSuccessEventArgs.DownloadPath = downloadPath;
             resourceUpdateSuccessEventArgs.DownloadUri = downloadUri;
             resourceUpdateSuccessEventArgs.Length = length;
-            resourceUpdateSuccessEventArgs.ZipLength = zipLength;
+            resourceUpdateSuccessEventArgs.CompressedLength = compressedLength;
             return resourceUpdateSuccessEventArgs;
         }
 
@@ -98,7 +98,7 @@ namespace GameFramework.Resource
             DownloadPath = null;
             DownloadUri = null;
             Length = 0;
-            ZipLength = 0;
+            CompressedLength = 0;
         }
     }
 }

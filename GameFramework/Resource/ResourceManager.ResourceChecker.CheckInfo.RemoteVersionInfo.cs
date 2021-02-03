@@ -26,18 +26,18 @@ namespace GameFramework.Resource
                     private readonly LoadType m_LoadType;
                     private readonly int m_Length;
                     private readonly int m_HashCode;
-                    private readonly int m_ZipLength;
-                    private readonly int m_ZipHashCode;
+                    private readonly int m_CompressedLength;
+                    private readonly int m_CompressedHashCode;
 
-                    public RemoteVersionInfo(string fileSystemName, LoadType loadType, int length, int hashCode, int zipLength, int zipHashCode)
+                    public RemoteVersionInfo(string fileSystemName, LoadType loadType, int length, int hashCode, int compressedLength, int compressedHashCode)
                     {
                         m_Exist = true;
                         m_FileSystemName = fileSystemName;
                         m_LoadType = loadType;
                         m_Length = length;
                         m_HashCode = hashCode;
-                        m_ZipLength = zipLength;
-                        m_ZipHashCode = zipHashCode;
+                        m_CompressedLength = compressedLength;
+                        m_CompressedHashCode = compressedHashCode;
                     }
 
                     public bool Exist
@@ -88,19 +88,19 @@ namespace GameFramework.Resource
                         }
                     }
 
-                    public int ZipLength
+                    public int CompressedLength
                     {
                         get
                         {
-                            return m_ZipLength;
+                            return m_CompressedLength;
                         }
                     }
 
-                    public int ZipHashCode
+                    public int CompressedHashCode
                     {
                         get
                         {
-                            return m_ZipHashCode;
+                            return m_CompressedHashCode;
                         }
                     }
                 }

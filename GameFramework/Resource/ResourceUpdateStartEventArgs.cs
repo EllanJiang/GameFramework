@@ -21,7 +21,7 @@ namespace GameFramework.Resource
             DownloadPath = null;
             DownloadUri = null;
             CurrentLength = 0;
-            ZipLength = 0;
+            CompressedLength = 0;
             RetryCount = 0;
         }
 
@@ -64,7 +64,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 获取压缩后大小。
         /// </summary>
-        public int ZipLength
+        public int CompressedLength
         {
             get;
             private set;
@@ -86,17 +86,17 @@ namespace GameFramework.Resource
         /// <param name="downloadPath">资源下载后存放路径。</param>
         /// <param name="downloadUri">资源下载地址。</param>
         /// <param name="currentLength">当前下载大小。</param>
-        /// <param name="zipLength">压缩后大小。</param>
+        /// <param name="compressedLength">压缩后大小。</param>
         /// <param name="retryCount">已重试下载次数。</param>
         /// <returns>创建的资源更新开始事件。</returns>
-        public static ResourceUpdateStartEventArgs Create(string name, string downloadPath, string downloadUri, int currentLength, int zipLength, int retryCount)
+        public static ResourceUpdateStartEventArgs Create(string name, string downloadPath, string downloadUri, int currentLength, int compressedLength, int retryCount)
         {
             ResourceUpdateStartEventArgs resourceUpdateStartEventArgs = ReferencePool.Acquire<ResourceUpdateStartEventArgs>();
             resourceUpdateStartEventArgs.Name = name;
             resourceUpdateStartEventArgs.DownloadPath = downloadPath;
             resourceUpdateStartEventArgs.DownloadUri = downloadUri;
             resourceUpdateStartEventArgs.CurrentLength = currentLength;
-            resourceUpdateStartEventArgs.ZipLength = zipLength;
+            resourceUpdateStartEventArgs.CompressedLength = compressedLength;
             resourceUpdateStartEventArgs.RetryCount = retryCount;
             return resourceUpdateStartEventArgs;
         }
@@ -110,7 +110,7 @@ namespace GameFramework.Resource
             DownloadPath = null;
             DownloadUri = null;
             CurrentLength = 0;
-            ZipLength = 0;
+            CompressedLength = 0;
             RetryCount = 0;
         }
     }

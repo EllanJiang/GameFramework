@@ -21,7 +21,7 @@ namespace GameFramework.Resource
             ApplyPath = null;
             ResourcePackPath = null;
             Length = 0;
-            ZipLength = 0;
+            CompressedLength = 0;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace GameFramework.Resource
         /// <summary>
         /// 获取压缩后大小。
         /// </summary>
-        public int ZipLength
+        public int CompressedLength
         {
             get;
             private set;
@@ -76,16 +76,16 @@ namespace GameFramework.Resource
         /// <param name="applyPath">资源应用后存放路径。</param>
         /// <param name="resourcePackPath">资源包路径。</param>
         /// <param name="length">资源大小。</param>
-        /// <param name="zipLength">压缩后大小。</param>
+        /// <param name="compressedLength">压缩后大小。</param>
         /// <returns>创建的资源应用成功事件。</returns>
-        public static ResourceApplySuccessEventArgs Create(string name, string applyPath, string resourcePackPath, int length, int zipLength)
+        public static ResourceApplySuccessEventArgs Create(string name, string applyPath, string resourcePackPath, int length, int compressedLength)
         {
             ResourceApplySuccessEventArgs resourceApplySuccessEventArgs = ReferencePool.Acquire<ResourceApplySuccessEventArgs>();
             resourceApplySuccessEventArgs.Name = name;
             resourceApplySuccessEventArgs.ApplyPath = applyPath;
             resourceApplySuccessEventArgs.ResourcePackPath = resourcePackPath;
             resourceApplySuccessEventArgs.Length = length;
-            resourceApplySuccessEventArgs.ZipLength = zipLength;
+            resourceApplySuccessEventArgs.CompressedLength = compressedLength;
             return resourceApplySuccessEventArgs;
         }
 
@@ -98,7 +98,7 @@ namespace GameFramework.Resource
             ApplyPath = null;
             ResourcePackPath = null;
             Length = 0;
-            ZipLength = 0;
+            CompressedLength = 0;
         }
     }
 }

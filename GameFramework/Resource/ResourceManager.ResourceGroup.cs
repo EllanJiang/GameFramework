@@ -20,7 +20,7 @@ namespace GameFramework.Resource
             private readonly Dictionary<ResourceName, ResourceInfo> m_ResourceInfos;
             private readonly HashSet<ResourceName> m_ResourceNames;
             private long m_TotalLength;
-            private long m_TotalZipLength;
+            private long m_TotalCompressedLength;
 
             /// <summary>
             /// 初始化资源组的新实例。
@@ -112,11 +112,11 @@ namespace GameFramework.Resource
             /// <summary>
             /// 获取资源组包含资源压缩后的总大小。
             /// </summary>
-            public long TotalZipLength
+            public long TotalCompressedLength
             {
                 get
                 {
-                    return m_TotalZipLength;
+                    return m_TotalCompressedLength;
                 }
             }
 
@@ -235,12 +235,12 @@ namespace GameFramework.Resource
             /// </summary>
             /// <param name="resourceName">资源名称。</param>
             /// <param name="length">资源大小。</param>
-            /// <param name="zipLength">资源压缩后的大小。</param>
-            public void AddResource(ResourceName resourceName, int length, int zipLength)
+            /// <param name="compressedLength">资源压缩后的大小。</param>
+            public void AddResource(ResourceName resourceName, int length, int compressedLength)
             {
                 m_ResourceNames.Add(resourceName);
                 m_TotalLength += length;
-                m_TotalZipLength += zipLength;
+                m_TotalCompressedLength += compressedLength;
             }
         }
     }
