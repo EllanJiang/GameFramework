@@ -1208,7 +1208,7 @@ namespace GameFramework.Entity
                 HideEntity(childEntity.Id, userData);
             }
 
-            if (entityInfo.Status == EntityStatus.Hidden)
+            if (entityInfo.Status == EntityStatus.WillHide || entityInfo.Status == EntityStatus.Hidden)
             {
                 return;
             }
