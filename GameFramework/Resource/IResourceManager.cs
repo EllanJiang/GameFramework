@@ -465,14 +465,14 @@ namespace GameFramework.Resource
         /// <summary>
         /// 获取所有加载资源任务的信息。
         /// </summary>
-        /// <param name="results">所有加载资源任务的信息。</param>
-        void GetAllLoadAssetInfos(List<TaskInfo> results);
+        /// <returns>所有加载资源任务的信息。</returns>
+        TaskInfo[] GetAllLoadAssetInfos();
 
         /// <summary>
         /// 获取所有加载资源任务的信息。
         /// </summary>
-        /// <returns>所有加载资源任务的信息。</returns>
-        TaskInfo[] GetAllLoadAssetInfos();
+        /// <param name="results">所有加载资源任务的信息。</param>
+        void GetAllLoadAssetInfos(List<TaskInfo> results);
 
         /// <summary>
         /// 检查资源是否存在。

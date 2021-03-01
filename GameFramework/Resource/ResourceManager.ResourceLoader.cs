@@ -788,19 +788,19 @@ namespace GameFramework.Resource
             /// <summary>
             /// 获取所有加载资源任务的信息。
             /// </summary>
-            /// <param name="results">所有加载资源任务的信息。</param>
-            public void GetAllLoadAssetInfos(List<TaskInfo> results)
+            /// <returns>所有加载资源任务的信息。</returns>
+            public TaskInfo[] GetAllLoadAssetInfos()
             {
-                m_TaskPool.GetAllTaskInfos(results);
+                return m_TaskPool.GetAllTaskInfos();
             }
 
             /// <summary>
             /// 获取所有加载资源任务的信息。
             /// </summary>
-            /// <returns>所有加载资源任务的信息。</returns>
-            public TaskInfo[] GetAllLoadAssetInfos()
+            /// <param name="results">所有加载资源任务的信息。</param>
+            public void GetAllLoadAssetInfos(List<TaskInfo> results)
             {
-                return m_TaskPool.GetAllTaskInfos();
+                m_TaskPool.GetAllTaskInfos(results);
             }
 
             private bool LoadDependencyAsset(string assetName, int priority, LoadResourceTaskBase mainTask, object userData)
