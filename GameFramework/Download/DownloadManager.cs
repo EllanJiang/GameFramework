@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.Download
 {
@@ -248,6 +249,54 @@ namespace GameFramework.Download
         }
 
         /// <summary>
+        /// 根据下载任务的序列编号获取下载任务的信息。
+        /// </summary>
+        /// <param name="serialId">要获取信息的下载任务的序列编号。</param>
+        /// <returns>下载任务的信息。</returns>
+        public TaskInfo GetDownloadInfo(int serialId)
+        {
+            return m_TaskPool.GetTaskInfo(serialId);
+        }
+
+        /// <summary>
+        /// 根据下载任务的标签获取下载任务的信息。
+        /// </summary>
+        /// <param name="tag">要获取信息的下载任务的标签。</param>
+        /// <returns>下载任务的信息。</returns>
+        public TaskInfo[] GetDownloadInfos(string tag)
+        {
+            return m_TaskPool.GetTaskInfos(tag);
+        }
+
+        /// <summary>
+        /// 根据下载任务的标签获取下载任务的信息。
+        /// </summary>
+        /// <param name="tag">要获取信息的下载任务的标签。</param>
+        /// <param name="results">下载任务的信息。</param>
+        public void GetDownloadInfos(string tag, List<TaskInfo> results)
+        {
+            m_TaskPool.GetTaskInfos(tag, results);
+        }
+
+        /// <summary>
+        /// 获取所有下载任务的信息。
+        /// </summary>
+        /// <returns>所有下载任务的信息。</returns>
+        public TaskInfo[] GetAllDownloadInfos()
+        {
+            return m_TaskPool.GetAllTaskInfos();
+        }
+
+        /// <summary>
+        /// 获取所有下载任务的信息。
+        /// </summary>
+        /// <param name="results">所有下载任务的信息。</param>
+        public void GetAllDownloadInfos(List<TaskInfo> results)
+        {
+            m_TaskPool.GetAllTaskInfos(results);
+        }
+
+        /// <summary>
         /// 增加下载任务。
         /// </summary>
         /// <param name="downloadPath">下载后存放路径。</param>
@@ -255,7 +304,19 @@ namespace GameFramework.Download
         /// <returns>新增下载任务的序列编号。</returns>
         public int AddDownload(string downloadPath, string downloadUri)
         {
-            return AddDownload(downloadPath, downloadUri, Constant.DefaultPriority, null);
+            return AddDownload(downloadPath, downloadUri, null, Constant.DefaultPriority, null);
+        }
+
+        /// <summary>
+        /// 增加下载任务。
+        /// </summary>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">原始下载地址。</param>
+        /// <param name="tag">下载任务的标签。</param>
+        /// <returns>新增下载任务的序列编号。</returns>
+        public int AddDownload(string downloadPath, string downloadUri, string tag)
+        {
+            return AddDownload(downloadPath, downloadUri, tag, Constant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -267,7 +328,7 @@ namespace GameFramework.Download
         /// <returns>新增下载任务的序列编号。</returns>
         public int AddDownload(string downloadPath, string downloadUri, int priority)
         {
-            return AddDownload(downloadPath, downloadUri, priority, null);
+            return AddDownload(downloadPath, downloadUri, null, priority, null);
         }
 
         /// <summary>
@@ -279,7 +340,33 @@ namespace GameFramework.Download
         /// <returns>新增下载任务的序列编号。</returns>
         public int AddDownload(string downloadPath, string downloadUri, object userData)
         {
-            return AddDownload(downloadPath, downloadUri, Constant.DefaultPriority, userData);
+            return AddDownload(downloadPath, downloadUri, null, Constant.DefaultPriority, userData);
+        }
+
+        /// <summary>
+        /// 增加下载任务。
+        /// </summary>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">原始下载地址。</param>
+        /// <param name="tag">下载任务的标签。</param>
+        /// <param name="priority">下载任务的优先级。</param>
+        /// <returns>新增下载任务的序列编号。</returns>
+        public int AddDownload(string downloadPath, string downloadUri, string tag, int priority)
+        {
+            return AddDownload(downloadPath, downloadUri, tag, priority, null);
+        }
+
+        /// <summary>
+        /// 增加下载任务。
+        /// </summary>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">原始下载地址。</param>
+        /// <param name="tag">下载任务的标签。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>新增下载任务的序列编号。</returns>
+        public int AddDownload(string downloadPath, string downloadUri, string tag, object userData)
+        {
+            return AddDownload(downloadPath, downloadUri, tag, Constant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -291,6 +378,20 @@ namespace GameFramework.Download
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>新增下载任务的序列编号。</returns>
         public int AddDownload(string downloadPath, string downloadUri, int priority, object userData)
+        {
+            return AddDownload(downloadPath, downloadUri, null, priority, userData);
+        }
+
+        /// <summary>
+        /// 增加下载任务。
+        /// </summary>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">原始下载地址。</param>
+        /// <param name="tag">下载任务的标签。</param>
+        /// <param name="priority">下载任务的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>新增下载任务的序列编号。</returns>
+        public int AddDownload(string downloadPath, string downloadUri, string tag, int priority, object userData)
         {
             if (string.IsNullOrEmpty(downloadPath))
             {
@@ -307,13 +408,13 @@ namespace GameFramework.Download
                 throw new GameFrameworkException("You must add download agent first.");
             }
 
-            DownloadTask downloadTask = DownloadTask.Create(downloadPath, downloadUri, priority, m_FlushSize, m_Timeout, userData);
+            DownloadTask downloadTask = DownloadTask.Create(downloadPath, downloadUri, tag, priority, m_FlushSize, m_Timeout, userData);
             m_TaskPool.AddTask(downloadTask);
             return downloadTask.SerialId;
         }
 
         /// <summary>
-        /// 移除下载任务。
+        /// 根据下载任务的序列编号移除下载任务。
         /// </summary>
         /// <param name="serialId">要移除下载任务的序列编号。</param>
         /// <returns>是否移除下载任务成功。</returns>
@@ -323,20 +424,22 @@ namespace GameFramework.Download
         }
 
         /// <summary>
-        /// 移除所有下载任务。
+        /// 根据下载任务的标签移除下载任务。
         /// </summary>
-        public void RemoveAllDownloads()
+        /// <param name="tag">要移除下载任务的标签。</param>
+        /// <returns>移除下载任务的数量。</returns>
+        public int RemoveDownloads(string tag)
         {
-            m_TaskPool.RemoveAllTasks();
+            return m_TaskPool.RemoveTasks(tag);
         }
 
         /// <summary>
-        /// 获取所有下载任务的信息。
+        /// 移除所有下载任务。
         /// </summary>
-        /// <returns>所有下载任务的信息。</returns>
-        public TaskInfo[] GetAllDownloadInfos()
+        /// <returns>移除下载任务的数量。</returns>
+        public int RemoveAllDownloads()
         {
-            return m_TaskPool.GetAllTaskInfos();
+            return m_TaskPool.RemoveAllTasks();
         }
 
         private void OnDownloadAgentStart(DownloadAgent sender)

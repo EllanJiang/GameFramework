@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.Download
 {
@@ -108,12 +109,54 @@ namespace GameFramework.Download
         void AddDownloadAgentHelper(IDownloadAgentHelper downloadAgentHelper);
 
         /// <summary>
+        /// 根据下载任务的序列编号获取下载任务的信息。
+        /// </summary>
+        /// <param name="serialId">要获取信息的下载任务的序列编号。</param>
+        /// <returns>下载任务的信息。</returns>
+        TaskInfo GetDownloadInfo(int serialId);
+
+        /// <summary>
+        /// 根据下载任务的标签获取下载任务的信息。
+        /// </summary>
+        /// <param name="tag">要获取信息的下载任务的标签。</param>
+        /// <returns>下载任务的信息。</returns>
+        TaskInfo[] GetDownloadInfos(string tag);
+
+        /// <summary>
+        /// 根据下载任务的标签获取下载任务的信息。
+        /// </summary>
+        /// <param name="tag">要获取信息的下载任务的标签。</param>
+        /// <param name="results">下载任务的信息。</param>
+        void GetDownloadInfos(string tag, List<TaskInfo> results);
+
+        /// <summary>
+        /// 获取所有下载任务的信息。
+        /// </summary>
+        /// <returns>所有下载任务的信息。</returns>
+        TaskInfo[] GetAllDownloadInfos();
+
+        /// <summary>
+        /// 获取所有下载任务的信息。
+        /// </summary>
+        /// <param name="results">所有下载任务的信息。</param>
+        void GetAllDownloadInfos(List<TaskInfo> results);
+
+        /// <summary>
         /// 增加下载任务。
         /// </summary>
         /// <param name="downloadPath">下载后存放路径。</param>
         /// <param name="downloadUri">原始下载地址。</param>
         /// <returns>新增下载任务的序列编号。</returns>
         int AddDownload(string downloadPath, string downloadUri);
+
+        /// <summary>
+        /// 增加下载任务。
+        /// </summary>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">原始下载地址。</param>
+        /// <param name="tag">下载任务的标签。</param>
+        /// <returns>新增下载任务的序列编号。</returns>
+        int AddDownload(string downloadPath, string downloadUri, string tag);
 
         /// <summary>
         /// 增加下载任务。
@@ -138,27 +181,60 @@ namespace GameFramework.Download
         /// </summary>
         /// <param name="downloadPath">下载后存放路径。</param>
         /// <param name="downloadUri">原始下载地址。</param>
+        /// <param name="tag">下载任务的标签。</param>
+        /// <param name="priority">下载任务的优先级。</param>
+        /// <returns>新增下载任务的序列编号。</returns>
+        int AddDownload(string downloadPath, string downloadUri, string tag, int priority);
+
+        /// <summary>
+        /// 增加下载任务。
+        /// </summary>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">原始下载地址。</param>
+        /// <param name="tag">下载任务的标签。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>新增下载任务的序列编号。</returns>
+        int AddDownload(string downloadPath, string downloadUri, string tag, object userData);
+
+        /// <summary>
+        /// 增加下载任务。
+        /// </summary>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">原始下载地址。</param>
         /// <param name="priority">下载任务的优先级。</param>
         /// <param name="userData">用户自定义数据。</param>
         /// <returns>新增下载任务的序列编号。</returns>
         int AddDownload(string downloadPath, string downloadUri, int priority, object userData);
 
         /// <summary>
-        /// 移除下载任务。
+        /// 增加下载任务。
+        /// </summary>
+        /// <param name="downloadPath">下载后存放路径。</param>
+        /// <param name="downloadUri">原始下载地址。</param>
+        /// <param name="tag">下载任务的标签。</param>
+        /// <param name="priority">下载任务的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>新增下载任务的序列编号。</returns>
+        int AddDownload(string downloadPath, string downloadUri, string tag, int priority, object userData);
+
+        /// <summary>
+        /// 根据下载任务的序列编号移除下载任务。
         /// </summary>
         /// <param name="serialId">要移除下载任务的序列编号。</param>
         /// <returns>是否移除下载任务成功。</returns>
         bool RemoveDownload(int serialId);
 
         /// <summary>
-        /// 移除所有下载任务。
+        /// 根据下载任务的标签移除下载任务。
         /// </summary>
-        void RemoveAllDownloads();
+        /// <param name="tag">要移除下载任务的标签。</param>
+        /// <returns>移除下载任务的数量。</returns>
+        int RemoveDownloads(string tag);
 
         /// <summary>
-        /// 获取所有下载任务的信息。
+        /// 移除所有下载任务。
         /// </summary>
-        /// <returns>所有下载任务的信息。</returns>
-        TaskInfo[] GetAllDownloadInfos();
+        /// <returns>移除下载任务的数量。</returns>
+        int RemoveAllDownloads();
     }
 }
