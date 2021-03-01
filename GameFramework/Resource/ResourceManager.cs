@@ -23,6 +23,7 @@ namespace GameFramework.Resource
         private const string LocalVersionListFileName = "GameFrameworkList.dat";
         private const string DefaultExtension = "dat";
         private const string BackupExtension = "bak";
+        private const string DownloadTag = "Resource Manager";
         private const int FileSystemMaxFileCount = 1024 * 16;
         private const int FileSystemMaxBlockCount = 1024 * 256;
 
