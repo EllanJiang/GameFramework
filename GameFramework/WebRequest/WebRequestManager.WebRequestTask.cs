@@ -95,14 +95,15 @@ namespace GameFramework.WebRequest
             /// </summary>
             /// <param name="webRequestUri">要发送的远程地址。</param>
             /// <param name="postData">要发送的数据流。</param>
+            /// <param name="tag">Web 请求任务的标签。</param>
             /// <param name="priority">Web 请求任务的优先级。</param>
             /// <param name="timeout">下载超时时长，以秒为单位。</param>
             /// <param name="userData">用户自定义数据。</param>
             /// <returns>创建的 Web 请求任务。</returns>
-            public static WebRequestTask Create(string webRequestUri, byte[] postData, int priority, float timeout, object userData)
+            public static WebRequestTask Create(string webRequestUri, byte[] postData, string tag, int priority, float timeout, object userData)
             {
                 WebRequestTask webRequestTask = ReferencePool.Acquire<WebRequestTask>();
-                webRequestTask.Initialize(++s_Serial, priority);
+                webRequestTask.Initialize(++s_Serial, tag, priority);
                 webRequestTask.m_WebRequestUri = webRequestUri;
                 webRequestTask.m_PostData = postData;
                 webRequestTask.m_Timeout = timeout;

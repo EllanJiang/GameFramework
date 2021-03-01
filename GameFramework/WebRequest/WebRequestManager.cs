@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.WebRequest
 {
@@ -166,13 +167,61 @@ namespace GameFramework.WebRequest
         }
 
         /// <summary>
+        /// 根据 Web 请求任务的序列编号获取 Web 请求任务的信息。
+        /// </summary>
+        /// <param name="serialId">要获取信息的 Web 请求任务的序列编号。</param>
+        /// <returns>Web 请求任务的信息。</returns>
+        public TaskInfo GetWebRequestInfo(int serialId)
+        {
+            return m_TaskPool.GetTaskInfo(serialId);
+        }
+
+        /// <summary>
+        /// 根据 Web 请求任务的标签获取 Web 请求任务的信息。
+        /// </summary>
+        /// <param name="tag">要获取信息的 Web 请求任务的标签。</param>
+        /// <returns>Web 请求任务的信息。</returns>
+        public TaskInfo[] GetWebRequestInfos(string tag)
+        {
+            return m_TaskPool.GetTaskInfos(tag);
+        }
+
+        /// <summary>
+        /// 根据 Web 请求任务的标签获取 Web 请求任务的信息。
+        /// </summary>
+        /// <param name="tag">要获取信息的 Web 请求任务的标签。</param>
+        /// <param name="results">Web 请求任务的信息。</param>
+        public void GetAllWebRequestInfos(string tag, List<TaskInfo> results)
+        {
+            m_TaskPool.GetTaskInfos(tag, results);
+        }
+
+        /// <summary>
+        /// 获取所有 Web 请求任务的信息。
+        /// </summary>
+        /// <returns>所有 Web 请求任务的信息。</returns>
+        public TaskInfo[] GetAllWebRequestInfos()
+        {
+            return m_TaskPool.GetAllTaskInfos();
+        }
+
+        /// <summary>
+        /// 获取所有 Web 请求任务的信息。
+        /// </summary>
+        /// <param name="results">所有 Web 请求任务的信息。</param>
+        public void GetAllWebRequestInfos(List<TaskInfo> results)
+        {
+            m_TaskPool.GetAllTaskInfos(results);
+        }
+
+        /// <summary>
         /// 增加 Web 请求任务。
         /// </summary>
         /// <param name="webRequestUri">Web 请求地址。</param>
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri)
         {
-            return AddWebRequest(webRequestUri, null, Constant.DefaultPriority, null);
+            return AddWebRequest(webRequestUri, null, null, Constant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -183,7 +232,18 @@ namespace GameFramework.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, byte[] postData)
         {
-            return AddWebRequest(webRequestUri, postData, Constant.DefaultPriority, null);
+            return AddWebRequest(webRequestUri, postData, null, Constant.DefaultPriority, null);
+        }
+
+        /// <summary>
+        /// 增加 Web 请求任务。
+        /// </summary>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="tag">Web 请求任务的标签。</param>
+        /// <returns>新增 Web 请求任务的序列编号。</returns>
+        public int AddWebRequest(string webRequestUri, string tag)
+        {
+            return AddWebRequest(webRequestUri, null, tag, Constant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -194,7 +254,7 @@ namespace GameFramework.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, int priority)
         {
-            return AddWebRequest(webRequestUri, null, priority, null);
+            return AddWebRequest(webRequestUri, null, null, priority, null);
         }
 
         /// <summary>
@@ -205,7 +265,19 @@ namespace GameFramework.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, object userData)
         {
-            return AddWebRequest(webRequestUri, null, Constant.DefaultPriority, userData);
+            return AddWebRequest(webRequestUri, null, null, Constant.DefaultPriority, userData);
+        }
+
+        /// <summary>
+        /// 增加 Web 请求任务。
+        /// </summary>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="postData">要发送的数据流。</param>
+        /// <param name="tag">Web 请求任务的标签。</param>
+        /// <returns>新增 Web 请求任务的序列编号。</returns>
+        public int AddWebRequest(string webRequestUri, byte[] postData, string tag)
+        {
+            return AddWebRequest(webRequestUri, postData, tag, Constant.DefaultPriority, null);
         }
 
         /// <summary>
@@ -217,7 +289,7 @@ namespace GameFramework.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, byte[] postData, int priority)
         {
-            return AddWebRequest(webRequestUri, postData, priority, null);
+            return AddWebRequest(webRequestUri, postData, null, priority, null);
         }
 
         /// <summary>
@@ -229,7 +301,31 @@ namespace GameFramework.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, byte[] postData, object userData)
         {
-            return AddWebRequest(webRequestUri, postData, Constant.DefaultPriority, userData);
+            return AddWebRequest(webRequestUri, postData, null, Constant.DefaultPriority, userData);
+        }
+
+        /// <summary>
+        /// 增加 Web 请求任务。
+        /// </summary>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="tag">Web 请求任务的标签。</param>
+        /// <param name="priority">Web 请求任务的优先级。</param>
+        /// <returns>新增 Web 请求任务的序列编号。</returns>
+        public int AddWebRequest(string webRequestUri, string tag, int priority)
+        {
+            return AddWebRequest(webRequestUri, null, tag, priority, null);
+        }
+
+        /// <summary>
+        /// 增加 Web 请求任务。
+        /// </summary>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="tag">Web 请求任务的标签。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>新增 Web 请求任务的序列编号。</returns>
+        public int AddWebRequest(string webRequestUri, string tag, object userData)
+        {
+            return AddWebRequest(webRequestUri, null, tag, Constant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -241,7 +337,33 @@ namespace GameFramework.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, int priority, object userData)
         {
-            return AddWebRequest(webRequestUri, null, priority, userData);
+            return AddWebRequest(webRequestUri, null, null, priority, userData);
+        }
+
+        /// <summary>
+        /// 增加 Web 请求任务。
+        /// </summary>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="postData">要发送的数据流。</param>
+        /// <param name="tag">Web 请求任务的标签。</param>
+        /// <param name="priority">Web 请求任务的优先级。</param>
+        /// <returns>新增 Web 请求任务的序列编号。</returns>
+        public int AddWebRequest(string webRequestUri, byte[] postData, string tag, int priority)
+        {
+            return AddWebRequest(webRequestUri, postData, tag, priority, null);
+        }
+
+        /// <summary>
+        /// 增加 Web 请求任务。
+        /// </summary>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="postData">要发送的数据流。</param>
+        /// <param name="tag">Web 请求任务的标签。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>新增 Web 请求任务的序列编号。</returns>
+        public int AddWebRequest(string webRequestUri, byte[] postData, string tag, object userData)
+        {
+            return AddWebRequest(webRequestUri, postData, tag, Constant.DefaultPriority, userData);
         }
 
         /// <summary>
@@ -254,6 +376,33 @@ namespace GameFramework.WebRequest
         /// <returns>新增 Web 请求任务的序列编号。</returns>
         public int AddWebRequest(string webRequestUri, byte[] postData, int priority, object userData)
         {
+            return AddWebRequest(webRequestUri, postData, null, priority, userData);
+        }
+
+        /// <summary>
+        /// 增加 Web 请求任务。
+        /// </summary>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="tag">Web 请求任务的标签。</param>
+        /// <param name="priority">Web 请求任务的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>新增 Web 请求任务的序列编号。</returns>
+        public int AddWebRequest(string webRequestUri, string tag, int priority, object userData)
+        {
+            return AddWebRequest(webRequestUri, null, tag, priority, userData);
+        }
+
+        /// <summary>
+        /// 增加 Web 请求任务。
+        /// </summary>
+        /// <param name="webRequestUri">Web 请求地址。</param>
+        /// <param name="postData">要发送的数据流。</param>
+        /// <param name="tag">Web 请求任务的标签。</param>
+        /// <param name="priority">Web 请求任务的优先级。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>新增 Web 请求任务的序列编号。</returns>
+        public int AddWebRequest(string webRequestUri, byte[] postData, string tag, int priority, object userData)
+        {
             if (string.IsNullOrEmpty(webRequestUri))
             {
                 throw new GameFrameworkException("Web request uri is invalid.");
@@ -264,13 +413,13 @@ namespace GameFramework.WebRequest
                 throw new GameFrameworkException("You must add web request agent first.");
             }
 
-            WebRequestTask webRequestTask = WebRequestTask.Create(webRequestUri, postData, priority, m_Timeout, userData);
+            WebRequestTask webRequestTask = WebRequestTask.Create(webRequestUri, postData, tag, priority, m_Timeout, userData);
             m_TaskPool.AddTask(webRequestTask);
             return webRequestTask.SerialId;
         }
 
         /// <summary>
-        /// 移除 Web 请求任务。
+        /// 根据 Web 请求任务的序列编号移除 Web 请求任务。
         /// </summary>
         /// <param name="serialId">要移除 Web 请求任务的序列编号。</param>
         /// <returns>是否移除 Web 请求任务成功。</returns>
@@ -280,20 +429,22 @@ namespace GameFramework.WebRequest
         }
 
         /// <summary>
-        /// 移除所有 Web 请求任务。
+        /// 根据 Web 请求任务的标签移除 Web 请求任务。
         /// </summary>
-        public void RemoveAllWebRequests()
+        /// <param name="tag">要移除 Web 请求任务的标签。</param>
+        /// <returns>移除 Web 请求任务的数量。</returns>
+        public int RemoveWebRequests(string tag)
         {
-            m_TaskPool.RemoveAllTasks();
+            return m_TaskPool.RemoveTasks(tag);
         }
 
         /// <summary>
-        /// 获取所有 Web 请求任务的信息。
+        /// 移除所有 Web 请求任务。
         /// </summary>
-        /// <returns>所有 Web 请求任务的信息。</returns>
-        public TaskInfo[] GetAllWebRequestInfos()
+        /// <returns>移除 Web 请求任务的数量。</returns>
+        public int RemoveAllWebRequests()
         {
-            return m_TaskPool.GetAllTaskInfos();
+            return m_TaskPool.RemoveAllTasks();
         }
 
         private void OnWebRequestAgentStart(WebRequestAgent sender)
