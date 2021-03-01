@@ -135,6 +135,95 @@ namespace GameFramework
         }
 
         /// <summary>
+        /// 根据任务的标签获取任务的信息。
+        /// </summary>
+        /// <param name="tag">要获取信息的任务的标签。</param>
+        /// <returns>任务的信息。</returns>
+        public TaskInfo[] GetTaskInfos(string tag)
+        {
+            List<TaskInfo> results = new List<TaskInfo>();
+            GetTaskInfos(tag, results);
+            return results.ToArray();
+        }
+
+        /// <summary>
+        /// 根据任务的标签获取任务的信息。
+        /// </summary>
+        /// <param name="tag">要获取信息的任务的标签。</param>
+        /// <param name="results">任务的信息。</param>
+        public void GetTaskInfos(string tag, List<TaskInfo> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
+            {
+                T workingTask = workingAgent.Task;
+                if (workingTask.Tag == tag)
+                {
+                    results.Add(new TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description));
+                }
+            }
+
+            foreach (T waitingTask in m_WaitingTasks)
+            {
+                if (waitingTask.Tag == tag)
+                {
+                    results.Add(new TaskInfo(waitingTask.SerialId, waitingTask.Tag, waitingTask.Priority, TaskStatus.Todo, waitingTask.Description));
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取所有任务的信息。
+        /// </summary>
+        /// <returns>所有任务的信息。</returns>
+        public TaskInfo[] GetAllTaskInfos()
+        {
+            int index = 0;
+            TaskInfo[] results = new TaskInfo[m_WorkingAgents.Count + m_WaitingTasks.Count];
+            foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
+            {
+                T workingTask = workingAgent.Task;
+                results[index++] = new TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description);
+            }
+
+            foreach (T waitingTask in m_WaitingTasks)
+            {
+                results[index++] = new TaskInfo(waitingTask.SerialId, waitingTask.Tag, waitingTask.Priority, TaskStatus.Todo, waitingTask.Description);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// 获取所有任务的信息。
+        /// </summary>
+        /// <param name="results">所有任务的信息。</param>
+        public void GetAllTaskInfos(List<TaskInfo> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
+            {
+                T workingTask = workingAgent.Task;
+                results.Add(new TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description));
+            }
+
+            foreach (T waitingTask in m_WaitingTasks)
+            {
+                results.Add(new TaskInfo(waitingTask.SerialId, waitingTask.Tag, waitingTask.Priority, TaskStatus.Todo, waitingTask.Description));
+            }
+        }
+
+        /// <summary>
         /// 增加任务。
         /// </summary>
         /// <param name="task">要增加的任务。</param>
@@ -162,7 +251,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 移除任务。
+        /// 根据任务的序列编号移除任务。
         /// </summary>
         /// <param name="serialId">要移除任务的序列编号。</param>
         /// <returns>是否移除任务成功。</returns>
@@ -195,10 +284,57 @@ namespace GameFramework
         }
 
         /// <summary>
+        /// 根据任务的标签移除任务。
+        /// </summary>
+        /// <param name="tag">要移除任务的标签。</param>
+        /// <returns>移除任务的数量。</returns>
+        public int RemoveTasks(string tag)
+        {
+            int count = 0;
+
+            LinkedListNode<T> currentWaitingTask = m_WaitingTasks.First;
+            while (currentWaitingTask != null)
+            {
+                LinkedListNode<T> next = currentWaitingTask.Next;
+                T task = currentWaitingTask.Value;
+                if (task.Tag == tag)
+                {
+                    m_WaitingTasks.Remove(currentWaitingTask);
+                    ReferencePool.Release(task);
+                    count++;
+                }
+
+                currentWaitingTask = next;
+            }
+
+            LinkedListNode<ITaskAgent<T>> currentWorkingAgent = m_WorkingAgents.First;
+            while (currentWorkingAgent != null)
+            {
+                LinkedListNode<ITaskAgent<T>> next = currentWorkingAgent.Next;
+                ITaskAgent<T> workingAgent = currentWorkingAgent.Value;
+                T task = workingAgent.Task;
+                if (task.Tag == tag)
+                {
+                    workingAgent.Reset();
+                    m_FreeAgents.Push(workingAgent);
+                    ReferencePool.Release(task);
+                    count++;
+                }
+
+                currentWorkingAgent = next;
+            }
+
+            return count;
+        }
+
+        /// <summary>
         /// 移除所有任务。
         /// </summary>
-        public void RemoveAllTasks()
+        /// <returns>移除任务的数量。</returns>
+        public int RemoveAllTasks()
         {
+            int count = m_WaitingTasks.Count + m_WorkingAgents.Count;
+
             foreach (T task in m_WaitingTasks)
             {
                 ReferencePool.Release(task);
@@ -215,23 +351,8 @@ namespace GameFramework
             }
 
             m_WorkingAgents.Clear();
-        }
 
-        public TaskInfo[] GetAllTaskInfos()
-        {
-            List<TaskInfo> results = new List<TaskInfo>();
-            foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
-            {
-                T workingTask = workingAgent.Task;
-                results.Add(new TaskInfo(workingTask.SerialId, workingTask.Priority, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description));
-            }
-
-            foreach (T waitingTask in m_WaitingTasks)
-            {
-                results.Add(new TaskInfo(waitingTask.SerialId, waitingTask.Priority, TaskStatus.Todo, waitingTask.Description));
-            }
-
-            return results.ToArray();
+            return count;
         }
 
         private void ProcessRunningTasks(float elapseSeconds, float realElapseSeconds)

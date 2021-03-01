@@ -18,6 +18,7 @@ namespace GameFramework
         public const int DefaultPriority = 0;
 
         private int m_SerialId;
+        private string m_Tag;
         private int m_Priority;
         private bool m_Done;
 
@@ -27,6 +28,7 @@ namespace GameFramework
         public TaskBase()
         {
             m_SerialId = 0;
+            m_Tag = null;
             m_Priority = DefaultPriority;
             m_Done = false;
         }
@@ -39,6 +41,17 @@ namespace GameFramework
             get
             {
                 return m_SerialId;
+            }
+        }
+
+        /// <summary>
+        /// 获取任务的标签。
+        /// </summary>
+        public string Tag
+        {
+            get
+            {
+                return m_Tag;
             }
         }
 
@@ -83,8 +96,9 @@ namespace GameFramework
         /// 初始化任务基类。
         /// </summary>
         /// <param name="serialId">任务的序列编号。</param>
+        /// <param name="tag">任务的标签。</param>
         /// <param name="priority">任务的优先级。</param>
-        internal void Initialize(int serialId, int priority)
+        internal void Initialize(int serialId, string tag, int priority)
         {
             m_SerialId = serialId;
             m_Priority = priority;
@@ -97,6 +111,7 @@ namespace GameFramework
         public virtual void Clear()
         {
             m_SerialId = 0;
+            m_Tag = null;
             m_Priority = DefaultPriority;
             m_Done = false;
         }
