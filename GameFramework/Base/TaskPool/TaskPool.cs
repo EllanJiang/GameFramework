@@ -135,6 +135,33 @@ namespace GameFramework
         }
 
         /// <summary>
+        /// 根据任务的序列编号获取任务的信息。
+        /// </summary>
+        /// <param name="serialId">要获取信息的任务的序列编号。</param>
+        /// <returns>任务的信息。</returns>
+        public TaskInfo GetTaskInfo(int serialId)
+        {
+            foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
+            {
+                T workingTask = workingAgent.Task;
+                if (workingTask.SerialId == serialId)
+                {
+                    return new TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description);
+                }
+            }
+
+            foreach (T waitingTask in m_WaitingTasks)
+            {
+                if (waitingTask.SerialId == serialId)
+                {
+                    return new TaskInfo(waitingTask.SerialId, waitingTask.Tag, waitingTask.Priority, TaskStatus.Todo, waitingTask.Description);
+                }
+            }
+
+            return default(TaskInfo);
+        }
+
+        /// <summary>
         /// 根据任务的标签获取任务的信息。
         /// </summary>
         /// <param name="tag">要获取信息的任务的标签。</param>

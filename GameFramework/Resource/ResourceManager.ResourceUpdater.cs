@@ -28,6 +28,7 @@ namespace GameFramework.Resource
             private readonly List<UpdateInfo> m_UpdateWaitingInfo;
             private readonly Dictionary<ResourceName, UpdateInfo> m_UpdateCandidateInfo;
             private readonly SortedDictionary<string, List<int>> m_CachedFileSystemsForGenerateReadWriteVersionList;
+            private readonly List<ResourceName> m_CachedResourceNames;
             private readonly byte[] m_CachedHashBytes;
             private readonly byte[] m_CachedBytes;
             private IDownloadManager m_DownloadManager;
@@ -63,6 +64,7 @@ namespace GameFramework.Resource
                 m_UpdateWaitingInfo = new List<UpdateInfo>();
                 m_UpdateCandidateInfo = new Dictionary<ResourceName, UpdateInfo>();
                 m_CachedFileSystemsForGenerateReadWriteVersionList = new SortedDictionary<string, List<int>>(StringComparer.Ordinal);
+                m_CachedResourceNames = new List<ResourceName>();
                 m_CachedHashBytes = new byte[CachedHashBytesLength];
                 m_CachedBytes = new byte[CachedBytesLength];
                 m_DownloadManager = null;
@@ -417,8 +419,8 @@ namespace GameFramework.Resource
                 }
                 else
                 {
-                    ResourceName[] resourceNames = resourceGroup.InternalGetResourceNames();
-                    foreach (ResourceName resourceName in resourceNames)
+                    resourceGroup.InternalGetResourceNames(m_CachedResourceNames);
+                    foreach (ResourceName resourceName in m_CachedResourceNames)
                     {
                         UpdateInfo updateInfo = null;
                         if (!m_UpdateCandidateInfo.TryGetValue(resourceName, out updateInfo))
@@ -429,10 +431,46 @@ namespace GameFramework.Resource
                         m_UpdateWaitingInfo.Add(updateInfo);
                         m_UpdateCandidateInfo.Remove(resourceName);
                     }
+
+                    m_CachedResourceNames.Clear();
                 }
 
                 m_UpdatingResourceGroup = resourceGroup;
                 m_FailureFlag = false;
+            }
+
+            /// <summary>
+            /// 停止更新资源。
+            /// </summary>
+            public void StopUpdateResources()
+            {
+                if (m_DownloadManager == null)
+                {
+                    throw new GameFrameworkException("You must set download manager first.");
+                }
+
+                if (!m_CheckResourcesComplete)
+                {
+                    throw new GameFrameworkException("You must check resources complete first.");
+                }
+
+                if (m_ApplyingResourcePackStream != null)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("There is already a resource pack '{0}' being applied.", m_ApplyingResourcePackPath));
+                }
+
+                if (m_UpdatingResourceGroup == null)
+                {
+                    throw new GameFrameworkException("There is no resource group being updated.");
+                }
+
+                foreach (UpdateInfo updateInfo in m_UpdateWaitingInfo)
+                {
+                    m_UpdateCandidateInfo.Add(updateInfo.ResourceName, updateInfo);
+                }
+
+                m_UpdateWaitingInfo.Clear();
+                m_UpdatingResourceGroup = null;
             }
 
             public void UpdateResource(ResourceName resourceName)

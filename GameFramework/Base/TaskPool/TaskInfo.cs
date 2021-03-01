@@ -15,6 +15,7 @@ namespace GameFramework
     [StructLayout(LayoutKind.Auto)]
     public struct TaskInfo
     {
+        private readonly bool m_IsValid;
         private readonly int m_SerialId;
         private readonly string m_Tag;
         private readonly int m_Priority;
@@ -31,11 +32,23 @@ namespace GameFramework
         /// <param name="description">任务描述。</param>
         public TaskInfo(int serialId, string tag, int priority, TaskStatus status, string description)
         {
+            m_IsValid = true;
             m_SerialId = serialId;
             m_Tag = tag;
             m_Priority = priority;
             m_Status = status;
             m_Description = description;
+        }
+
+        /// <summary>
+        /// 获取任务信息是否有效。
+        /// </summary>
+        public bool IsValid
+        {
+            get
+            {
+                return m_IsValid;
+            }
         }
 
         /// <summary>

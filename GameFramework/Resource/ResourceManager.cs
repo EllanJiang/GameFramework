@@ -1174,6 +1174,30 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 停止更新资源。
+        /// </summary>
+        public void StopUpdateResources()
+        {
+            if (m_ResourceMode == ResourceMode.Unspecified)
+            {
+                throw new GameFrameworkException("You must set resource mode first.");
+            }
+
+            if (m_ResourceMode != ResourceMode.Updatable && m_ResourceMode != ResourceMode.UpdatableWhilePlaying)
+            {
+                throw new GameFrameworkException("You can not use UpdateResources without updatable resource mode.");
+            }
+
+            if (m_ResourceUpdater == null)
+            {
+                throw new GameFrameworkException("You can not use UpdateResources at this time.");
+            }
+
+            m_ResourceUpdater.StopUpdateResources();
+            m_UpdateResourcesCompleteCallback = null;
+        }
+
+        /// <summary>
         /// 校验资源包。
         /// </summary>
         /// <param name="resourcePackPath">要校验的资源包路径。</param>
@@ -1243,6 +1267,24 @@ namespace GameFramework.Resource
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 获取所有加载资源任务的信息。
+        /// </summary>
+        /// <param name="results">所有加载资源任务的信息。</param>
+        public void GetAllLoadAssetInfos(List<TaskInfo> results)
+        {
+            m_ResourceLoader.GetAllLoadAssetInfos(results);
+        }
+
+        /// <summary>
+        /// 获取所有加载资源任务的信息。
+        /// </summary>
+        /// <returns>所有加载资源任务的信息。</returns>
+        public TaskInfo[] GetAllLoadAssetInfos()
+        {
+            return m_ResourceLoader.GetAllLoadAssetInfos();
         }
 
         /// <summary>
@@ -1942,12 +1984,37 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取所有加载资源任务的信息。
+        /// 获取所有资源组。
         /// </summary>
-        /// <returns>所有加载资源任务的信息。</returns>
-        public TaskInfo[] GetAllLoadAssetInfos()
+        /// <returns>所有资源组。</returns>
+        public IResourceGroup[] GetAllResourceGroups()
         {
-            return m_ResourceLoader.GetAllLoadAssetInfos();
+            int index = 0;
+            IResourceGroup[] results = new IResourceGroup[m_ResourceGroups.Count];
+            foreach (KeyValuePair<string, ResourceGroup> resourceGroup in m_ResourceGroups)
+            {
+                results[index++] = resourceGroup.Value;
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// 获取所有资源组。
+        /// </summary>
+        /// <param name="results">所有资源组。</param>
+        public void GetAllResourceGroups(List<IResourceGroup> results)
+        {
+            if (results == null)
+            {
+                throw new GameFrameworkException("Results is invalid.");
+            }
+
+            results.Clear();
+            foreach (KeyValuePair<string, ResourceGroup> resourceGroup in m_ResourceGroups)
+            {
+                results.Add(resourceGroup.Value);
+            }
         }
 
         private void UpdateResource(ResourceName resourceName)

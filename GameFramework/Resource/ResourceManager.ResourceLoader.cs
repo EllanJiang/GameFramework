@@ -788,6 +788,15 @@ namespace GameFramework.Resource
             /// <summary>
             /// 获取所有加载资源任务的信息。
             /// </summary>
+            /// <param name="results">所有加载资源任务的信息。</param>
+            public void GetAllLoadAssetInfos(List<TaskInfo> results)
+            {
+                m_TaskPool.GetAllTaskInfos(results);
+            }
+
+            /// <summary>
+            /// 获取所有加载资源任务的信息。
+            /// </summary>
             /// <returns>所有加载资源任务的信息。</returns>
             public TaskInfo[] GetAllLoadAssetInfos()
             {

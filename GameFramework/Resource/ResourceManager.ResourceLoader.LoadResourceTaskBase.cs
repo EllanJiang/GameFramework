@@ -175,7 +175,7 @@ namespace GameFramework.Resource
 
                 protected void Initialize(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, object userData)
                 {
-                    Initialize(++s_Serial, priority);
+                    Initialize(++s_Serial, null, priority);
                     m_AssetName = assetName;
                     m_AssetType = assetType;
                     m_ResourceInfo = resourceInfo;

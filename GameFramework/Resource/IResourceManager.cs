@@ -9,6 +9,7 @@ using GameFramework.Download;
 using GameFramework.FileSystem;
 using GameFramework.ObjectPool;
 using System;
+using System.Collections.Generic;
 
 namespace GameFramework.Resource
 {
@@ -450,11 +451,28 @@ namespace GameFramework.Resource
         void UpdateResources(string resourceGroupName, UpdateResourcesCompleteCallback updateResourcesCompleteCallback);
 
         /// <summary>
+        /// 停止更新资源。
+        /// </summary>
+        void StopUpdateResources();
+
+        /// <summary>
         /// 校验资源包。
         /// </summary>
         /// <param name="resourcePackPath">要校验的资源包路径。</param>
         /// <returns>是否校验资源包成功。</returns>
         bool VerifyResourcePack(string resourcePackPath);
+
+        /// <summary>
+        /// 获取所有加载资源任务的信息。
+        /// </summary>
+        /// <param name="results">所有加载资源任务的信息。</param>
+        void GetAllLoadAssetInfos(List<TaskInfo> results);
+
+        /// <summary>
+        /// 获取所有加载资源任务的信息。
+        /// </summary>
+        /// <returns>所有加载资源任务的信息。</returns>
+        TaskInfo[] GetAllLoadAssetInfos();
 
         /// <summary>
         /// 检查资源是否存在。
@@ -754,9 +772,15 @@ namespace GameFramework.Resource
         IResourceGroup GetResourceGroup(string resourceGroupName);
 
         /// <summary>
-        /// 获取所有加载资源任务的信息。
+        /// 获取所有资源组。
         /// </summary>
-        /// <returns>所有加载资源任务的信息。</returns>
-        TaskInfo[] GetAllLoadAssetInfos();
+        /// <returns>所有资源组。</returns>
+        IResourceGroup[] GetAllResourceGroups();
+
+        /// <summary>
+        /// 获取所有资源组。
+        /// </summary>
+        /// <param name="results">所有资源组。</param>
+        void GetAllResourceGroups(List<IResourceGroup> results);
     }
 }
