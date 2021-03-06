@@ -19,6 +19,7 @@ namespace GameFramework.Resource
             private readonly LoadType m_LoadType;
             private readonly int m_Length;
             private readonly int m_HashCode;
+            private readonly int m_CompressedLength;
             private readonly bool m_StorageInReadOnly;
             private bool m_Ready;
 
@@ -30,15 +31,17 @@ namespace GameFramework.Resource
             /// <param name="loadType">资源加载方式。</param>
             /// <param name="length">资源大小。</param>
             /// <param name="hashCode">资源哈希值。</param>
+            /// <param name="compressedLength">压缩后资源大小。</param>
             /// <param name="storageInReadOnly">资源是否在只读区。</param>
             /// <param name="ready">资源是否准备完毕。</param>
-            public ResourceInfo(ResourceName resourceName, string fileSystemName, LoadType loadType, int length, int hashCode, bool storageInReadOnly, bool ready)
+            public ResourceInfo(ResourceName resourceName, string fileSystemName, LoadType loadType, int length, int hashCode, int compressedLength, bool storageInReadOnly, bool ready)
             {
                 m_ResourceName = resourceName;
                 m_FileSystemName = fileSystemName;
                 m_LoadType = loadType;
                 m_Length = length;
                 m_HashCode = hashCode;
+                m_CompressedLength = compressedLength;
                 m_StorageInReadOnly = storageInReadOnly;
                 m_Ready = ready;
             }
@@ -117,6 +120,17 @@ namespace GameFramework.Resource
                 get
                 {
                     return m_HashCode;
+                }
+            }
+
+            /// <summary>
+            /// 获取压缩后资源大小。
+            /// </summary>
+            public int CompressedLength
+            {
+                get
+                {
+                    return m_CompressedLength;
                 }
             }
 

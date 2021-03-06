@@ -142,6 +142,27 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
+            /// 获取资源组中已准备完成资源压缩后的总大小。
+            /// </summary>
+            public long ReadyCompressedLength
+            {
+                get
+                {
+                    long totalReadyCompressedLength = 0L;
+                    foreach (ResourceName resourceName in m_ResourceNames)
+                    {
+                        ResourceInfo resourceInfo = null;
+                        if (m_ResourceInfos.TryGetValue(resourceName, out resourceInfo) && resourceInfo.Ready)
+                        {
+                            totalReadyCompressedLength += resourceInfo.CompressedLength;
+                        }
+                    }
+
+                    return totalReadyCompressedLength;
+                }
+            }
+
+            /// <summary>
             /// 获取资源组的完成进度。
             /// </summary>
             public float Progress

@@ -130,7 +130,7 @@ namespace GameFramework.Resource
                             fileSystemName = null;
                         }
 
-                        m_ResourceManager.m_ResourceInfos.Add(resourceName, new ResourceInfo(resourceName, fileSystemName, (LoadType)resource.LoadType, resource.Length, resource.HashCode, true, true));
+                        m_ResourceManager.m_ResourceInfos.Add(resourceName, new ResourceInfo(resourceName, fileSystemName, (LoadType)resource.LoadType, resource.Length, resource.HashCode, resource.Length, true, true));
                         defaultResourceGroup.AddResource(resourceName, resource.Length, resource.Length);
                     }
 

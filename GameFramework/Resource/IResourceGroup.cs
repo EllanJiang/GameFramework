@@ -71,6 +71,14 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 获取资源组中已准备完成资源压缩后的总大小。
+        /// </summary>
+        long ReadyCompressedLength
+        {
+            get;
+        }
+
+        /// <summary>
         /// 获取资源组的完成进度。
         /// </summary>
         float Progress

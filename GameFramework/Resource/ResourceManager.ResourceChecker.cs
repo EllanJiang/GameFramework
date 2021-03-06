@@ -135,7 +135,7 @@ namespace GameFramework.Resource
                     ci.RefreshStatus(m_CurrentVariant, m_IgnoreOtherVariant);
                     if (ci.Status == CheckInfo.CheckStatus.StorageInReadOnly)
                     {
-                        m_ResourceManager.m_ResourceInfos.Add(ci.ResourceName, new ResourceInfo(ci.ResourceName, ci.FileSystemName, ci.LoadType, ci.Length, ci.HashCode, true, true));
+                        m_ResourceManager.m_ResourceInfos.Add(ci.ResourceName, new ResourceInfo(ci.ResourceName, ci.FileSystemName, ci.LoadType, ci.Length, ci.HashCode, ci.CompressedLength, true, true));
                     }
                     else if (ci.Status == CheckInfo.CheckStatus.StorageInReadWrite)
                     {
@@ -170,12 +170,12 @@ namespace GameFramework.Resource
                             }
                         }
 
-                        m_ResourceManager.m_ResourceInfos.Add(ci.ResourceName, new ResourceInfo(ci.ResourceName, ci.FileSystemName, ci.LoadType, ci.Length, ci.HashCode, false, true));
+                        m_ResourceManager.m_ResourceInfos.Add(ci.ResourceName, new ResourceInfo(ci.ResourceName, ci.FileSystemName, ci.LoadType, ci.Length, ci.HashCode, ci.CompressedLength, false, true));
                         m_ResourceManager.m_ReadWriteResourceInfos.Add(ci.ResourceName, new ReadWriteResourceInfo(ci.FileSystemName, ci.LoadType, ci.Length, ci.HashCode));
                     }
                     else if (ci.Status == CheckInfo.CheckStatus.Update)
                     {
-                        m_ResourceManager.m_ResourceInfos.Add(ci.ResourceName, new ResourceInfo(ci.ResourceName, ci.FileSystemName, ci.LoadType, ci.Length, ci.HashCode, false, false));
+                        m_ResourceManager.m_ResourceInfos.Add(ci.ResourceName, new ResourceInfo(ci.ResourceName, ci.FileSystemName, ci.LoadType, ci.Length, ci.HashCode, ci.CompressedLength, false, false));
                         updateCount++;
                         updateTotalLength += ci.Length;
                         updateTotalCompressedLength += ci.CompressedLength;
