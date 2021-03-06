@@ -39,7 +39,7 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("Resource infos is invalid.");
                 }
 
-                int lastIndex = resourceGroups.Length;
+                int lastIndex = resourceGroups.Length - 1;
                 for (int i = 0; i < lastIndex; i++)
                 {
                     if (resourceGroups[i] == null)
