@@ -203,6 +203,7 @@
     <Compile Include="Resource\ILoadResourceAgentHelper.cs" />
     <Compile Include="Resource\InitResourcesCompleteCallback.cs" />
     <Compile Include="Resource\IResourceGroup.cs" />
+    <Compile Include="Resource\IResourceGroupCollection.cs" />
     <Compile Include="Resource\IResourceHelper.cs" />
     <Compile Include="Resource\IResourceManager.cs" />
     <Compile Include="Resource\LoadAssetCallbacks.cs" />
@@ -252,6 +253,7 @@
     <Compile Include="Resource\ResourceManager.ResourceChecker.CheckInfo.RemoteVersionInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceChecker.cs" />
     <Compile Include="Resource\ResourceManager.ResourceGroup.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceGroupCollection.cs" />
     <Compile Include="Resource\ResourceManager.ResourceInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceIniter.cs" />
     <Compile Include="Resource\ResourceManager.ResourceLoader.AssetObject.cs" />

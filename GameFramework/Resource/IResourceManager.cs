@@ -782,5 +782,19 @@ namespace GameFramework.Resource
         /// </summary>
         /// <param name="results">所有资源组。</param>
         void GetAllResourceGroups(List<IResourceGroup> results);
+
+        /// <summary>
+        /// 获取资源组集合。
+        /// </summary>
+        /// <param name="resourceGroupNames">要获取的资源组名称的集合。</param>
+        /// <returns>要获取的资源组集合。</returns>
+        IResourceGroupCollection GetResourceGroupCollection(params string[] resourceGroupNames);
+
+        /// <summary>
+        /// 获取资源组集合。
+        /// </summary>
+        /// <param name="resourceGroupNames">要获取的资源组名称的集合。</param>
+        /// <returns>要获取的资源组集合。</returns>
+        IResourceGroupCollection GetResourceGroupCollection(List<string> resourceGroupNames);
     }
 }

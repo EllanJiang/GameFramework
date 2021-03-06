@@ -2018,6 +2018,66 @@ namespace GameFramework.Resource
             }
         }
 
+        /// <summary>
+        /// 获取资源组集合。
+        /// </summary>
+        /// <param name="resourceGroupNames">要获取的资源组名称的集合。</param>
+        /// <returns>要获取的资源组集合。</returns>
+        public IResourceGroupCollection GetResourceGroupCollection(params string[] resourceGroupNames)
+        {
+            if (resourceGroupNames == null || resourceGroupNames.Length < 1)
+            {
+                throw new GameFrameworkException("Resource group names is invalid.");
+            }
+
+            ResourceGroup[] resourceGroups = new ResourceGroup[resourceGroupNames.Length];
+            for (int i = 0; i < resourceGroupNames.Length; i++)
+            {
+                if (string.IsNullOrEmpty(resourceGroupNames[i]))
+                {
+                    throw new GameFrameworkException("Resource group name is invalid.");
+                }
+
+                resourceGroups[i] = (ResourceGroup)GetResourceGroup(resourceGroupNames[i]);
+                if (resourceGroups[i] == null)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Resource group '{0}' is not exist.", resourceGroupNames[i]));
+                }
+            }
+
+            return new ResourceGroupCollection(resourceGroups, m_ResourceInfos);
+        }
+
+        /// <summary>
+        /// 获取资源组集合。
+        /// </summary>
+        /// <param name="resourceGroupNames">要获取的资源组名称的集合。</param>
+        /// <returns>要获取的资源组集合。</returns>
+        public IResourceGroupCollection GetResourceGroupCollection(List<string> resourceGroupNames)
+        {
+            if (resourceGroupNames == null || resourceGroupNames.Count < 1)
+            {
+                throw new GameFrameworkException("Resource group names is invalid.");
+            }
+
+            ResourceGroup[] resourceGroups = new ResourceGroup[resourceGroupNames.Count];
+            for (int i = 0; i < resourceGroupNames.Count; i++)
+            {
+                if (string.IsNullOrEmpty(resourceGroupNames[i]))
+                {
+                    throw new GameFrameworkException("Resource group name is invalid.");
+                }
+
+                resourceGroups[i] = (ResourceGroup)GetResourceGroup(resourceGroupNames[i]);
+                if (resourceGroups[i] == null)
+                {
+                    throw new GameFrameworkException(Utility.Text.Format("Resource group '{0}' is not exist.", resourceGroupNames[i]));
+                }
+            }
+
+            return new ResourceGroupCollection(resourceGroups, m_ResourceInfos);
+        }
+
         private void UpdateResource(ResourceName resourceName)
         {
             m_ResourceUpdater.UpdateResource(resourceName);
