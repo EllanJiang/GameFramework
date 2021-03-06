@@ -51,6 +51,11 @@ namespace GameFramework.Resource
         /// <returns>包含的资源集合。</returns>
         public Resource[] GetResources()
         {
+            if (!m_IsValid)
+            {
+                throw new GameFrameworkException("Data is invalid.");
+            }
+
             return m_Resources;
         }
 
@@ -60,6 +65,11 @@ namespace GameFramework.Resource
         /// <returns>包含的文件系统集合。</returns>
         public FileSystem[] GetFileSystems()
         {
+            if (!m_IsValid)
+            {
+                throw new GameFrameworkException("Data is invalid.");
+            }
+
             return m_FileSystems;
         }
     }

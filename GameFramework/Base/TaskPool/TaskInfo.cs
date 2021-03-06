@@ -58,6 +58,11 @@ namespace GameFramework
         {
             get
             {
+                if (!m_IsValid)
+                {
+                    throw new GameFrameworkException("Data is invalid.");
+                }
+
                 return m_SerialId;
             }
         }
@@ -69,6 +74,11 @@ namespace GameFramework
         {
             get
             {
+                if (!m_IsValid)
+                {
+                    throw new GameFrameworkException("Data is invalid.");
+                }
+
                 return m_Tag;
             }
         }
@@ -80,6 +90,11 @@ namespace GameFramework
         {
             get
             {
+                if (!m_IsValid)
+                {
+                    throw new GameFrameworkException("Data is invalid.");
+                }
+
                 return m_Priority;
             }
         }
@@ -91,6 +106,11 @@ namespace GameFramework
         {
             get
             {
+                if (!m_IsValid)
+                {
+                    throw new GameFrameworkException("Data is invalid.");
+                }
+
                 return m_Status;
             }
         }
@@ -102,6 +122,11 @@ namespace GameFramework
         {
             get
             {
+                if (!m_IsValid)
+                {
+                    throw new GameFrameworkException("Data is invalid.");
+                }
+
                 return m_Description;
             }
         }
