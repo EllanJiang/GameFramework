@@ -1186,12 +1186,12 @@ namespace GameFramework.Resource
 
             if (m_ResourceMode != ResourceMode.Updatable && m_ResourceMode != ResourceMode.UpdatableWhilePlaying)
             {
-                throw new GameFrameworkException("You can not use UpdateResources without updatable resource mode.");
+                throw new GameFrameworkException("You can not use StopUpdateResources without updatable resource mode.");
             }
 
             if (m_ResourceUpdater == null)
             {
-                throw new GameFrameworkException("You can not use UpdateResources at this time.");
+                throw new GameFrameworkException("You can not use StopUpdateResources at this time.");
             }
 
             m_ResourceUpdater.StopUpdateResources();
