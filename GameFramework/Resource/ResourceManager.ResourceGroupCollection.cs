@@ -79,9 +79,11 @@ namespace GameFramework.Resource
                             throw new GameFrameworkException(Utility.Text.Format("Resource info '{0}' is invalid.", resourceName.FullName));
                         }
 
-                        m_ResourceNames.Add(resourceName);
-                        m_TotalLength += resourceInfo.Length;
-                        m_TotalCompressedLength += resourceInfo.CompressedLength;
+                        if (m_ResourceNames.Add(resourceName))
+                        {
+                            m_TotalLength += resourceInfo.Length;
+                            m_TotalCompressedLength += resourceInfo.CompressedLength;
+                        }
                     }
                 }
             }
