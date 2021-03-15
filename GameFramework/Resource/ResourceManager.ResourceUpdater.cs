@@ -218,7 +218,7 @@ namespace GameFramework.Resource
 
                 if (m_UpdateWaitingInfo.Count > 0)
                 {
-                    if (m_DownloadManager.FreeAgentCount > 0)
+                    while (m_UpdateWaitingInfo.Count > 0 && m_DownloadManager.WaitingTaskCount < m_DownloadManager.FreeAgentCount)
                     {
                         UpdateInfo updateInfo = m_UpdateWaitingInfo[0];
                         m_UpdateWaitingInfo.RemoveAt(0);
