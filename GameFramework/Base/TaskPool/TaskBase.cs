@@ -101,6 +101,7 @@ namespace GameFramework
         internal void Initialize(int serialId, string tag, int priority)
         {
             m_SerialId = serialId;
+            m_Tag = tag;
             m_Priority = priority;
             m_Done = false;
         }
