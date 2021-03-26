@@ -22,7 +22,6 @@ namespace GameFramework.Resource
                 private Type m_AssetType;
                 private ResourceInfo m_ResourceInfo;
                 private string[] m_DependencyAssetNames;
-                private object m_UserData;
                 private readonly List<object> m_DependencyAssets;
                 private ResourceObject m_ResourceObject;
                 private DateTime m_StartTime;
@@ -34,7 +33,6 @@ namespace GameFramework.Resource
                     m_AssetType = null;
                     m_ResourceInfo = null;
                     m_DependencyAssetNames = null;
-                    m_UserData = null;
                     m_DependencyAssets = new List<object>();
                     m_ResourceObject = null;
                     m_StartTime = default(DateTime);
@@ -76,14 +74,6 @@ namespace GameFramework.Resource
                 public abstract bool IsScene
                 {
                     get;
-                }
-
-                public object UserData
-                {
-                    get
-                    {
-                        return m_UserData;
-                    }
                 }
 
                 public DateTime StartTime
@@ -133,7 +123,6 @@ namespace GameFramework.Resource
                     m_AssetType = null;
                     m_ResourceInfo = null;
                     m_DependencyAssetNames = null;
-                    m_UserData = null;
                     m_DependencyAssets.Clear();
                     m_ResourceObject = null;
                     m_StartTime = default(DateTime);
@@ -175,12 +164,11 @@ namespace GameFramework.Resource
 
                 protected void Initialize(string assetName, Type assetType, int priority, ResourceInfo resourceInfo, string[] dependencyAssetNames, object userData)
                 {
-                    Initialize(++s_Serial, null, priority);
+                    Initialize(++s_Serial, null, priority, userData);
                     m_AssetName = assetName;
                     m_AssetType = assetType;
                     m_ResourceInfo = resourceInfo;
                     m_DependencyAssetNames = dependencyAssetNames;
-                    m_UserData = userData;
                 }
             }
         }

@@ -21,7 +21,6 @@ namespace GameFramework.Download
             private string m_DownloadUri;
             private int m_FlushSize;
             private float m_Timeout;
-            private object m_UserData;
 
             /// <summary>
             /// 初始化下载任务的新实例。
@@ -33,7 +32,6 @@ namespace GameFramework.Download
                 m_DownloadUri = null;
                 m_FlushSize = 0;
                 m_Timeout = 0f;
-                m_UserData = null;
             }
 
             /// <summary>
@@ -96,17 +94,6 @@ namespace GameFramework.Download
             }
 
             /// <summary>
-            /// 获取用户自定义数据。
-            /// </summary>
-            public object UserData
-            {
-                get
-                {
-                    return m_UserData;
-                }
-            }
-
-            /// <summary>
             /// 获取下载任务的描述。
             /// </summary>
             public override string Description
@@ -131,12 +118,11 @@ namespace GameFramework.Download
             public static DownloadTask Create(string downloadPath, string downloadUri, string tag, int priority, int flushSize, float timeout, object userData)
             {
                 DownloadTask downloadTask = ReferencePool.Acquire<DownloadTask>();
-                downloadTask.Initialize(++s_Serial, tag, priority);
+                downloadTask.Initialize(++s_Serial, tag, priority, userData);
                 downloadTask.m_DownloadPath = downloadPath;
                 downloadTask.m_DownloadUri = downloadUri;
                 downloadTask.m_FlushSize = flushSize;
                 downloadTask.m_Timeout = timeout;
-                downloadTask.m_UserData = userData;
                 return downloadTask;
             }
 
@@ -151,7 +137,6 @@ namespace GameFramework.Download
                 m_DownloadUri = null;
                 m_FlushSize = 0;
                 m_Timeout = 0f;
-                m_UserData = null;
             }
         }
     }

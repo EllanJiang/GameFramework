@@ -20,6 +20,8 @@ namespace GameFramework
         private int m_SerialId;
         private string m_Tag;
         private int m_Priority;
+        private object m_UserData;
+
         private bool m_Done;
 
         /// <summary>
@@ -31,6 +33,7 @@ namespace GameFramework
             m_Tag = null;
             m_Priority = DefaultPriority;
             m_Done = false;
+            m_UserData = null;
         }
 
         /// <summary>
@@ -67,6 +70,17 @@ namespace GameFramework
         }
 
         /// <summary>
+        /// 获取任务的用户自定义数据。
+        /// </summary>
+        public object UserData
+        {
+            get
+            {
+                return m_UserData;
+            }
+        }
+
+        /// <summary>
         /// 获取或设置任务是否完成。
         /// </summary>
         public bool Done
@@ -98,11 +112,13 @@ namespace GameFramework
         /// <param name="serialId">任务的序列编号。</param>
         /// <param name="tag">任务的标签。</param>
         /// <param name="priority">任务的优先级。</param>
-        internal void Initialize(int serialId, string tag, int priority)
+        /// <param name="userData">任务的用户自定义数据。</param>
+        internal void Initialize(int serialId, string tag, int priority, object userData)
         {
             m_SerialId = serialId;
             m_Tag = tag;
             m_Priority = priority;
+            m_UserData = userData;
             m_Done = false;
         }
 
@@ -114,6 +130,7 @@ namespace GameFramework
             m_SerialId = 0;
             m_Tag = null;
             m_Priority = DefaultPriority;
+            m_UserData = null;
             m_Done = false;
         }
     }

@@ -20,7 +20,6 @@ namespace GameFramework.WebRequest
             private string m_WebRequestUri;
             private byte[] m_PostData;
             private float m_Timeout;
-            private object m_UserData;
 
             public WebRequestTask()
             {
@@ -28,7 +27,6 @@ namespace GameFramework.WebRequest
                 m_WebRequestUri = null;
                 m_PostData = null;
                 m_Timeout = 0f;
-                m_UserData = null;
             }
 
             /// <summary>
@@ -69,17 +67,6 @@ namespace GameFramework.WebRequest
             }
 
             /// <summary>
-            /// 获取用户自定义数据。
-            /// </summary>
-            public object UserData
-            {
-                get
-                {
-                    return m_UserData;
-                }
-            }
-
-            /// <summary>
             /// 获取 Web 请求任务的描述。
             /// </summary>
             public override string Description
@@ -103,11 +90,10 @@ namespace GameFramework.WebRequest
             public static WebRequestTask Create(string webRequestUri, byte[] postData, string tag, int priority, float timeout, object userData)
             {
                 WebRequestTask webRequestTask = ReferencePool.Acquire<WebRequestTask>();
-                webRequestTask.Initialize(++s_Serial, tag, priority);
+                webRequestTask.Initialize(++s_Serial, tag, priority, userData);
                 webRequestTask.m_WebRequestUri = webRequestUri;
                 webRequestTask.m_PostData = postData;
                 webRequestTask.m_Timeout = timeout;
-                webRequestTask.m_UserData = userData;
                 return webRequestTask;
             }
 
@@ -121,7 +107,6 @@ namespace GameFramework.WebRequest
                 m_WebRequestUri = null;
                 m_PostData = null;
                 m_Timeout = 0f;
-                m_UserData = null;
             }
 
             /// <summary>

@@ -146,7 +146,7 @@ namespace GameFramework
                 T workingTask = workingAgent.Task;
                 if (workingTask.SerialId == serialId)
                 {
-                    return new TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description);
+                    return new TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.UserData, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description);
                 }
             }
 
@@ -154,7 +154,7 @@ namespace GameFramework
             {
                 if (waitingTask.SerialId == serialId)
                 {
-                    return new TaskInfo(waitingTask.SerialId, waitingTask.Tag, waitingTask.Priority, TaskStatus.Todo, waitingTask.Description);
+                    return new TaskInfo(waitingTask.SerialId, waitingTask.Tag, waitingTask.Priority, waitingTask.UserData, TaskStatus.Todo, waitingTask.Description);
                 }
             }
 
@@ -191,7 +191,7 @@ namespace GameFramework
                 T workingTask = workingAgent.Task;
                 if (workingTask.Tag == tag)
                 {
-                    results.Add(new TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description));
+                    results.Add(new TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.UserData, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description));
                 }
             }
 
@@ -199,7 +199,7 @@ namespace GameFramework
             {
                 if (waitingTask.Tag == tag)
                 {
-                    results.Add(new TaskInfo(waitingTask.SerialId, waitingTask.Tag, waitingTask.Priority, TaskStatus.Todo, waitingTask.Description));
+                    results.Add(new TaskInfo(waitingTask.SerialId, waitingTask.Tag, waitingTask.Priority, waitingTask.UserData, TaskStatus.Todo, waitingTask.Description));
                 }
             }
         }
@@ -215,12 +215,12 @@ namespace GameFramework
             foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
             {
                 T workingTask = workingAgent.Task;
-                results[index++] = new TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description);
+                results[index++] = new TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.UserData, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description);
             }
 
             foreach (T waitingTask in m_WaitingTasks)
             {
-                results[index++] = new TaskInfo(waitingTask.SerialId, waitingTask.Tag, waitingTask.Priority, TaskStatus.Todo, waitingTask.Description);
+                results[index++] = new TaskInfo(waitingTask.SerialId, waitingTask.Tag, waitingTask.Priority, waitingTask.UserData, TaskStatus.Todo, waitingTask.Description);
             }
 
             return results;
@@ -241,12 +241,12 @@ namespace GameFramework
             foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
             {
                 T workingTask = workingAgent.Task;
-                results.Add(new TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description));
+                results.Add(new TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.UserData, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description));
             }
 
             foreach (T waitingTask in m_WaitingTasks)
             {
-                results.Add(new TaskInfo(waitingTask.SerialId, waitingTask.Tag, waitingTask.Priority, TaskStatus.Todo, waitingTask.Description));
+                results.Add(new TaskInfo(waitingTask.SerialId, waitingTask.Tag, waitingTask.Priority, waitingTask.UserData, TaskStatus.Todo, waitingTask.Description));
             }
         }
 
