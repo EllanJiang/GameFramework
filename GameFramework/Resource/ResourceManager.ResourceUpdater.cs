@@ -479,6 +479,8 @@ namespace GameFramework.Resource
                     m_DownloadManager.RemoveDownload(taskInfo.SerialId);
                 }
 
+                m_CachedTaskInfos.Clear();
+
                 foreach (UpdateInfo updateInfo in m_UpdateWaitingInfo)
                 {
                     m_UpdateCandidateInfo.Add(updateInfo.ResourceName, updateInfo);
