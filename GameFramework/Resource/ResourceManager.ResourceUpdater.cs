@@ -29,6 +29,7 @@ namespace GameFramework.Resource
             private readonly Dictionary<ResourceName, UpdateInfo> m_UpdateCandidateInfo;
             private readonly SortedDictionary<string, List<int>> m_CachedFileSystemsForGenerateReadWriteVersionList;
             private readonly List<ResourceName> m_CachedResourceNames;
+            private readonly List<TaskInfo> m_CachedTaskInfos;
             private readonly byte[] m_CachedHashBytes;
             private readonly byte[] m_CachedBytes;
             private IDownloadManager m_DownloadManager;
@@ -65,6 +66,7 @@ namespace GameFramework.Resource
                 m_UpdateCandidateInfo = new Dictionary<ResourceName, UpdateInfo>();
                 m_CachedFileSystemsForGenerateReadWriteVersionList = new SortedDictionary<string, List<int>>(StringComparer.Ordinal);
                 m_CachedResourceNames = new List<ResourceName>();
+                m_CachedTaskInfos = new List<TaskInfo>();
                 m_CachedHashBytes = new byte[CachedHashBytesLength];
                 m_CachedBytes = new byte[CachedBytesLength];
                 m_DownloadManager = null;
@@ -462,6 +464,19 @@ namespace GameFramework.Resource
                 if (m_UpdatingResourceGroup == null)
                 {
                     throw new GameFrameworkException("There is no resource group being updated.");
+                }
+
+                m_DownloadManager.GetDownloadInfos(DownloadTag, m_CachedTaskInfos);
+                foreach (TaskInfo taskInfo in m_CachedTaskInfos)
+                {
+                    UpdateInfo updateInfo = taskInfo.UserData as UpdateInfo;
+                    if (updateInfo == null)
+                    {
+                        continue;
+                    }
+
+                    m_UpdateCandidateInfo.Add(updateInfo.ResourceName, updateInfo);
+                    m_DownloadManager.RemoveDownload(taskInfo.SerialId);
                 }
 
                 foreach (UpdateInfo updateInfo in m_UpdateWaitingInfo)
