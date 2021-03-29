@@ -475,6 +475,7 @@ namespace GameFramework.Resource
                         continue;
                     }
 
+                    m_UpdatingCount--;
                     m_UpdateCandidateInfo.Add(updateInfo.ResourceName, updateInfo);
                     m_DownloadManager.RemoveDownload(taskInfo.SerialId);
                 }
