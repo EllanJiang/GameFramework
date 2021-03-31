@@ -511,8 +511,22 @@ namespace GameFramework.Resource
                 UpdateInfo updateInfo = null;
                 if (m_UpdateCandidateInfo.TryGetValue(resourceName, out updateInfo))
                 {
-                    m_UpdateWaitingInfo.Add(updateInfo);
+                    m_UpdateWaitingInfo.Insert(0, updateInfo);
                     m_UpdateCandidateInfo.Remove(resourceName);
+                    return;
+                }
+
+                for (int i = 0; i < m_UpdateWaitingInfo.Count; i++)
+                {
+                    if (m_UpdateWaitingInfo[i].ResourceName != resourceName)
+                    {
+                        continue;
+                    }
+
+                    updateInfo = m_UpdateWaitingInfo[i];
+                    m_UpdateWaitingInfo.RemoveAt(i);
+                    m_UpdateWaitingInfo.Insert(0, updateInfo);
+                    return;
                 }
             }
 
