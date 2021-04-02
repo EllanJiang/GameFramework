@@ -566,6 +566,7 @@ namespace GameFramework.Resource
                                     ResourceApplyFailure(applyInfo.ResourceName, m_ApplyingResourcePackPath, errorMessage);
                                 }
 
+                                m_FailureFlag = true;
                                 return false;
                             }
 
@@ -585,6 +586,7 @@ namespace GameFramework.Resource
                                     ResourceApplyFailure(applyInfo.ResourceName, m_ApplyingResourcePackPath, errorMessage);
                                 }
 
+                                m_FailureFlag = true;
                                 return false;
                             }
 
@@ -624,6 +626,7 @@ namespace GameFramework.Resource
                                     ResourceApplyFailure(applyInfo.ResourceName, m_ApplyingResourcePackPath, errorMessage);
                                 }
 
+                                m_FailureFlag = true;
                                 return false;
                             }
                         }
@@ -638,16 +641,17 @@ namespace GameFramework.Resource
                             File.Delete(applyInfo.ResourcePath);
                         }
 
-                        return retVal;
-                    }
+                        if (!retVal)
+                        {
+                            if (ResourceApplyFailure != null)
+                            {
+                                string errorMessage = Utility.Text.Format("Unable to write resource '{0}' to file system '{1}'.", applyInfo.ResourcePath, applyInfo.FileSystemName);
+                                ResourceApplyFailure(applyInfo.ResourceName, m_ApplyingResourcePackPath, errorMessage);
+                            }
 
-                    m_UpdateCandidateInfo.Remove(applyInfo.ResourceName);
-                    m_ResourceManager.m_ResourceInfos[applyInfo.ResourceName].MarkReady();
-                    m_ResourceManager.m_ReadWriteResourceInfos.Add(applyInfo.ResourceName, new ReadWriteResourceInfo(applyInfo.FileSystemName, applyInfo.LoadType, applyInfo.Length, applyInfo.HashCode));
-
-                    if (ResourceApplySuccess != null)
-                    {
-                        ResourceApplySuccess(applyInfo.ResourceName, applyInfo.ResourcePath, m_ApplyingResourcePackPath, applyInfo.Length, applyInfo.CompressedLength);
+                            m_FailureFlag = true;
+                            return false;
+                        }
                     }
 
                     string downloadingResource = Utility.Text.Format("{0}.download", applyInfo.ResourcePath);
@@ -656,10 +660,17 @@ namespace GameFramework.Resource
                         File.Delete(downloadingResource);
                     }
 
+                    m_UpdateCandidateInfo.Remove(applyInfo.ResourceName);
+                    m_ResourceManager.m_ResourceInfos[applyInfo.ResourceName].MarkReady();
+                    m_ResourceManager.m_ReadWriteResourceInfos.Add(applyInfo.ResourceName, new ReadWriteResourceInfo(applyInfo.FileSystemName, applyInfo.LoadType, applyInfo.Length, applyInfo.HashCode));
+                    if (ResourceApplySuccess != null)
+                    {
+                        ResourceApplySuccess(applyInfo.ResourceName, applyInfo.ResourcePath, m_ApplyingResourcePackPath, applyInfo.Length, applyInfo.CompressedLength);
+                    }
+
                     m_CurrentGenerateReadWriteVersionListLength += applyInfo.CompressedLength;
                     if (m_ApplyWaitingInfo.Count <= 0 || m_CurrentGenerateReadWriteVersionListLength >= m_GenerateReadWriteVersionListLength)
                     {
-                        m_CurrentGenerateReadWriteVersionListLength = 0;
                         GenerateReadWriteVersionList();
                         return true;
                     }
@@ -693,6 +704,7 @@ namespace GameFramework.Resource
                     File.Move(m_ReadWriteVersionListFileName, m_ReadWriteVersionListBackupFileName);
                 }
 
+                m_CurrentGenerateReadWriteVersionListLength = 0;
                 FileStream fileStream = null;
                 try
                 {
@@ -975,7 +987,6 @@ namespace GameFramework.Resource
                 m_CurrentGenerateReadWriteVersionListLength += updateInfo.CompressedLength;
                 if (m_UpdatingCount <= 0 || m_CurrentGenerateReadWriteVersionListLength >= m_GenerateReadWriteVersionListLength)
                 {
-                    m_CurrentGenerateReadWriteVersionListLength = 0;
                     GenerateReadWriteVersionList();
                 }
 
