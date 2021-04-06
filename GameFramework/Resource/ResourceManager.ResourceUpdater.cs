@@ -26,10 +26,10 @@ namespace GameFramework.Resource
             private readonly ResourceManager m_ResourceManager;
             private readonly List<ApplyInfo> m_ApplyWaitingInfo;
             private readonly List<UpdateInfo> m_UpdateWaitingInfo;
+            private readonly HashSet<UpdateInfo> m_UpdateWaitingInfoWhilePlaying;
             private readonly Dictionary<ResourceName, UpdateInfo> m_UpdateCandidateInfo;
             private readonly SortedDictionary<string, List<int>> m_CachedFileSystemsForGenerateReadWriteVersionList;
             private readonly List<ResourceName> m_CachedResourceNames;
-            private readonly List<TaskInfo> m_CachedTaskInfos;
             private readonly byte[] m_CachedHashBytes;
             private readonly byte[] m_CachedBytes;
             private IDownloadManager m_DownloadManager;
@@ -40,19 +40,19 @@ namespace GameFramework.Resource
             private int m_GenerateReadWriteVersionListLength;
             private int m_CurrentGenerateReadWriteVersionListLength;
             private int m_UpdateRetryCount;
-            private int m_UpdatingCount;
             private bool m_FailureFlag;
             private string m_ReadWriteVersionListFileName;
             private string m_ReadWriteVersionListBackupFileName;
 
             public GameFrameworkAction<ResourceName, string, string, int, int> ResourceApplySuccess;
             public GameFrameworkAction<ResourceName, string, string> ResourceApplyFailure;
-            public GameFrameworkAction<string, bool, bool> ResourceApplyComplete;
+            public GameFrameworkAction<string, bool> ResourceApplyComplete;
             public GameFrameworkAction<ResourceName, string, string, int, int, int> ResourceUpdateStart;
             public GameFrameworkAction<ResourceName, string, string, int, int> ResourceUpdateChanged;
             public GameFrameworkAction<ResourceName, string, string, int, int> ResourceUpdateSuccess;
             public GameFrameworkAction<ResourceName, string, int, int, string> ResourceUpdateFailure;
-            public GameFrameworkAction<ResourceGroup, bool, bool> ResourceUpdateComplete;
+            public GameFrameworkAction<ResourceGroup, bool> ResourceUpdateComplete;
+            public GameFrameworkAction ResourceUpdateAllComplete;
 
             /// <summary>
             /// 初始化资源更新器的新实例。
@@ -63,10 +63,10 @@ namespace GameFramework.Resource
                 m_ResourceManager = resourceManager;
                 m_ApplyWaitingInfo = new List<ApplyInfo>();
                 m_UpdateWaitingInfo = new List<UpdateInfo>();
+                m_UpdateWaitingInfoWhilePlaying = new HashSet<UpdateInfo>();
                 m_UpdateCandidateInfo = new Dictionary<ResourceName, UpdateInfo>();
                 m_CachedFileSystemsForGenerateReadWriteVersionList = new SortedDictionary<string, List<int>>(StringComparer.Ordinal);
                 m_CachedResourceNames = new List<ResourceName>();
-                m_CachedTaskInfos = new List<TaskInfo>();
                 m_CachedHashBytes = new byte[CachedHashBytesLength];
                 m_CachedBytes = new byte[CachedBytesLength];
                 m_DownloadManager = null;
@@ -77,7 +77,6 @@ namespace GameFramework.Resource
                 m_GenerateReadWriteVersionListLength = 0;
                 m_CurrentGenerateReadWriteVersionListLength = 0;
                 m_UpdateRetryCount = 3;
-                m_UpdatingCount = 0;
                 m_FailureFlag = false;
                 m_ReadWriteVersionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, LocalVersionListFileName));
                 m_ReadWriteVersionListBackupFileName = Utility.Text.Format("{0}.{1}", m_ReadWriteVersionListFileName, BackupExtension);
@@ -90,6 +89,7 @@ namespace GameFramework.Resource
                 ResourceUpdateSuccess = null;
                 ResourceUpdateFailure = null;
                 ResourceUpdateComplete = null;
+                ResourceUpdateAllComplete = null;
             }
 
             /// <summary>
@@ -167,6 +167,17 @@ namespace GameFramework.Resource
             }
 
             /// <summary>
+            /// 获取使用时下载的等待更新资源数量。
+            /// </summary>
+            public int UpdateWaitingWhilePlayingCount
+            {
+                get
+                {
+                    return m_UpdateWaitingInfoWhilePlaying.Count;
+                }
+            }
+
+            /// <summary>
             /// 获取候选更新资源数量。
             /// </summary>
             public int UpdateCandidateCount
@@ -174,17 +185,6 @@ namespace GameFramework.Resource
                 get
                 {
                     return m_UpdateCandidateInfo.Count;
-                }
-            }
-
-            /// <summary>
-            /// 获取正在更新资源数量。
-            /// </summary>
-            public int UpdatingCount
-            {
-                get
-                {
-                    return m_UpdatingCount;
                 }
             }
 
@@ -214,31 +214,29 @@ namespace GameFramework.Resource
                     m_ApplyingResourcePackStream = null;
                     if (ResourceApplyComplete != null)
                     {
-                        ResourceApplyComplete(resourcePackPath, !m_FailureFlag, m_UpdateCandidateInfo.Count <= 0);
+                        ResourceApplyComplete(resourcePackPath, !m_FailureFlag);
                     }
-                }
 
-                if (m_UpdateWaitingInfo.Count > 0)
-                {
-                    while (m_UpdateWaitingInfo.Count > 0 && m_DownloadManager.WaitingTaskCount < m_DownloadManager.FreeAgentCount)
+                    if (m_UpdateCandidateInfo.Count <= 0 && ResourceUpdateAllComplete != null)
                     {
-                        UpdateInfo updateInfo = m_UpdateWaitingInfo[0];
-                        m_UpdateWaitingInfo.RemoveAt(0);
-                        string resourceFullNameWithCrc32 = updateInfo.ResourceName.Variant != null ? Utility.Text.Format("{0}.{1}.{2:x8}.{3}", updateInfo.ResourceName.Name, updateInfo.ResourceName.Variant, updateInfo.HashCode, DefaultExtension) : Utility.Text.Format("{0}.{1:x8}.{2}", updateInfo.ResourceName.Name, updateInfo.HashCode, DefaultExtension);
-                        m_DownloadManager.AddDownload(updateInfo.ResourcePath, Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_UpdatePrefixUri, resourceFullNameWithCrc32)), DownloadTag, updateInfo);
-                        m_UpdatingCount++;
+                        ResourceUpdateAllComplete();
                     }
 
                     return;
                 }
 
-                if (m_UpdatingResourceGroup != null && m_UpdatingCount <= 0)
+                if (m_UpdateWaitingInfo.Count > 0)
                 {
-                    ResourceGroup updatingResourceGroup = m_UpdatingResourceGroup;
-                    m_UpdatingResourceGroup = null;
-                    if (ResourceUpdateComplete != null)
+                    int freeCount = m_DownloadManager.FreeAgentCount - m_DownloadManager.WaitingTaskCount;
+                    if (freeCount > 0)
                     {
-                        ResourceUpdateComplete(updatingResourceGroup, !m_FailureFlag, m_UpdateCandidateInfo.Count <= 0);
+                        for (int i = 0, count = 0; i < m_UpdateWaitingInfo.Count && count < freeCount; i++)
+                        {
+                            if (DownloadResource(m_UpdateWaitingInfo[i]))
+                            {
+                                count++;
+                            }
+                        }
                     }
 
                     return;
@@ -331,6 +329,11 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException(Utility.Text.Format("There is already a resource group '{0}' being updated.", m_UpdatingResourceGroup.Name));
                 }
 
+                if (m_UpdateWaitingInfoWhilePlaying.Count > 0)
+                {
+                    throw new GameFrameworkException("There are already some resources being updated while playing.");
+                }
+
                 try
                 {
                     long length = 0L;
@@ -416,8 +419,6 @@ namespace GameFramework.Resource
                     {
                         m_UpdateWaitingInfo.Add(updateInfo.Value);
                     }
-
-                    m_UpdateCandidateInfo.Clear();
                 }
                 else
                 {
@@ -431,7 +432,6 @@ namespace GameFramework.Resource
                         }
 
                         m_UpdateWaitingInfo.Add(updateInfo);
-                        m_UpdateCandidateInfo.Remove(resourceName);
                     }
 
                     m_CachedResourceNames.Clear();
@@ -466,27 +466,6 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("There is no resource group being updated.");
                 }
 
-                m_DownloadManager.GetDownloadInfos(DownloadTag, m_CachedTaskInfos);
-                foreach (TaskInfo taskInfo in m_CachedTaskInfos)
-                {
-                    UpdateInfo updateInfo = taskInfo.UserData as UpdateInfo;
-                    if (updateInfo == null)
-                    {
-                        continue;
-                    }
-
-                    m_UpdatingCount--;
-                    m_UpdateCandidateInfo.Add(updateInfo.ResourceName, updateInfo);
-                    m_DownloadManager.RemoveDownload(taskInfo.SerialId);
-                }
-
-                m_CachedTaskInfos.Clear();
-
-                foreach (UpdateInfo updateInfo in m_UpdateWaitingInfo)
-                {
-                    m_UpdateCandidateInfo.Add(updateInfo.ResourceName, updateInfo);
-                }
-
                 m_UpdateWaitingInfo.Clear();
                 m_UpdatingResourceGroup = null;
             }
@@ -509,24 +488,9 @@ namespace GameFramework.Resource
                 }
 
                 UpdateInfo updateInfo = null;
-                if (m_UpdateCandidateInfo.TryGetValue(resourceName, out updateInfo))
+                if (m_UpdateCandidateInfo.TryGetValue(resourceName, out updateInfo) && m_UpdateWaitingInfoWhilePlaying.Add(updateInfo))
                 {
-                    m_UpdateWaitingInfo.Insert(0, updateInfo);
-                    m_UpdateCandidateInfo.Remove(resourceName);
-                    return;
-                }
-
-                for (int i = 0; i < m_UpdateWaitingInfo.Count; i++)
-                {
-                    if (m_UpdateWaitingInfo[i].ResourceName != resourceName)
-                    {
-                        continue;
-                    }
-
-                    updateInfo = m_UpdateWaitingInfo[i];
-                    m_UpdateWaitingInfo.RemoveAt(i);
-                    m_UpdateWaitingInfo.Insert(0, updateInfo);
-                    return;
+                    DownloadResource(updateInfo);
                 }
             }
 
@@ -684,12 +648,26 @@ namespace GameFramework.Resource
                         ResourceApplyFailure(applyInfo.ResourceName, m_ApplyingResourcePackPath, exception.ToString());
                     }
 
+                    m_FailureFlag = true;
                     return false;
                 }
                 finally
                 {
                     m_ApplyingResourcePackStream.Position = position;
                 }
+            }
+
+            private bool DownloadResource(UpdateInfo updateInfo)
+            {
+                if (updateInfo.Downloading)
+                {
+                    return false;
+                }
+
+                updateInfo.Downloading = true;
+                string resourceFullNameWithCrc32 = updateInfo.ResourceName.Variant != null ? Utility.Text.Format("{0}.{1}.{2:x8}.{3}", updateInfo.ResourceName.Name, updateInfo.ResourceName.Variant, updateInfo.HashCode, DefaultExtension) : Utility.Text.Format("{0}.{1:x8}.{2}", updateInfo.ResourceName.Name, updateInfo.HashCode, DefaultExtension);
+                m_DownloadManager.AddDownload(updateInfo.ResourcePath, Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_UpdatePrefixUri, resourceFullNameWithCrc32)), updateInfo);
+                return true;
             }
 
             private void GenerateReadWriteVersionList()
@@ -981,18 +959,35 @@ namespace GameFramework.Resource
                     }
                 }
 
-                m_UpdatingCount--;
+                m_UpdateCandidateInfo.Remove(updateInfo.ResourceName);
+                m_UpdateWaitingInfo.Remove(updateInfo);
+                m_UpdateWaitingInfoWhilePlaying.Remove(updateInfo);
                 m_ResourceManager.m_ResourceInfos[updateInfo.ResourceName].MarkReady();
                 m_ResourceManager.m_ReadWriteResourceInfos.Add(updateInfo.ResourceName, new ReadWriteResourceInfo(updateInfo.FileSystemName, updateInfo.LoadType, updateInfo.Length, updateInfo.HashCode));
+                if (ResourceUpdateSuccess != null)
+                {
+                    ResourceUpdateSuccess(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, updateInfo.Length, updateInfo.CompressedLength);
+                }
+
                 m_CurrentGenerateReadWriteVersionListLength += updateInfo.CompressedLength;
-                if (m_UpdatingCount <= 0 || m_CurrentGenerateReadWriteVersionListLength >= m_GenerateReadWriteVersionListLength)
+                if (m_UpdateCandidateInfo.Count <= 0 || m_UpdateWaitingInfo.Count + m_UpdateWaitingInfoWhilePlaying.Count <= 0 || m_CurrentGenerateReadWriteVersionListLength >= m_GenerateReadWriteVersionListLength)
                 {
                     GenerateReadWriteVersionList();
                 }
 
-                if (ResourceUpdateSuccess != null)
+                if (m_UpdatingResourceGroup != null && m_UpdateWaitingInfo.Count <= 0)
                 {
-                    ResourceUpdateSuccess(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, updateInfo.Length, updateInfo.CompressedLength);
+                    ResourceGroup updatingResourceGroup = m_UpdatingResourceGroup;
+                    m_UpdatingResourceGroup = null;
+                    if (ResourceUpdateComplete != null)
+                    {
+                        ResourceUpdateComplete(updatingResourceGroup, !m_FailureFlag);
+                    }
+                }
+
+                if (m_UpdateCandidateInfo.Count <= 0 && ResourceUpdateAllComplete != null)
+                {
+                    ResourceUpdateAllComplete();
                 }
             }
 
@@ -1009,8 +1004,6 @@ namespace GameFramework.Resource
                     File.Delete(e.DownloadPath);
                 }
 
-                m_UpdatingCount--;
-
                 if (ResourceUpdateFailure != null)
                 {
                     ResourceUpdateFailure(updateInfo.ResourceName, e.DownloadUri, updateInfo.RetryCount, m_UpdateRetryCount, e.ErrorMessage);
@@ -1018,14 +1011,20 @@ namespace GameFramework.Resource
 
                 if (updateInfo.RetryCount < m_UpdateRetryCount)
                 {
+                    updateInfo.Downloading = false;
                     updateInfo.RetryCount++;
-                    m_UpdateWaitingInfo.Add(updateInfo);
+                    if (m_UpdateWaitingInfoWhilePlaying.Contains(updateInfo))
+                    {
+                        DownloadResource(updateInfo);
+                    }
                 }
                 else
                 {
                     m_FailureFlag = true;
+                    updateInfo.Downloading = false;
                     updateInfo.RetryCount = 0;
-                    m_UpdateCandidateInfo.Add(updateInfo.ResourceName, updateInfo);
+                    m_UpdateWaitingInfo.Remove(updateInfo);
+                    m_UpdateWaitingInfoWhilePlaying.Remove(updateInfo);
                 }
             }
         }

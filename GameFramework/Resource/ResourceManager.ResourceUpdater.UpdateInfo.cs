@@ -24,6 +24,7 @@ namespace GameFramework.Resource
                 private readonly int m_CompressedLength;
                 private readonly int m_CompressedHashCode;
                 private readonly string m_ResourcePath;
+                private bool m_Downloading;
                 private int m_RetryCount;
 
                 /// <summary>
@@ -47,6 +48,7 @@ namespace GameFramework.Resource
                     m_CompressedLength = compressedLength;
                     m_CompressedHashCode = compressedHashCode;
                     m_ResourcePath = resourcePath;
+                    m_Downloading = false;
                     m_RetryCount = 0;
                 }
 
@@ -146,6 +148,21 @@ namespace GameFramework.Resource
                     get
                     {
                         return m_ResourcePath;
+                    }
+                }
+
+                /// <summary>
+                /// 获取或设置下载状态。
+                /// </summary>
+                public bool Downloading
+                {
+                    get
+                    {
+                        return m_Downloading;
+                    }
+                    set
+                    {
+                        m_Downloading = value;
                     }
                 }
 

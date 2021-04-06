@@ -190,17 +190,17 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
-        /// 获取候选更新资源数量。
+        /// 获取使用时下载的等待更新资源数量。
         /// </summary>
-        int UpdateCandidateCount
+        int UpdateWaitingWhilePlayingCount
         {
             get;
         }
 
         /// <summary>
-        /// 获取正在更新资源数量。
+        /// 获取候选更新资源数量。
         /// </summary>
-        int UpdatingCount
+        int UpdateCandidateCount
         {
             get;
         }
@@ -338,6 +338,11 @@ namespace GameFramework.Resource
         /// 资源更新失败事件。
         /// </summary>
         event EventHandler<ResourceUpdateFailureEventArgs> ResourceUpdateFailure;
+
+        /// <summary>
+        /// 资源更新全部完成事件。
+        /// </summary>
+        event EventHandler<ResourceUpdateAllCompleteEventArgs> ResourceUpdateAllComplete;
 
         /// <summary>
         /// 设置资源只读区路径。

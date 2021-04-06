@@ -23,7 +23,6 @@ namespace GameFramework.Resource
         private const string LocalVersionListFileName = "GameFrameworkList.dat";
         private const string DefaultExtension = "dat";
         private const string BackupExtension = "bak";
-        private const string DownloadTag = "Resource Manager";
         private const int FileSystemMaxFileCount = 1024 * 16;
         private const int FileSystemMaxBlockCount = 1024 * 256;
 
@@ -69,6 +68,7 @@ namespace GameFramework.Resource
         private EventHandler<ResourceUpdateChangedEventArgs> m_ResourceUpdateChangedEventHandler;
         private EventHandler<ResourceUpdateSuccessEventArgs> m_ResourceUpdateSuccessEventHandler;
         private EventHandler<ResourceUpdateFailureEventArgs> m_ResourceUpdateFailureEventHandler;
+        private EventHandler<ResourceUpdateAllCompleteEventArgs> m_ResourceUpdateAllCompleteEventHandler;
 
         /// <summary>
         /// 初始化资源管理器的新实例。
@@ -117,6 +117,7 @@ namespace GameFramework.Resource
             m_ResourceUpdateChangedEventHandler = null;
             m_ResourceUpdateSuccessEventHandler = null;
             m_ResourceUpdateFailureEventHandler = null;
+            m_ResourceUpdateAllCompleteEventHandler = null;
         }
 
         /// <summary>
@@ -385,6 +386,17 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 获取使用时下载的等待更新资源数量。
+        /// </summary>
+        public int UpdateWaitingWhilePlayingCount
+        {
+            get
+            {
+                return m_ResourceUpdater != null ? m_ResourceUpdater.UpdateWaitingWhilePlayingCount : 0;
+            }
+        }
+
+        /// <summary>
         /// 获取候选更新资源数量。
         /// </summary>
         public int UpdateCandidateCount
@@ -392,17 +404,6 @@ namespace GameFramework.Resource
             get
             {
                 return m_ResourceUpdater != null ? m_ResourceUpdater.UpdateCandidateCount : 0;
-            }
-        }
-
-        /// <summary>
-        /// 获取正在更新资源数量。
-        /// </summary>
-        public int UpdatingCount
-        {
-            get
-            {
-                return m_ResourceUpdater != null ? m_ResourceUpdater.UpdatingCount : 0;
             }
         }
 
@@ -661,6 +662,21 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 资源更新全部完成事件。
+        /// </summary>
+        public event EventHandler<ResourceUpdateAllCompleteEventArgs> ResourceUpdateAllComplete
+        {
+            add
+            {
+                m_ResourceUpdateAllCompleteEventHandler += value;
+            }
+            remove
+            {
+                m_ResourceUpdateAllCompleteEventHandler -= value;
+            }
+        }
+
+        /// <summary>
         /// 资源管理器轮询。
         /// </summary>
         /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
@@ -712,6 +728,7 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
                 m_ResourceUpdater.ResourceUpdateFailure -= OnUpdaterResourceUpdateFailure;
                 m_ResourceUpdater.ResourceUpdateComplete -= OnUpdaterResourceUpdateComplete;
+                m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
 
@@ -835,6 +852,7 @@ namespace GameFramework.Resource
                     m_ResourceUpdater.ResourceUpdateSuccess += OnUpdaterResourceUpdateSuccess;
                     m_ResourceUpdater.ResourceUpdateFailure += OnUpdaterResourceUpdateFailure;
                     m_ResourceUpdater.ResourceUpdateComplete += OnUpdaterResourceUpdateComplete;
+                    m_ResourceUpdater.ResourceUpdateAllComplete += OnUpdaterResourceUpdateAllComplete;
                 }
             }
             else if (m_ResourceMode != resourceMode)
@@ -2242,6 +2260,7 @@ namespace GameFramework.Resource
                 m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
                 m_ResourceUpdater.ResourceUpdateFailure -= OnUpdaterResourceUpdateFailure;
                 m_ResourceUpdater.ResourceUpdateComplete -= OnUpdaterResourceUpdateComplete;
+                m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
                 m_ResourceUpdater.Shutdown();
                 m_ResourceUpdater = null;
 
@@ -2279,33 +2298,8 @@ namespace GameFramework.Resource
             }
         }
 
-        private void OnResourceApplyComplete(string resourcePackPath, bool result, bool isAllDone)
+        private void OnResourceApplyComplete(string resourcePackPath, bool result)
         {
-            if (isAllDone)
-            {
-                m_ResourceUpdater.ResourceApplySuccess -= OnResourceApplySuccess;
-                m_ResourceUpdater.ResourceApplyFailure -= OnResourceApplyFailure;
-                m_ResourceUpdater.ResourceApplyComplete -= OnResourceApplyComplete;
-                m_ResourceUpdater.ResourceUpdateStart -= OnUpdaterResourceUpdateStart;
-                m_ResourceUpdater.ResourceUpdateChanged -= OnUpdaterResourceUpdateChanged;
-                m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
-                m_ResourceUpdater.ResourceUpdateFailure -= OnUpdaterResourceUpdateFailure;
-                m_ResourceUpdater.ResourceUpdateComplete -= OnUpdaterResourceUpdateComplete;
-                m_ResourceUpdater.Shutdown();
-                m_ResourceUpdater = null;
-
-                m_ReadWriteResourceInfos.Clear();
-                m_ReadWriteResourceInfos = null;
-
-                if (m_DecompressCachedStream != null)
-                {
-                    m_DecompressCachedStream.Dispose();
-                    m_DecompressCachedStream = null;
-                }
-
-                Utility.Path.RemoveEmptyDirectory(m_ReadWritePath);
-            }
-
             ApplyResourcesCompleteCallback applyResourcesCompleteCallback = m_ApplyResourcesCompleteCallback;
             m_ApplyResourcesCompleteCallback = null;
             applyResourcesCompleteCallback(resourcePackPath, result);
@@ -2351,36 +2345,44 @@ namespace GameFramework.Resource
             }
         }
 
-        private void OnUpdaterResourceUpdateComplete(ResourceGroup resourceGroup, bool result, bool isAllDone)
+        private void OnUpdaterResourceUpdateComplete(ResourceGroup resourceGroup, bool result)
         {
-            if (isAllDone)
-            {
-                m_ResourceUpdater.ResourceApplySuccess -= OnResourceApplySuccess;
-                m_ResourceUpdater.ResourceApplyFailure -= OnResourceApplyFailure;
-                m_ResourceUpdater.ResourceApplyComplete -= OnResourceApplyComplete;
-                m_ResourceUpdater.ResourceUpdateStart -= OnUpdaterResourceUpdateStart;
-                m_ResourceUpdater.ResourceUpdateChanged -= OnUpdaterResourceUpdateChanged;
-                m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
-                m_ResourceUpdater.ResourceUpdateFailure -= OnUpdaterResourceUpdateFailure;
-                m_ResourceUpdater.ResourceUpdateComplete -= OnUpdaterResourceUpdateComplete;
-                m_ResourceUpdater.Shutdown();
-                m_ResourceUpdater = null;
-
-                m_ReadWriteResourceInfos.Clear();
-                m_ReadWriteResourceInfos = null;
-
-                if (m_DecompressCachedStream != null)
-                {
-                    m_DecompressCachedStream.Dispose();
-                    m_DecompressCachedStream = null;
-                }
-
-                Utility.Path.RemoveEmptyDirectory(m_ReadWritePath);
-            }
-
             UpdateResourcesCompleteCallback updateResourcesCompleteCallback = m_UpdateResourcesCompleteCallback;
             m_UpdateResourcesCompleteCallback = null;
             updateResourcesCompleteCallback(resourceGroup, result);
+        }
+
+        private void OnUpdaterResourceUpdateAllComplete()
+        {
+            m_ResourceUpdater.ResourceApplySuccess -= OnResourceApplySuccess;
+            m_ResourceUpdater.ResourceApplyFailure -= OnResourceApplyFailure;
+            m_ResourceUpdater.ResourceApplyComplete -= OnResourceApplyComplete;
+            m_ResourceUpdater.ResourceUpdateStart -= OnUpdaterResourceUpdateStart;
+            m_ResourceUpdater.ResourceUpdateChanged -= OnUpdaterResourceUpdateChanged;
+            m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
+            m_ResourceUpdater.ResourceUpdateFailure -= OnUpdaterResourceUpdateFailure;
+            m_ResourceUpdater.ResourceUpdateComplete -= OnUpdaterResourceUpdateComplete;
+            m_ResourceUpdater.ResourceUpdateAllComplete -= OnUpdaterResourceUpdateAllComplete;
+            m_ResourceUpdater.Shutdown();
+            m_ResourceUpdater = null;
+
+            m_ReadWriteResourceInfos.Clear();
+            m_ReadWriteResourceInfos = null;
+
+            if (m_DecompressCachedStream != null)
+            {
+                m_DecompressCachedStream.Dispose();
+                m_DecompressCachedStream = null;
+            }
+
+            Utility.Path.RemoveEmptyDirectory(m_ReadWritePath);
+
+            if (m_ResourceUpdateAllCompleteEventHandler != null)
+            {
+                ResourceUpdateAllCompleteEventArgs resourceUpdateAllCompleteEventArgs = ResourceUpdateAllCompleteEventArgs.Create();
+                m_ResourceUpdateAllCompleteEventHandler(this, resourceUpdateAllCompleteEventArgs);
+                ReferencePool.Release(resourceUpdateAllCompleteEventArgs);
+            }
         }
     }
 }
