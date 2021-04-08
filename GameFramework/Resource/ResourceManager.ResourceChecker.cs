@@ -149,7 +149,7 @@ namespace GameFramework.Resource
                                 IFileSystem fileSystem = m_ResourceManager.GetFileSystem(ci.ReadWriteFileSystemName, false);
                                 if (!fileSystem.SaveAsFile(resourceFullName, resourcePath))
                                 {
-                                    throw new GameFrameworkException(Utility.Text.Format("Save as file '{0}' to '{1}' from file system '{2}' error.", resourceFullName, fileSystem.FullPath));
+                                    throw new GameFrameworkException(Utility.Text.Format("Save as file '{0}' to '{1}' from file system '{2}' error.", resourceFullName, resourcePath, fileSystem.FullPath));
                                 }
 
                                 fileSystem.DeleteFile(resourceFullName);
