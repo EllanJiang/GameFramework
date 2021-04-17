@@ -27,7 +27,7 @@ namespace GameFramework.Resource
                 private readonly string m_ResourcePath;
 
                 /// <summary>
-                /// 初始化应用信息的新实例。
+                /// 初始化资源应用信息的新实例。
                 /// </summary>
                 /// <param name="resourceName">资源名称。</param>
                 /// <param name="fileSystemName">资源所在的文件系统名称。</param>

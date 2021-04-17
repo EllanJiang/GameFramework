@@ -28,7 +28,7 @@ namespace GameFramework.Resource
                 private int m_RetryCount;
 
                 /// <summary>
-                /// 初始化更新信息的新实例。
+                /// 初始化资源更新信息的新实例。
                 /// </summary>
                 /// <param name="resourceName">资源名称。</param>
                 /// <param name="fileSystemName">资源所在的文件系统名称。</param>
