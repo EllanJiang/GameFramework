@@ -12,7 +12,7 @@ namespace GameFramework.Resource
         private sealed partial class ResourceUpdater
         {
             /// <summary>
-            /// 更新信息。
+            /// 资源更新信息。
             /// </summary>
             private sealed class UpdateInfo
             {

@@ -12,9 +12,9 @@ namespace GameFramework.Resource
         private sealed partial class ResourceUpdater
         {
             /// <summary>
-            /// 应用信息。
+            /// 资源应用信息。
             /// </summary>
-            private sealed class ApplyInfo
+            private struct ApplyInfo
             {
                 private readonly ResourceName m_ResourceName;
                 private readonly string m_FileSystemName;
