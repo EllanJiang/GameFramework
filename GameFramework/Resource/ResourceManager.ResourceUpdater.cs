@@ -470,6 +470,10 @@ namespace GameFramework.Resource
                 m_UpdatingResourceGroup = null;
             }
 
+            /// <summary>
+            /// 更新指定资源。
+            /// </summary>
+            /// <param name="resourceName">要更新的资源名称。</param>
             public void UpdateResource(ResourceName resourceName)
             {
                 if (m_DownloadManager == null)

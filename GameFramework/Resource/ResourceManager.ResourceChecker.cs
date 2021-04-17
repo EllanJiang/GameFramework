@@ -56,6 +56,11 @@ namespace GameFramework.Resource
                 m_CheckInfos.Clear();
             }
 
+            /// <summary>
+            /// 检查资源。
+            /// </summary>
+            /// <param name="currentVariant">当前使用的变体。</param>
+            /// <param name="ignoreOtherVariant">是否忽略处理其它变体的资源，若不忽略，将会移除其它变体的资源。</param>
             public void CheckResources(string currentVariant, bool ignoreOtherVariant)
             {
                 m_CurrentVariant = currentVariant;
@@ -488,8 +493,7 @@ namespace GameFramework.Resource
 
                     foreach (LocalVersionList.Resource resource in resources)
                     {
-                        ResourceName resourceName = new ResourceName(resource.Name, resource.Variant, resource.Extension);
-                        SetReadWriteInfo(resourceName, (LoadType)resource.LoadType, resource.Length, resource.HashCode);
+                        SetReadWriteInfo(new ResourceName(resource.Name, resource.Variant, resource.Extension), (LoadType)resource.LoadType, resource.Length, resource.HashCode);
                     }
 
                     m_ReadWriteVersionListReady = true;
