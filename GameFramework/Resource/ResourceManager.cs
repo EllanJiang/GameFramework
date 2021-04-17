@@ -22,7 +22,7 @@ namespace GameFramework.Resource
         private const string RemoteVersionListFileName = "GameFrameworkVersion.dat";
         private const string LocalVersionListFileName = "GameFrameworkList.dat";
         private const string DefaultExtension = "dat";
-        private const string BackupExtension = "bak";
+        private const string TempExtension = "tmp";
         private const int FileSystemMaxFileCount = 1024 * 16;
         private const int FileSystemMaxBlockCount = 1024 * 256;
 
@@ -720,9 +720,9 @@ namespace GameFramework.Resource
 
             if (m_ResourceUpdater != null)
             {
-                m_ResourceUpdater.ResourceApplySuccess -= OnResourceApplySuccess;
-                m_ResourceUpdater.ResourceApplyFailure -= OnResourceApplyFailure;
-                m_ResourceUpdater.ResourceApplyComplete -= OnResourceApplyComplete;
+                m_ResourceUpdater.ResourceApplySuccess -= OnUpdaterResourceApplySuccess;
+                m_ResourceUpdater.ResourceApplyFailure -= OnUpdaterResourceApplyFailure;
+                m_ResourceUpdater.ResourceApplyComplete -= OnUpdaterResourceApplyComplete;
                 m_ResourceUpdater.ResourceUpdateStart -= OnUpdaterResourceUpdateStart;
                 m_ResourceUpdater.ResourceUpdateChanged -= OnUpdaterResourceUpdateChanged;
                 m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
@@ -844,9 +844,9 @@ namespace GameFramework.Resource
                     m_ResourceChecker.ResourceCheckComplete += OnCheckerResourceCheckComplete;
 
                     m_ResourceUpdater = new ResourceUpdater(this);
-                    m_ResourceUpdater.ResourceApplySuccess += OnResourceApplySuccess;
-                    m_ResourceUpdater.ResourceApplyFailure += OnResourceApplyFailure;
-                    m_ResourceUpdater.ResourceApplyComplete += OnResourceApplyComplete;
+                    m_ResourceUpdater.ResourceApplySuccess += OnUpdaterResourceApplySuccess;
+                    m_ResourceUpdater.ResourceApplyFailure += OnUpdaterResourceApplyFailure;
+                    m_ResourceUpdater.ResourceApplyComplete += OnUpdaterResourceApplyComplete;
                     m_ResourceUpdater.ResourceUpdateStart += OnUpdaterResourceUpdateStart;
                     m_ResourceUpdater.ResourceUpdateChanged += OnUpdaterResourceUpdateChanged;
                     m_ResourceUpdater.ResourceUpdateSuccess += OnUpdaterResourceUpdateSuccess;
@@ -2252,9 +2252,9 @@ namespace GameFramework.Resource
 
             if (updateCount <= 0)
             {
-                m_ResourceUpdater.ResourceApplySuccess -= OnResourceApplySuccess;
-                m_ResourceUpdater.ResourceApplyFailure -= OnResourceApplyFailure;
-                m_ResourceUpdater.ResourceApplyComplete -= OnResourceApplyComplete;
+                m_ResourceUpdater.ResourceApplySuccess -= OnUpdaterResourceApplySuccess;
+                m_ResourceUpdater.ResourceApplyFailure -= OnUpdaterResourceApplyFailure;
+                m_ResourceUpdater.ResourceApplyComplete -= OnUpdaterResourceApplyComplete;
                 m_ResourceUpdater.ResourceUpdateStart -= OnUpdaterResourceUpdateStart;
                 m_ResourceUpdater.ResourceUpdateChanged -= OnUpdaterResourceUpdateChanged;
                 m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
@@ -2278,7 +2278,7 @@ namespace GameFramework.Resource
             m_CheckResourcesCompleteCallback = null;
         }
 
-        private void OnResourceApplySuccess(ResourceName resourceName, string applyPath, string resourcePackPath, int length, int compressedLength)
+        private void OnUpdaterResourceApplySuccess(ResourceName resourceName, string applyPath, string resourcePackPath, int length, int compressedLength)
         {
             if (m_ResourceApplySuccessEventHandler != null)
             {
@@ -2288,7 +2288,7 @@ namespace GameFramework.Resource
             }
         }
 
-        private void OnResourceApplyFailure(ResourceName resourceName, string resourcePackPath, string errorMessage)
+        private void OnUpdaterResourceApplyFailure(ResourceName resourceName, string resourcePackPath, string errorMessage)
         {
             if (m_ResourceApplyFailureEventHandler != null)
             {
@@ -2298,7 +2298,7 @@ namespace GameFramework.Resource
             }
         }
 
-        private void OnResourceApplyComplete(string resourcePackPath, bool result)
+        private void OnUpdaterResourceApplyComplete(string resourcePackPath, bool result)
         {
             ApplyResourcesCompleteCallback applyResourcesCompleteCallback = m_ApplyResourcesCompleteCallback;
             m_ApplyResourcesCompleteCallback = null;
@@ -2354,9 +2354,9 @@ namespace GameFramework.Resource
 
         private void OnUpdaterResourceUpdateAllComplete()
         {
-            m_ResourceUpdater.ResourceApplySuccess -= OnResourceApplySuccess;
-            m_ResourceUpdater.ResourceApplyFailure -= OnResourceApplyFailure;
-            m_ResourceUpdater.ResourceApplyComplete -= OnResourceApplyComplete;
+            m_ResourceUpdater.ResourceApplySuccess -= OnUpdaterResourceApplySuccess;
+            m_ResourceUpdater.ResourceApplyFailure -= OnUpdaterResourceApplyFailure;
+            m_ResourceUpdater.ResourceApplyComplete -= OnUpdaterResourceApplyComplete;
             m_ResourceUpdater.ResourceUpdateStart -= OnUpdaterResourceUpdateStart;
             m_ResourceUpdater.ResourceUpdateChanged -= OnUpdaterResourceUpdateChanged;
             m_ResourceUpdater.ResourceUpdateSuccess -= OnUpdaterResourceUpdateSuccess;
