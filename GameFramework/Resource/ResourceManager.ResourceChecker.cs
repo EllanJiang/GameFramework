@@ -184,7 +184,10 @@ namespace GameFramework.Resource
                         updateCount++;
                         updateTotalLength += ci.Length;
                         updateTotalCompressedLength += ci.CompressedLength;
-                        ResourceNeedUpdate(ci.ResourceName, ci.FileSystemName, ci.LoadType, ci.Length, ci.HashCode, ci.CompressedLength, ci.CompressedHashCode);
+                        if (ResourceNeedUpdate != null)
+                        {
+                            ResourceNeedUpdate(ci.ResourceName, ci.FileSystemName, ci.LoadType, ci.Length, ci.HashCode, ci.CompressedLength, ci.CompressedHashCode);
+                        }
                     }
                     else if (ci.Status == CheckInfo.CheckStatus.Unavailable || ci.Status == CheckInfo.CheckStatus.Disuse)
                     {
@@ -220,7 +223,10 @@ namespace GameFramework.Resource
                     Utility.Path.RemoveEmptyDirectory(m_ResourceManager.m_ReadWritePath);
                 }
 
-                ResourceCheckComplete(movedCount, removedCount, updateCount, updateTotalLength, updateTotalCompressedLength);
+                if (ResourceCheckComplete != null)
+                {
+                    ResourceCheckComplete(movedCount, removedCount, updateCount, updateTotalLength, updateTotalCompressedLength);
+                }
             }
 
             /// <summary>
