@@ -42,7 +42,7 @@ namespace GameFramework.Resource
             private int m_UpdateRetryCount;
             private bool m_FailureFlag;
             private string m_ReadWriteVersionListFileName;
-            private string m_ReadWriteVersionListBackupFileName;
+            private string m_ReadWriteVersionListTempFileName;
 
             public GameFrameworkAction<ResourceName, string, string, int, int> ResourceApplySuccess;
             public GameFrameworkAction<ResourceName, string, string> ResourceApplyFailure;
@@ -79,7 +79,7 @@ namespace GameFramework.Resource
                 m_UpdateRetryCount = 3;
                 m_FailureFlag = false;
                 m_ReadWriteVersionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, LocalVersionListFileName));
-                m_ReadWriteVersionListBackupFileName = Utility.Text.Format("{0}.{1}", m_ReadWriteVersionListFileName, BackupExtension);
+                m_ReadWriteVersionListTempFileName = Utility.Text.Format("{0}.{1}", m_ReadWriteVersionListFileName, TempExtension);
 
                 ResourceApplySuccess = null;
                 ResourceApplyFailure = null;
@@ -676,21 +676,10 @@ namespace GameFramework.Resource
 
             private void GenerateReadWriteVersionList()
             {
-                if (File.Exists(m_ReadWriteVersionListFileName))
-                {
-                    if (File.Exists(m_ReadWriteVersionListBackupFileName))
-                    {
-                        File.Delete(m_ReadWriteVersionListBackupFileName);
-                    }
-
-                    File.Move(m_ReadWriteVersionListFileName, m_ReadWriteVersionListBackupFileName);
-                }
-
-                m_CurrentGenerateReadWriteVersionListLength = 0;
                 FileStream fileStream = null;
                 try
                 {
-                    fileStream = new FileStream(m_ReadWriteVersionListFileName, FileMode.Create, FileAccess.Write);
+                    fileStream = new FileStream(m_ReadWriteVersionListTempFileName, FileMode.Create, FileAccess.Write);
                     LocalVersionList.Resource[] resources = m_ResourceManager.m_ReadWriteResourceInfos.Count > 0 ? new LocalVersionList.Resource[m_ResourceManager.m_ReadWriteResourceInfos.Count] : null;
                     if (resources != null)
                     {
@@ -736,11 +725,6 @@ namespace GameFramework.Resource
                         fileStream.Dispose();
                         fileStream = null;
                     }
-
-                    if (File.Exists(m_ReadWriteVersionListBackupFileName))
-                    {
-                        File.Delete(m_ReadWriteVersionListBackupFileName);
-                    }
                 }
                 catch (Exception exception)
                 {
@@ -750,18 +734,21 @@ namespace GameFramework.Resource
                         fileStream = null;
                     }
 
-                    if (File.Exists(m_ReadWriteVersionListFileName))
+                    if (File.Exists(m_ReadWriteVersionListTempFileName))
                     {
-                        File.Delete(m_ReadWriteVersionListFileName);
-                    }
-
-                    if (File.Exists(m_ReadWriteVersionListBackupFileName))
-                    {
-                        File.Move(m_ReadWriteVersionListBackupFileName, m_ReadWriteVersionListFileName);
+                        File.Delete(m_ReadWriteVersionListTempFileName);
                     }
 
                     throw new GameFrameworkException(Utility.Text.Format("Generate read write version list exception '{0}'.", exception.ToString()), exception);
                 }
+
+                if (File.Exists(m_ReadWriteVersionListFileName))
+                {
+                    File.Delete(m_ReadWriteVersionListFileName);
+                }
+
+                File.Move(m_ReadWriteVersionListTempFileName, m_ReadWriteVersionListFileName);
+                m_CurrentGenerateReadWriteVersionListLength = 0;
             }
 
             private void OnDownloadStart(object sender, DownloadStartEventArgs e)

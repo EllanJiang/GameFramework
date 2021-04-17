@@ -63,11 +63,6 @@ namespace GameFramework.Resource
             /// <param name="ignoreOtherVariant">是否忽略处理其它变体的资源，若不忽略，将会移除其它变体的资源。</param>
             public void CheckResources(string currentVariant, bool ignoreOtherVariant)
             {
-                m_CurrentVariant = currentVariant;
-                m_IgnoreOtherVariant = ignoreOtherVariant;
-
-                TryRecoverReadWriteVersionList();
-
                 if (m_ResourceManager.m_ResourceHelper == null)
                 {
                     throw new GameFrameworkException("Resource helper is invalid.");
@@ -83,6 +78,8 @@ namespace GameFramework.Resource
                     throw new GameFrameworkException("Read-write path is invalid.");
                 }
 
+                m_CurrentVariant = currentVariant;
+                m_IgnoreOtherVariant = ignoreOtherVariant;
                 m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadWritePath, RemoteVersionListFileName)), new LoadBytesCallbacks(OnLoadUpdatableVersionListSuccess, OnLoadUpdatableVersionListFailure), null);
                 m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadOnlyPath, LocalVersionListFileName)), new LoadBytesCallbacks(OnLoadReadOnlyVersionListSuccess, OnLoadReadOnlyVersionListFailure), null);
                 m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadWritePath, LocalVersionListFileName)), new LoadBytesCallbacks(OnLoadReadWriteVersionListSuccess, OnLoadReadWriteVersionListFailure), null);
@@ -227,37 +224,6 @@ namespace GameFramework.Resource
                 {
                     ResourceCheckComplete(movedCount, removedCount, updateCount, updateTotalLength, updateTotalCompressedLength);
                 }
-            }
-
-            /// <summary>
-            /// 尝试恢复读写区版本资源列表。
-            /// </summary>
-            /// <returns>是否恢复成功。</returns>
-            private bool TryRecoverReadWriteVersionList()
-            {
-                string file = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, LocalVersionListFileName));
-                string backupFile = Utility.Text.Format("{0}.{1}", file, BackupExtension);
-
-                try
-                {
-                    if (!File.Exists(backupFile))
-                    {
-                        return false;
-                    }
-
-                    if (File.Exists(file))
-                    {
-                        File.Delete(file);
-                    }
-
-                    File.Move(backupFile, file);
-                }
-                catch
-                {
-                    return false;
-                }
-
-                return true;
             }
 
             private void RemoveEmptyFileSystems()
