@@ -658,6 +658,8 @@ namespace GameFramework.Resource
                 finally
                 {
                     m_ApplyingResourcePackStream.Position = position;
+                    m_ResourceManager.m_DecompressCachedStream.Position = 0L;
+                    m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
                 }
             }
 
@@ -818,42 +820,42 @@ namespace GameFramework.Resource
                     return;
                 }
 
-                using (FileStream fileStream = new FileStream(e.DownloadPath, FileMode.Open, FileAccess.ReadWrite))
+                try
                 {
-                    bool compressed = updateInfo.Length != updateInfo.CompressedLength || updateInfo.HashCode != updateInfo.CompressedHashCode;
-
-                    int length = (int)fileStream.Length;
-                    if (length != updateInfo.CompressedLength)
+                    using (FileStream fileStream = new FileStream(e.DownloadPath, FileMode.Open, FileAccess.ReadWrite))
                     {
-                        fileStream.Close();
-                        string errorMessage = Utility.Text.Format("Resource compressed length error, need '{0}', downloaded '{1}'.", updateInfo.CompressedLength.ToString(), length.ToString());
-                        DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
-                        OnDownloadFailure(this, downloadFailureEventArgs);
-                        ReferencePool.Release(downloadFailureEventArgs);
-                        return;
-                    }
+                        bool compressed = updateInfo.Length != updateInfo.CompressedLength || updateInfo.HashCode != updateInfo.CompressedHashCode;
 
-                    if (compressed)
-                    {
-                        fileStream.Position = 0L;
-                        int hashCode = Utility.Verifier.GetCrc32(fileStream);
-                        if (hashCode != updateInfo.CompressedHashCode)
+                        int length = (int)fileStream.Length;
+                        if (length != updateInfo.CompressedLength)
                         {
                             fileStream.Close();
-                            string errorMessage = Utility.Text.Format("Resource compressed hash code error, need '{0}', downloaded '{1}'.", updateInfo.CompressedHashCode.ToString(), hashCode.ToString());
+                            string errorMessage = Utility.Text.Format("Resource compressed length error, need '{0}', downloaded '{1}'.", updateInfo.CompressedLength.ToString(), length.ToString());
                             DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                             OnDownloadFailure(this, downloadFailureEventArgs);
                             ReferencePool.Release(downloadFailureEventArgs);
                             return;
                         }
 
-                        if (m_ResourceManager.m_DecompressCachedStream == null)
+                        if (compressed)
                         {
-                            m_ResourceManager.m_DecompressCachedStream = new MemoryStream();
-                        }
+                            fileStream.Position = 0L;
+                            int hashCode = Utility.Verifier.GetCrc32(fileStream);
+                            if (hashCode != updateInfo.CompressedHashCode)
+                            {
+                                fileStream.Close();
+                                string errorMessage = Utility.Text.Format("Resource compressed hash code error, need '{0}', downloaded '{1}'.", updateInfo.CompressedHashCode.ToString(), hashCode.ToString());
+                                DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
+                                OnDownloadFailure(this, downloadFailureEventArgs);
+                                ReferencePool.Release(downloadFailureEventArgs);
+                                return;
+                            }
 
-                        try
-                        {
+                            if (m_ResourceManager.m_DecompressCachedStream == null)
+                            {
+                                m_ResourceManager.m_DecompressCachedStream = new MemoryStream();
+                            }
+
                             fileStream.Position = 0L;
                             m_ResourceManager.m_DecompressCachedStream.Position = 0L;
                             m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
@@ -881,104 +883,102 @@ namespace GameFramework.Resource
                             fileStream.SetLength(0L);
                             fileStream.Write(m_ResourceManager.m_DecompressCachedStream.GetBuffer(), 0, (int)m_ResourceManager.m_DecompressCachedStream.Length);
                         }
-                        catch (Exception exception)
-                        {
-                            fileStream.Close();
-                            string errorMessage = Utility.Text.Format("Unable to decompress resource '{0}' with error message '{1}'.", e.DownloadPath, exception.ToString());
-                            DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
-                            OnDownloadFailure(this, downloadFailureEventArgs);
-                            ReferencePool.Release(downloadFailureEventArgs);
-                            return;
-                        }
-                        finally
-                        {
-                            m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                            m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
-                        }
-                    }
-                    else
-                    {
-                        int hashCode = 0;
-                        fileStream.Position = 0L;
-                        if (updateInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt || updateInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt
-                            || updateInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || updateInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
-                        {
-                            Utility.Converter.GetBytes(updateInfo.HashCode, m_CachedHashBytes);
-                            if (updateInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt || updateInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt)
-                            {
-                                hashCode = Utility.Verifier.GetCrc32(fileStream, m_CachedHashBytes, Utility.Encryption.QuickEncryptLength);
-                            }
-                            else if (updateInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt || updateInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
-                            {
-                                hashCode = Utility.Verifier.GetCrc32(fileStream, m_CachedHashBytes, length);
-                            }
-
-                            Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
-                        }
                         else
                         {
-                            hashCode = Utility.Verifier.GetCrc32(fileStream);
+                            int hashCode = 0;
+                            fileStream.Position = 0L;
+                            if (updateInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt || updateInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt
+                                || updateInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || updateInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
+                            {
+                                Utility.Converter.GetBytes(updateInfo.HashCode, m_CachedHashBytes);
+                                if (updateInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt || updateInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt)
+                                {
+                                    hashCode = Utility.Verifier.GetCrc32(fileStream, m_CachedHashBytes, Utility.Encryption.QuickEncryptLength);
+                                }
+                                else if (updateInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt || updateInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
+                                {
+                                    hashCode = Utility.Verifier.GetCrc32(fileStream, m_CachedHashBytes, length);
+                                }
+
+                                Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
+                            }
+                            else
+                            {
+                                hashCode = Utility.Verifier.GetCrc32(fileStream);
+                            }
+
+                            if (hashCode != updateInfo.HashCode)
+                            {
+                                fileStream.Close();
+                                string errorMessage = Utility.Text.Format("Resource hash code error, need '{0}', downloaded '{1}'.", updateInfo.HashCode.ToString(), hashCode.ToString());
+                                DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
+                                OnDownloadFailure(this, downloadFailureEventArgs);
+                                ReferencePool.Release(downloadFailureEventArgs);
+                                return;
+                            }
+                        }
+                    }
+
+                    if (updateInfo.UseFileSystem)
+                    {
+                        IFileSystem fileSystem = m_ResourceManager.GetFileSystem(updateInfo.FileSystemName, false);
+                        bool retVal = fileSystem.WriteFile(updateInfo.ResourceName.FullName, updateInfo.ResourcePath);
+                        if (File.Exists(updateInfo.ResourcePath))
+                        {
+                            File.Delete(updateInfo.ResourcePath);
                         }
 
-                        if (hashCode != updateInfo.HashCode)
+                        if (!retVal)
                         {
-                            fileStream.Close();
-                            string errorMessage = Utility.Text.Format("Resource hash code error, need '{0}', downloaded '{1}'.", updateInfo.HashCode.ToString(), hashCode.ToString());
+                            string errorMessage = Utility.Text.Format("Write resource to file system '{0}' error.", fileSystem.FullPath);
                             DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                             OnDownloadFailure(this, downloadFailureEventArgs);
-                            ReferencePool.Release(downloadFailureEventArgs);
                             return;
                         }
                     }
-                }
 
-                if (updateInfo.UseFileSystem)
-                {
-                    IFileSystem fileSystem = m_ResourceManager.GetFileSystem(updateInfo.FileSystemName, false);
-                    bool retVal = fileSystem.WriteFile(updateInfo.ResourceName.FullName, updateInfo.ResourcePath);
-                    if (File.Exists(updateInfo.ResourcePath))
+                    m_UpdateCandidateInfo.Remove(updateInfo.ResourceName);
+                    m_UpdateWaitingInfo.Remove(updateInfo);
+                    m_UpdateWaitingInfoWhilePlaying.Remove(updateInfo);
+                    m_ResourceManager.m_ResourceInfos[updateInfo.ResourceName].MarkReady();
+                    m_ResourceManager.m_ReadWriteResourceInfos.Add(updateInfo.ResourceName, new ReadWriteResourceInfo(updateInfo.FileSystemName, updateInfo.LoadType, updateInfo.Length, updateInfo.HashCode));
+                    if (ResourceUpdateSuccess != null)
                     {
-                        File.Delete(updateInfo.ResourcePath);
+                        ResourceUpdateSuccess(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, updateInfo.Length, updateInfo.CompressedLength);
                     }
 
-                    if (!retVal)
+                    m_CurrentGenerateReadWriteVersionListLength += updateInfo.CompressedLength;
+                    if (m_UpdateCandidateInfo.Count <= 0 || m_UpdateWaitingInfo.Count + m_UpdateWaitingInfoWhilePlaying.Count <= 0 || m_CurrentGenerateReadWriteVersionListLength >= m_GenerateReadWriteVersionListLength)
                     {
-                        string errorMessage = Utility.Text.Format("Write resource to file system '{0}' error.", fileSystem.FullPath);
-                        DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
-                        OnDownloadFailure(this, downloadFailureEventArgs);
-                        return;
+                        GenerateReadWriteVersionList();
+                    }
+
+                    if (m_UpdatingResourceGroup != null && m_UpdateWaitingInfo.Count <= 0)
+                    {
+                        ResourceGroup updatingResourceGroup = m_UpdatingResourceGroup;
+                        m_UpdatingResourceGroup = null;
+                        if (ResourceUpdateComplete != null)
+                        {
+                            ResourceUpdateComplete(updatingResourceGroup, !m_FailureFlag);
+                        }
+                    }
+
+                    if (m_UpdateCandidateInfo.Count <= 0 && ResourceUpdateAllComplete != null)
+                    {
+                        ResourceUpdateAllComplete();
                     }
                 }
-
-                m_UpdateCandidateInfo.Remove(updateInfo.ResourceName);
-                m_UpdateWaitingInfo.Remove(updateInfo);
-                m_UpdateWaitingInfoWhilePlaying.Remove(updateInfo);
-                m_ResourceManager.m_ResourceInfos[updateInfo.ResourceName].MarkReady();
-                m_ResourceManager.m_ReadWriteResourceInfos.Add(updateInfo.ResourceName, new ReadWriteResourceInfo(updateInfo.FileSystemName, updateInfo.LoadType, updateInfo.Length, updateInfo.HashCode));
-                if (ResourceUpdateSuccess != null)
+                catch (Exception exception)
                 {
-                    ResourceUpdateSuccess(updateInfo.ResourceName, e.DownloadPath, e.DownloadUri, updateInfo.Length, updateInfo.CompressedLength);
+                    string errorMessage = Utility.Text.Format("Download resource '{0}' with error message '{1}'.", e.DownloadPath, exception.ToString());
+                    DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
+                    OnDownloadFailure(this, downloadFailureEventArgs);
+                    ReferencePool.Release(downloadFailureEventArgs);
                 }
-
-                m_CurrentGenerateReadWriteVersionListLength += updateInfo.CompressedLength;
-                if (m_UpdateCandidateInfo.Count <= 0 || m_UpdateWaitingInfo.Count + m_UpdateWaitingInfoWhilePlaying.Count <= 0 || m_CurrentGenerateReadWriteVersionListLength >= m_GenerateReadWriteVersionListLength)
+                finally
                 {
-                    GenerateReadWriteVersionList();
-                }
-
-                if (m_UpdatingResourceGroup != null && m_UpdateWaitingInfo.Count <= 0)
-                {
-                    ResourceGroup updatingResourceGroup = m_UpdatingResourceGroup;
-                    m_UpdatingResourceGroup = null;
-                    if (ResourceUpdateComplete != null)
-                    {
-                        ResourceUpdateComplete(updatingResourceGroup, !m_FailureFlag);
-                    }
-                }
-
-                if (m_UpdateCandidateInfo.Count <= 0 && ResourceUpdateAllComplete != null)
-                {
-                    ResourceUpdateAllComplete();
+                    m_ResourceManager.m_DecompressCachedStream.Position = 0L;
+                    m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
                 }
             }
 

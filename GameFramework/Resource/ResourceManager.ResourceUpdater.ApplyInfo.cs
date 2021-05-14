@@ -5,6 +5,8 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using System.Runtime.InteropServices;
+
 namespace GameFramework.Resource
 {
     internal sealed partial class ResourceManager : GameFrameworkModule, IResourceManager
@@ -14,6 +16,7 @@ namespace GameFramework.Resource
             /// <summary>
             /// 资源应用信息。
             /// </summary>
+            [StructLayout(LayoutKind.Auto)]
             private struct ApplyInfo
             {
                 private readonly ResourceName m_ResourceName;
