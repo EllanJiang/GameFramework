@@ -658,8 +658,11 @@ namespace GameFramework.Resource
                 finally
                 {
                     m_ApplyingResourcePackStream.Position = position;
-                    m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                    m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
+                    if (m_ResourceManager.m_DecompressCachedStream != null)
+                    {
+                        m_ResourceManager.m_DecompressCachedStream.Position = 0L;
+                        m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
+                    }
                 }
             }
 
@@ -977,8 +980,11 @@ namespace GameFramework.Resource
                 }
                 finally
                 {
-                    m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                    m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
+                    if (m_ResourceManager.m_DecompressCachedStream != null)
+                    {
+                        m_ResourceManager.m_DecompressCachedStream.Position = 0L;
+                        m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
+                    }
                 }
             }
 
