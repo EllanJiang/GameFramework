@@ -54,7 +54,7 @@ namespace GameFramework.Network
         bool Serialize<T>(T packet, Stream destination) where T : Packet;
 
         /// <summary>
-        /// 反序列消息包头。
+        /// 反序列化消息包头。
         /// </summary>
         /// <param name="source">要反序列化的来源流。</param>
         /// <param name="customErrorData">用户自定义错误数据。</param>
