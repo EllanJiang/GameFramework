@@ -58,7 +58,7 @@ namespace GameFramework.Resource
 
                 if (string.IsNullOrEmpty(m_ResourceManager.m_ReadOnlyPath))
                 {
-                    throw new GameFrameworkException("Readonly path is invalid.");
+                    throw new GameFrameworkException("Read-only path is invalid.");
                 }
 
                 m_ResourceManager.m_ResourceHelper.LoadBytes(Utility.Path.GetRemotePath(Path.Combine(m_ResourceManager.m_ReadOnlyPath, RemoteVersionListFileName)), new LoadBytesCallbacks(OnLoadPackageVersionListSuccess, OnLoadPackageVersionListFailure), null);

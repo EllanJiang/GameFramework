@@ -224,7 +224,7 @@ namespace GameFramework.Resource
                 {
                     if (m_ReadOnlyInfo.Exist)
                     {
-                        throw new GameFrameworkException(Utility.Text.Format("You must set readonly info of '{0}' only once.", m_ResourceName.FullName));
+                        throw new GameFrameworkException(Utility.Text.Format("You must set read-only info of '{0}' only once.", m_ResourceName.FullName));
                     }
 
                     m_ReadOnlyInfo = new LocalVersionInfo(m_CachedFileSystemName, loadType, length, hashCode);

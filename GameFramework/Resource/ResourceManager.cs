@@ -776,17 +776,17 @@ namespace GameFramework.Resource
         {
             if (string.IsNullOrEmpty(readOnlyPath))
             {
-                throw new GameFrameworkException("Readonly path is invalid.");
+                throw new GameFrameworkException("Read-only path is invalid.");
             }
 
             if (m_RefuseSetFlag)
             {
-                throw new GameFrameworkException("You can not set readonly path at this time.");
+                throw new GameFrameworkException("You can not set read-only path at this time.");
             }
 
             if (m_ResourceLoader.TotalAgentCount > 0)
             {
-                throw new GameFrameworkException("You must set readonly path before add load resource agent helper.");
+                throw new GameFrameworkException("You must set read-only path before add load resource agent helper.");
             }
 
             m_ReadOnlyPath = readOnlyPath;
@@ -987,7 +987,7 @@ namespace GameFramework.Resource
 
             if (string.IsNullOrEmpty(m_ReadOnlyPath))
             {
-                throw new GameFrameworkException("Readonly path is invalid.");
+                throw new GameFrameworkException("Read-only path is invalid.");
             }
 
             if (string.IsNullOrEmpty(m_ReadWritePath))

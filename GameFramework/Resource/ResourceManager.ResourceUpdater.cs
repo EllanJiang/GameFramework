@@ -722,7 +722,7 @@ namespace GameFramework.Resource
                     LocalVersionList versionList = new LocalVersionList(resources, fileSystems);
                     if (!m_ResourceManager.m_ReadWriteVersionListSerializer.Serialize(fileStream, versionList))
                     {
-                        throw new GameFrameworkException("Serialize read write version list failure.");
+                        throw new GameFrameworkException("Serialize read-write version list failure.");
                     }
 
                     if (fileStream != null)
@@ -744,7 +744,7 @@ namespace GameFramework.Resource
                         File.Delete(m_ReadWriteVersionListTempFileName);
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Generate read write version list exception '{0}'.", exception.ToString()), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Generate read-write version list exception '{0}'.", exception.ToString()), exception);
                 }
 
                 if (File.Exists(m_ReadWriteVersionListFileName))

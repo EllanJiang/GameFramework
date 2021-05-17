@@ -70,7 +70,7 @@ namespace GameFramework.Resource
 
                 if (string.IsNullOrEmpty(m_ResourceManager.m_ReadOnlyPath))
                 {
-                    throw new GameFrameworkException("Readonly path is invalid.");
+                    throw new GameFrameworkException("Read-only path is invalid.");
                 }
 
                 if (string.IsNullOrEmpty(m_ResourceManager.m_ReadWritePath))
@@ -369,7 +369,7 @@ namespace GameFramework.Resource
             {
                 if (m_ReadOnlyVersionListReady)
                 {
-                    throw new GameFrameworkException("Read only version list has been parsed.");
+                    throw new GameFrameworkException("Read-only version list has been parsed.");
                 }
 
                 MemoryStream memoryStream = null;
@@ -379,7 +379,7 @@ namespace GameFramework.Resource
                     LocalVersionList versionList = m_ResourceManager.m_ReadOnlyVersionListSerializer.Deserialize(memoryStream);
                     if (!versionList.IsValid)
                     {
-                        throw new GameFrameworkException("Deserialize read only version list failure.");
+                        throw new GameFrameworkException("Deserialize read-only version list failure.");
                     }
 
                     LocalVersionList.Resource[] resources = versionList.GetResources();
@@ -410,7 +410,7 @@ namespace GameFramework.Resource
                         throw;
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Parse read only version list exception '{0}'.", exception.ToString()), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse read-only version list exception '{0}'.", exception.ToString()), exception);
                 }
                 finally
                 {
@@ -426,7 +426,7 @@ namespace GameFramework.Resource
             {
                 if (m_ReadOnlyVersionListReady)
                 {
-                    throw new GameFrameworkException("Read only version list has been parsed.");
+                    throw new GameFrameworkException("Read-only version list has been parsed.");
                 }
 
                 m_ReadOnlyVersionListReady = true;
@@ -437,7 +437,7 @@ namespace GameFramework.Resource
             {
                 if (m_ReadWriteVersionListReady)
                 {
-                    throw new GameFrameworkException("Read write version list has been parsed.");
+                    throw new GameFrameworkException("Read-write version list has been parsed.");
                 }
 
                 MemoryStream memoryStream = null;
@@ -447,7 +447,7 @@ namespace GameFramework.Resource
                     LocalVersionList versionList = m_ResourceManager.m_ReadWriteVersionListSerializer.Deserialize(memoryStream);
                     if (!versionList.IsValid)
                     {
-                        throw new GameFrameworkException("Deserialize read write version list failure.");
+                        throw new GameFrameworkException("Deserialize read-write version list failure.");
                     }
 
                     LocalVersionList.Resource[] resources = versionList.GetResources();
@@ -478,7 +478,7 @@ namespace GameFramework.Resource
                         throw;
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Parse read write version list exception '{0}'.", exception.ToString()), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse read-write version list exception '{0}'.", exception.ToString()), exception);
                 }
                 finally
                 {
@@ -494,7 +494,7 @@ namespace GameFramework.Resource
             {
                 if (m_ReadWriteVersionListReady)
                 {
-                    throw new GameFrameworkException("Read write version list has been parsed.");
+                    throw new GameFrameworkException("Read-write version list has been parsed.");
                 }
 
                 m_ReadWriteVersionListReady = true;
