@@ -2362,6 +2362,7 @@ namespace GameFramework.Resource
 
         private void OnUpdaterResourceUpdateComplete(ResourceGroup resourceGroup, bool result)
         {
+            Utility.Path.RemoveEmptyDirectory(m_ReadWritePath);
             UpdateResourcesCompleteCallback updateResourcesCompleteCallback = m_UpdateResourcesCompleteCallback;
             m_UpdateResourcesCompleteCallback = null;
             updateResourcesCompleteCallback(resourceGroup, result);
