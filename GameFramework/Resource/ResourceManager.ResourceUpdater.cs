@@ -936,6 +936,7 @@ namespace GameFramework.Resource
                             string errorMessage = Utility.Text.Format("Write resource to file system '{0}' error.", fileSystem.FullPath);
                             DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                             OnDownloadFailure(this, downloadFailureEventArgs);
+                            ReferencePool.Release(downloadFailureEventArgs);
                             return;
                         }
                     }
