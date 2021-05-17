@@ -50,7 +50,7 @@ namespace GameFramework.Resource
         private string m_ReadOnlyPath;
         private string m_ReadWritePath;
         private ResourceMode m_ResourceMode;
-        private bool m_RefuseSetCurrentVariant;
+        private bool m_RefuseSetFlag;
         private string m_CurrentVariant;
         private string m_UpdatePrefixUri;
         private string m_ApplicableGameVersion;
@@ -98,7 +98,7 @@ namespace GameFramework.Resource
             m_ReadOnlyPath = null;
             m_ReadWritePath = null;
             m_ResourceMode = ResourceMode.Unspecified;
-            m_RefuseSetCurrentVariant = false;
+            m_RefuseSetFlag = false;
             m_CurrentVariant = null;
             m_UpdatePrefixUri = null;
             m_ApplicableGameVersion = null;
@@ -779,6 +779,11 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("Readonly path is invalid.");
             }
 
+            if (m_RefuseSetFlag)
+            {
+                throw new GameFrameworkException("You can not set readonly path at this time.");
+            }
+
             if (m_ResourceLoader.TotalAgentCount > 0)
             {
                 throw new GameFrameworkException("You must set readonly path before add load resource agent helper.");
@@ -798,6 +803,11 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("Read-write path is invalid.");
             }
 
+            if (m_RefuseSetFlag)
+            {
+                throw new GameFrameworkException("You can not set read-write path at this time.");
+            }
+
             if (m_ResourceLoader.TotalAgentCount > 0)
             {
                 throw new GameFrameworkException("You must set read-write path before add load resource agent helper.");
@@ -815,6 +825,11 @@ namespace GameFramework.Resource
             if (resourceMode == ResourceMode.Unspecified)
             {
                 throw new GameFrameworkException("Resource mode is invalid.");
+            }
+
+            if (m_RefuseSetFlag)
+            {
+                throw new GameFrameworkException("You can not set resource mode at this time.");
             }
 
             if (m_ResourceMode == ResourceMode.Unspecified)
@@ -867,7 +882,7 @@ namespace GameFramework.Resource
         /// <param name="currentVariant">当前变体。</param>
         public void SetCurrentVariant(string currentVariant)
         {
-            if (m_RefuseSetCurrentVariant)
+            if (m_RefuseSetFlag)
             {
                 throw new GameFrameworkException("You can not set current variant at this time.");
             }
@@ -1009,7 +1024,7 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("You can not use InitResources at this time.");
             }
 
-            m_RefuseSetCurrentVariant = true;
+            m_RefuseSetFlag = true;
             m_InitResourcesCompleteCallback = initResourcesCompleteCallback;
             m_ResourceIniter.InitResources(m_CurrentVariant);
         }
@@ -1100,7 +1115,7 @@ namespace GameFramework.Resource
                 throw new GameFrameworkException("You can not use CheckResources at this time.");
             }
 
-            m_RefuseSetCurrentVariant = true;
+            m_RefuseSetFlag = true;
             m_CheckResourcesCompleteCallback = checkResourcesCompleteCallback;
             m_ResourceChecker.CheckResources(m_CurrentVariant, ignoreOtherVariant);
         }
