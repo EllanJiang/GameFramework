@@ -18,6 +18,7 @@ namespace GameFramework.FileSystem
         private struct HeaderData
         {
             private const int HeaderLength = 3;
+            private const int FileSystemVersion = 0;
             private const int EncryptBytesLength = 4;
             private static readonly byte[] Header = new byte[HeaderLength] { (byte)'G', (byte)'F', (byte)'F' };
 
@@ -34,7 +35,7 @@ namespace GameFramework.FileSystem
             private readonly int m_BlockCount;
 
             public HeaderData(int maxFileCount, int maxBlockCount)
-                : this(0, new byte[EncryptBytesLength], maxFileCount, maxBlockCount, 0)
+                : this(FileSystemVersion, new byte[EncryptBytesLength], maxFileCount, maxBlockCount, 0)
             {
                 Utility.Random.GetRandomBytes(m_EncryptBytes);
             }
@@ -53,7 +54,7 @@ namespace GameFramework.FileSystem
             {
                 get
                 {
-                    return m_Header.Length == HeaderLength && m_Header[0] == Header[0] && m_Header[1] == Header[1] && m_Header[2] == Header[2] && m_Version == 0 && m_EncryptBytes.Length == EncryptBytesLength
+                    return m_Header.Length == HeaderLength && m_Header[0] == Header[0] && m_Header[1] == Header[1] && m_Header[2] == Header[2] && m_Version == FileSystemVersion && m_EncryptBytes.Length == EncryptBytesLength
                         && m_MaxFileCount > 0 && m_MaxBlockCount > 0 && m_MaxFileCount <= m_MaxBlockCount && m_BlockCount > 0 && m_BlockCount <= m_MaxBlockCount;
                 }
             }
