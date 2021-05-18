@@ -182,6 +182,11 @@ namespace GameFramework.FileSystem
 
             stream.Read(s_CachedBytes, 0, HeaderDataSize);
             fileSystem.m_HeaderData = Utility.Marshal.BytesToStructure<HeaderData>(HeaderDataSize, s_CachedBytes);
+            if (!fileSystem.m_HeaderData.IsValid)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("File system '{0}' is not valid.", fullPath));
+            }
+
             CalcOffsets(fileSystem);
 
             if (fileSystem.m_BlockDatas.Capacity < fileSystem.m_HeaderData.BlockCount)
