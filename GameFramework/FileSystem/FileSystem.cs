@@ -184,7 +184,7 @@ namespace GameFramework.FileSystem
             fileSystem.m_HeaderData = Utility.Marshal.BytesToStructure<HeaderData>(HeaderDataSize, s_CachedBytes);
             if (!fileSystem.m_HeaderData.IsValid)
             {
-                throw new GameFrameworkException(Utility.Text.Format("File system '{0}' is not valid.", fullPath));
+                throw new GameFrameworkException(Utility.Text.Format("File system '{0}' is invalid.", fullPath));
             }
 
             CalcOffsets(fileSystem);
