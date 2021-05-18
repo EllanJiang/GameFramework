@@ -35,7 +35,7 @@ namespace GameFramework.Fsm
         {
             get
             {
-                return 60;
+                return 1;
             }
         }
 

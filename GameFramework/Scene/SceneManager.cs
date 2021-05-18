@@ -56,7 +56,7 @@ namespace GameFramework.Scene
         {
             get
             {
-                return 60;
+                return 2;
             }
         }
 

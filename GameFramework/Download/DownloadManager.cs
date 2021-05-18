@@ -49,7 +49,7 @@ namespace GameFramework.Download
         {
             get
             {
-                return 80;
+                return 5;
             }
         }
 

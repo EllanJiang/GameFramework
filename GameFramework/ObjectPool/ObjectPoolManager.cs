@@ -39,7 +39,7 @@ namespace GameFramework.ObjectPool
         {
             get
             {
-                return 90;
+                return 6;
             }
         }
 

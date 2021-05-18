@@ -128,7 +128,7 @@ namespace GameFramework.Resource
         {
             get
             {
-                return 70;
+                return 3;
             }
         }
 

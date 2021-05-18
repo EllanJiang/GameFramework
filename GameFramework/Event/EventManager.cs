@@ -54,7 +54,7 @@ namespace GameFramework.Event
         {
             get
             {
-                return 100;
+                return 7;
             }
         }
 

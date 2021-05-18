@@ -35,7 +35,7 @@ namespace GameFramework.Procedure
         {
             get
             {
-                return -10;
+                return -2;
             }
         }
 

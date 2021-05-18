@@ -30,6 +30,18 @@ namespace GameFramework.FileSystem
         }
 
         /// <summary>
+        /// 获取游戏框架模块优先级。
+        /// </summary>
+        /// <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
+        internal override int Priority
+        {
+            get
+            {
+                return 4;
+            }
+        }
+
+        /// <summary>
         /// 获取文件系统数量。
         /// </summary>
         public int Count
