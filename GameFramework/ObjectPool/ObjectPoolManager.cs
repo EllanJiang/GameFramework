@@ -21,6 +21,7 @@ namespace GameFramework.ObjectPool
 
         private readonly Dictionary<TypeNamePair, ObjectPoolBase> m_ObjectPools;
         private readonly List<ObjectPoolBase> m_CachedAllObjectPools;
+        private readonly Comparison<ObjectPoolBase> m_ObjectPoolComparer;
 
         /// <summary>
         /// 初始化对象池管理器的新实例。
@@ -29,6 +30,7 @@ namespace GameFramework.ObjectPool
         {
             m_ObjectPools = new Dictionary<TypeNamePair, ObjectPoolBase>();
             m_CachedAllObjectPools = new List<ObjectPoolBase>();
+            m_ObjectPoolComparer = ObjectPoolComparer;
         }
 
         /// <summary>
@@ -335,7 +337,7 @@ namespace GameFramework.ObjectPool
                     results.Add(objectPool.Value);
                 }
 
-                results.Sort(ObjectPoolComparer);
+                results.Sort(m_ObjectPoolComparer);
                 return results.ToArray();
             }
             else
@@ -371,7 +373,7 @@ namespace GameFramework.ObjectPool
 
             if (sort)
             {
-                results.Sort(ObjectPoolComparer);
+                results.Sort(m_ObjectPoolComparer);
             }
         }
 
