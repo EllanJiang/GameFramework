@@ -1295,7 +1295,7 @@ namespace GameFramework.ObjectPool
             return false;
         }
 
-        private int ObjectPoolComparer(ObjectPoolBase a, ObjectPoolBase b)
+        private static int ObjectPoolComparer(ObjectPoolBase a, ObjectPoolBase b)
         {
             return a.Priority.CompareTo(b.Priority);
         }
