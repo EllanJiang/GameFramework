@@ -160,17 +160,17 @@ namespace GameFramework.Resource
             {
                 get
                 {
-                    long totalReadyLength = 0L;
+                    long readyLength = 0L;
                     foreach (ResourceName resourceName in m_ResourceNames)
                     {
                         ResourceInfo resourceInfo = null;
                         if (m_ResourceInfos.TryGetValue(resourceName, out resourceInfo) && resourceInfo.Ready)
                         {
-                            totalReadyLength += resourceInfo.Length;
+                            readyLength += resourceInfo.Length;
                         }
                     }
 
-                    return totalReadyLength;
+                    return readyLength;
                 }
             }
 
@@ -181,17 +181,17 @@ namespace GameFramework.Resource
             {
                 get
                 {
-                    long totalReadyCompressedLength = 0L;
+                    long readyCompressedLength = 0L;
                     foreach (ResourceName resourceName in m_ResourceNames)
                     {
                         ResourceInfo resourceInfo = null;
                         if (m_ResourceInfos.TryGetValue(resourceName, out resourceInfo) && resourceInfo.Ready)
                         {
-                            totalReadyCompressedLength += resourceInfo.CompressedLength;
+                            readyCompressedLength += resourceInfo.CompressedLength;
                         }
                     }
 
-                    return totalReadyCompressedLength;
+                    return readyCompressedLength;
                 }
             }
 
