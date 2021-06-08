@@ -122,7 +122,7 @@ namespace GameFramework
                         throw;
                     }
 
-                    throw new GameFrameworkException(Text.Format("Can not compress with exception '{0}'.", exception.ToString()), exception);
+                    throw new GameFrameworkException(Text.Format("Can not compress with exception '{0}'.", exception), exception);
                 }
             }
 
@@ -180,7 +180,7 @@ namespace GameFramework
                         throw;
                     }
 
-                    throw new GameFrameworkException(Text.Format("Can not compress with exception '{0}'.", exception.ToString()), exception);
+                    throw new GameFrameworkException(Text.Format("Can not compress with exception '{0}'.", exception), exception);
                 }
             }
 
@@ -278,7 +278,7 @@ namespace GameFramework
                         throw;
                     }
 
-                    throw new GameFrameworkException(Text.Format("Can not decompress with exception '{0}'.", exception.ToString()), exception);
+                    throw new GameFrameworkException(Text.Format("Can not decompress with exception '{0}'.", exception), exception);
                 }
             }
 
@@ -336,7 +336,7 @@ namespace GameFramework
                         throw;
                     }
 
-                    throw new GameFrameworkException(Text.Format("Can not decompress with exception '{0}'.", exception.ToString()), exception);
+                    throw new GameFrameworkException(Text.Format("Can not decompress with exception '{0}'.", exception), exception);
                 }
             }
         }

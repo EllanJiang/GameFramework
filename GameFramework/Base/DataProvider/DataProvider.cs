@@ -241,7 +241,7 @@ namespace GameFramework
                     break;
 
                 default:
-                    throw new GameFrameworkException(Utility.Text.Format("Data asset '{0}' is '{1}'.", dataAssetName, result.ToString()));
+                    throw new GameFrameworkException(Utility.Text.Format("Data asset '{0}' is '{1}'.", dataAssetName, result));
             }
         }
 
@@ -284,7 +284,7 @@ namespace GameFramework
                     throw;
                 }
 
-                throw new GameFrameworkException(Utility.Text.Format("Can not parse data string with exception '{0}'.", exception.ToString()), exception);
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse data string with exception '{0}'.", exception), exception);
             }
         }
 
@@ -367,7 +367,7 @@ namespace GameFramework
                     throw;
                 }
 
-                throw new GameFrameworkException(Utility.Text.Format("Can not parse data bytes with exception '{0}'.", exception.ToString()), exception);
+                throw new GameFrameworkException(Utility.Text.Format("Can not parse data bytes with exception '{0}'.", exception), exception);
             }
         }
 
@@ -435,7 +435,7 @@ namespace GameFramework
 
         private void LoadAssetOrBinaryFailureCallback(string dataAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
-            string appendErrorMessage = Utility.Text.Format("Load data failure, data asset name '{0}', status '{1}', error message '{2}'.", dataAssetName, status.ToString(), errorMessage);
+            string appendErrorMessage = Utility.Text.Format("Load data failure, data asset name '{0}', status '{1}', error message '{2}'.", dataAssetName, status, errorMessage);
             if (m_ReadDataFailureEventHandler != null)
             {
                 ReadDataFailureEventArgs loadDataFailureEventArgs = ReadDataFailureEventArgs.Create(dataAssetName, appendErrorMessage, userData);

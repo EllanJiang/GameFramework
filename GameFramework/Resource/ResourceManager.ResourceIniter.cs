@@ -159,7 +159,7 @@ namespace GameFramework.Resource
                         throw;
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Parse package version list exception '{0}'.", exception.ToString()), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Parse package version list exception '{0}'.", exception), exception);
                 }
                 finally
                 {

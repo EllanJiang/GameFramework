@@ -349,6 +349,7 @@
     <Compile Include="Utility\Utility.Path.cs" />
     <Compile Include="Utility\Utility.Random.cs" />
     <Compile Include="Utility\Utility.Text.cs" />
+    <Compile Include="Utility\Utility.Text.ITextHelper.cs" />
     <Compile Include="Utility\Utility.Verifier.Crc32.cs" />
     <Compile Include="Utility\Utility.Verifier.cs" />
     <Compile Include="WebRequest\Constant.cs" />

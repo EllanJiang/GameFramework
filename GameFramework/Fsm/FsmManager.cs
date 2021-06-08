@@ -256,7 +256,7 @@ namespace GameFramework.Fsm
             TypeNamePair typeNamePair = new TypeNamePair(typeof(T), name);
             if (HasFsm<T>(name))
             {
-                throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", typeNamePair.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist FSM '{0}'.", typeNamePair));
             }
 
             Fsm<T> fsm = Fsm<T>.Create(name, owner, states);

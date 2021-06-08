@@ -252,7 +252,7 @@ namespace GameFramework.Network
                     break;
 
                 default:
-                    throw new GameFrameworkException(Utility.Text.Format("Not supported service type '{0}'.", serviceType.ToString()));
+                    throw new GameFrameworkException(Utility.Text.Format("Not supported service type '{0}'.", serviceType));
             }
 
             networkChannel.NetworkChannelConnected += OnNetworkChannelConnected;

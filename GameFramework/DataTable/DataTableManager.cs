@@ -334,7 +334,7 @@ namespace GameFramework.DataTable
             TypeNamePair typeNamePair = new TypeNamePair(typeof(T), name);
             if (HasDataTable<T>(name))
             {
-                throw new GameFrameworkException(Utility.Text.Format("Already exist data table '{0}'.", typeNamePair.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist data table '{0}'.", typeNamePair));
             }
 
             DataTable<T> dataTable = new DataTable<T>(name);
@@ -375,7 +375,7 @@ namespace GameFramework.DataTable
             TypeNamePair typeNamePair = new TypeNamePair(dataRowType, name);
             if (HasDataTable(dataRowType, name))
             {
-                throw new GameFrameworkException(Utility.Text.Format("Already exist data table '{0}'.", typeNamePair.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist data table '{0}'.", typeNamePair));
             }
 
             Type dataTableType = typeof(DataTable<>).MakeGenericType(dataRowType);

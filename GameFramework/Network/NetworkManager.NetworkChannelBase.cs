@@ -348,7 +348,7 @@ namespace GameFramework.Network
                         break;
 
                     default:
-                        string errorMessage = Utility.Text.Format("Not supported address family '{0}'.", ipAddress.AddressFamily.ToString());
+                        string errorMessage = Utility.Text.Format("Not supported address family '{0}'.", ipAddress.AddressFamily);
                         if (NetworkChannelError != null)
                         {
                             NetworkChannelError(this, NetworkErrorCode.AddressFamilyError, SocketError.Success, errorMessage);

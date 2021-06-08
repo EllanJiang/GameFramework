@@ -44,7 +44,7 @@ namespace GameFramework.Resource
                 {
                     if (resourceGroups[i] == null)
                     {
-                        throw new GameFrameworkException(Utility.Text.Format("Resource group index '{0}' is invalid.", i.ToString()));
+                        throw new GameFrameworkException(Utility.Text.Format("Resource group index '{0}' is invalid.", i));
                     }
 
                     for (int j = i + 1; j < resourceGroups.Length; j++)
@@ -58,7 +58,7 @@ namespace GameFramework.Resource
 
                 if (resourceGroups[lastIndex] == null)
                 {
-                    throw new GameFrameworkException(Utility.Text.Format("Resource group index '{0}' is invalid.", lastIndex.ToString()));
+                    throw new GameFrameworkException(Utility.Text.Format("Resource group index '{0}' is invalid.", lastIndex));
                 }
 
                 m_ResourceGroups = resourceGroups;

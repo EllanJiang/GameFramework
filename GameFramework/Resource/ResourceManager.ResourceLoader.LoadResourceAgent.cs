@@ -233,7 +233,7 @@ namespace GameFramework.Resource
                     }
                     else
                     {
-                        throw new GameFrameworkException(Utility.Text.Format("Resource load type '{0}' is not supported.", resourceInfo.LoadType.ToString()));
+                        throw new GameFrameworkException(Utility.Text.Format("Resource load type '{0}' is not supported.", resourceInfo.LoadType));
                     }
 
                     return StartTaskStatus.CanResume;

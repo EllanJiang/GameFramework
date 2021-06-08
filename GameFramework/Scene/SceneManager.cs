@@ -447,7 +447,7 @@ namespace GameFramework.Scene
         private void LoadSceneFailureCallback(string sceneAssetName, LoadResourceStatus status, string errorMessage, object userData)
         {
             m_LoadingSceneAssetNames.Remove(sceneAssetName);
-            string appendErrorMessage = Utility.Text.Format("Load scene failure, scene asset name '{0}', status '{1}', error message '{2}'.", sceneAssetName, status.ToString(), errorMessage);
+            string appendErrorMessage = Utility.Text.Format("Load scene failure, scene asset name '{0}', status '{1}', error message '{2}'.", sceneAssetName, status, errorMessage);
             if (m_LoadSceneFailureEventHandler != null)
             {
                 LoadSceneFailureEventArgs loadSceneFailureEventArgs = LoadSceneFailureEventArgs.Create(sceneAssetName, appendErrorMessage, userData);

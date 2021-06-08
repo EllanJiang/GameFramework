@@ -383,7 +383,7 @@ namespace GameFramework.Resource
                         m_ApplyingResourcePackStream = null;
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Apply resources '{0}' with exception '{1}'.", resourcePackPath, exception.ToString()), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Apply resources '{0}' with exception '{1}'.", resourcePackPath, exception), exception);
                 }
             }
 
@@ -530,7 +530,7 @@ namespace GameFramework.Resource
                             {
                                 if (ResourceApplyFailure != null)
                                 {
-                                    string errorMessage = Utility.Text.Format("Resource compressed hash code error, need '{0}', applied '{1}'.", applyInfo.CompressedHashCode.ToString(), hashCode.ToString());
+                                    string errorMessage = Utility.Text.Format("Resource compressed hash code error, need '{0}', applied '{1}'.", applyInfo.CompressedHashCode, hashCode);
                                     ResourceApplyFailure(applyInfo.ResourceName, m_ApplyingResourcePackPath, errorMessage);
                                 }
 
@@ -590,7 +590,7 @@ namespace GameFramework.Resource
                             {
                                 if (ResourceApplyFailure != null)
                                 {
-                                    string errorMessage = Utility.Text.Format("Resource hash code error, need '{0}', applied '{1}'.", applyInfo.HashCode.ToString(), hashCode.ToString());
+                                    string errorMessage = Utility.Text.Format("Resource hash code error, need '{0}', applied '{1}'.", applyInfo.HashCode, hashCode);
                                     ResourceApplyFailure(applyInfo.ResourceName, m_ApplyingResourcePackPath, errorMessage);
                                 }
 
@@ -744,7 +744,7 @@ namespace GameFramework.Resource
                         File.Delete(m_ReadWriteVersionListTempFileName);
                     }
 
-                    throw new GameFrameworkException(Utility.Text.Format("Generate read-write version list exception '{0}'.", exception.ToString()), exception);
+                    throw new GameFrameworkException(Utility.Text.Format("Generate read-write version list exception '{0}'.", exception), exception);
                 }
 
                 if (File.Exists(m_ReadWriteVersionListFileName))
@@ -802,7 +802,7 @@ namespace GameFramework.Resource
                         File.Delete(downloadFile);
                     }
 
-                    string errorMessage = Utility.Text.Format("When download update, downloaded length is larger than compressed length, need '{0}', downloaded '{1}'.", updateInfo.CompressedLength.ToString(), e.CurrentLength.ToString());
+                    string errorMessage = Utility.Text.Format("When download update, downloaded length is larger than compressed length, need '{0}', downloaded '{1}'.", updateInfo.CompressedLength, e.CurrentLength);
                     DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                     OnDownloadFailure(this, downloadFailureEventArgs);
                     ReferencePool.Release(downloadFailureEventArgs);
@@ -833,7 +833,7 @@ namespace GameFramework.Resource
                         if (length != updateInfo.CompressedLength)
                         {
                             fileStream.Close();
-                            string errorMessage = Utility.Text.Format("Resource compressed length error, need '{0}', downloaded '{1}'.", updateInfo.CompressedLength.ToString(), length.ToString());
+                            string errorMessage = Utility.Text.Format("Resource compressed length error, need '{0}', downloaded '{1}'.", updateInfo.CompressedLength, length);
                             DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                             OnDownloadFailure(this, downloadFailureEventArgs);
                             ReferencePool.Release(downloadFailureEventArgs);
@@ -847,7 +847,7 @@ namespace GameFramework.Resource
                             if (hashCode != updateInfo.CompressedHashCode)
                             {
                                 fileStream.Close();
-                                string errorMessage = Utility.Text.Format("Resource compressed hash code error, need '{0}', downloaded '{1}'.", updateInfo.CompressedHashCode.ToString(), hashCode.ToString());
+                                string errorMessage = Utility.Text.Format("Resource compressed hash code error, need '{0}', downloaded '{1}'.", updateInfo.CompressedHashCode, hashCode);
                                 DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                                 OnDownloadFailure(this, downloadFailureEventArgs);
                                 ReferencePool.Release(downloadFailureEventArgs);
@@ -875,7 +875,7 @@ namespace GameFramework.Resource
                             if (m_ResourceManager.m_DecompressCachedStream.Length != updateInfo.Length)
                             {
                                 fileStream.Close();
-                                string errorMessage = Utility.Text.Format("Resource length error, need '{0}', downloaded '{1}'.", updateInfo.Length.ToString(), m_ResourceManager.m_DecompressCachedStream.Length.ToString());
+                                string errorMessage = Utility.Text.Format("Resource length error, need '{0}', downloaded '{1}'.", updateInfo.Length, m_ResourceManager.m_DecompressCachedStream.Length);
                                 DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                                 OnDownloadFailure(this, downloadFailureEventArgs);
                                 ReferencePool.Release(downloadFailureEventArgs);
@@ -913,7 +913,7 @@ namespace GameFramework.Resource
                             if (hashCode != updateInfo.HashCode)
                             {
                                 fileStream.Close();
-                                string errorMessage = Utility.Text.Format("Resource hash code error, need '{0}', downloaded '{1}'.", updateInfo.HashCode.ToString(), hashCode.ToString());
+                                string errorMessage = Utility.Text.Format("Resource hash code error, need '{0}', downloaded '{1}'.", updateInfo.HashCode, hashCode);
                                 DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                                 OnDownloadFailure(this, downloadFailureEventArgs);
                                 ReferencePool.Release(downloadFailureEventArgs);
@@ -974,7 +974,7 @@ namespace GameFramework.Resource
                 }
                 catch (Exception exception)
                 {
-                    string errorMessage = Utility.Text.Format("Update resource '{0}' with error message '{1}'.", e.DownloadPath, exception.ToString());
+                    string errorMessage = Utility.Text.Format("Update resource '{0}' with error message '{1}'.", e.DownloadPath, exception);
                     DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                     OnDownloadFailure(this, downloadFailureEventArgs);
                     ReferencePool.Release(downloadFailureEventArgs);

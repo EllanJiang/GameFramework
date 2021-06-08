@@ -789,7 +789,7 @@ namespace GameFramework.UI
             IUIForm uiForm = GetUIForm(serialId);
             if (uiForm == null)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Can not find UI form '{0}'.", serialId.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Can not find UI form '{0}'.", serialId));
             }
 
             CloseUIForm(uiForm, userData);
@@ -1012,7 +1012,7 @@ namespace GameFramework.UI
             }
 
             m_UIFormsBeingLoaded.Remove(openUIFormInfo.SerialId);
-            string appendErrorMessage = Utility.Text.Format("Load UI form failure, asset name '{0}', status '{1}', error message '{2}'.", uiFormAssetName, status.ToString(), errorMessage);
+            string appendErrorMessage = Utility.Text.Format("Load UI form failure, asset name '{0}', status '{1}', error message '{2}'.", uiFormAssetName, status, errorMessage);
             if (m_OpenUIFormFailureEventHandler != null)
             {
                 OpenUIFormFailureEventArgs openUIFormFailureEventArgs = OpenUIFormFailureEventArgs.Create(openUIFormInfo.SerialId, uiFormAssetName, openUIFormInfo.UIGroup.Name, openUIFormInfo.PauseCoveredUIForm, appendErrorMessage, openUIFormInfo.UserData);

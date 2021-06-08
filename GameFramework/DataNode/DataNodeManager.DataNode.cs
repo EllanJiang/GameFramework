@@ -346,7 +346,7 @@ namespace GameFramework.DataNode
                     return "<Null>";
                 }
 
-                return Utility.Text.Format("[{0}] {1}", m_Data.Type.Name, m_Data.ToString());
+                return Utility.Text.Format("[{0}] {1}", m_Data.Type.Name, m_Data);
             }
 
             /// <summary>

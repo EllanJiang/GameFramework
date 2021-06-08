@@ -581,7 +581,7 @@ namespace GameFramework.Sound
                 }
             }
 
-            throw new GameFrameworkException(Utility.Text.Format("Can not find sound '{0}'.", serialId.ToString()));
+            throw new GameFrameworkException(Utility.Text.Format("Can not find sound '{0}'.", serialId));
         }
 
         /// <summary>
@@ -608,7 +608,7 @@ namespace GameFramework.Sound
                 }
             }
 
-            throw new GameFrameworkException(Utility.Text.Format("Can not find sound '{0}'.", serialId.ToString()));
+            throw new GameFrameworkException(Utility.Text.Format("Can not find sound '{0}'.", serialId));
         }
 
         private void LoadAssetSuccessCallback(string soundAssetName, object soundAsset, float duration, object userData)
@@ -701,7 +701,7 @@ namespace GameFramework.Sound
             }
 
             m_SoundsBeingLoaded.Remove(playSoundInfo.SerialId);
-            string appendErrorMessage = Utility.Text.Format("Load sound failure, asset name '{0}', status '{1}', error message '{2}'.", soundAssetName, status.ToString(), errorMessage);
+            string appendErrorMessage = Utility.Text.Format("Load sound failure, asset name '{0}', status '{1}', error message '{2}'.", soundAssetName, status, errorMessage);
             if (m_PlaySoundFailureEventHandler != null)
             {
                 PlaySoundFailureEventArgs playSoundFailureEventArgs = PlaySoundFailureEventArgs.Create(playSoundInfo.SerialId, soundAssetName, playSoundInfo.SoundGroup.Name, playSoundInfo.PlaySoundParams, PlaySoundErrorCode.LoadAssetFailure, appendErrorMessage, playSoundInfo.UserData);

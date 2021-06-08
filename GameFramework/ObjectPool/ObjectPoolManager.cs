@@ -1251,7 +1251,7 @@ namespace GameFramework.ObjectPool
             TypeNamePair typeNamePair = new TypeNamePair(typeof(T), name);
             if (HasObjectPool<T>(name))
             {
-                throw new GameFrameworkException(Utility.Text.Format("Already exist object pool '{0}'.", typeNamePair.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist object pool '{0}'.", typeNamePair));
             }
 
             ObjectPool<T> objectPool = new ObjectPool<T>(name, allowMultiSpawn, autoReleaseInterval, capacity, expireTime, priority);
@@ -1274,7 +1274,7 @@ namespace GameFramework.ObjectPool
             TypeNamePair typeNamePair = new TypeNamePair(objectType, name);
             if (HasObjectPool(objectType, name))
             {
-                throw new GameFrameworkException(Utility.Text.Format("Already exist object pool '{0}'.", typeNamePair.ToString()));
+                throw new GameFrameworkException(Utility.Text.Format("Already exist object pool '{0}'.", typeNamePair));
             }
 
             Type objectPoolType = typeof(ObjectPool<>).MakeGenericType(objectType);
