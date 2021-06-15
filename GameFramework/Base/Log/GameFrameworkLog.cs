@@ -564,7 +564,7 @@ namespace GameFramework
         /// <summary>
         /// 打印信息级别日志，用于记录程序正常运行日志信息。
         /// </summary>
-        /// <param name="message">日志内容</param>
+        /// <param name="message">日志内容。</param>
         public static void Info(string message)
         {
             if (s_LogHelper == null)
