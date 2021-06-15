@@ -27,6 +27,20 @@ namespace GameFramework
         /// 打印调试级别日志，用于记录调试类日志信息。
         /// </summary>
         /// <param name="message">日志内容。</param>
+        public static void Debug(object message)
+        {
+            if (s_LogHelper == null)
+            {
+                return;
+            }
+
+            s_LogHelper.Log(GameFrameworkLogLevel.Debug, message);
+        }
+
+        /// <summary>
+        /// 打印调试级别日志，用于记录调试类日志信息。
+        /// </summary>
+        /// <param name="message">日志内容。</param>
         public static void Debug(string message)
         {
             if (s_LogHelper == null)
@@ -531,6 +545,20 @@ namespace GameFramework
             }
 
             s_LogHelper.Log(GameFrameworkLogLevel.Debug, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
+        }
+
+        /// <summary>
+        /// 打印信息级别日志，用于记录程序正常运行日志信息。
+        /// </summary>
+        /// <param name="message">日志内容。</param>
+        public static void Info(object message)
+        {
+            if (s_LogHelper == null)
+            {
+                return;
+            }
+
+            s_LogHelper.Log(GameFrameworkLogLevel.Info, message);
         }
 
         /// <summary>
@@ -1047,6 +1075,20 @@ namespace GameFramework
         /// 打印警告级别日志，建议在发生局部功能逻辑错误，但尚不会导致游戏崩溃或异常时使用。
         /// </summary>
         /// <param name="message">日志内容。</param>
+        public static void Warning(object message)
+        {
+            if (s_LogHelper == null)
+            {
+                return;
+            }
+
+            s_LogHelper.Log(GameFrameworkLogLevel.Warning, message);
+        }
+
+        /// <summary>
+        /// 打印警告级别日志，建议在发生局部功能逻辑错误，但尚不会导致游戏崩溃或异常时使用。
+        /// </summary>
+        /// <param name="message">日志内容。</param>
         public static void Warning(string message)
         {
             if (s_LogHelper == null)
@@ -1557,6 +1599,20 @@ namespace GameFramework
         /// 打印错误级别日志，建议在发生功能逻辑错误，但尚不会导致游戏崩溃或异常时使用。
         /// </summary>
         /// <param name="message">日志内容。</param>
+        public static void Error(object message)
+        {
+            if (s_LogHelper == null)
+            {
+                return;
+            }
+
+            s_LogHelper.Log(GameFrameworkLogLevel.Error, message);
+        }
+
+        /// <summary>
+        /// 打印错误级别日志，建议在发生功能逻辑错误，但尚不会导致游戏崩溃或异常时使用。
+        /// </summary>
+        /// <param name="message">日志内容。</param>
         public static void Error(string message)
         {
             if (s_LogHelper == null)
@@ -2061,6 +2117,20 @@ namespace GameFramework
             }
 
             s_LogHelper.Log(GameFrameworkLogLevel.Error, Utility.Text.Format(format, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16));
+        }
+
+        /// <summary>
+        /// 打印严重错误级别日志，建议在发生严重错误，可能导致游戏崩溃或异常时使用，此时应尝试重启进程或重建游戏框架。
+        /// </summary>
+        /// <param name="message">日志内容。</param>
+        public static void Fatal(object message)
+        {
+            if (s_LogHelper == null)
+            {
+                return;
+            }
+
+            s_LogHelper.Log(GameFrameworkLogLevel.Fatal, message);
         }
 
         /// <summary>
