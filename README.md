@@ -8,6 +8,8 @@
 
 ![Game Framework](https://gameframework.cn/image/gameframework.png)
 
+[![Maintainability](https://cloud.quality-gate.com/dashboard/api/badge?projectName=ACP-ELLGAMORK&branchName=master)](https://cloud.quality-gate.com/dashboard/branches/567143#overview)
+
 ---
 
 ## Game Framework 简介
