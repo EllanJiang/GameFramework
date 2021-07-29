@@ -344,6 +344,7 @@ namespace GameFramework
                 {
                     workingAgent.Reset();
                     m_FreeAgents.Push(workingAgent);
+                    m_WorkingAgents.Remove(workingAgent);
                     ReferencePool.Release(task);
                     count++;
                 }
