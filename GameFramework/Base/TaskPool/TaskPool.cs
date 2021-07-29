@@ -294,17 +294,22 @@ namespace GameFramework
                 }
             }
 
-            foreach (ITaskAgent<T> workingAgent in m_WorkingAgents)
+            LinkedListNode<ITaskAgent<T>> currentWorkingAgent = m_WorkingAgents.First;
+            while (currentWorkingAgent != null)
             {
-                if (workingAgent.Task.SerialId == serialId)
+                LinkedListNode<ITaskAgent<T>> next = currentWorkingAgent.Next;
+                ITaskAgent<T> workingAgent = currentWorkingAgent.Value;
+                T task = workingAgent.Task;
+                if (task.SerialId == serialId)
                 {
-                    T task = workingAgent.Task;
                     workingAgent.Reset();
                     m_FreeAgents.Push(workingAgent);
-                    m_WorkingAgents.Remove(workingAgent);
+                    m_WorkingAgents.Remove(currentWorkingAgent);
                     ReferencePool.Release(task);
                     return true;
                 }
+
+                currentWorkingAgent = next;
             }
 
             return false;
@@ -344,7 +349,7 @@ namespace GameFramework
                 {
                     workingAgent.Reset();
                     m_FreeAgents.Push(workingAgent);
-                    m_WorkingAgents.Remove(workingAgent);
+                    m_WorkingAgents.Remove(currentWorkingAgent);
                     ReferencePool.Release(task);
                     count++;
                 }
