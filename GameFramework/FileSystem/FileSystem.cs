@@ -34,7 +34,8 @@ namespace GameFramework.FileSystem
         private readonly List<BlockData> m_BlockDatas;
         private readonly GameFrameworkMultiDictionary<int, int> m_FreeBlockIndexes;
         private readonly SortedDictionary<int, StringData> m_StringDatas;
-        private readonly Queue<KeyValuePair<int, StringData>> m_FreeStringDatas;
+        private readonly Queue<int> m_FreeStringIndexes;
+        private readonly Queue<StringData> m_FreeStringDatas;
 
         private HeaderData m_HeaderData;
         private int m_BlockDataOffset;
@@ -71,7 +72,8 @@ namespace GameFramework.FileSystem
             m_BlockDatas = new List<BlockData>();
             m_FreeBlockIndexes = new GameFrameworkMultiDictionary<int, int>();
             m_StringDatas = new SortedDictionary<int, StringData>();
-            m_FreeStringDatas = new Queue<KeyValuePair<int, StringData>>();
+            m_FreeStringIndexes = new Queue<int>();
+            m_FreeStringDatas = new Queue<StringData>();
 
             m_HeaderData = default(HeaderData);
             m_BlockDataOffset = 0;
@@ -216,6 +218,17 @@ namespace GameFramework.FileSystem
                 }
             }
 
+            int index = 0;
+            foreach (KeyValuePair<int, StringData> i in fileSystem.m_StringDatas)
+            {
+                while (index < i.Key)
+                {
+                    fileSystem.m_FreeStringIndexes.Enqueue(index++);
+                }
+
+                index++;
+            }
+
             return fileSystem;
         }
 
@@ -230,6 +243,7 @@ namespace GameFramework.FileSystem
             m_BlockDatas.Clear();
             m_FreeBlockIndexes.Clear();
             m_StringDatas.Clear();
+            m_FreeStringIndexes.Clear();
             m_FreeStringDatas.Clear();
 
             m_BlockDataOffset = 0;
@@ -1075,7 +1089,8 @@ namespace GameFramework.FileSystem
             BlockData blockData = m_BlockDatas[blockIndex];
             int stringIndex = blockData.StringIndex;
             StringData stringData = m_StringDatas[stringIndex].Clear();
-            m_FreeStringDatas.Enqueue(new KeyValuePair<int, StringData>(stringIndex, stringData));
+            m_FreeStringIndexes.Enqueue(stringIndex);
+            m_FreeStringDatas.Enqueue(stringData);
             m_StringDatas.Remove(stringIndex);
             WriteStringData(stringIndex, stringData);
 
@@ -1293,38 +1308,24 @@ namespace GameFramework.FileSystem
             int stringIndex = -1;
             StringData stringData = default(StringData);
 
-            if (m_FreeStringDatas.Count > 0)
+            if (m_FreeStringIndexes.Count > 0)
             {
-                KeyValuePair<int, StringData> freeStringData = m_FreeStringDatas.Dequeue();
-                stringIndex = freeStringData.Key;
-                stringData = freeStringData.Value;
+                stringIndex = m_FreeStringIndexes.Dequeue();
             }
             else
             {
-                int index = 0;
-                foreach (KeyValuePair<int, StringData> i in m_StringDatas)
-                {
-                    if (i.Key == index)
-                    {
-                        index++;
-                        continue;
-                    }
-
-                    break;
-                }
-
-                if (index < m_HeaderData.MaxFileCount)
-                {
-                    stringIndex = index;
-                    byte[] bytes = new byte[byte.MaxValue];
-                    Utility.Random.GetRandomBytes(bytes);
-                    stringData = new StringData(0, bytes);
-                }
+                stringIndex = m_StringDatas.Count;
             }
 
-            if (stringIndex < 0)
+            if (m_FreeStringDatas.Count > 0)
             {
-                throw new GameFrameworkException("Alloc string internal error.");
+                stringData = m_FreeStringDatas.Dequeue();
+            }
+            else
+            {
+                byte[] bytes = new byte[byte.MaxValue];
+                Utility.Random.GetRandomBytes(bytes);
+                stringData = new StringData(0, bytes);
             }
 
             stringData = stringData.SetString(value, m_HeaderData.GetEncryptBytes());
