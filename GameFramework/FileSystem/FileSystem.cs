@@ -976,34 +976,27 @@ namespace GameFramework.FileSystem
                 return false;
             }
 
-            try
+            if (File.Exists(filePath))
             {
-                if (File.Exists(filePath))
-                {
-                    File.Delete(filePath);
-                }
-
-                string directory = Path.GetDirectoryName(filePath);
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-
-                using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                {
-                    int length = fileInfo.Length;
-                    if (length > 0)
-                    {
-                        m_Stream.Position = fileInfo.Offset;
-                        return m_Stream.Read(fileStream, length) == length;
-                    }
-
-                    return true;
-                }
+                File.Delete(filePath);
             }
-            catch
+
+            string directory = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(directory))
             {
-                return false;
+                Directory.CreateDirectory(directory);
+            }
+
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                int length = fileInfo.Length;
+                if (length > 0)
+                {
+                    m_Stream.Position = fileInfo.Offset;
+                    return m_Stream.Read(fileStream, length) == length;
+                }
+
+                return true;
             }
         }
 
