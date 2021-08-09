@@ -28,6 +28,9 @@ namespace GameFramework.WebRequest
         {
             m_TaskPool = new TaskPool<WebRequestTask>();
             m_Timeout = 30f;
+            m_WebRequestStartEventHandler = null;
+            m_WebRequestSuccessEventHandler = null;
+            m_WebRequestFailureEventHandler = null;
         }
 
         /// <summary>

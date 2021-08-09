@@ -30,7 +30,6 @@ namespace GameFramework.Network
         public NetworkManager()
         {
             m_NetworkChannels = new Dictionary<string, NetworkChannelBase>(StringComparer.Ordinal);
-
             m_NetworkConnectedEventHandler = null;
             m_NetworkClosedEventHandler = null;
             m_NetworkMissHeartBeatEventHandler = null;
