@@ -24,7 +24,7 @@ namespace GameFramework.Resource
             private const int CachedBytesLength = 0x1000;
 
             private readonly ResourceManager m_ResourceManager;
-            private readonly List<ApplyInfo> m_ApplyWaitingInfo;
+            private readonly Queue<ApplyInfo> m_ApplyWaitingInfo;
             private readonly List<UpdateInfo> m_UpdateWaitingInfo;
             private readonly HashSet<UpdateInfo> m_UpdateWaitingInfoWhilePlaying;
             private readonly Dictionary<ResourceName, UpdateInfo> m_UpdateCandidateInfo;
@@ -44,6 +44,7 @@ namespace GameFramework.Resource
             private string m_ReadWriteVersionListFileName;
             private string m_ReadWriteVersionListTempFileName;
 
+            public GameFrameworkAction<string, int, long> ResourceApplyStart;
             public GameFrameworkAction<ResourceName, string, string, int, int> ResourceApplySuccess;
             public GameFrameworkAction<ResourceName, string, string> ResourceApplyFailure;
             public GameFrameworkAction<string, bool> ResourceApplyComplete;
@@ -61,7 +62,7 @@ namespace GameFramework.Resource
             public ResourceUpdater(ResourceManager resourceManager)
             {
                 m_ResourceManager = resourceManager;
-                m_ApplyWaitingInfo = new List<ApplyInfo>();
+                m_ApplyWaitingInfo = new Queue<ApplyInfo>();
                 m_UpdateWaitingInfo = new List<UpdateInfo>();
                 m_UpdateWaitingInfoWhilePlaying = new HashSet<UpdateInfo>();
                 m_UpdateCandidateInfo = new Dictionary<ResourceName, UpdateInfo>();
@@ -81,6 +82,7 @@ namespace GameFramework.Resource
                 m_ReadWriteVersionListFileName = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.m_ReadWritePath, LocalVersionListFileName));
                 m_ReadWriteVersionListTempFileName = Utility.Text.Format("{0}.{1}", m_ReadWriteVersionListFileName, TempExtension);
 
+                ResourceApplyStart = null;
                 ResourceApplySuccess = null;
                 ResourceApplyFailure = null;
                 ResourceApplyComplete = null;
@@ -199,8 +201,7 @@ namespace GameFramework.Resource
                 {
                     while (m_ApplyWaitingInfo.Count > 0)
                     {
-                        ApplyInfo applyInfo = m_ApplyWaitingInfo[0];
-                        m_ApplyWaitingInfo.RemoveAt(0);
+                        ApplyInfo applyInfo = m_ApplyWaitingInfo.Dequeue();
                         if (ApplyResource(applyInfo))
                         {
                             return;
@@ -359,6 +360,7 @@ namespace GameFramework.Resource
                     m_ApplyingResourcePackStream.Position = versionList.Offset;
                     m_FailureFlag = false;
 
+                    long totalLength = 0L;
                     ResourcePackVersionList.Resource[] resources = versionList.GetResources();
                     foreach (ResourcePackVersionList.Resource resource in resources)
                     {
@@ -371,8 +373,14 @@ namespace GameFramework.Resource
 
                         if (updateInfo.LoadType == (LoadType)resource.LoadType && updateInfo.Length == resource.Length && updateInfo.HashCode == resource.HashCode)
                         {
-                            m_ApplyWaitingInfo.Add(new ApplyInfo(resourceName, updateInfo.FileSystemName, (LoadType)resource.LoadType, resource.Offset, resource.Length, resource.HashCode, resource.CompressedLength, resource.CompressedHashCode, updateInfo.ResourcePath));
+                            totalLength += resource.Length;
+                            m_ApplyWaitingInfo.Enqueue(new ApplyInfo(resourceName, updateInfo.FileSystemName, (LoadType)resource.LoadType, resource.Offset, resource.Length, resource.HashCode, resource.CompressedLength, resource.CompressedHashCode, updateInfo.ResourcePath));
                         }
+                    }
+
+                    if (ResourceApplyStart != null)
+                    {
+                        ResourceApplyStart(m_ApplyingResourcePackPath, m_ApplyWaitingInfo.Count, totalLength);
                     }
                 }
                 catch (Exception exception)

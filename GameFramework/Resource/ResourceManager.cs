@@ -42,6 +42,7 @@ namespace GameFramework.Resource
         private IFileSystemManager m_FileSystemManager;
         private ResourceIniter m_ResourceIniter;
         private VersionListProcessor m_VersionListProcessor;
+        private ResourceVerifier m_ResourceVerifier;
         private ResourceChecker m_ResourceChecker;
         private ResourceUpdater m_ResourceUpdater;
         private ResourceLoader m_ResourceLoader;
@@ -59,9 +60,14 @@ namespace GameFramework.Resource
         private DecryptResourceCallback m_DecryptResourceCallback;
         private InitResourcesCompleteCallback m_InitResourcesCompleteCallback;
         private UpdateVersionListCallbacks m_UpdateVersionListCallbacks;
+        private VerifyResourcesCompleteCallback m_VerifyResourcesCompleteCallback;
         private CheckResourcesCompleteCallback m_CheckResourcesCompleteCallback;
         private ApplyResourcesCompleteCallback m_ApplyResourcesCompleteCallback;
         private UpdateResourcesCompleteCallback m_UpdateResourcesCompleteCallback;
+        private EventHandler<ResourceVerifyStartEventArgs> m_ResourceVerifyStartEventHandler;
+        private EventHandler<ResourceVerifySuccessEventArgs> m_ResourceVerifySuccessEventHandler;
+        private EventHandler<ResourceVerifyFailureEventArgs> m_ResourceVerifyFailureEventHandler;
+        private EventHandler<ResourceApplyStartEventArgs> m_ResourceApplyStartEventHandler;
         private EventHandler<ResourceApplySuccessEventArgs> m_ResourceApplySuccessEventHandler;
         private EventHandler<ResourceApplyFailureEventArgs> m_ResourceApplyFailureEventHandler;
         private EventHandler<ResourceUpdateStartEventArgs> m_ResourceUpdateStartEventHandler;
@@ -90,6 +96,7 @@ namespace GameFramework.Resource
 
             m_ResourceIniter = null;
             m_VersionListProcessor = null;
+            m_ResourceVerifier = null;
             m_ResourceChecker = null;
             m_ResourceUpdater = null;
             m_ResourceLoader = new ResourceLoader(this);
@@ -107,10 +114,12 @@ namespace GameFramework.Resource
             m_DecryptResourceCallback = null;
             m_InitResourcesCompleteCallback = null;
             m_UpdateVersionListCallbacks = null;
+            m_VerifyResourcesCompleteCallback = null;
             m_CheckResourcesCompleteCallback = null;
             m_ApplyResourcesCompleteCallback = null;
             m_UpdateResourcesCompleteCallback = null;
-
+            m_ResourceVerifySuccessEventHandler = null;
+            m_ResourceVerifyFailureEventHandler = null;
             m_ResourceApplySuccessEventHandler = null;
             m_ResourceApplyFailureEventHandler = null;
             m_ResourceUpdateStartEventHandler = null;
@@ -572,6 +581,66 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 资源校验开始事件。
+        /// </summary>
+        public event EventHandler<ResourceVerifyStartEventArgs> ResourceVerifyStart
+        {
+            add
+            {
+                m_ResourceVerifyStartEventHandler += value;
+            }
+            remove
+            {
+                m_ResourceVerifyStartEventHandler -= value;
+            }
+        }
+
+        /// <summary>
+        /// 资源校验成功事件。
+        /// </summary>
+        public event EventHandler<ResourceVerifySuccessEventArgs> ResourceVerifySuccess
+        {
+            add
+            {
+                m_ResourceVerifySuccessEventHandler += value;
+            }
+            remove
+            {
+                m_ResourceVerifySuccessEventHandler -= value;
+            }
+        }
+
+        /// <summary>
+        /// 资源校验失败事件。
+        /// </summary>
+        public event EventHandler<ResourceVerifyFailureEventArgs> ResourceVerifyFailure
+        {
+            add
+            {
+                m_ResourceVerifyFailureEventHandler += value;
+            }
+            remove
+            {
+                m_ResourceVerifyFailureEventHandler -= value;
+            }
+        }
+
+        /// <summary>
+        /// 资源应用开始事件。
+        /// </summary>
+        public event EventHandler<ResourceApplyStartEventArgs> ResourceApplyStart
+        {
+            add
+            {
+                m_ResourceApplyStartEventHandler += value;
+            }
+            remove
+            {
+                m_ResourceApplyStartEventHandler -= value;
+            }
+        }
+
+        /// <summary>
         /// 资源应用成功事件。
         /// </summary>
         public event EventHandler<ResourceApplySuccessEventArgs> ResourceApplySuccess
@@ -683,6 +752,12 @@ namespace GameFramework.Resource
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         internal override void Update(float elapseSeconds, float realElapseSeconds)
         {
+            if (m_ResourceVerifier != null)
+            {
+                m_ResourceVerifier.Update(elapseSeconds, realElapseSeconds);
+                return;
+            }
+
             if (m_ResourceUpdater != null)
             {
                 m_ResourceUpdater.Update(elapseSeconds, realElapseSeconds);
@@ -710,6 +785,16 @@ namespace GameFramework.Resource
                 m_VersionListProcessor = null;
             }
 
+            if (m_ResourceVerifier != null)
+            {
+                m_ResourceVerifier.ResourceVerifyStart -= OnVerifierResourceVerifyStart;
+                m_ResourceVerifier.ResourceVerifySuccess -= OnVerifierResourceVerifySuccess;
+                m_ResourceVerifier.ResourceVerifyFailure -= OnVerifierResourceVerifyFailure;
+                m_ResourceVerifier.ResourceVerifyComplete -= OnVerifierResourceVerifyComplete;
+                m_ResourceVerifier.Shutdown();
+                m_ResourceVerifier = null;
+            }
+
             if (m_ResourceChecker != null)
             {
                 m_ResourceChecker.ResourceNeedUpdate -= OnCheckerResourceNeedUpdate;
@@ -720,6 +805,7 @@ namespace GameFramework.Resource
 
             if (m_ResourceUpdater != null)
             {
+                m_ResourceUpdater.ResourceApplyStart -= OnUpdaterResourceApplyStart;
                 m_ResourceUpdater.ResourceApplySuccess -= OnUpdaterResourceApplySuccess;
                 m_ResourceUpdater.ResourceApplyFailure -= OnUpdaterResourceApplyFailure;
                 m_ResourceUpdater.ResourceApplyComplete -= OnUpdaterResourceApplyComplete;
@@ -859,6 +945,7 @@ namespace GameFramework.Resource
                     m_ResourceChecker.ResourceCheckComplete += OnCheckerResourceCheckComplete;
 
                     m_ResourceUpdater = new ResourceUpdater(this);
+                    m_ResourceUpdater.ResourceApplyStart += OnUpdaterResourceApplyStart;
                     m_ResourceUpdater.ResourceApplySuccess += OnUpdaterResourceApplySuccess;
                     m_ResourceUpdater.ResourceApplyFailure += OnUpdaterResourceApplyFailure;
                     m_ResourceUpdater.ResourceApplyComplete += OnUpdaterResourceApplyComplete;
@@ -1086,6 +1173,42 @@ namespace GameFramework.Resource
 
             m_UpdateVersionListCallbacks = updateVersionListCallbacks;
             m_VersionListProcessor.UpdateVersionList(versionListLength, versionListHashCode, versionListCompressedLength, versionListCompressedHashCode);
+        }
+
+        /// <summary>
+        /// 使用可更新模式并校验资源。
+        /// </summary>
+        /// <param name="verifyResourceLengthPerFrame">每帧至少校验资源的大小，以字节为单位。</param>
+        /// <param name="verifyResourcesCompleteCallback">使用可更新模式并校验资源完成时的回调函数。</param>
+        public void VerifyResources(int verifyResourceLengthPerFrame, VerifyResourcesCompleteCallback verifyResourcesCompleteCallback)
+        {
+            if (verifyResourcesCompleteCallback == null)
+            {
+                throw new GameFrameworkException("Verify resources complete callback is invalid.");
+            }
+
+            if (m_ResourceMode == ResourceMode.Unspecified)
+            {
+                throw new GameFrameworkException("You must set resource mode first.");
+            }
+
+            if (m_ResourceMode != ResourceMode.Updatable && m_ResourceMode != ResourceMode.UpdatableWhilePlaying)
+            {
+                throw new GameFrameworkException("You can not use VerifyResources without updatable resource mode.");
+            }
+
+            if (m_RefuseSetFlag)
+            {
+                throw new GameFrameworkException("You can not verify resources at this time.");
+            }
+
+            m_ResourceVerifier = new ResourceVerifier(this);
+            m_ResourceVerifier.ResourceVerifyStart += OnVerifierResourceVerifyStart;
+            m_ResourceVerifier.ResourceVerifySuccess += OnVerifierResourceVerifySuccess;
+            m_ResourceVerifier.ResourceVerifyFailure += OnVerifierResourceVerifyFailure;
+            m_ResourceVerifier.ResourceVerifyComplete += OnVerifierResourceVerifyComplete;
+            m_VerifyResourcesCompleteCallback = verifyResourcesCompleteCallback;
+            m_ResourceVerifier.VerifyResources(verifyResourceLengthPerFrame);
         }
 
         /// <summary>
@@ -2245,6 +2368,47 @@ namespace GameFramework.Resource
             }
         }
 
+        private void OnVerifierResourceVerifyStart(int count, long totalLength)
+        {
+            if (m_ResourceVerifyStartEventHandler != null)
+            {
+                ResourceVerifyStartEventArgs resourceVerifyStartEventArgs = ResourceVerifyStartEventArgs.Create(count, totalLength);
+                m_ResourceVerifyStartEventHandler(this, resourceVerifyStartEventArgs);
+                ReferencePool.Release(resourceVerifyStartEventArgs);
+            }
+        }
+
+        private void OnVerifierResourceVerifySuccess(ResourceName resourceName, int length)
+        {
+            if (m_ResourceVerifySuccessEventHandler != null)
+            {
+                ResourceVerifySuccessEventArgs resourceVerifySuccessEventArgs = ResourceVerifySuccessEventArgs.Create(resourceName.FullName, length);
+                m_ResourceVerifySuccessEventHandler(this, resourceVerifySuccessEventArgs);
+                ReferencePool.Release(resourceVerifySuccessEventArgs);
+            }
+        }
+
+        private void OnVerifierResourceVerifyFailure(ResourceName resourceName)
+        {
+            if (m_ResourceVerifyFailureEventHandler != null)
+            {
+                ResourceVerifyFailureEventArgs resourceVerifyFailureEventArgs = ResourceVerifyFailureEventArgs.Create(resourceName.FullName);
+                m_ResourceVerifyFailureEventHandler(this, resourceVerifyFailureEventArgs);
+                ReferencePool.Release(resourceVerifyFailureEventArgs);
+            }
+        }
+
+        private void OnVerifierResourceVerifyComplete(bool result)
+        {
+            m_VerifyResourcesCompleteCallback(result);
+            m_ResourceVerifier.ResourceVerifyStart -= OnVerifierResourceVerifyStart;
+            m_ResourceVerifier.ResourceVerifySuccess -= OnVerifierResourceVerifySuccess;
+            m_ResourceVerifier.ResourceVerifyFailure -= OnVerifierResourceVerifyFailure;
+            m_ResourceVerifier.ResourceVerifyComplete -= OnVerifierResourceVerifyComplete;
+            m_ResourceVerifier.Shutdown();
+            m_ResourceVerifier = null;
+        }
+
         private void OnCheckerResourceNeedUpdate(ResourceName resourceName, string fileSystemName, LoadType loadType, int length, int hashCode, int compressedLength, int compressedHashCode)
         {
             m_ResourceUpdater.AddResourceUpdate(resourceName, fileSystemName, loadType, length, hashCode, compressedLength, compressedHashCode, Utility.Path.GetRegularPath(Path.Combine(m_ReadWritePath, resourceName.FullName)));
@@ -2267,6 +2431,7 @@ namespace GameFramework.Resource
 
             if (updateCount <= 0)
             {
+                m_ResourceUpdater.ResourceApplyStart -= OnUpdaterResourceApplyStart;
                 m_ResourceUpdater.ResourceApplySuccess -= OnUpdaterResourceApplySuccess;
                 m_ResourceUpdater.ResourceApplyFailure -= OnUpdaterResourceApplyFailure;
                 m_ResourceUpdater.ResourceApplyComplete -= OnUpdaterResourceApplyComplete;
@@ -2291,6 +2456,16 @@ namespace GameFramework.Resource
 
             m_CheckResourcesCompleteCallback(movedCount, removedCount, updateCount, updateTotalLength, updateTotalCompressedLength);
             m_CheckResourcesCompleteCallback = null;
+        }
+
+        private void OnUpdaterResourceApplyStart(string resourcePackPath, int count, long totalLength)
+        {
+            if (m_ResourceApplyStartEventHandler != null)
+            {
+                ResourceApplyStartEventArgs resourceApplyStartEventArgs = ResourceApplyStartEventArgs.Create(resourcePackPath, count, totalLength);
+                m_ResourceApplyStartEventHandler(this, resourceApplyStartEventArgs);
+                ReferencePool.Release(resourceApplyStartEventArgs);
+            }
         }
 
         private void OnUpdaterResourceApplySuccess(ResourceName resourceName, string applyPath, string resourcePackPath, int length, int compressedLength)
@@ -2370,6 +2545,7 @@ namespace GameFramework.Resource
 
         private void OnUpdaterResourceUpdateAllComplete()
         {
+            m_ResourceUpdater.ResourceApplyStart -= OnUpdaterResourceApplyStart;
             m_ResourceUpdater.ResourceApplySuccess -= OnUpdaterResourceApplySuccess;
             m_ResourceUpdater.ResourceApplyFailure -= OnUpdaterResourceApplyFailure;
             m_ResourceUpdater.ResourceApplyComplete -= OnUpdaterResourceApplyComplete;

@@ -310,6 +310,26 @@ namespace GameFramework.Resource
         }
 
         /// <summary>
+        /// 资源校验开始事件。
+        /// </summary>
+        event EventHandler<ResourceVerifyStartEventArgs> ResourceVerifyStart;
+
+        /// <summary>
+        /// 资源校验成功事件。
+        /// </summary>
+        event EventHandler<ResourceVerifySuccessEventArgs> ResourceVerifySuccess;
+
+        /// <summary>
+        /// 资源校验失败事件。
+        /// </summary>
+        event EventHandler<ResourceVerifyFailureEventArgs> ResourceVerifyFailure;
+
+        /// <summary>
+        /// 资源应用开始事件。
+        /// </summary>
+        event EventHandler<ResourceApplyStartEventArgs> ResourceApplyStart;
+
+        /// <summary>
         /// 资源应用成功事件。
         /// </summary>
         event EventHandler<ResourceApplySuccessEventArgs> ResourceApplySuccess;
@@ -427,6 +447,13 @@ namespace GameFramework.Resource
         /// <param name="versionListCompressedHashCode">版本资源列表压缩后哈希值。</param>
         /// <param name="updateVersionListCallbacks">版本资源列表更新回调函数集。</param>
         void UpdateVersionList(int versionListLength, int versionListHashCode, int versionListCompressedLength, int versionListCompressedHashCode, UpdateVersionListCallbacks updateVersionListCallbacks);
+
+        /// <summary>
+        /// 使用可更新模式并校验资源。
+        /// </summary>
+        /// <param name="verifyResourceLengthPerFrame">每帧至少校验资源的大小，以字节为单位。</param>
+        /// <param name="verifyResourcesCompleteCallback">使用可更新模式并校验资源完成时的回调函数。</param>
+        void VerifyResources(int verifyResourceLengthPerFrame, VerifyResourcesCompleteCallback verifyResourcesCompleteCallback);
 
         /// <summary>
         /// 使用可更新模式并检查资源。

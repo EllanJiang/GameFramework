@@ -242,6 +242,7 @@
     <Compile Include="Resource\ReadOnlyVersionListSerializer.cs" />
     <Compile Include="Resource\ReadWriteVersionListSerializer.cs" />
     <Compile Include="Resource\ResourceApplyFailureEventArgs.cs" />
+    <Compile Include="Resource\ResourceApplyStartEventArgs.cs" />
     <Compile Include="Resource\ResourceApplySuccessEventArgs.cs" />
     <Compile Include="Resource\ResourceManager.AssetInfo.cs" />
     <Compile Include="Resource\ResourceManager.cs" />
@@ -270,6 +271,8 @@
     <Compile Include="Resource\ResourceManager.ResourceUpdater.ApplyInfo.cs" />
     <Compile Include="Resource\ResourceManager.ResourceUpdater.cs" />
     <Compile Include="Resource\ResourceManager.ResourceUpdater.UpdateInfo.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceVerifier.cs" />
+    <Compile Include="Resource\ResourceManager.ResourceVerifier.VerifyInfo.cs" />
     <Compile Include="Resource\ResourceManager.VersionListProcessor.cs" />
     <Compile Include="Resource\ResourceMode.cs" />
     <Compile Include="Resource\ResourcePackVersionList.cs" />
@@ -280,6 +283,9 @@
     <Compile Include="Resource\ResourceUpdateFailureEventArgs.cs" />
     <Compile Include="Resource\ResourceUpdateStartEventArgs.cs" />
     <Compile Include="Resource\ResourceUpdateSuccessEventArgs.cs" />
+    <Compile Include="Resource\ResourceVerifyFailureEventArgs.cs" />
+    <Compile Include="Resource\ResourceVerifyStartEventArgs.cs" />
+    <Compile Include="Resource\ResourceVerifySuccessEventArgs.cs" />
     <Compile Include="Resource\UnloadSceneCallbacks.cs" />
     <Compile Include="Resource\UnloadSceneFailureCallback.cs" />
     <Compile Include="Resource\UnloadSceneSuccessCallback.cs" />
@@ -293,6 +299,7 @@
     <Compile Include="Resource\UpdateVersionListCallbacks.cs" />
     <Compile Include="Resource\UpdateVersionListFailureCallback.cs" />
     <Compile Include="Resource\UpdateVersionListSuccessCallback.cs" />
+    <Compile Include="Resource\VerifyResourcesCompleteCallback.cs" />
     <Compile Include="Scene\ISceneManager.cs" />
     <Compile Include="Scene\LoadSceneDependencyAssetEventArgs.cs" />
     <Compile Include="Scene\LoadSceneFailureEventArgs.cs" />
