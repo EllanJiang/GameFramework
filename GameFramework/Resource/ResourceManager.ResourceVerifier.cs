@@ -151,6 +151,11 @@ namespace GameFramework.Resource
                     IFileSystem fileSystem = m_ResourceManager.GetFileSystem(verifyInfo.FileSystemName, false);
                     string fileName = verifyInfo.ResourceName.FullName;
                     FileSystem.FileInfo fileInfo = fileSystem.GetFileInfo(fileName);
+                    if (!fileInfo.IsValid)
+                    {
+                        return false;
+                    }
+
                     int length = fileInfo.Length;
                     if (length == verifyInfo.Length)
                     {
@@ -198,6 +203,11 @@ namespace GameFramework.Resource
                 else
                 {
                     string resourcePath = Utility.Path.GetRegularPath(Path.Combine(m_ResourceManager.ReadWritePath, verifyInfo.ResourceName.FullName));
+                    if (!File.Exists(resourcePath))
+                    {
+                        return false;
+                    }
+
                     using (FileStream fileStream = new FileStream(resourcePath, FileMode.Open, FileAccess.Read))
                     {
                         int length = (int)fileStream.Length;
