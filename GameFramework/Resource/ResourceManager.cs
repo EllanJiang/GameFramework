@@ -2345,6 +2345,14 @@ namespace GameFramework.Resource
             return fileSystem;
         }
 
+        private void CheckDecompressCachedStream()
+        {
+            if (m_DecompressCachedStream == null)
+            {
+                m_DecompressCachedStream = new MemoryStream();
+            }
+        }
+
         private void OnIniterResourceInitComplete()
         {
             m_ResourceIniter.ResourceInitComplete -= OnIniterResourceInitComplete;

@@ -546,12 +546,8 @@ namespace GameFramework.Resource
                                 return false;
                             }
 
-                            if (m_ResourceManager.m_DecompressCachedStream == null)
-                            {
-                                m_ResourceManager.m_DecompressCachedStream = new MemoryStream();
-                            }
-
                             fileStream.Position = 0L;
+                            m_ResourceManager.CheckDecompressCachedStream();
                             m_ResourceManager.m_DecompressCachedStream.Position = 0L;
                             m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
                             if (!Utility.Compression.Decompress(fileStream, m_ResourceManager.m_DecompressCachedStream))
@@ -862,12 +858,8 @@ namespace GameFramework.Resource
                                 return;
                             }
 
-                            if (m_ResourceManager.m_DecompressCachedStream == null)
-                            {
-                                m_ResourceManager.m_DecompressCachedStream = new MemoryStream();
-                            }
-
                             fileStream.Position = 0L;
+                            m_ResourceManager.CheckDecompressCachedStream();
                             m_ResourceManager.m_DecompressCachedStream.Position = 0L;
                             m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
                             if (!Utility.Compression.Decompress(fileStream, m_ResourceManager.m_DecompressCachedStream))

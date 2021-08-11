@@ -159,11 +159,7 @@ namespace GameFramework.Resource
                     int length = fileInfo.Length;
                     if (length == verifyInfo.Length)
                     {
-                        if (m_ResourceManager.m_DecompressCachedStream == null)
-                        {
-                            m_ResourceManager.m_DecompressCachedStream = new MemoryStream();
-                        }
-
+                        m_ResourceManager.CheckDecompressCachedStream();
                         m_ResourceManager.m_DecompressCachedStream.Position = 0L;
                         m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
                         fileSystem.ReadFile(fileName, m_ResourceManager.m_DecompressCachedStream);
