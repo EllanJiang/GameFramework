@@ -56,7 +56,7 @@ namespace GameFramework.Resource
         private string m_UpdatePrefixUri;
         private string m_ApplicableGameVersion;
         private int m_InternalResourceVersion;
-        private MemoryStream m_DecompressCachedStream;
+        private MemoryStream m_CachedStream;
         private DecryptResourceCallback m_DecryptResourceCallback;
         private InitResourcesCompleteCallback m_InitResourcesCompleteCallback;
         private UpdateVersionListCallbacks m_UpdateVersionListCallbacks;
@@ -110,7 +110,7 @@ namespace GameFramework.Resource
             m_UpdatePrefixUri = null;
             m_ApplicableGameVersion = null;
             m_InternalResourceVersion = 0;
-            m_DecompressCachedStream = null;
+            m_CachedStream = null;
             m_DecryptResourceCallback = null;
             m_InitResourcesCompleteCallback = null;
             m_UpdateVersionListCallbacks = null;
@@ -824,11 +824,7 @@ namespace GameFramework.Resource
                     m_ReadWriteResourceInfos = null;
                 }
 
-                if (m_DecompressCachedStream != null)
-                {
-                    m_DecompressCachedStream.Dispose();
-                    m_DecompressCachedStream = null;
-                }
+                FreeCachedStream();
             }
 
             if (m_ResourceLoader != null)
@@ -2345,11 +2341,23 @@ namespace GameFramework.Resource
             return fileSystem;
         }
 
-        private void CheckDecompressCachedStream()
+        private void PrepareCachedStream()
         {
-            if (m_DecompressCachedStream == null)
+            if (m_CachedStream == null)
             {
-                m_DecompressCachedStream = new MemoryStream();
+                m_CachedStream = new MemoryStream();
+            }
+
+            m_CachedStream.Position = 0L;
+            m_CachedStream.SetLength(0L);
+        }
+
+        private void FreeCachedStream()
+        {
+            if (m_CachedStream != null)
+            {
+                m_CachedStream.Dispose();
+                m_CachedStream = null;
             }
         }
 
@@ -2455,11 +2463,7 @@ namespace GameFramework.Resource
                 m_ReadWriteResourceInfos.Clear();
                 m_ReadWriteResourceInfos = null;
 
-                if (m_DecompressCachedStream != null)
-                {
-                    m_DecompressCachedStream.Dispose();
-                    m_DecompressCachedStream = null;
-                }
+                FreeCachedStream();
             }
 
             m_CheckResourcesCompleteCallback(movedCount, removedCount, updateCount, updateTotalLength, updateTotalCompressedLength);
@@ -2569,12 +2573,7 @@ namespace GameFramework.Resource
             m_ReadWriteResourceInfos.Clear();
             m_ReadWriteResourceInfos = null;
 
-            if (m_DecompressCachedStream != null)
-            {
-                m_DecompressCachedStream.Dispose();
-                m_DecompressCachedStream = null;
-            }
-
+            FreeCachedStream();
             Utility.Path.RemoveEmptyDirectory(m_ReadWritePath);
 
             if (m_ResourceUpdateAllCompleteEventHandler != null)

@@ -547,10 +547,8 @@ namespace GameFramework.Resource
                             }
 
                             fileStream.Position = 0L;
-                            m_ResourceManager.CheckDecompressCachedStream();
-                            m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                            m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
-                            if (!Utility.Compression.Decompress(fileStream, m_ResourceManager.m_DecompressCachedStream))
+                            m_ResourceManager.PrepareCachedStream();
+                            if (!Utility.Compression.Decompress(fileStream, m_ResourceManager.m_CachedStream))
                             {
                                 if (ResourceApplyFailure != null)
                                 {
@@ -564,7 +562,7 @@ namespace GameFramework.Resource
 
                             fileStream.Position = 0L;
                             fileStream.SetLength(0L);
-                            fileStream.Write(m_ResourceManager.m_DecompressCachedStream.GetBuffer(), 0, (int)m_ResourceManager.m_DecompressCachedStream.Length);
+                            fileStream.Write(m_ResourceManager.m_CachedStream.GetBuffer(), 0, (int)m_ResourceManager.m_CachedStream.Length);
                         }
                         else
                         {
@@ -662,11 +660,6 @@ namespace GameFramework.Resource
                 finally
                 {
                     m_ApplyingResourcePackStream.Position = position;
-                    if (m_ResourceManager.m_DecompressCachedStream != null)
-                    {
-                        m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                        m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
-                    }
                 }
             }
 
@@ -859,10 +852,8 @@ namespace GameFramework.Resource
                             }
 
                             fileStream.Position = 0L;
-                            m_ResourceManager.CheckDecompressCachedStream();
-                            m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                            m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
-                            if (!Utility.Compression.Decompress(fileStream, m_ResourceManager.m_DecompressCachedStream))
+                            m_ResourceManager.PrepareCachedStream();
+                            if (!Utility.Compression.Decompress(fileStream, m_ResourceManager.m_CachedStream))
                             {
                                 fileStream.Close();
                                 string errorMessage = Utility.Text.Format("Unable to decompress resource '{0}'.", e.DownloadPath);
@@ -872,10 +863,11 @@ namespace GameFramework.Resource
                                 return;
                             }
 
-                            if (m_ResourceManager.m_DecompressCachedStream.Length != updateInfo.Length)
+                            int uncompressedLength = (int)m_ResourceManager.m_CachedStream.Length;
+                            if (uncompressedLength != updateInfo.Length)
                             {
                                 fileStream.Close();
-                                string errorMessage = Utility.Text.Format("Resource length error, need '{0}', downloaded '{1}'.", updateInfo.Length, m_ResourceManager.m_DecompressCachedStream.Length);
+                                string errorMessage = Utility.Text.Format("Resource length error, need '{0}', downloaded '{1}'.", updateInfo.Length, uncompressedLength);
                                 DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                                 OnDownloadFailure(this, downloadFailureEventArgs);
                                 ReferencePool.Release(downloadFailureEventArgs);
@@ -884,7 +876,7 @@ namespace GameFramework.Resource
 
                             fileStream.Position = 0L;
                             fileStream.SetLength(0L);
-                            fileStream.Write(m_ResourceManager.m_DecompressCachedStream.GetBuffer(), 0, (int)m_ResourceManager.m_DecompressCachedStream.Length);
+                            fileStream.Write(m_ResourceManager.m_CachedStream.GetBuffer(), 0, uncompressedLength);
                         }
                         else
                         {
@@ -978,14 +970,6 @@ namespace GameFramework.Resource
                     DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                     OnDownloadFailure(this, downloadFailureEventArgs);
                     ReferencePool.Release(downloadFailureEventArgs);
-                }
-                finally
-                {
-                    if (m_ResourceManager.m_DecompressCachedStream != null)
-                    {
-                        m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                        m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
-                    }
                 }
             }
 

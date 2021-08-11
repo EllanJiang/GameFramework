@@ -185,10 +185,8 @@ namespace GameFramework.Resource
                         }
 
                         fileStream.Position = 0L;
-                        m_ResourceManager.CheckDecompressCachedStream();
-                        m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                        m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
-                        if (!Utility.Compression.Decompress(fileStream, m_ResourceManager.m_DecompressCachedStream))
+                        m_ResourceManager.PrepareCachedStream();
+                        if (!Utility.Compression.Decompress(fileStream, m_ResourceManager.m_CachedStream))
                         {
                             fileStream.Close();
                             string errorMessage = Utility.Text.Format("Unable to decompress latest version list '{0}'.", e.DownloadPath);
@@ -198,10 +196,11 @@ namespace GameFramework.Resource
                             return;
                         }
 
-                        if (m_ResourceManager.m_DecompressCachedStream.Length != m_VersionListLength)
+                        int uncompressedLength = (int)m_ResourceManager.m_CachedStream.Length;
+                        if (uncompressedLength != m_VersionListLength)
                         {
                             fileStream.Close();
-                            string errorMessage = Utility.Text.Format("Latest version list length error, need '{0}', downloaded '{1}'.", m_VersionListLength, m_ResourceManager.m_DecompressCachedStream.Length);
+                            string errorMessage = Utility.Text.Format("Latest version list length error, need '{0}', downloaded '{1}'.", m_VersionListLength, uncompressedLength);
                             DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                             OnDownloadFailure(this, downloadFailureEventArgs);
                             ReferencePool.Release(downloadFailureEventArgs);
@@ -210,7 +209,7 @@ namespace GameFramework.Resource
 
                         fileStream.Position = 0L;
                         fileStream.SetLength(0L);
-                        fileStream.Write(m_ResourceManager.m_DecompressCachedStream.GetBuffer(), 0, (int)m_ResourceManager.m_DecompressCachedStream.Length);
+                        fileStream.Write(m_ResourceManager.m_CachedStream.GetBuffer(), 0, uncompressedLength);
                     }
 
                     if (VersionListUpdateSuccess != null)
@@ -224,14 +223,6 @@ namespace GameFramework.Resource
                     DownloadFailureEventArgs downloadFailureEventArgs = DownloadFailureEventArgs.Create(e.SerialId, e.DownloadPath, e.DownloadUri, errorMessage, e.UserData);
                     OnDownloadFailure(this, downloadFailureEventArgs);
                     ReferencePool.Release(downloadFailureEventArgs);
-                }
-                finally
-                {
-                    if (m_ResourceManager.m_DecompressCachedStream != null)
-                    {
-                        m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                        m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
-                    }
                 }
             }
 

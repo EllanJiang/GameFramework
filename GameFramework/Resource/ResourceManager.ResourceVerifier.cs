@@ -159,11 +159,9 @@ namespace GameFramework.Resource
                     int length = fileInfo.Length;
                     if (length == verifyInfo.Length)
                     {
-                        m_ResourceManager.CheckDecompressCachedStream();
-                        m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                        m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
-                        fileSystem.ReadFile(fileName, m_ResourceManager.m_DecompressCachedStream);
-                        m_ResourceManager.m_DecompressCachedStream.Position = 0L;
+                        m_ResourceManager.PrepareCachedStream();
+                        fileSystem.ReadFile(fileName, m_ResourceManager.m_CachedStream);
+                        m_ResourceManager.m_CachedStream.Position = 0L;
                         int hashCode = 0;
                         if (verifyInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt || verifyInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt
                             || verifyInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt || verifyInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
@@ -171,22 +169,20 @@ namespace GameFramework.Resource
                             Utility.Converter.GetBytes(verifyInfo.HashCode, m_CachedHashBytes);
                             if (verifyInfo.LoadType == LoadType.LoadFromMemoryAndQuickDecrypt || verifyInfo.LoadType == LoadType.LoadFromBinaryAndQuickDecrypt)
                             {
-                                hashCode = Utility.Verifier.GetCrc32(m_ResourceManager.m_DecompressCachedStream, m_CachedHashBytes, Utility.Encryption.QuickEncryptLength);
+                                hashCode = Utility.Verifier.GetCrc32(m_ResourceManager.m_CachedStream, m_CachedHashBytes, Utility.Encryption.QuickEncryptLength);
                             }
                             else if (verifyInfo.LoadType == LoadType.LoadFromMemoryAndDecrypt || verifyInfo.LoadType == LoadType.LoadFromBinaryAndDecrypt)
                             {
-                                hashCode = Utility.Verifier.GetCrc32(m_ResourceManager.m_DecompressCachedStream, m_CachedHashBytes, length);
+                                hashCode = Utility.Verifier.GetCrc32(m_ResourceManager.m_CachedStream, m_CachedHashBytes, length);
                             }
 
                             Array.Clear(m_CachedHashBytes, 0, CachedHashBytesLength);
                         }
                         else
                         {
-                            hashCode = Utility.Verifier.GetCrc32(m_ResourceManager.m_DecompressCachedStream);
+                            hashCode = Utility.Verifier.GetCrc32(m_ResourceManager.m_CachedStream);
                         }
 
-                        m_ResourceManager.m_DecompressCachedStream.Position = 0L;
-                        m_ResourceManager.m_DecompressCachedStream.SetLength(0L);
                         if (hashCode == verifyInfo.HashCode)
                         {
                             return true;
