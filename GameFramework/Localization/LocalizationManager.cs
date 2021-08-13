@@ -1009,12 +1009,12 @@ namespace GameFramework.Localization
             }
 
             string value = null;
-            if (!m_Dictionary.TryGetValue(key, out value))
+            if (m_Dictionary.TryGetValue(key, out value))
             {
-                return null;
+                return value;
             }
 
-            return value;
+            return null;
         }
 
         /// <summary>
