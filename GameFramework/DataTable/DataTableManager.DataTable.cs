@@ -502,7 +502,7 @@ namespace GameFramework.DataTable
 
             private void InternalAddDataRow(T dataRow)
             {
-                if (HasDataRow(dataRow.Id))
+                if (m_DataSet.ContainsKey(dataRow.Id))
                 {
                     throw new GameFrameworkException(Utility.Text.Format("Already exist '{0}' in data table '{1}'.", dataRow.Id, new TypeNamePair(typeof(T), Name)));
                 }
