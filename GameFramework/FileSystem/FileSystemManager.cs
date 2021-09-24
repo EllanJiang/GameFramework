@@ -216,6 +216,7 @@ namespace GameFramework.FileSystem
             FileSystem fileSystem = FileSystem.Load(fullPath, access, fileSystemStream);
             if (fileSystem == null)
             {
+                fileSystemStream.Close();
                 throw new GameFrameworkException(Utility.Text.Format("Load file system '{0}' failure.", fullPath));
             }
 
