@@ -688,14 +688,16 @@ namespace GameFramework.Resource
                         int index = 0;
                         foreach (KeyValuePair<ResourceName, ReadWriteResourceInfo> i in m_ResourceManager.m_ReadWriteResourceInfos)
                         {
-                            resources[index] = new LocalVersionList.Resource(i.Key.Name, i.Key.Variant, i.Key.Extension, (byte)i.Value.LoadType, i.Value.Length, i.Value.HashCode);
-                            if (i.Value.UseFileSystem)
+                            ResourceName resourceName = i.Key;
+                            ReadWriteResourceInfo resourceInfo = i.Value;
+                            resources[index] = new LocalVersionList.Resource(resourceName.Name, resourceName.Variant, resourceName.Extension, (byte)resourceInfo.LoadType, resourceInfo.Length, resourceInfo.HashCode);
+                            if (resourceInfo.UseFileSystem)
                             {
                                 List<int> resourceIndexes = null;
-                                if (!m_CachedFileSystemsForGenerateReadWriteVersionList.TryGetValue(i.Value.FileSystemName, out resourceIndexes))
+                                if (!m_CachedFileSystemsForGenerateReadWriteVersionList.TryGetValue(resourceInfo.FileSystemName, out resourceIndexes))
                                 {
                                     resourceIndexes = new List<int>();
-                                    m_CachedFileSystemsForGenerateReadWriteVersionList.Add(i.Value.FileSystemName, resourceIndexes);
+                                    m_CachedFileSystemsForGenerateReadWriteVersionList.Add(resourceInfo.FileSystemName, resourceIndexes);
                                 }
 
                                 resourceIndexes.Add(index);
