@@ -639,7 +639,7 @@ namespace GameFramework.Resource
                 }
 
                 IFileSystem fileSystem = m_ResourceManager.GetFileSystem(resourceInfo.FileSystemName, resourceInfo.StorageInReadOnly);
-                byte[] bytes = fileSystem.ReadFile(resourceInfo.ResourceName.FullName);
+                byte[] bytes = fileSystem.ReadFile(binaryAssetName);
                 if (bytes == null)
                 {
                     return null;
