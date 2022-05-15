@@ -37,11 +37,11 @@ namespace GameFramework.Network
             protected bool m_Active;
             private bool m_Disposed;
 
-            public GameFrameworkAction<NetworkChannelBase, object> NetworkChannelConnected;
-            public GameFrameworkAction<NetworkChannelBase> NetworkChannelClosed;
-            public GameFrameworkAction<NetworkChannelBase, int> NetworkChannelMissHeartBeat;
-            public GameFrameworkAction<NetworkChannelBase, NetworkErrorCode, SocketError, string> NetworkChannelError;
-            public GameFrameworkAction<NetworkChannelBase, object> NetworkChannelCustomError;
+            public GameFrameworkAction<INetworkChannel, object> NetworkChannelConnected { get; set; }
+            public GameFrameworkAction<INetworkChannel> NetworkChannelClosed { get; set; }
+            public GameFrameworkAction<INetworkChannel, int> NetworkChannelMissHeartBeat { get; set; }
+            public GameFrameworkAction<INetworkChannel, NetworkErrorCode, SocketError, string> NetworkChannelError { get; set; }
+            public GameFrameworkAction<INetworkChannel, object> NetworkChannelCustomError { get; set; }
 
             /// <summary>
             /// 初始化网络频道基类的新实例。
@@ -225,6 +225,20 @@ namespace GameFramework.Network
                 get
                 {
                     return m_HeartBeatState.HeartBeatElapseSeconds;
+                }
+            }
+            public string LocalAddress
+            {
+                get
+                {
+                    return m_Socket != null ? m_Socket.LocalEndPoint.ToString() : "";
+                }
+            }
+            public string RemoteAddress
+            {
+                get
+                {
+                    return m_Socket != null ? m_Socket.RemoteEndPoint.ToString() : "";
                 }
             }
 

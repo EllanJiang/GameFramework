@@ -25,9 +25,18 @@ namespace GameFramework.Network
         }
 
         /// <summary>
-        /// 获取网络频道所使用的 Socket。
+        /// 本地连接地址
         /// </summary>
-        Socket Socket
+        string LocalAddress
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 远端连接地址
+        /// </summary>
+        /// <value></value>
+        string RemoteAddress
         {
             get;
         }
@@ -123,6 +132,47 @@ namespace GameFramework.Network
         }
 
         /// <summary>
+        /// 通道连接完成回调
+        /// </summary>
+        GameFrameworkAction<INetworkChannel, object> NetworkChannelConnected
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// 通道关闭回调
+        /// </summary>
+        GameFrameworkAction<INetworkChannel> NetworkChannelClosed
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// 通道丢失心跳回调
+        /// </summary>
+        GameFrameworkAction<INetworkChannel, int> NetworkChannelMissHeartBeat
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// 通道错误回调
+        /// </summary>
+        GameFrameworkAction<INetworkChannel, NetworkErrorCode, SocketError, string> NetworkChannelError
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// 通道自定义错误回调
+        /// </summary>
+        GameFrameworkAction<INetworkChannel, object> NetworkChannelCustomError
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 注册网络消息包处理函数。
         /// </summary>
         /// <param name="handler">要注册的网络消息包处理函数。</param>
@@ -166,5 +216,15 @@ namespace GameFramework.Network
         /// <typeparam name="T">消息包类型。</typeparam>
         /// <param name="packet">要发送的消息包。</param>
         void Send<T>(T packet) where T : Packet;
+        /// <summary>
+        /// 网络管理器轮询
+        /// </summary>
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
+        void Update(float elapseSeconds, float realElapseSeconds);
+        /// <summary>
+        /// 关闭并清理
+        /// </summary>
+        void Shutdown();
     }
 }
