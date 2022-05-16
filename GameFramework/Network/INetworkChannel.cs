@@ -129,6 +129,12 @@ namespace GameFramework.Network
         void RegisterHandler(IPacketHandler handler);
 
         /// <summary>
+        /// 反注册网络消息包处理函数。
+        /// </summary>
+        /// <param name="handler"></param>
+        void UnRegisterHandler(IPacketHandler handler);
+
+        /// <summary>
         /// 设置默认事件处理函数。
         /// </summary>
         /// <param name="handler">要设置的默认事件处理函数。</param>

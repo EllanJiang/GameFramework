@@ -298,10 +298,24 @@ namespace GameFramework.Network
             {
                 if (handler == null)
                 {
-                    throw new GameFrameworkException("Packet handler is invalid.");
+                    throw new GameFrameworkException("RegisterHandler Packet handler is invalid.");
                 }
 
                 m_ReceivePacketPool.Subscribe(handler.Id, handler.Handle);
+            }
+
+            /// <summary>
+            /// 反注册网络消息包处理函数。
+            /// </summary>
+            /// <param name="handler"></param>
+            public void UnRegisterHandler(IPacketHandler handler)
+            {
+                if (handler == null)
+                {
+                    throw new GameFrameworkException("UnRegisterHandler Packet handler is invalid.");
+                }
+
+                m_ReceivePacketPool.Unsubscribe(handler.Id, handler.Handle);
             }
 
             /// <summary>
