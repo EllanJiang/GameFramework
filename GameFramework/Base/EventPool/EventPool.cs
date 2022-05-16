@@ -14,7 +14,7 @@ namespace GameFramework
     /// 事件池。
     /// </summary>
     /// <typeparam name="T">事件类型。</typeparam>
-    internal sealed partial class EventPool<T> where T : BaseEventArgs
+    public sealed partial class EventPool<T> where T : BaseEventArgs
     {
         private readonly GameFrameworkMultiDictionary<int, EventHandler<T>> m_EventHandlers;
         private readonly Queue<Event> m_Events;
