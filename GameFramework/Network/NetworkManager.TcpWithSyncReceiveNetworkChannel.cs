@@ -26,7 +26,7 @@ namespace GameFramework.Network
             /// </summary>
             /// <param name="name">网络频道名称。</param>
             /// <param name="networkChannelHelper">网络频道辅助器。</param>
-            public TcpWithSyncReceiveNetworkChannel(string name, INetworkChannelHelper networkChannelHelper)
+            public TcpWithSyncReceiveNetworkChannel(string name, INetworkChannelStreamHelper networkChannelHelper)
                 : base(name, networkChannelHelper)
             {
                 m_ConnectCallback = ConnectCallback;

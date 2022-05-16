@@ -75,7 +75,7 @@ namespace GameFramework.Network
         void GetAllNetworkChannels(List<INetworkChannel> results);
 
         /// <summary>
-        /// 创建网络频道。
+        /// 创建并添加内置的网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
         /// <param name="serviceType">网络服务类型。</param>
@@ -84,10 +84,16 @@ namespace GameFramework.Network
         INetworkChannel CreateNetworkChannel(string name, ServiceType serviceType, INetworkChannelHelper networkChannelHelper);
 
         /// <summary>
-        /// 销毁网络频道。
+        /// 添加网络频道。
+        /// </summary>
+        /// <param name="networkChannel"></param>
+        void AddNetworkChannel(INetworkChannel networkChannel);
+
+        /// <summary>
+        /// 移除网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
         /// <returns>是否销毁网络频道成功。</returns>
-        bool DestroyNetworkChannel(string name);
+        bool RemoveNetworkChannel(string name);
     }
 }

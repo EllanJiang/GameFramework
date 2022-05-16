@@ -216,7 +216,7 @@ namespace GameFramework.Network
         }
 
         /// <summary>
-        /// 创建网络频道。
+        /// 创建并添加内置的网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
         /// <param name="serviceType">网络服务类型。</param>
@@ -234,24 +234,48 @@ namespace GameFramework.Network
                 throw new GameFrameworkException("Packet header length is invalid.");
             }
 
-            if (HasNetworkChannel(name))
-            {
-                throw new GameFrameworkException(Utility.Text.Format("Already exist network channel '{0}'.", name ?? string.Empty));
-            }
-
             INetworkChannel networkChannel = null;
             switch (serviceType)
             {
                 case ServiceType.Tcp:
-                    networkChannel = new TcpNetworkChannel(name, networkChannelHelper);
+                    if (networkChannelHelper is not INetworkChannelStreamHelper)
+                    {
+                        throw new GameFrameworkException(Utility.Text.Format("The helper that came with create a socket network channel is invalid, service type '{0}'.", serviceType));
+                    }
+                    networkChannel = new TcpNetworkChannel(name, networkChannelHelper as INetworkChannelStreamHelper);
                     break;
-
                 case ServiceType.TcpWithSyncReceive:
-                    networkChannel = new TcpWithSyncReceiveNetworkChannel(name, networkChannelHelper);
+                    if (networkChannelHelper is not INetworkChannelStreamHelper)
+                    {
+                        throw new GameFrameworkException(Utility.Text.Format("The helper that came with create a socket network channel is invalid, service type '{0}'.", serviceType));
+                    }
+                    networkChannel = new TcpWithSyncReceiveNetworkChannel(name, networkChannelHelper as INetworkChannelStreamHelper);
                     break;
 
                 default:
                     throw new GameFrameworkException(Utility.Text.Format("Not supported service type '{0}'.", serviceType));
+            }
+
+            AddNetworkChannel(networkChannel);
+
+            return networkChannel;
+        }
+
+        /// <summary>
+        /// 添加网络频道。
+        /// </summary>
+        /// <param name="networkChannel"></param>
+        public void AddNetworkChannel(INetworkChannel networkChannel)
+        {
+            if (networkChannel == null)
+            {
+                throw new GameFrameworkException("add network channel is empty");
+            }
+
+            string name = networkChannel.Name;
+            if (HasNetworkChannel(name))
+            {
+                throw new GameFrameworkException(Utility.Text.Format("Already exist network channel '{0}'.", name ?? string.Empty));
             }
 
             networkChannel.NetworkChannelConnected += OnNetworkChannelConnected;
@@ -260,15 +284,14 @@ namespace GameFramework.Network
             networkChannel.NetworkChannelError += OnNetworkChannelError;
             networkChannel.NetworkChannelCustomError += OnNetworkChannelCustomError;
             m_NetworkChannels.Add(name, networkChannel);
-            return networkChannel;
         }
 
         /// <summary>
-        /// 销毁网络频道。
+        /// 移除网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
         /// <returns>是否销毁网络频道成功。</returns>
-        public bool DestroyNetworkChannel(string name)
+        public bool RemoveNetworkChannel(string name)
         {
             INetworkChannel networkChannel = null;
             if (m_NetworkChannels.TryGetValue(name ?? string.Empty, out networkChannel))
